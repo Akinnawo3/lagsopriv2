@@ -61,7 +61,7 @@ const InitialPath = ({ component: Component, authUser, ...rest }) =>
    <Route
       {...rest}
       render={props =>
-         authUser
+         !authUser
             ? <Component {...props} />
             : <Redirect
                to={{
@@ -75,11 +75,11 @@ class App extends Component {
    render() {
       const { location, match, user } = this.props;
       if (location.pathname === '/') {
-         if (user === null) {
-            return (<Redirect to={'/signin'} />);
-         } else {
+         // if (user === null) {
+         //    return (<Redirect to={'/signin'} />);
+         // } else {
             return (<Redirect to={'/app/dashboard'} />);
-         }
+         // }
       }
       return (
          <RctThemeProvider>

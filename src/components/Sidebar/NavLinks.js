@@ -217,6 +217,20 @@ export default {
          "path": "/session/register"
       },
       {
+         "menu_title": "sidebar.support",
+         "menu_icon": "zmdi zmdi-hospital",
+         "type_multi": null,
+         "new_item": false,
+         "path": "/session/register"
+      },
+      {
+         "menu_title": "sidebar.analytics",
+         "menu_icon": "zmdi zmdi-hospital",
+         "type_multi": null,
+         "new_item": false,
+         "path": "/session/register"
+      },
+      {
          "menu_title": "sidebar.maps",
          "menu_icon": "zmdi zmdi-map",
          "type_multi": null,

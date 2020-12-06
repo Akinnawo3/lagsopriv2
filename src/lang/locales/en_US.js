@@ -27,6 +27,8 @@ module.exports = {
    "sidebar.user ratings": "User Ratings",
    "sidebar.taxi ratings": "Taxi Ratings",
    "sidebar.emergency": "Emergency",
+   "sidebar.support": "Support",
+   "sidebar.analytics": "Analytics",
    "sidebar.summary": "Summary",
    "sidebar.promo and discounts": "Promo and Discounts",
    "sidebar.trip manifest": "Trip Manifest",
