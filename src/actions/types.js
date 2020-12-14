@@ -109,7 +109,32 @@ export const ON_COMMENT_FEEDBACK = 'ON_COMMENT_FEEDBACK';
 export const ON_DELETE_ITEM_FROM_CART = 'ON_DELETE_ITEM_FROM_CART';
 export const ON_QUANTITY_CHANGE = 'ON_QUANTITY_CHANGE';
 export const ON_ADD_ITEM_TO_CART = 'ON_ADD_ITEM_TO_CART';
-//crm 
+//crm
 export const ADD_NEW_CLIENT = 'ADD_NEW_CLIENT';
 export const DELETE_CLIENT = 'DELETE_CLIENT';
 export const UPDATE_CLIENT = 'UPDATE_CLIENT';
+
+//driver
+export const    DRIVER_MODAL_DELETE = "DRIVER_MODAL_DELETE";
+    export const    DELETE_DRIVER = " DELETE_DRIVER";
+    export const    CLOSE_MODAL_DELETE_DRIVER = "CLOSE_MODAL_DELETE_DRIVER";
+    export const    LOADING_DRIVER = "LOADING_DRIVER"
+    export const    DRIVER_ERROR = "DRIVER_ERROR"
+    export const    SEARCH_DRIVER = "SEARCH_DRIVER"
+    export const   CREATE_DRIVER = "CREATE_DRIVER"
+    export const    REMOVE_DRIVER_ERROR = "REMOVE_DRIVER_ERROR"
+    export const   APPROVE_DRIVER = "APPROVE_DRIVER"
+    export const    DRIVER_STATUS = "DRIVER_STATUS"
+    export const   DRIVER_MODAL_UPDATE = "DRIVER_MODAL_UPDATE,"
+    export const   UPDATE_DRIVER = "UPDATE_DRIVER"
+    export const   DRIVER_VEHICLE_ID = "DRIVER_VEHICLE_ID";
+    export const   DRIVER_VEHICLE_ID2 = "DRIVER_VEHICLE_ID2";
+    export const   CLEAR_DRIVER_VEHICLE_ID = "CLEAR_DRIVER_VEHICLE_ID";
+    export const   DRIVER_ME = "DRIVER_ME"
+    export const   DRIVER_ALL = "DRIVER_ALL"
+    export const   DRIVER_APPLICATION = " DRIVER_APPLICATION"
+    export const   DRIVER_MODAL_FLAG = " DRIVER_MODAL_FLAG"
+    export const  DRIVER_MODAL_FLAG_DETAILS = "DRIVER_MODAL_FLAG_DETAILS"
+    export const  DRIVER_VEHICLE = "DRIVER_VEHICLE";
+export const DRIVER_BY_USER = "DRIVER_BY_USER";
+export const    DRIVER_MODAL_CREATE = "DRIVER_MODAL_CREATE"

@@ -13,9 +13,24 @@ const AsyncDrivers = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+const AsyncVehicles = Loadable({
+	loader: () => import("Routes/vehicles/vehicles"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncPassengers = Loadable({
+	loader: () => import("Routes/passengers/passengers"),
+	loading: () => <RctPageLoader />,
+});
+
 // ecommerce dashboard
 const AsyncEcommerceDashboardComponent = Loadable({
 	loader: () => import("Routes/dashboard/ecommerce"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncTrips = Loadable({
+	loader: () => import("Routes/trips/trips"),
 	loading: () => <RctPageLoader />,
 });
 
@@ -542,6 +557,9 @@ const AsyncReportsComponent = Loadable({
 });
 
 export {
+	AsyncTrips,
+	AsyncVehicles,
+	AsyncPassengers,
 	AsyncDrivers,
 	AsyncUserWidgetComponent,
 	AsyncUserChartsComponent,

@@ -2,7 +2,6 @@
  * Basic Table
  */
 import React, { useState, useEffect, Fragment } from 'react';
-import { connect } from "react-redux";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -13,8 +12,6 @@ import { Media, Badge } from 'reactstrap';
 import StarRatings from 'react-star-ratings';
 // api
 import api from 'Api';
-import { Form, FormGroup, Label, Input } from 'reactstrap';
-import Spinner from "../../spinner/Spinner";
 
 // page title bar
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
@@ -35,7 +32,6 @@ import {
 
 } from 'reactstrap';
 import AddNewDriverForm from "Routes/drivers/components/addNewdriverForm";
-import {createDriver, getDrivers, toggleDriverModalCreate} from "Actions/driverAction";
 
 // For Basic Table
 let id = 0;
@@ -53,7 +49,7 @@ const data = [
 	createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
 
-const  Drivers = ({match,getDrivers, drivers, createDriver, isLoading}) => {
+const  Passengers = ({match}) => {
 	const [employeePayroll, setEmployeePayroll] = useState(null)
 	const [addNewUserModal, setAddNewUserModal] = useState(false)
 	const [editUser, setEditUser] = useState(null)
@@ -70,31 +66,9 @@ const  Drivers = ({match,getDrivers, drivers, createDriver, isLoading}) => {
 		dateCreated: 'Just Now',
 		checked: false
 	})
-	const [formData, setFormData] = useState({
-		firstname: "", lastname: "", residentialaddress: "", email: "", phoneno: ""
-	});
 
-
-
-	const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
-
-
-	const {
-		firstname, lastname, residentialaddress, email, phoneno
-	} = formData;
-
-	const onSubmit = async (e) => {
-		e.preventDefault();
-		createDriver( firstname, lastname, residentialaddress, email, phoneno);
-		setFormData({
-			firstname: "", lastname: "", residentialaddress: "", email: "", phoneno: "", status: "0", pin: "", bankname: "", accountname: "", accountnumber: "", zone: "", area: "", route: "", geofencedarea: "", appstatus: ""
-		});
-		setAddNewUserModal(false)
-	};
-
-
-	useEffect(()=> {
-	getDrivers()
+useEffect(()=> {
+	getEmployeePayrolls();
 	},[])
 
 
@@ -131,14 +105,12 @@ const getEmployeePayrolls = () => {
 
 	return (
 			<div className="table-wrapper">
-				<PageTitleBar title={"Drivers"} match={match} />
-				<RctCollapsibleCard heading="All Drivers" fullBlock>
+				<PageTitleBar title={"Passengers"} match={match} />
+				<RctCollapsibleCard heading="All Passengers" fullBlock>
 					<div className="float-right">
 						<a href="#" onClick={e => e.preventDefault()} className="btn-sm btn-outline-default mr-10">Export to Excel</a>
-						<a href="#" onClick={(e) => opnAddNewUserModal(e)} color="primary" className="caret btn-sm mr-10">Add New Driver <i className="zmdi zmdi-plus"></i></a>
+						{/*<a href="#" onClick={(e) => opnAddNewUserModal(e)} color="primary" className="caret btn-sm mr-10">Add New Driver <i className="zmdi zmdi-plus"></i></a>*/}
 					</div>
-					{isLoading && <Spinner />}
-					{!isLoading &&
 					<div className="table-responsive">
 						<Table>
 							<TableHead>
@@ -147,36 +119,36 @@ const getEmployeePayrolls = () => {
 									<TableCell>Last Name</TableCell>
 									<TableCell>Phone No</TableCell>
 									<TableCell>Status</TableCell>
-									<TableCell>Ratings</TableCell>
+									{/*<TableCell>Ratings</TableCell>*/}
 									<TableCell>Action</TableCell>
 								</TableRow>
 							</TableHead>
 							<TableBody>
 								<Fragment>
-									{drivers && drivers.sort((a, b) => parseFloat(b.id) - parseFloat(a.id)).map((driver, key) => (
+									{employeePayroll && employeePayroll.map((employee, key) => (
 										<TableRow hover key={key}>
 											<TableCell>
 												<Media>
 													{/*<Media left>*/}
 													{/*	<Media object src={employee.employeeAvatar} alt="User Profile 1" className="rounded-circle mr-20" width="40" height="40" />*/}
 													{/*</Media>*/}
-													<Media body><h5 className="m-0 pt-15">{driver.firstName}</h5></Media>
+													<Media body><h5 className="m-0 pt-15">{employee.employeeName}</h5></Media>
 												</Media>
 											</TableCell>
-											<TableCell>{driver.lastName}</TableCell>
-											<TableCell>{driver.phoneNo}</TableCell>
-											{driver.status === 1 ?
+											<TableCell>Deo</TableCell>
+											<TableCell>07032838025</TableCell>
+											{employee.status === 1 ?
 												<TableCell><Badge color="success">Active</Badge></TableCell>
-												: <TableCell><Badge color="warning">Pending</Badge></TableCell>
+												: <TableCell><Badge color="danger">Inactive</Badge></TableCell>
 											}
-											<TableCell>
-												<StarRatings
-													rating={0}
-													starRatedColor="red"
-													numberOfStars={5}
-													starDimension="18px"
-												/>
-											</TableCell>
+											{/*<TableCell>*/}
+											{/*	<StarRatings*/}
+											{/*		rating={2.403}*/}
+											{/*		starRatedColor="red"*/}
+											{/*		numberOfStars={5}*/}
+											{/*		starDimension="18px"*/}
+											{/*	/>*/}
+											{/*</TableCell>*/}
 											<TableCell>
 												<ViewBtn />
 												{/*<IconButton className="text-danger" aria-label="Add an alarm"><i className="zmdi zmdi-close"></i></IconButton>*/}
@@ -187,7 +159,6 @@ const getEmployeePayrolls = () => {
 							</TableBody>
 						</Table>
 					</div>
-					}
 				</RctCollapsibleCard>
 				<Modal isOpen={addNewUserModal} toggle={() => onAddUpdateUserModalClose()}>
 					<ModalHeader toggle={() => onAddUpdateUserModalClose()}>
@@ -195,66 +166,27 @@ const getEmployeePayrolls = () => {
 							'Add New Driver' : 'Update User'
 						}
 					</ModalHeader>
-					<Form onSubmit={onSubmit}>
 					<ModalBody>
-
-							<FormGroup>
-								<Label for="userName">First Name</Label>
-								<Input type="text"  name="firstname" onChange={onChange} value={firstname}  required/>
-							</FormGroup>
-							<FormGroup>
-								<Label for="userName">Last Name</Label>
-								<Input type="text"  name="lastname" onChange={onChange} value={lastname} required />
-							</FormGroup>
-							<FormGroup>
-								<Label for="userName">Phone no</Label>
-								<Input type="text"  name="phoneno" onChange={onChange} value={phoneno} required />
-							</FormGroup>
-							<FormGroup>
-								<Label for="userEmail">Email</Label>
-								<Input type="email" name="email" onChange={onChange} value={email} required />
-							</FormGroup>
-							<FormGroup>
-								<Label for="userName">Residential Address</Label>
-								<Input type="text" name="residentialaddress" onChange={onChange} value={residentialaddress} required />
-
-							</FormGroup>
-
+						{editUser === null ?
+							<AddNewDriverForm
+								addNewUserDetails={addNewUserDetail}
+								onChangeAddNewUserDetails={onChangeAddNewUserDetails}
+							/>
+							: <UpdateUserForm user={editUser} onUpdateUserDetail={onUpdateUserDetails} />
+						}
 					</ModalBody>
 					<ModalFooter>
-							<Button type="submit" variant="contained" className="text-white btn-success">Add</Button>
-							{/*: <Button variant="contained" color="primary" className="text-white" onClick={() => this.updateUser()}>Update</Button>*/}
-
+						{editUser === null ?
+							<Button variant="contained" className="text-white btn-success">Add</Button>
+							: <Button variant="contained" color="primary" className="text-white" onClick={() => this.updateUser()}>Update</Button>
+						}
 						{' '}
-						{/*<Button variant="contained" className="text-white btn-danger" onClick={() => onAddUpdateUserModalClose()}>Cancel</Button>*/}
+						<Button variant="contained" className="text-white btn-danger" onClick={() => onAddUpdateUserModalClose()}>Cancel</Button>
 					</ModalFooter>
-				</Form>
 				</Modal>
 			</div>
 		);
 
 }
 
-function mapDispatchToProps(dispatch) {
-	return {
-		getDrivers: () => dispatch(getDrivers()),
-		toggleDriverModalCreate: () => dispatch(toggleDriverModalCreate()),
-		createDriver: (firstname, lastname, residentialaddress, email, phoneno) =>
-			dispatch(createDriver(firstname, lastname, residentialaddress, email, phoneno)),
-
-	};
-}
-
-
-const mapStateToProps = state => ({
-	driverModalCreate: state.driver.DriverModalCreate,
-	drivers: state.driver.drivers,
-	driver: state.driver.driver,
-	error: state.driver.error,
-	isLoading: state.driver.isLoading,
-
-
-
-});
-
-export default connect( mapStateToProps, mapDispatchToProps) (Drivers);
+export default Passengers;

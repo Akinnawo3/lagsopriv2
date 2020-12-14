@@ -5,7 +5,6 @@ import React from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
-import {Link} from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 
 export default class ViewBtn extends React.Component {
@@ -36,7 +35,7 @@ export default class ViewBtn extends React.Component {
                 {/*    <IconButton variant="contained" color="primary" className="text-white" aria-owns={anchorEl ? 'simple-menu' : null} aria-haspopup="true" onClick={this.handleClick} aria-label="Delete"><i className="ti-eye"></i></IconButton>*/}
                 </Button>
                 <Menu id="simple-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleClose} >
-                    <MenuItem ><Link to="/app/users/user-profile-1">Profile</Link></MenuItem>
+                    <MenuItem onClick={this.handleClose}>Profile</MenuItem>
                     <MenuItem onClick={this.handleClose}>Activate</MenuItem>
                     <MenuItem onClick={this.handleClose}>Deactivate</MenuItem>
                 </Menu>

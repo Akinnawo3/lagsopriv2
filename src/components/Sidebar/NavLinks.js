@@ -36,7 +36,7 @@ export default {
          // "new_item": true,
          "child_routes": [
             {
-               "path": "/dashboard/crm/projects",
+               "path": "passengers",
                "menu_title": "sidebar.all"
             },
             {
@@ -68,7 +68,7 @@ export default {
             {
                "path": "/app/ecommerce/checkout",
                "new_item": false,
-               "menu_title": "sidebar.suspended"
+               "menu_title": "sidebar.pending"
             },
             {
                "path": "/app/ecommerce/shop-list",
@@ -94,7 +94,12 @@ export default {
          "new_item": false,
          "child_routes": [
             {
-               "path": "/app/ecommerce/shop",
+               "path": "vehicles",
+               "new_item": false,
+               "menu_title": "sidebar.all"
+            },
+            {
+               "path": "vehicles",
                "new_item": false,
                "menu_title": "sidebar.active"
             },
@@ -108,12 +113,17 @@ export default {
       {
          "menu_title": "sidebar.trip manifest",
          "menu_icon": "icon-graph",
-         "path": "/app/widgets",
+         // "path": "/app/widgets",
          "type_multi": null,
          "new_item": false,
          "child_routes": [
             {
-               "path": "/app/widgets/charts",
+               "path": "trips",
+               "new_item": false,
+               "menu_title": "sidebar.all"
+            },
+            {
+               "path": "trips",
                "new_item": false,
                "menu_title": "sidebar.waiting"
             },
@@ -217,13 +227,6 @@ export default {
          "path": "/session/register"
       },
       {
-         "menu_title": "sidebar.support",
-         "menu_icon": "zmdi zmdi-hospital",
-         "type_multi": null,
-         "new_item": false,
-         "path": "/session/register"
-      },
-      {
          "menu_title": "sidebar.analytics",
          "menu_icon": "zmdi zmdi-hospital",
          "type_multi": null,
@@ -233,6 +236,13 @@ export default {
       {
          "menu_title": "sidebar.maps",
          "menu_icon": "zmdi zmdi-map",
+         "type_multi": null,
+         "new_item": false,
+         "path": "/session/register"
+      },
+      {
+         "menu_title": "sidebar.support",
+         "menu_icon": "zmdi zmdi-hospital",
          "type_multi": null,
          "new_item": false,
          "path": "/session/register"

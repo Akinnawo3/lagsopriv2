@@ -61,11 +61,11 @@ const InitialPath = ({ component: Component, authUser, ...rest }) =>
    <Route
       {...rest}
       render={props =>
-         !authUser
+         authUser
             ? <Component {...props} />
             : <Redirect
                to={{
-                  pathname: '/signin',
+                  pathname: '/session/login',
                   state: { from: props.location }
                }}
             />}
@@ -73,13 +73,14 @@ const InitialPath = ({ component: Component, authUser, ...rest }) =>
 
 class App extends Component {
    render() {
+
       const { location, match, user } = this.props;
       if (location.pathname === '/') {
-         // if (user === null) {
-         //    return (<Redirect to={'/signin'} />);
-         // } else {
+         if (user === null) {
+            return (<Redirect to={'/session/login'} />);
+         } else {
             return (<Redirect to={'/app/dashboard'} />);
-         // }
+         }
       }
       return (
          <RctThemeProvider>
@@ -93,7 +94,7 @@ class App extends Component {
             <Route path="/agency" component={AgencyLayout} />
             <Route path="/boxed" component={RctBoxedLayout} />
             <Route path="/dashboard" component={CRMLayout} />
-            <Route path="/signin" component={AppSignIn} />
+            {/*<Route path="/signin" component={AppSignIn} />*/}
             <Route path="/signup" component={AppSignUp} />
             <Route path="/session/login" component={AsyncSessionLoginComponent} />
             <Route path="/session/register" component={AsyncSessionRegisterComponent} />

@@ -27,6 +27,9 @@ import {
    AsyncMailComponent,
    AsyncTodoComponent,
    AsyncDrivers,
+   AsyncVehicles,
+   AsyncPassengers,
+   AsyncTrips
 } from 'Components/AsyncComponent/AsyncComponent';
 
 export default [
@@ -57,6 +60,18 @@ export default [
    {
       path: 'drivers',
       component: AsyncDrivers
+   },
+   {
+      path: 'trips',
+      component: AsyncTrips
+   },
+   {
+      path: 'vehicles',
+      component: AsyncVehicles
+   },
+   {
+      path: 'passengers',
+      component: AsyncPassengers
    },
    {
       path: 'pages',

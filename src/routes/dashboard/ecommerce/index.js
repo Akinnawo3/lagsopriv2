@@ -51,7 +51,7 @@ export default class EcommerceDashboard extends Component {
 					<title>Dashboard</title>
 					<meta name="description" content="Reactify Ecommerce Dashboard" />
 				</Helmet>
-				<PageTitleBar title={<IntlMessages id="sidebar.summary" />} match={match} />
+				<PageTitleBar title={<IntlMessages id="sidebar.dashboard" />} match={match} />
 				<div className="row">
 					<div className="col-sm-12 col-md-8 w-xs-half-block">
 						<GoogleMapComponent />

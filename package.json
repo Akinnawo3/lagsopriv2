@@ -105,6 +105,7 @@
 		"react-draft-wysiwyg": "^1.14.5",
 		"react-dragula": "1.1.17",
 		"react-dropzone-component": "^3.2.0",
+		"react-export-excel": "^0.5.3",
 		"react-helmet": "^6.0.0",
 		"react-hot-loader": "^4.12.21",
 		"react-instantsearch-dom": "^6.4.0",
