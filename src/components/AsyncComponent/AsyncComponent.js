@@ -12,9 +12,94 @@ const AsyncDrivers = Loadable({
 	loader: () => import("Routes/drivers/drivers"),
 	loading: () => <RctPageLoader />,
 });
+const AsyncClassTypes = Loadable({
+	loader: () => import("Routes/class-types/class-types"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncFees = Loadable({
+	loader: () => import("Routes/fees/fees"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncRefunds = Loadable({
+	loader: () => import("Routes/refunds/refunds"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncPromoDiscount = Loadable({
+	loader: () => import("Routes/promo-discounts/promoDiscount"),
+	loading: () => <RctPageLoader />,
+});
+const AsyncRefundsPending = Loadable({
+	loader: () => import("Routes/refunds/pendingRefunds"),
+	loading: () => <RctPageLoader />,
+});
+const AsyncRefundsCompleted = Loadable({
+	loader: () => import("Routes/refunds/completedRefunds"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncCancellations = Loadable({
+	loader: () => import("Routes/cancellations/cancellations"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncPayments = Loadable({
+	loader: () => import("Routes/payments/payments"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncPaymentsSuccessful = Loadable({
+	loader: () => import("Routes/payments/successfulPayments"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncPaymentsUnsuccessful = Loadable({
+	loader: () => import("Routes/payments/unsuccessfulPayments"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncBookingTypes = Loadable({
+	loader: () => import("Routes/booking-types/booking-types"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncInactiveDrivers = Loadable({
+	loader: () => import("Routes/drivers/inactiveDrivers"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncPendingDrivers = Loadable({
+	loader: () => import("Routes/drivers/pendingDrivers"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncVerifiedDrivers = Loadable({
+	loader: () => import("Routes/drivers/verifiedDrivers"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncActiveDrivers = Loadable({
+	loader: () => import("Routes/drivers/activeDrivers"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncDriver = Loadable({
+	loader: () => import("Routes/drivers/driver"),
+	loading: () => <RctPageLoader />,
+});
 
 const AsyncVehicles = Loadable({
 	loader: () => import("Routes/vehicles/vehicles"),
+	loading: () => <RctPageLoader />,
+});
+const AsyncActiveVehicles = Loadable({
+	loader: () => import("Routes/vehicles/activeVehicles"),
+	loading: () => <RctPageLoader />,
+});
+const AsyncInactiveVehicles = Loadable({
+	loader: () => import("Routes/vehicles/inactiveVehicles"),
 	loading: () => <RctPageLoader />,
 });
 
@@ -23,9 +108,9 @@ const AsyncPassengers = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
-// ecommerce dashboard
-const AsyncEcommerceDashboardComponent = Loadable({
-	loader: () => import("Routes/dashboard/ecommerce"),
+// home dashboard
+const AsyncHomeDashboardComponent = Loadable({
+	loader: () => import("Routes/dashboard/home"),
 	loading: () => <RctPageLoader />,
 });
 
@@ -34,23 +119,11 @@ const AsyncTrips = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
-// agency dashboard
-const AsyncSaasDashboardComponent = Loadable({
-	loader: () => import("Routes/dashboard/saas"),
+const AsyncAdmins = Loadable({
+	loader: () => import("Routes/admin/admins"),
 	loading: () => <RctPageLoader />,
 });
 
-// agency dashboard
-const AsyncAgencyDashboardComponent = Loadable({
-	loader: () => import("Routes/dashboard/agency"),
-	loading: () => <RctPageLoader />,
-});
-
-// boxed dashboard
-const AsyncNewsDashboardComponent = Loadable({
-	loader: () => import("Routes/dashboard/news"),
-	loading: () => <RctPageLoader />,
-});
 
 const AsyncUserWidgetComponent = Loadable({
 	loader: () => import("Routes/widgets/user-widgets"),
@@ -530,37 +603,32 @@ const AsyncAdvanceUIAutoCompleteComponent = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
-// crm dashboard
-const AsyncCrmComponent = Loadable({
-	loader: () => import("Routes/crm/dashboard"),
-	loading: () => <RctPageLoader />,
-});
-// projects
-const AsyncProjectsComponent = Loadable({
-	loader: () => import("Routes/crm/projects"),
-	loading: () => <RctPageLoader />,
-});
-// project detail
-const AsyncProjectDetailComponent = Loadable({
-	loader: () => import("Routes/crm/project-detail"),
-	loading: () => <RctPageLoader />,
-});
-// clients
-const AsyncClientsComponent = Loadable({
-	loader: () => import("Routes/crm/clients"),
-	loading: () => <RctPageLoader />,
-});
-// reports
-const AsyncReportsComponent = Loadable({
-	loader: () => import("Routes/crm/reports"),
-	loading: () => <RctPageLoader />,
-});
+
 
 export {
-	AsyncTrips,
+	AsyncPromoDiscount,
+	AsyncRefunds,
+	AsyncRefundsPending,
+	AsyncRefundsCompleted,
+	AsyncPaymentsSuccessful,
+	AsyncPaymentsUnsuccessful,
+	AsyncPayments,
+	AsyncCancellations,
+	AsyncAdmins,
+	AsyncBookingTypes,
+	AsyncFees,
+	AsyncClassTypes,
+	AsyncActiveVehicles,
+	AsyncInactiveVehicles,
 	AsyncVehicles,
+	AsyncVerifiedDrivers,
+	AsyncPendingDrivers,
+	AsyncInactiveDrivers,
+	AsyncActiveDrivers,
+	AsyncTrips,
 	AsyncPassengers,
 	AsyncDrivers,
+	AsyncDriver,
 	AsyncUserWidgetComponent,
 	AsyncUserChartsComponent,
 	AsyncGeneralWidgetsComponent,
@@ -639,13 +707,5 @@ export {
 	AsyncShopComponent,
 	AsyncCartComponent,
 	AsyncCheckoutComponent,
-	AsyncEcommerceDashboardComponent,
-	AsyncSaasDashboardComponent,
-	AsyncAgencyDashboardComponent,
-	AsyncNewsDashboardComponent,
-	AsyncCrmComponent,
-	AsyncProjectsComponent,
-	AsyncProjectDetailComponent,
-	AsyncClientsComponent,
-	AsyncReportsComponent
+	AsyncHomeDashboardComponent,
 };

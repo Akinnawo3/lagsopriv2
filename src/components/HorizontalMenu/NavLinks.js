@@ -7,7 +7,7 @@ export default {
          "new_item": true,
          "child_routes": [
             {
-               "path": "/app/dashboard/ecommerce",
+               "path": "/app/dashboard/home",
                "new_item": false,
                "menu_title": "sidebar.ecommerce",
             },
@@ -61,32 +61,32 @@ export default {
          "menu_icon": "zmdi zmdi-shopping-cart",
          "child_routes": [
             {
-               "path": "/horizontal/ecommerce/shop",
+               "path": "/horizontal/home/shop",
                "new_item": false,
                "menu_title": "sidebar.shop"
             },
             {
-               "path": "/horizontal/ecommerce/cart",
+               "path": "/horizontal/home/cart",
                "new_item": false,
                "menu_title": "sidebar.cart"
             },
             {
-               "path": "/horizontal/ecommerce/checkout",
+               "path": "/horizontal/home/checkout",
                "new_item": false,
                "menu_title": "sidebar.checkout"
             },
             {
-               "path": "/horizontal/ecommerce/shop-list",
+               "path": "/horizontal/home/shop-list",
                "new_item": false,
                "menu_title": "sidebar.shopList"
             },
             {
-               "path": "/horizontal/ecommerce/shop-grid",
+               "path": "/horizontal/home/shop-grid",
                "new_item": false,
                "menu_title": "sidebar.shopGrid"
             },
             {
-               "path": "/horizontal/ecommerce/invoice",
+               "path": "/horizontal/home/invoice",
                "new_item": false,
                "menu_title": "sidebar.invoice"
             }

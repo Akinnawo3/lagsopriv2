@@ -119,6 +119,8 @@ const getEmployeePayrolls = () => {
 									<TableCell>Last Name</TableCell>
 									<TableCell>Phone No</TableCell>
 									<TableCell>Status</TableCell>
+									<TableCell>Date Created</TableCell>
+
 									{/*<TableCell>Ratings</TableCell>*/}
 									<TableCell>Action</TableCell>
 								</TableRow>
@@ -137,10 +139,30 @@ const getEmployeePayrolls = () => {
 											</TableCell>
 											<TableCell>Deo</TableCell>
 											<TableCell>07032838025</TableCell>
-											{employee.status === 1 ?
-												<TableCell><Badge color="success">Active</Badge></TableCell>
-												: <TableCell><Badge color="danger">Inactive</Badge></TableCell>
-											}
+											{/*<td className="d-flex justify-content-start">*/}
+											{/*	<span className={`badge badge-xs ${user.badgeClass} mr-10 mt-10 position-relative`}>&nbsp;</span>*/}
+											{/*	<div className="status">*/}
+											{/*		<span className="d-block">{user.status}</span>*/}
+											{/*		<span className="small">{user.lastSeen}</span>*/}
+											{/*	</div>*/}
+											{/*</td>*/}
+
+
+											<TableCell className='d-flex'>
+												<span className={`badge badge-xs badge-success mr-10 mt-10 position-relative`}>&nbsp;</span>
+												<div className="status">
+													<span className="d-block">Active</span>
+													<span className="small">Since 1 hour</span>
+												</div>
+											</TableCell>
+
+
+
+
+											{/*{employee.status === 1 ?*/}
+											{/*	<TableCell><Badge color="success">Active</Badge></TableCell>*/}
+											{/*	: <TableCell><Badge color="danger">Inactive</Badge></TableCell>*/}
+											{/*}*/}
 											{/*<TableCell>*/}
 											{/*	<StarRatings*/}
 											{/*		rating={2.403}*/}
@@ -150,8 +172,12 @@ const getEmployeePayrolls = () => {
 											{/*	/>*/}
 											{/*</TableCell>*/}
 											<TableCell>
-												<ViewBtn />
+												13 Aug 2018
+												{/*<ViewBtn />*/}
 												{/*<IconButton className="text-danger" aria-label="Add an alarm"><i className="zmdi zmdi-close"></i></IconButton>*/}
+											</TableCell>
+											<TableCell>
+												<button type="button" className="rct-link-btn"><i className="ti-eye"></i></button>
 											</TableCell>
 										</TableRow>
 									))}

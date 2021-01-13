@@ -129,13 +129,13 @@ class Header extends Component {
 						}
 					</div>
 					<ul className="navbar-right list-inline mb-0">
-						<li className="list-inline-item summary-icon">
-							<Tooltip title="Summary" placement="bottom">
-								<a href="#" className="header-icon tour-step-3" onClick={(e) => this.openDashboardOverlay(e)}>
-									<i className="zmdi zmdi-info-outline"></i>
-								</a>
-							</Tooltip>
-						</li>
+						{/*<li className="list-inline-item summary-icon">*/}
+						{/*	<Tooltip title="Summary" placement="bottom">*/}
+						{/*		<a href="#" className="header-icon tour-step-3" onClick={(e) => this.openDashboardOverlay(e)}>*/}
+						{/*			<i className="zmdi zmdi-info-outline"></i>*/}
+						{/*		</a>*/}
+						{/*	</Tooltip>*/}
+						{/*</li>*/}
 						{/*{!horizontalMenu &&*/}
 						{/*	<li className="list-inline-item">*/}
 						{/*		<Tooltip title="Upgrade" placement="bottom">*/}
@@ -147,13 +147,16 @@ class Header extends Component {
 						{/*}*/}
 						{/*<LanguageProvider />*/}
 						<Notifications />
-						<Cart />
+						{/*<Cart />*/}
 						<li className="list-inline-item setting-icon">
-							<Tooltip title="Chat" placement="bottom">
-								<IconButton aria-label="settings" onClick={() => this.setState({ customizer: true })}>
-									<i className="zmdi zmdi-comment"></i>
-								</IconButton>
-							</Tooltip>
+							<div className=	'text-dark'>
+								bruce
+							</div>
+							{/*<Tooltip title="Chat" placement="bottom">*/}
+							{/*	<IconButton aria-label="settings" onClick={() => this.setState({ customizer: true })}>*/}
+							{/*		/!*<i className="zmdi zmdi-comment"></i>*!/Tope*/}
+							{/*	</IconButton>*/}
+							{/*</Tooltip>*/}
 						</li>
 						<li className="list-inline-item">
 							<Tooltip title="Full Screen" placement="bottom">

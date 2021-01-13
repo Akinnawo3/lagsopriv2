@@ -1,112 +1,69 @@
-/**
- * Basic Table
- */
 import React, { useState, useEffect, Fragment } from 'react';
+import { connect } from "react-redux";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { Media, Badge } from 'reactstrap';
-// import IconButton from '@material-ui/core/IconButton';
-import StarRatings from 'react-star-ratings';
-// api
-import api from 'Api';
-
-// page title bar
+import { Form, FormGroup, Label, Input } from 'reactstrap';
+import Spinner from "../../spinner/Spinner";
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
-
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
-
-// rct card box
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import ViewBtn from "Routes/vehicles/components/viewBtn";
-import UpdateUserForm from "Routes/users/user-management/UpdateUserForm";
 import Button from "@material-ui/core/Button";
-import {
-	Modal,
-	ModalHeader,
-	ModalBody,
-	ModalFooter,
-
-} from 'reactstrap';
-import AddNewVehicleForm from "Routes/vehicles/components/addNewVehicleForm";
+import {Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import {createVehicle, getVehicles} from "Actions/vehicleAction";
+import ViewBtn from "Routes/vehicles/components/viewBtn";
 
 
-// For Basic Table
-let id = 0;
 
-function createData(name, calories, fat, carbs, protein) {
-	id += 1;
-	return { id, name, calories, fat, carbs, protein };
-}
 
-const data = [
-	createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-	createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-	createData('Eclair', 262, 16.0, 24, 6.0),
-	createData('Cupcake', 305, 3.7, 67, 4.3),
-	createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
 
-const  Vehicles = ({match}) => {
-	const [employeePayroll, setEmployeePayroll] = useState(null)
+
+const  Vehicles = ({match,getVehicles, vehicles, isLoading, createVehicle}) => {
 	const [addNewUserModal, setAddNewUserModal] = useState(false)
 	const [editUser, setEditUser] = useState(null)
-	const [addNewUserDetail, setAddNewUserDetail] = useState({
-		id: '',
-		name: '',
-		avatar: '',
-		type: '',
-		emailAddress: '',
-		status: 'Active',
-		lastSeen: '',
-		accountType: '',
-		badgeClass: 'badge-success',
-		dateCreated: 'Just Now',
-		checked: false
-	})
+	const [formData, setFormData] = useState({vehicle_make: "", vehicle_model: "",  plate_number: ""});
 
-useEffect(()=> {
-	getEmployeePayrolls();
+	const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+	const {
+		vehicle_make, vehicle_model,  plate_number
+	} = formData;
+
+	const onSubmit = async (e) => {
+		e.preventDefault();
+		createVehicle(vehicle_make, vehicle_model,  plate_number);
+		setFormData({
+			vehicle_make: "", vehicle_model: "",  plate_number: ""
+		});
+		setAddNewUserModal(false)
+	};
+
+
+	useEffect(()=> {
+	getVehicles()
 	},[])
 
 
-
-	// get employee payrols
-const getEmployeePayrolls = () => {
-		api.get('employeePayrols.js')
-			.then((response) => {
-				setEmployeePayroll(response.data)
-			})
-			.catch(error => {
-				// error handling
-			})
-	}
 
 	const opnAddNewUserModal = (e) => {
 		e.preventDefault();
 		setAddNewUserModal(true)
 	}
 
-	const onChangeAddNewUserDetails = (key, value) => {
-			setAddNewUserDetail({...addNewUserDetail, [key]: value})
-	}
 
-	const onUpdateUserDetails = (key, value) => {
-		setEditUser({...editUser, [key]: value})
-	}
 
 	const onAddUpdateUserModalClose = () => {
 		setAddNewUserModal(false);
 		setEditUser(null);
 	}
 
-
 	return (
 			<div className="table-wrapper">
 				<PageTitleBar title={"Vehicles"} match={match} />
+				{isLoading && <Spinner />}
+				{!isLoading &&
 				<RctCollapsibleCard heading="All Vehicles" fullBlock>
 					<div className="float-right">
 						<a href="#" onClick={e => e.preventDefault()} className="btn-sm btn-outline-default mr-10">Export to Excel</a>
@@ -121,37 +78,35 @@ const getEmployeePayrolls = () => {
 									<TableCell>Plate Number</TableCell>
 									<TableCell>Status</TableCell>
 									{/*<TableCell>Ratings</TableCell>*/}
+									{/*<TableCell>App Status</TableCell>*/}
 									<TableCell>Action</TableCell>
 								</TableRow>
 							</TableHead>
 							<TableBody>
 								<Fragment>
-									{employeePayroll && employeePayroll.map((employee, key) => (
+									{vehicles && vehicles.sort((a, b) => parseFloat(b.id) - parseFloat(a.id)).map((vehicle, key) => (
 										<TableRow hover key={key}>
 											<TableCell>
 												<Media>
 													{/*<Media left>*/}
 													{/*	<Media object src={employee.employeeAvatar} alt="User Profile 1" className="rounded-circle mr-20" width="40" height="40" />*/}
 													{/*</Media>*/}
-													<Media body><h5 className="m-0 pt-15">Toyota</h5></Media>
+													<Media body><h5 className="m-0 pt-15">{vehicle.vehicle_make}</h5></Media>
 												</Media>
 											</TableCell>
-											<TableCell>2020</TableCell>
-											<TableCell>ACDF458</TableCell>
-											{employee.status === 1 ?
-												<TableCell><Badge color="success">Active</Badge></TableCell>
-												: <TableCell><Badge color="danger">Inactive</Badge></TableCell>
-											}
-											{/*<TableCell>*/}
-											{/*	<StarRatings*/}
-											{/*		rating={2.403}*/}
-											{/*		starRatedColor="red"*/}
-											{/*		numberOfStars={5}*/}
-											{/*		starDimension="18px"*/}
-											{/*	/>*/}
-											{/*</TableCell>*/}
+											<TableCell>{vehicle.vehicle_model}</TableCell>
+											{/*<TableCell>{driver.phoneNo}</TableCell>*/}
 											<TableCell>
-												<ViewBtn />
+												{vehicle.plate_number}
+											</TableCell>
+											{vehicle.status == 1 &&
+											<TableCell><Badge color="success">Active</Badge></TableCell>
+											}
+											{vehicle.status == 2 &&
+											<TableCell><Badge color="danger">Inactive</Badge></TableCell>
+											}
+											<TableCell>
+												<ViewBtn vehicle={vehicle} />
 												{/*<IconButton className="text-danger" aria-label="Add an alarm"><i className="zmdi zmdi-close"></i></IconButton>*/}
 											</TableCell>
 										</TableRow>
@@ -160,34 +115,50 @@ const getEmployeePayrolls = () => {
 							</TableBody>
 						</Table>
 					</div>
-				</RctCollapsibleCard>
+				</RctCollapsibleCard>}
 				<Modal isOpen={addNewUserModal} toggle={() => onAddUpdateUserModalClose()}>
 					<ModalHeader toggle={() => onAddUpdateUserModalClose()}>
-						{editUser === null ?
-							'Add New Vehicle' : 'Update User'
-						}
+						add vehicle
 					</ModalHeader>
+					<Form onSubmit={onSubmit}>
 					<ModalBody>
-						{editUser === null ?
-							<AddNewVehicleForm
-								addNewUserDetails={addNewUserDetail}
-								onChangeAddNewUserDetails={onChangeAddNewUserDetails}
-							/>
-							: <UpdateUserForm user={editUser} onUpdateUserDetail={onUpdateUserDetails} />
-						}
+
+							<FormGroup>
+								<Label for="userName">Vehicle Make</Label>
+								<Input type="text"  name="vehicle_make" onChange={onChange} value={vehicle_make}  required/>
+							</FormGroup>
+							<FormGroup>
+								<Label for="userName">Vehicle Model</Label>
+								<Input type="text"  name="vehicle_model" onChange={onChange} value={vehicle_model} required />
+							</FormGroup>
+							<FormGroup>
+								<Label for="userName">Plate no</Label>
+								<Input type="text"  name="plate_number" onChange={onChange} value={plate_number} required />
+							</FormGroup>
+
 					</ModalBody>
 					<ModalFooter>
-						{editUser === null ?
-							<Button variant="contained" className="text-white btn-success">Add</Button>
-							: <Button variant="contained" color="primary" className="text-white" onClick={() => this.updateUser()}>Update</Button>
-						}
-						{' '}
-						<Button variant="contained" className="text-white btn-danger" onClick={() => onAddUpdateUserModalClose()}>Cancel</Button>
+							<Button type="submit" variant="contained" className="text-white btn-success">Add</Button>
 					</ModalFooter>
+				</Form>
 				</Modal>
 			</div>
 		);
 
 }
 
-export default Vehicles;
+function mapDispatchToProps(dispatch) {
+	return {
+		getVehicles: () => dispatch(getVehicles()),
+		createVehicle: (vehicle_make, vehicle_model, plate_number) =>
+			dispatch(createVehicle(vehicle_make, vehicle_model,  plate_number)),
+	};
+}
+
+const mapStateToProps = state => ({
+	vehicles: state.vehicle.vehicles,
+	isLoading: state.vehicle.isLoading,
+
+});
+
+export default connect( mapStateToProps, mapDispatchToProps) (Vehicles);

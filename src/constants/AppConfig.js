@@ -2,7 +2,7 @@
  * App Config File
  */
 const AppConfig = {
-   appLogo: require('Assets/img/site-logo.png'),          // App Logo
+   appLogo: require('Assets/img/zen0.png'),          // App Logo
    brandName: 'Zeno',                                    // Brand Name
    navCollapsed: false,                                      // Sidebar collapse
    darkMode: false,                                          // Dark Mode
@@ -20,7 +20,7 @@ const AppConfig = {
       icon: 'en',
    },
    enableUserTour: process.env.NODE_ENV === 'production' ? true : false,  // Enable / Disable User Tour
-   copyRightText: 'Reactify © 2019 All Rights Reserved.',      // Copy Right Text
+   copyRightText: 'Zeno digital limited © 2021 All Rights Reserved.',      // Copy Right Text
    // light theme colors
    themeColors: {
       'primary': '#5D92F4',

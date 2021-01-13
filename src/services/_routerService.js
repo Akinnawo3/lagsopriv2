@@ -14,10 +14,10 @@ import DragAndDrop from 'Routes/drag-drop';
 import Editor from 'Routes/editor';
 import Ecommerce from 'Routes/ecommerce';
 import Dashboard from 'Routes/dashboard';
-import Crm from 'Routes/crm';
 import ImageCropper from 'Routes/image-cropper';
 import VideoPlayer from 'Routes/video-player';
 import Dropzone from 'Routes/dropzone';
+import PaymentsRoutes from "Routes/payments/paymentsRoutes";
 
 
 // async component
@@ -26,20 +26,26 @@ import {
    AsyncChatComponent,
    AsyncMailComponent,
    AsyncTodoComponent,
-   AsyncDrivers,
    AsyncVehicles,
    AsyncPassengers,
-   AsyncTrips
+   AsyncTrips,
+   AsyncAdmins,
+   AsyncClassTypes,
+   AsyncBookingTypes,
+   AsyncFees,
+   AsyncCancellations,
+   AsyncPayments,
+   AsyncPromoDiscount
 } from 'Components/AsyncComponent/AsyncComponent';
+import DriverRoutes from "Routes/drivers/driverRoutes";
+import VehicleRoutes from "Routes/vehicles/vehicleRoutes";
+import RefundsRoutes from "Routes/refunds/refundsRoutes";
+
 
 export default [
    {
       path: 'dashboard',
       component: Dashboard
-   },
-   {
-      path: 'crm',
-      component: Crm
    },
    {
       path: 'widgets',
@@ -59,7 +65,39 @@ export default [
    },
    {
       path: 'drivers',
-      component: AsyncDrivers
+      component: DriverRoutes
+   },
+   {
+      path: 'admins',
+      component: AsyncAdmins
+   },
+   {
+      path: 'class-types',
+      component: AsyncClassTypes
+   },
+   {
+      path: 'booking-types',
+      component: AsyncBookingTypes
+   },
+   {
+      path: 'fees',
+      component: AsyncFees
+   },
+   {
+      path: 'promo-discounts',
+      component: AsyncPromoDiscount
+   },
+   {
+      path: 'cancellations',
+      component: AsyncCancellations
+   },
+   {
+      path: 'payments',
+      component: PaymentsRoutes
+   },
+   {
+      path: 'refunds',
+      component: RefundsRoutes
    },
    {
       path: 'trips',
@@ -67,7 +105,7 @@ export default [
    },
    {
       path: 'vehicles',
-      component: AsyncVehicles
+      component: VehicleRoutes
    },
    {
       path: 'passengers',

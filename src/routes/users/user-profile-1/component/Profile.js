@@ -10,114 +10,71 @@ import { NotificationManager } from 'react-notifications';
 // intlmessages
 import IntlMessages from 'Util/IntlMessages';
 
-export default class Profile extends Component {
+ const Profile = ({driver})=> {
 
    /**
     * On Update Profile
     */
-   onUpdateProfile() {
-      NotificationManager.success('Profile Updated Successfully!');
-   }
 
-   render() {
       return (
-         <div className="profile-wrapper w-50">
-            <h2 className="heading"><IntlMessages id="widgets.personalDetails" /></h2>
-            <Form>
-               <FormGroup row>
-                  <Label for="firstName" sm={3}><IntlMessages id="components.firstName" /></Label>
-                  <Col sm={9}>
-                     <Input type="text" name="firstName" id="firstName" className="input-lg" />
-                  </Col>
-               </FormGroup>
-               <FormGroup row>
-                  <Label for="lastName" sm={3}><IntlMessages id="components.lastName" /></Label>
-                  <Col sm={9}>
-                     <Input type="text" name="lastName" id="lastName" className="input-lg" />
-                  </Col>
-               </FormGroup>
-               <FormGroup row>
-                  <Label for="occupation" sm={3}><IntlMessages id="components.occupation" /></Label>
-                  <Col sm={9}>
-                     <Input type="text" name="occupation" id="occupation" className="input-lg" />
-                  </Col>
-               </FormGroup>
-               <FormGroup row>
-                  <Label for="company" sm={3}><IntlMessages id="components.companyName" /></Label>
-                  <Col sm={9}>
-                     <Input type="text" name="company" id="company" className="input-lg mb-20" />
-                     <div className="help-text d-flex p-10">
-                        <i className="ti-info-alt mr-15 pt-5"></i>
-                        <span>If you want your invoices addressed to a company. Leave blank to use your full name.</span>
-                     </div>
-                  </Col>
-               </FormGroup>
-               <FormGroup row>
-                  <Label for="telephone" sm={3}><IntlMessages id="components.phoneNo" /></Label>
-                  <Col sm={9}>
-                     <Input type="tel" name="telephone" id="telephone" className="input-lg" />
-                  </Col>
-               </FormGroup>
-            </Form>
-            <hr />
-            <h2 className="heading"><IntlMessages id="components.address" /></h2>
-            <Form>
-               <FormGroup row>
-                  <Label for="address" sm={3}><IntlMessages id="components.address" /></Label>
-                  <Col sm={9}>
-                     <Input type="text" name="address" id="address" className="input-lg" />
-                  </Col>
-               </FormGroup>
-               <FormGroup row>
-                  <Label for="city" sm={3}><IntlMessages id="components.city" /></Label>
-                  <Col sm={9}>
-                     <Input type="text" name="city" id="city" className="input-lg" />
-                  </Col>
-               </FormGroup>
-               <FormGroup row>
-                  <Label for="state" sm={3}><IntlMessages id="components.state" /></Label>
-                  <Col sm={9}>
-                     <Input type="text" name="state" id="state" className="input-lg" />
-                  </Col>
-               </FormGroup>
-               <FormGroup row>
-                  <Label for="zip" sm={3}><IntlMessages id="components.zipCode" /></Label>
-                  <Col sm={9}>
-                     <Input type="text" name="zip" id="zip" className="input-lg" />
-                  </Col>
-               </FormGroup>
-            </Form>
-            <hr />
-            <h2 className="heading"><IntlMessages id="components.social Connection" /></h2>
-            <div>
-               <InputGroup className="mb-20">
-                  <InputGroupAddon addonType="prepend">
-                     <IconButton aria-label="facebook">
-                        <i className="zmdi zmdi-facebook"></i>
-                     </IconButton>
-                  </InputGroupAddon>
-                  <Input defaultValue="https://www.facebook.com" />
-               </InputGroup>
-               <InputGroup className="mb-20">
-                  <InputGroupAddon addonType="prepend">
-                     <IconButton aria-label="facebook">
-                        <i className="zmdi zmdi-twitter"></i>
-                     </IconButton>
-                  </InputGroupAddon>
-                  <Input defaultValue="https://www.twitter.com" />
-               </InputGroup>
-               <InputGroup className="mb-20">
-                  <InputGroupAddon addonType="prepend">
-                     <IconButton aria-label="facebook">
-                        <i className="zmdi zmdi-linkedin"></i>
-                     </IconButton>
-                  </InputGroupAddon>
-                  <Input defaultValue="https://www.linkedin.com" />
-               </InputGroup>
-            </div>
-            <hr />
-            <Button variant="contained" color="primary" className="text-white" onClick={() => this.onUpdateProfile()}><IntlMessages id="widgets.updateProfile" /></Button>
-         </div>
+          <div className="row">
+             <div className="col-sm-9">
+                <div className="tab-content">
+                   <div className="tab-pane active" id="home">
+                      <ul className="list-group">
+                         <li className="list-group-item text-right"><span
+                             className="pull-left"><strong>First name</strong></span>{driver.firstName? driver.firstName: 'not available'}
+                         </li>
+                         <li className="list-group-item text-right"><span
+                             className="pull-left"><strong>Last name</strong></span>{driver.lastName? driver.lastName: 'not available'}
+                         </li>
+                         <li className="list-group-item text-right"><span
+                             className="pull-left"><strong>phone number</strong></span>{driver.phoneNo? '0' + driver.phoneNo.substr(4): 'not available'}
+                         </li>
+                         <li className="list-group-item text-right"><span
+                             className="pull-left"><strong>Residential Address</strong></span>{driver.residentialAddress? driver.residentialAddress: 'not available'}
+                         </li>
+                         <li className="list-group-item text-right"><span
+                             className="pull-left"><strong>Email</strong></span>{driver.email? driver.email: 'not available'}
+                         </li>
+                         <li className="list-group-item text-right"><span
+                             className="pull-left"><strong>State of Origin</strong></span>{driver.stateOfOrigin? driver.stateOfOrigin: 'not available'}
+                         </li>
+                         <li className="list-group-item text-right"><span
+                             className="pull-left"><strong>Date of birth</strong></span>{driver.dateOfBirth? driver.dateOfBirth: 'not available'}
+                         </li>
+                         <li className="list-group-item text-right"><span
+                             className="pull-left"><strong>Eye Glass</strong></span>{driver.eyeGlasses? driver.eyeGlasses: 'not available'}
+                         </li>
+                         <li className="list-group-item text-right"><span
+                             className="pull-left"><strong>Blood Group</strong></span>{driver.bloodGroup? driver.bloodGroup: 'not available'}
+                         </li>
+                         {(driver.facialMark && driver.facialMark == 0) && <li className="list-group-item text-right"><span
+                             className="pull-left"><strong>Facial Marks</strong></span>{driver.facialMark == 0? 'Yes': 'not available'}
+                         </li>}
+                         {(driver.facialMark && driver.facialMark == 1) && <li className="list-group-item text-right"><span
+                             className="pull-left"><strong>Facial Marks</strong></span>{driver.facialMark == 1? 'No': 'not available'}
+                         </li>}
+                         <li className="list-group-item text-right"><span
+                             className="pull-left"><strong>Disability</strong></span>{driver.disability? driver.disability: 'not available'}
+                         </li>
+                         <li className="list-group-item text-right"><span
+                             className="pull-left"><strong>license Number</strong></span>{driver.licenseNo? driver.licenseNo: 'not available'}
+                         </li>
+                         <li className="list-group-item text-right"><span
+                             className="pull-left"><strong>NIM</strong></span>{driver.nin? driver.nin: 'not available'}
+                         </li>
+                         <li className="list-group-item text-right"><span
+                             className="pull-left"><strong>LASDRI ID</strong></span>{driver.lasdriId? driver.lasdriId: 'not available'}
+                         </li>
+                      </ul>
+                   </div>
+                </div>
+             </div>
+
+          </div>
       );
-   }
+
 }
+
+export default Profile

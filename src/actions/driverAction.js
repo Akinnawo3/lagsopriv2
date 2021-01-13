@@ -10,7 +10,6 @@ import {
   CREATE_DRIVER,
   REMOVE_DRIVER_ERROR,
   APPROVE_DRIVER,
-  DRIVER_STATUS,
   DRIVER_MODAL_UPDATE,
   UPDATE_DRIVER,
   DRIVER_VEHICLE_ID,
@@ -55,14 +54,11 @@ const header = {
 };
 export const changeDriverStatus = (id, status) => async dispatch => {
   try {
+    // dispatch(isLoading());
     await axios.put(`${api.driver}/api/status/${id}/`, {status});
-    dispatch({
-      payload: id,
-      type: DRIVER_STATUS,
-    });
     dispatch(getDrivers());
   } catch (err) {
-
+    console.log(err)
   }
 };
 

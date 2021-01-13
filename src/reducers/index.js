@@ -10,8 +10,9 @@ import todoAppReducer from './TodoAppReducer';
 import authUserReducer from './AuthUserReducer';
 import feedbacksReducer from './FeedbacksReducer';
 import ecommerceReducer from './EcommerceReducer';
-import CrmReducer from './CrmReducer';
 import driverReducer from "./driverReducer";
+import vehicleReducer from "./vehicleReducer";
+import adminsReducer from "./adminReducer";
 
 const reducers = combineReducers({
    settings,
@@ -22,8 +23,9 @@ const reducers = combineReducers({
    authUser: authUserReducer,
    feedback: feedbacksReducer,
    ecommerce: ecommerceReducer,
-   CrmReducer: CrmReducer,
-   driver: driverReducer
+   driver: driverReducer,
+   vehicle: vehicleReducer,
+   admins: adminsReducer
 });
 
 export default reducers;

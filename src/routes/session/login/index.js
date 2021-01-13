@@ -12,6 +12,7 @@ import { Form, FormGroup, Input } from 'reactstrap';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import QueueAnim from 'rc-queue-anim';
 import { Fab } from '@material-ui/core';
+import { Redirect } from "react-router-dom";
 import axios from "axios"
 
 // components
@@ -42,13 +43,16 @@ const Signin = ({loading, history}) => {
          const res = await axios.post('http://165.22.116.11:8001/api/login/',body)
          const data = res.data.Authorized
          localStorage.setItem("user_id", data)
-         history.push('/');
+         location.replace("/");
+         // history.push('/');
+         console.log('click')
+
       }catch (e) {
 
       }
    }
 
-   const onSubmit = async (e) => {
+   const onSubmit =  (e) => {
       e.preventDefault();
       userLogin();
    };

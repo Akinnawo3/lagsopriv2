@@ -19,7 +19,7 @@ import {
   DRIVER_MODAL_FLAG,
   DRIVER_MODAL_FLAG_DETAILS,
   DRIVER_VEHICLE
-} from "../actions/types";
+} from "Actions/types";
 
 const initialState = {
   drivers: [],

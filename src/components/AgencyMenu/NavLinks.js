@@ -7,7 +7,7 @@ export default {
          "new_item": true,
          "child_routes": [
             {
-               "path": "/app/dashboard/ecommerce",
+               "path": "/app/dashboard/home",
                "menu_title": "sidebar.ecommerce",
                "new_item": false,
                exact: true
@@ -69,32 +69,32 @@ export default {
          "new_item": false,
          "child_routes": [
             {
-               "path": "/ecommerce/shop",
+               "path": "/home/shop",
                "new_item": false,
                "menu_title": "sidebar.shop"
             },
             {
-               "path": "/ecommerce/cart",
+               "path": "/home/cart",
                "new_item": false,
                "menu_title": "sidebar.cart"
             },
             {
-               "path": "/ecommerce/checkout",
+               "path": "/home/checkout",
                "new_item": false,
                "menu_title": "sidebar.checkout"
             },
             {
-               "path": "/ecommerce/shop-list",
+               "path": "/home/shop-list",
                "new_item": false,
                "menu_title": "sidebar.shopList"
             },
             {
-               "path": "/ecommerce/shop-grid",
+               "path": "/home/shop-grid",
                "new_item": false,
                "menu_title": "sidebar.shopGrid"
             },
             {
-               "path": "/ecommerce/invoice",
+               "path": "/home/invoice",
                "new_item": false,
                "menu_title": "sidebar.invoice"
             }

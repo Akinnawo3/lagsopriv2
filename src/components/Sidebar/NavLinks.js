@@ -8,24 +8,24 @@ export default {
          // "new_item": true,
          "child_routes": [
             {
-               "menu_title": "sidebar.operators",
+               "menu_title": "sidebar.admins",
                "new_item": false,
-               "path": "/app/dashboard/ecommerce"
+               "path": "/admin/admins"
             },
             {
-               "menu_title": "sidebar.class type",
+               "menu_title": "sidebar.class-types",
                "new_item": false,
-               "path": "/app/dashboard/ecommerce"
+               "path": "/admin/class-types"
             },
             {
-               "menu_title": "sidebar.booking type",
+               "menu_title": "sidebar.booking-types",
                "new_item": false,
-               "path": "/app/dashboard/ecommerce"
+               "path": "/admin/booking-types"
             },
             {
                "menu_title": "sidebar.fees",
                "new_item": false,
-               "path": "/app/dashboard/ecommerce"
+               "path": "/admin/fees"
             },
          ]
       },
@@ -36,15 +36,15 @@ export default {
          // "new_item": true,
          "child_routes": [
             {
-               "path": "passengers",
+               "path": "/admin/passengers",
                "menu_title": "sidebar.all"
             },
             {
-               "path": "/dashboard/crm/clients",
+               "path": "/admin/passengers",
                "menu_title": "sidebar.active"
             },
             {
-               "path": "/dashboard/crm/reports",
+               "path": "/admin/passengers",
                "menu_title": "sidebar.inactive"
             }
          ]
@@ -56,32 +56,37 @@ export default {
          "new_item": false,
          "child_routes": [
             {
-               "path": "/app/drivers",
+               "path": "/admin/drivers",
                "new_item": false,
                "menu_title": "sidebar.all"
             },
             {
-               "path": "/app/ecommerce/cart",
+               "path": "/admin/drivers/active",
                "new_item": false,
                "menu_title": "sidebar.active"
             },
             {
-               "path": "/app/ecommerce/checkout",
+               "path": "/admin/drivers/verified",
+               "new_item": false,
+               "menu_title": "sidebar.verified"
+            },
+            {
+               "path": "/admin/drivers/pending",
                "new_item": false,
                "menu_title": "sidebar.pending"
             },
             {
-               "path": "/app/ecommerce/shop-list",
+               "path": "/admin/drivers/inactive",
                "new_item": false,
                "menu_title": "sidebar.inactive"
             },
             // {
-            //    "path": "/app/ecommerce/shop-grid",
+            //    "path": "/app/home/shop-grid",
             //    "new_item": false,
             //    "menu_title": "sidebar.shopGrid"
             // },
             // {
-            //    "path": "/app/ecommerce/invoice",
+            //    "path": "/app/home/invoice",
             //    "new_item": false,
             //    "menu_title": "sidebar.invoice"
             // }
@@ -94,17 +99,17 @@ export default {
          "new_item": false,
          "child_routes": [
             {
-               "path": "vehicles",
+               "path": "/admin/vehicles",
                "new_item": false,
                "menu_title": "sidebar.all"
             },
             {
-               "path": "vehicles",
+               "path": "/admin/vehicles/active",
                "new_item": false,
                "menu_title": "sidebar.active"
             },
             {
-               "path": "/app/ecommerce/cart",
+               "path": "/admin/vehicles/inactive",
                "new_item": false,
                "menu_title": "sidebar.inactive"
             },
@@ -118,27 +123,27 @@ export default {
          "new_item": false,
          "child_routes": [
             {
-               "path": "trips",
+               "path": "/admin/trips",
                "new_item": false,
                "menu_title": "sidebar.all"
             },
             {
-               "path": "trips",
+               "path": "/admin/trips",
                "new_item": false,
                "menu_title": "sidebar.waiting"
             },
             {
-               "path": "/app/widgets/promo",
+               "path": "/admin/trips",
                "new_item": false,
                "menu_title": "sidebar.completed"
             },
             {
-               "path": "/app/widgets/general",
+               "path": "/admin/trips",
                "new_item": false,
                "menu_title": "sidebar.current"
             },
             {
-               "path": "/app/widgets/user",
+               "path": "/admin/trips",
                "new_item": false,
                "menu_title": "sidebar.cancelled"
             },
@@ -151,7 +156,7 @@ export default {
          "menu_icon": "zmdi zmdi-close",
          "type_multi": null,
          "new_item": false,
-         "path": "/app/pages/gallery"
+         "path": "/admin/cancellations"
       },
       {
          "menu_title": "sidebar.payments",
@@ -160,12 +165,17 @@ export default {
          "new_item": false,
          "child_routes": [
             {
-               "path": "/session/login",
+               "path": "/admin/payments",
+               "new_item": false,
+               "menu_title": "sidebar.all"
+            },
+            {
+               "path": "/admin/payments/successful",
                "new_item": false,
                "menu_title": "sidebar.successful"
             },
             {
-               "path": "/session/register",
+               "path": "/admin/payments/unsuccessful",
                "new_item": false,
                "menu_title": "sidebar.unsuccessful"
             },
@@ -178,23 +188,28 @@ export default {
          "new_item": false,
          "child_routes": [
             {
-               "path": "/session/login",
+               "path": "/admin/refunds",
+               "new_item": false,
+               "menu_title": "sidebar.all"
+            },
+            {
+               "path": "/admin/refunds/pending",
                "new_item": false,
                "menu_title": "sidebar.pending"
             },
             {
-               "path": "/session/register",
+               "path": "/admin/refunds/completed",
                "new_item": false,
                "menu_title": "sidebar.completed"
             },
          ]
       },
       {
-         "menu_title": "sidebar.promo and discounts",
+         "menu_title": "sidebar.promodiscounts",
          "menu_icon": "zmdi zmdi-time-interval",
          "type_multi": null,
          "new_item": false,
-         "path": "/session/register"
+         "path": "/admin/promo-discounts"
       },
       {
          "menu_title": "sidebar.ratings",
