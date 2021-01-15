@@ -104,8 +104,8 @@ const  Admins = ({match, getAdmins, admins, createAdmin, updateAdmin, loading, d
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        !editUser?  await createAdmin("password", firstName, lastName, email, phoneNumber) : await updateAdmin(updateId, firstName, lastName, email, phoneNumber)
         onAddUpdateUserModalClose()
+        !editUser?  await createAdmin("password", firstName, lastName, email, phoneNumber) : await updateAdmin(updateId, firstName, lastName, email, phoneNumber)
 
 
     };
@@ -195,7 +195,7 @@ const  Admins = ({match, getAdmins, admins, createAdmin, updateAdmin, loading, d
 
                         Sample excel to upload
                     </CSVLink>
-                    <a href="#" onClick={(e) => opnAddNewUserModal1(e)} color="primary" className="btn-sm btn-outline-default mr-10 bg-danger text-white"><i className="zmdi zmdi-download mr-2"></i>Upload</a>
+                    <a href="#" onClick={(e) => opnAddNewUserModal1(e)} color="primary" className="btn-sm btn-outline-default mr-10 bg-danger text-white"><i className="zmdi zmdi-upload mr-2"></i>Upload</a>
                     <a href="#" onClick={(e) => opnAddNewUserModal(e)} color="primary" className="caret btn-sm mr-10">Create New Admin <i className="zmdi zmdi-plus"></i></a>
                 </div>
                 <div className="table-responsive" style={{minHeight: "50vh"}}>

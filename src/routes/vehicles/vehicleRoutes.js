@@ -20,9 +20,9 @@ import {
 const VehicleRoutes = ({ match }) => (
     <div className="content-wrapper">
         <Switch>
-            <Route path={`${match.url}/active`} component={AsyncActiveVehicles} />
-            <Route path={`${match.url}/inactive`} component={AsyncInactiveVehicles} />
-            <Route path={`${match.url}`} component={AsyncVehicles} />
+            <Route path={`/admin/vehicles/active`} component={AsyncActiveVehicles} />
+            <Route path={`/admin/vehicles/inactive`} component={AsyncInactiveVehicles} />
+            <Route path={`/admin/vehicles`} component={AsyncVehicles} />
         </Switch>
     </div>
 );

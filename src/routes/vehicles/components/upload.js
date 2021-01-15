@@ -24,17 +24,16 @@ const Upload = ({getVehicles, oncloseModal}) => {
             o.status = 1;
             return o;
         })
-
-        console.log(result2, 'llllllllll')
-        // try {
-        //   await  Promise.all(result2.map(vehicle =>
-        //       axios.post('http://167.172.57.163:7063/api/vehicles/', vehicle)
-        //     ))
-        //     await oncloseModal()
-        //    await getVehicles();
-        // }catch (e) {
-        //     console.log(e)
-        // }
+        try {
+          await  Promise.all(result2.map(vehicle =>
+              axios.post('http://167.172.57.163:7063/api/vehicles/', vehicle)
+            ))
+            await oncloseModal()
+           await getVehicles();
+        }catch (e) {
+            oncloseModal()
+            console.log(e)
+        }
     };
 
 

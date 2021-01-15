@@ -25,7 +25,6 @@ const  Vehicles = ({match, getVehicles, vehicles, loading, changeVehicleStatus, 
 	const [addNewUserModal, setAddNewUserModal] = useState(false)
 	const [editUser, setEditUser] = useState(false)
 	const [updateId, setUpdateId] = useState(null)
-	const [deleteId, setDeleteId] = useState(null)
 	const [formData, setFormData] = useState({plateNo: '', type: '', model: '', status: 1, desc: ''})
 	const [addNewUserModal1, setAddNewUserModal1] = useState(false)
 	const [suspendId, setSuspendId] = useState(null)
@@ -64,6 +63,7 @@ const  Vehicles = ({match, getVehicles, vehicles, loading, changeVehicleStatus, 
 					type: vehicle['type'],
 					make: vehicle['make'],
 					model: vehicle['model'],
+					desc: vehicle['desc'],
 				}
 			})
 			setExcelExport(result)
@@ -138,9 +138,8 @@ const  Vehicles = ({match, getVehicles, vehicles, loading, changeVehicleStatus, 
 	const onSubmit = async (e) => {
 		e.preventDefault();
 		onAddUpdateUserModalClose()
-		!editUser?  await createVehicles(plateNo, type, model, make, status, desc) : await updateVehicle(updateId, plateNo, type, model, make, desc)
-
-
+		!editUser ?  await createVehicles(plateNo, type, model, make, status, desc)
+				  :  await updateVehicle(updateId, plateNo, type, model, make, desc)
 	};
 
 	const sampleData = [
@@ -195,8 +194,8 @@ const  Vehicles = ({match, getVehicles, vehicles, loading, changeVehicleStatus, 
 
 						Sample excel to upload
 					</CSVLink>
-					<a href="#" onClick={(e) => opnAddNewUserModal1(e)} color="primary" className="btn-sm btn-outline-default mr-10 bg-danger text-white"><i className="zmdi zmdi-download mr-2"></i>Upload</a>
-					<a href="#" onClick={(e) => opnAddNewUserModal(e)} color="primary" className="caret btn-sm mr-10">Create New Vehicle <i className="zmdi zmdi-plus"></i></a>
+					<a href="#" onClick={(e) => opnAddNewUserModal1(e)} color="primary" className="btn-sm btn-outline-default mr-10 bg-danger text-white"><i className="zmdi zmdi-upload mr-2"></i>Upload</a>
+					<a href="#" onClick={(e) => opnAddNewUserModal(e)} color="primary" className="caret btn-sm mr-10">Add New Vehicle <i className="zmdi zmdi-plus"></i></a>
 				</div>
 				<div className="table-responsive" style={{minHeight: "50vh"}}>
 					<Table>
@@ -236,7 +235,7 @@ const  Vehicles = ({match, getVehicles, vehicles, loading, changeVehicleStatus, 
 							</Fragment>
 						</TableBody>
 					</Table>
-					{posts.length < 1 && <div className="d-flex align-items-center justify-content-center w-100 p-5">No Passenger Found</div>}
+					{posts.length < 1 && <div className="d-flex align-items-center justify-content-center w-100 p-5">No Vehicle Found</div>}
 				</div>
 				<div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
 					{posts.length > 0 &&
@@ -253,7 +252,7 @@ const  Vehicles = ({match, getVehicles, vehicles, loading, changeVehicleStatus, 
 			}
 			<Modal isOpen={addNewUserModal} toggle={() => onAddUpdateUserModalClose()}>
 				<ModalHeader toggle={() => onAddUpdateUserModalClose()}>
-					{editUser ? 'Update Vehicle': 'Create New Vehicle'}
+					{editUser ? 'Update Vehicle': 'Add New Vehicle'}
 				</ModalHeader>
 				<Form onSubmit={onSubmit}>
 					<ModalBody>
