@@ -20,7 +20,7 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 
 
 
-const  Passengers = ({match, getPassengers, passengers, loading, changePassengerStatus, loadingStatus}) => {
+const  InactivePassengers = ({match, getPassengers, passengers, loading, changePassengerStatus, loadingStatus}) => {
 	const [suspendId, setSuspendId] = useState(null)
 	const [searchData, setSearchData] = useState('')
 	const inputEl = useRef(null);
@@ -39,19 +39,19 @@ const  Passengers = ({match, getPassengers, passengers, loading, changePassenger
 	useEffect(()=> {
 		if(searchData && passengers){
 			setCurrentPage(1)
-			const search = passengers.filter(passenger => {
+			const search = passengers.filter((user) => user.phoneNumberStatus === 0).filter(passenger => {
 				return (passenger.firstName.toLowerCase().includes(searchData.toLowerCase()) || passenger.lastName.toLowerCase().includes(searchData.toLowerCase()))
 			});
 			setPosts(search)
 		} else if(searchData === "") {
-			setPosts(passengers.sort((a, b) => parseFloat(b.id) - parseFloat(a.id)))
+			setPosts(passengers.filter((user) => user.phoneNumberStatus === 0).sort((a, b) => parseFloat(b.id) - parseFloat(a.id)))
 		}
 	},[searchData]);
 
 	useEffect(()=> {
 		if(passengers) {
-			setPosts(passengers.sort((a, b) => parseFloat(b.id) - parseFloat(a.id)))
-			let result = passengers.map(passenger=> {
+			setPosts(passengers.filter((user) => user.phoneNumberStatus === 0).sort((a, b) => parseFloat(b.id) - parseFloat(a.id)))
+			let result = passengers.filter((user) => user.phoneNumberStatus === 0).map(passenger=> {
 				return {
 					firstName: passenger['firstName'],
 					lastName: passenger['lastName'],
@@ -95,7 +95,7 @@ const  Passengers = ({match, getPassengers, passengers, loading, changePassenger
 				}
 				{loading && <Spinner />}
 				{!loading &&
-				<RctCollapsibleCard heading="All Passengers" fullBlock>
+				<RctCollapsibleCard heading="Inactive Passengers" fullBlock>
 					<li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
 						<div className="search-wrapper">
 							<Input type="search" className="search-input-lg" name="searchData" value={searchData} onChange={onChangeSearch} placeholder="Search.." />
@@ -217,4 +217,4 @@ const mapStateToProps = state => ({
 	loadingStatus: state.loading.loadingStatus
 });
 
-export default connect( mapStateToProps, mapDispatchToProps) (Passengers);
+export default connect( mapStateToProps, mapDispatchToProps) (InactivePassengers);

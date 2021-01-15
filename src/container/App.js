@@ -14,7 +14,6 @@ import {
    AsyncSessionForgotPasswordComponent,
    AsyncSessionPage404Component,
    AsyncSessionPage500Component,
-   AsyncTermsConditionComponent
 } from 'Components/AsyncComponent/AsyncComponent';
 
 
@@ -64,7 +63,6 @@ class App extends Component {
             />
             <Route path="/session/404" component={AsyncSessionPage404Component} />
             <Route path="/session/500" component={AsyncSessionPage500Component} />
-            <Route path="/terms-condition" component={AsyncTermsConditionComponent} />
          </RctThemeProvider>
       );
    }

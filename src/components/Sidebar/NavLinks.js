@@ -40,11 +40,11 @@ export default {
                "menu_title": "sidebar.all"
             },
             {
-               "path": "/admin/passengers",
+               "path": "/admin/passengers/active",
                "menu_title": "sidebar.active"
             },
             {
-               "path": "/admin/passengers",
+               "path": "/admin/passengers/inactive",
                "menu_title": "sidebar.inactive"
             }
          ]

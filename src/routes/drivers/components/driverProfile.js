@@ -6,7 +6,7 @@ const DriverProfile = ({driver})=> {
 
     return (
         <div className="row">
-            <div className="col-sm-9">
+            <div className="col-sm-6">
                 <div className="tab-content">
                     <div className="tab-pane active" id="home">
                         <ul className="list-group">

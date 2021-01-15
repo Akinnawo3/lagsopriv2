@@ -1,11 +1,7 @@
-import {
-  ADMINS, ADMINS_LOADING
-
-} from "Actions/types";
+import {ADMINS} from "Actions/types";
 
 const initialState = {
   admins: [],
-  isLoading: false
 };
 
 function adminsReducer(state = initialState, action) {
@@ -15,12 +11,6 @@ function adminsReducer(state = initialState, action) {
       return {
         ...state,
         admins: payload,
-      };
-    }
-    case ADMINS_LOADING: {
-      return {
-        ...state,
-        isLoading: !state.isLoading,
       };
     }
     default:

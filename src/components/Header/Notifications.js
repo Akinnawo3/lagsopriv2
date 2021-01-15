@@ -21,9 +21,9 @@ class Notifications extends Component {
       notifications: null
    }
 
-   componentDidMount() {
-      this.getNotifications();
-   }
+   // componentDidMount() {
+   //    this.getNotifications();
+   // }
 
    // get notifications
    getNotifications() {

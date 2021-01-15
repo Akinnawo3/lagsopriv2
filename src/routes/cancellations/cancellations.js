@@ -11,8 +11,6 @@ import { Media, Badge } from 'reactstrap';
 import api from 'Api';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import ViewBtn from "Routes/trips/components/viewBtn";
-import UpdateUserForm from "Routes/users/user-management/UpdateUserForm";
 import Button from "@material-ui/core/Button";
 import {
     Modal,

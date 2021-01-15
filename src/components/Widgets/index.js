@@ -69,10 +69,6 @@ const ProjectManagement = Loadable({
    loading: MyLoadingComponent
 });
 
-const ProjectTaskManagement = Loadable({
-   loader: () => import("./ProjectTaskManagement"),
-   loading: MyLoadingComponent
-})
 
 const LatestPost = Loadable({
    loader: () => import("./LatestPost"),
@@ -489,7 +485,6 @@ export {
    NewEmailsWidget,
    EmployeePayrollWidget,
    ProjectManagement,
-   ProjectTaskManagement,
    LatestPost,
    ActivityBoard,
    TrafficChannel,

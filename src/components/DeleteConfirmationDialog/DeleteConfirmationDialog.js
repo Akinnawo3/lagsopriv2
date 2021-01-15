@@ -26,11 +26,14 @@ class DeleteConfirmationDialog extends Component {
    }
 
    render() {
-      const { title, message, onConfirm } = this.props;
+      const { title, message, onConfirm, removeDeleteId} = this.props;
       return (
          <Dialog
             open={this.state.open}
-            onClose={() => this.close()}
+            onClose={() => {
+               this.close();
+               removeDeleteId();
+            }}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
          >
@@ -41,7 +44,10 @@ class DeleteConfirmationDialog extends Component {
                </DialogContentText>
             </DialogContent>
             <DialogActions>
-               <Button onClick={() => this.close()} className="btn-danger text-white">
+               <Button onClick={() => {
+                  this.close();
+                  removeDeleteId();
+               }} className="btn-danger text-white">
                   Cancel
                </Button>
                <Button onClick={onConfirm} className="btn-primary text-white" autoFocus>

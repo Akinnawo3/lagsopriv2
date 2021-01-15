@@ -15,19 +15,30 @@ import './lib/reactifyCss';
 import App from './container/App';
 
 import { configureStore } from './store';
+import axios from 'axios'
 
 
 
-const MainApp = () => (
-	<Provider store={configureStore()}>
-		<MuiPickersUtilsProvider utils={MomentUtils}>
-			<Router>
-				<Switch>
-					<Route path="/" component={App} />
-				</Switch>
-			</Router>
-		</MuiPickersUtilsProvider>
-	</Provider>
-);
+const MainApp = () => {
+	(function () {
+		const token = localStorage.getItem("user_id");
+		if (token) {
+			axios.defaults.headers.common['Authorization'] = token;
+		}
+	})();
+
+	return (
+		<Provider store={configureStore()}>
+			<MuiPickersUtilsProvider utils={MomentUtils}>
+				<Router>
+					<Switch>
+						<Route path="/" component={App} />
+					</Switch>
+				</Router>
+			</MuiPickersUtilsProvider>
+		</Provider>
+	)
+
+};
 
 export default MainApp;

@@ -7,9 +7,11 @@ import Typography from '@material-ui/core/Typography';
 import { Helmet } from "react-helmet";
 import { RctCard } from 'Components/RctCard';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
-import {getDrivers} from "Actions/driverAction";
-import DriverProfile from "Routes/drivers/components/driverProfile";
-import DriverRatings from "Routes/drivers/components/driverRatings";
+import {getPassengers} from "Actions/passengerActions";
+import PassengerProfile from "Routes/passengers/components/passengerProfile";
+import PassengerTripHistory from "Routes/passengers/components/passengerTripHistory";
+import Spinner from "../../spinner/Spinner";
+import PassengerPaymentHistory from "Routes/passengers/components/passengerPaymentHistory";
 
 // For Tab Content
 function TabContainer(props) {
@@ -20,27 +22,27 @@ function TabContainer(props) {
     );
 }
 
- const Driver  = ({location, match, getDrivers, drivers}) => {
+ const Passenger  = ({location, match, getPassengers, passengers, loading}) => {
     const [activeTab, setActiveTab] = useState(location.state ? location.state.activeTab : 0);
-    const [driverDetails, setDriverDetails] = useState({});
+    const [passengerDetails, setPassengerDetails] = useState({});
 
   const  handleChange = (event, value) => {
         setActiveTab(value)
     }
 
     useEffect(()=> {
-        getDrivers()
+        getPassengers()
     },[])
 
      useEffect(()=> {
-         if (drivers && match.params.id){
-             drivers.map(driver=> {
-                 if(driver.id == match.params.id){
-                    setDriverDetails(driver)
+         if (passengers && match.params.id){
+             passengers.map(passenger=> {
+                 if(passenger.id == match.params.id){
+                    setPassengerDetails(passenger)
                  }
              })
          }
-     },[drivers, match.params.id])
+     },[passengers, match.params.id])
 
 
         return (
@@ -49,24 +51,26 @@ function TabContainer(props) {
                     <title>User Profile</title>
                     <meta name="description" content="User Profile" />
                 </Helmet>
-                <PageTitleBar title={`${driverDetails.firstName} ${driverDetails.lastName}`} match={match}  />
+                {passengerDetails.firstName ?
+                    <PageTitleBar title={`${passengerDetails.firstName} ${passengerDetails.lastName}`} match={match}  /> :
+                    <PageTitleBar title={`loading..`} match={match}  />
+
+                }
+                {loading && <Spinner />}
+                {!loading &&
                 <RctCard>
                     <div
                         className="d-flex align-items-center py-5 justify-content-center mb-4 mt-2"
                     >
                         <div className="user-profile mt-2">
                             <img
-                                src={require('Assets/avatars/user-15.jpg')}
+                                src={require('Assets/avatars/avatar.png')}
                                 alt="user profile"
                                 className="img-fluid rounded-circle"
                                 width="200"
                                 height="200"
                             />
                         </div>
-                        {/*<div className="user-info">*/}
-                        {/*    <span className="user-name ml-4">Lucile Beck</span>*/}
-                        {/*    /!*<i className="zmdi zmdi-chevron-down dropdown-icon mx-4"></i>*!/*/}
-                        {/*</div>*/}
                     </div>
                     <div className="rct-tabs">
                         <AppBar position="static">
@@ -82,13 +86,13 @@ function TabContainer(props) {
                                     label={"Profile"}
                                 />
                                 <Tab
-                                    icon={<i className="icon-star"></i>}
-                                    label={"Ratings"}
+                                    icon={<i className="icon-graph"></i>}
+                                    label={"Trip History"}
                                 />
-                                {/*<Tab*/}
-                                {/*    icon={<i className="ti-comment-alt"></i>}*/}
-                                {/*    label={<IntlMessages id="widgets.messages" />}*/}
-                                {/*/>*/}
+                                <Tab
+                                    icon={<i className="icon-credit-card"></i>}
+                                    label={"Payment History"}
+                                />
                                 {/*<Tab*/}
                                 {/*    icon={<i className="ti-home"></i>}*/}
                                 {/*    label={<IntlMessages id="components.address" />}*/}
@@ -97,34 +101,36 @@ function TabContainer(props) {
                         </AppBar>
                         {activeTab === 0 &&
                         <TabContainer>
-                            <DriverProfile driver={driverDetails} />
+                            <PassengerProfile passenger={passengerDetails}/>
                         </TabContainer>}
                         {activeTab === 1 &&
                         <TabContainer>
-                            <DriverRatings driver={driverDetails} />
+                            <PassengerTripHistory passengers={passengers}/>
                         </TabContainer>}
-                        {/*{activeTab === 2 &&*/}
-                        {/*<TabContainer>*/}
-                        {/*    <Messages />*/}
-                        {/*</TabContainer>}*/}
+                        {activeTab === 2 &&
+                        <TabContainer>
+                           <PassengerPaymentHistory  passengers={passengers}/>
+                        </TabContainer>}
                         {/*{activeTab === 3 &&*/}
                         {/*<TabContainer>*/}
                         {/*    <Address />*/}
                         {/*</TabContainer>}*/}
                     </div>
                 </RctCard>
+                }
             </div>
         );
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        getDrivers: () => dispatch(getDrivers()),
+        getPassengers: () => dispatch(getPassengers()),
     };
 }
 
 const mapStateToProps = state => ({
-    drivers: state.driver.drivers,
+    passengers: state.passenger.passengers,
+    loading: state.loading.loading
 });
 
-export default connect(mapStateToProps,mapDispatchToProps)(Driver)
+export default connect(mapStateToProps,mapDispatchToProps)(Passenger)

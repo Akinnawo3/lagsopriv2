@@ -3,7 +3,6 @@
  */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -13,25 +12,14 @@ import screenfull from 'screenfull';
 import Tooltip from '@material-ui/core/Tooltip';
 import MenuIcon from '@material-ui/icons/Menu';
 import { withRouter } from 'react-router-dom';
-
-// actions
 import { collapsedSidebarAction } from 'Actions';
-
-// helpers
-import { getAppLayout } from "Helpers/helpers";
-
-// components
 import Notifications from './Notifications';
 import ChatSidebar from './ChatSidebar';
 import DashboardOverlay from '../DashboardOverlay/DashboardOverlay';
-import LanguageProvider from './LanguageProvider';
-import SearchForm from './SearchForm';
+// import SearchForm from './SearchForm';
 import QuickLinks from './QuickLinks';
-import MobileSearchForm from './MobileSearchForm';
-import Cart from './Cart';
-
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
+// import MobileSearchForm from './MobileSearchForm';
+import {logoutUser} from "Actions/authAction";
 
 class Header extends Component {
 
@@ -115,48 +103,37 @@ class Header extends Component {
 									</li>
 								}
 								{!horizontalMenu && <QuickLinks />}
-								<li className="list-inline-item search-icon d-inline-block">
-									<SearchForm />
-									<IconButton mini="true" className="search-icon-btn" onClick={() => this.openMobileSearchForm()}>
-										<i className="zmdi zmdi-search"></i>
-									</IconButton>
-									<MobileSearchForm
-										isOpen={isMobileSearchFormVisible}
-										onClose={() => this.setState({ isMobileSearchFormVisible: false })}
-									/>
-								</li>
+								{/*<li className="list-inline-item search-icon d-inline-block">*/}
+								{/*	<SearchForm />*/}
+								{/*	<IconButton mini="true" className="search-icon-btn" onClick={() => this.openMobileSearchForm()}>*/}
+								{/*		<i className="zmdi zmdi-search"></i>*/}
+								{/*	</IconButton>*/}
+								{/*	<MobileSearchForm*/}
+								{/*		isOpen={isMobileSearchFormVisible}*/}
+								{/*		onClose={() => this.setState({ isMobileSearchFormVisible: false })}*/}
+								{/*	/>*/}
+								{/*</li>*/}
 							</ul>
 						}
 					</div>
 					<ul className="navbar-right list-inline mb-0">
-						{/*<li className="list-inline-item summary-icon">*/}
-						{/*	<Tooltip title="Summary" placement="bottom">*/}
-						{/*		<a href="#" className="header-icon tour-step-3" onClick={(e) => this.openDashboardOverlay(e)}>*/}
-						{/*			<i className="zmdi zmdi-info-outline"></i>*/}
-						{/*		</a>*/}
-						{/*	</Tooltip>*/}
-						{/*</li>*/}
-						{/*{!horizontalMenu &&*/}
-						{/*	<li className="list-inline-item">*/}
-						{/*		<Tooltip title="Upgrade" placement="bottom">*/}
-						{/*			<Button component={Link} to={`/${getAppLayout(location)}/pages/pricing`} variant="contained" className="upgrade-btn tour-step-4 text-white" color="primary">*/}
-						{/*				<IntlMessages id="widgets.upgrade" />*/}
-						{/*			</Button>*/}
-						{/*		</Tooltip>*/}
-						{/*	</li>*/}
-						{/*}*/}
-						{/*<LanguageProvider />*/}
 						<Notifications />
 						{/*<Cart />*/}
-						<li className="list-inline-item setting-icon">
-							<div className=	'text-dark'>
-								bruce
-							</div>
-							{/*<Tooltip title="Chat" placement="bottom">*/}
-							{/*	<IconButton aria-label="settings" onClick={() => this.setState({ customizer: true })}>*/}
-							{/*		/!*<i className="zmdi zmdi-comment"></i>*!/Tope*/}
-							{/*	</IconButton>*/}
-							{/*</Tooltip>*/}
+						{/*<li className="list-inline-item setting-icon mr-2">*/}
+						{/*	<div className=	'text-dark'>*/}
+						{/*		bruce*/}
+						{/*	</div>*/}
+						{/*	/!*<Tooltip title="Chat" placement="bottom">*!/*/}
+						{/*	/!*	<IconButton aria-label="settings" onClick={() => this.setState({ customizer: true })}>*!/*/}
+						{/*	/!*		/!*<i className="zmdi zmdi-comment"></i>*!/Tope*!/*/}
+						{/*	/!*	</IconButton>*!/*/}
+						{/*	/!*</Tooltip>*!/*/}
+						{/*</li>*/}
+						<li className="list-inline-item setting-icon ml-2">
+							<a onClick={()=> {logoutUser()}} href="#" className="text-primary">
+								<i className="zmdi zmdi-power text-danger mr-1" style={{fontSize: '20px'}}></i>
+								{/*<span>Log Out</span>*/}
+							</a>
 						</li>
 						<li className="list-inline-item">
 							<Tooltip title="Full Screen" placement="bottom">
@@ -187,6 +164,11 @@ const mapStateToProps = ({ settings }) => {
 	return settings;
 };
 
+// const mapStateToProps = state => ({
+// 	settings: state.settings,
+// 	loadingStatus: state.loading.loadingStatus
+// });
+
 export default withRouter(connect(mapStateToProps, {
-	collapsedSidebarAction
+	collapsedSidebarAction,
 })(Header));

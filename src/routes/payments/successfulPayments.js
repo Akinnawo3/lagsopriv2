@@ -11,17 +11,6 @@ import { Media, Badge } from 'reactstrap';
 import api from 'Api';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import ViewBtn from "Routes/trips/components/viewBtn";
-import UpdateUserForm from "Routes/users/user-management/UpdateUserForm";
-import Button from "@material-ui/core/Button";
-import {
-    Modal,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-
-} from 'reactstrap';
-import AddNewDriverForm from "Routes/drivers/components/addNewdriverForm";
 
 
 
@@ -125,30 +114,6 @@ const  SuccessfulPaymentPayments = ({match}) => {
                     </Table>
                 </div>
             </RctCollapsibleCard>
-            <Modal isOpen={addNewUserModal} toggle={() => onAddUpdateUserModalClose()}>
-                <ModalHeader toggle={() => onAddUpdateUserModalClose()}>
-                    {editUser === null ?
-                        'Add New Driver' : 'Update User'
-                    }
-                </ModalHeader>
-                <ModalBody>
-                    {editUser === null ?
-                        <AddNewDriverForm
-                            addNewUserDetails={addNewUserDetail}
-                            onChangeAddNewUserDetails={onChangeAddNewUserDetails}
-                        />
-                        : <UpdateUserForm user={editUser} onUpdateUserDetail={onUpdateUserDetails} />
-                    }
-                </ModalBody>
-                <ModalFooter>
-                    {editUser === null ?
-                        <Button variant="contained" className="text-white btn-success">Add</Button>
-                        : <Button variant="contained" color="primary" className="text-white" onClick={() => this.updateUser()}>Update</Button>
-                    }
-                    {' '}
-                    <Button variant="contained" className="text-white btn-danger" onClick={() => onAddUpdateUserModalClose()}>Cancel</Button>
-                </ModalFooter>
-            </Modal>
         </div>
     );
 

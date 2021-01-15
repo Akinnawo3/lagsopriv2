@@ -1,5 +1,6 @@
 module.exports = {
    "sidebar.app": "App",
+   "sidebar.": "Overview",
    "sidebar.setup": "Setup",
    "sidebar.operators": "Operator",
    "sidebar.class type": "Class Type",
