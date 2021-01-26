@@ -1,21 +1,16 @@
-/**
- * Auth User Reducers
- */
+import cookies from "Util/cookies";
 import {
-    LOGIN_USER,
     LOGIN_USER_SUCCESS,
     LOGIN_USER_FAILURE,
     LOGOUT_USER,
-    SIGNUP_USER,
-    SIGNUP_USER_SUCCESS,
-    SIGNUP_USER_FAILURE
 } from 'Actions/types';
+
 
 /**
  * initial auth user
  */
 const INIT_STATE = {
-    user: localStorage.getItem('user_id'),
+    user: cookies.get('user_id')
 };
 
 export default (state = INIT_STATE, action) => {

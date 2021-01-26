@@ -84,9 +84,15 @@ const  Vehicles = ({match, getVehicles, vehicles, loading, changeVehicleStatus, 
 		setSearchData(e.target.value );
 	};
 
+	const ref = React.createRef();
+
 	const paginate = pageNumber => {
+		ref.current.scrollIntoView({
+			behavior: 'smooth',
+			block: 'start',
+		});
 		setCurrentPage(pageNumber);
-		window.scrollTo(0, 0);
+		// window.scrollTo(0, 0);
 	};
 
 
@@ -126,10 +132,12 @@ const  Vehicles = ({match, getVehicles, vehicles, loading, changeVehicleStatus, 
 	}
 
 	const onAddUpdateUserModalClose = () => {
-		setFormData(
-			{...formData,
-				plateNo: '', type: '', model: '', desc: ''
-			})
+		if(editUser) {
+			setFormData(
+				{...formData,
+					plateNo: '', type: '', model: '', desc: '', make:  ''
+				})
+		}
 		setUpdateId(null)
 		setAddNewUserModal(false);
 		setEditUser(false);
@@ -153,7 +161,7 @@ const  Vehicles = ({match, getVehicles, vehicles, loading, changeVehicleStatus, 
 	]
 
 	return (
-		<div className="table-wrapper">
+		<div className="table-wrapper" ref={ref}>
 			<PageTitleBar title={"Vehicles"} match={match} />
 			{loadingStatus &&
 			<LinearProgress />

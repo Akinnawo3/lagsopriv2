@@ -119,16 +119,18 @@ const  GoogleMapComponent  = ({match})=> {
 
     return (
       <div className="map-wrapper">
+        {/*<PageTitleBar title={<IntlMessages id="sidebar.googleMaps" />} match={this.props.match} />*/}
         <RctCollapsibleCard heading="Google Maps">
-            <div className="mb-3 d-flex align-items-center">
-                <SelectSearch autoComplete="on" search={true} options={options} placeholder="Search Vehicle" onChange={handleChange} />
-                <Button onClick={()=> getVehicleCord()} className="ml-2">Search</Button>
-            </div>
+            {/*<div className="mb-3 d-flex align-items-center">*/}
+            {/*    <SelectSearch autoComplete="on" search={true} options={options} placeholder="Search Vehicle" onChange={handleChange} />*/}
+            {/*    /!*<Input type="search"  placeholder="Search vehicle via plate no" onChange={handleChange} />*!/*/}
+            {/*    <Button onClick={()=> getVehicleCord()} className="ml-2">Search</Button>*/}
+            {/*</div>*/}
           <GoogleMap
             bootstrapURLKeys={{ key: "AIzaSyCw_5YoOp78lvq1Dgfri-TnDjRSf1cguf0" }}
             yesIWantToUseGoogleMapApiInternals={true}
             center={center}
-            zoom={zoom} style={{ position: 'relative', width: '100%', height: '70vh' }}
+            zoom={zoom} style={{ position: 'relative', width: '100%', height: 400 }}
             options={MAP_OPTIONS}
             hoverDistance={40 / 2}
             onClick={_onClick}

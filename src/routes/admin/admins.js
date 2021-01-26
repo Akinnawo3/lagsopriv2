@@ -144,10 +144,10 @@ const  Admins = ({match, getAdmins, admins, createAdmin, updateAdmin, loading, d
 
     const sampleData = [
         {
-            firstName: 'John',
-            lastName: 'Deo',
+            first: 'John',
+            last: 'Deo',
             email: 'johndeo@gmail.com',
-            phoneNumber: "12345678989"
+            phone: "12345678989"
         }
     ]
 

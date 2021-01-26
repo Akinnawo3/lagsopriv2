@@ -1,5 +1,7 @@
 import React from 'react';
 import { Badge } from 'reactstrap';
+import PaymentsChart from "Routes/passengers/components/paymentsChart";
+import TripsChart from "Routes/passengers/components/tripsChart";
 
 
 
@@ -8,7 +10,7 @@ const PassengerProfile = ({passenger})=> {
     return (
         <div className="row">
             <div className="col-sm-6">
-                <div className="tab-content">
+                <div className="tab-content px-4">
                     <div className="tab-pane active" id="home">
                         <ul className="list-group">
                             <li className="list-group-item text-right"><span
@@ -49,6 +51,10 @@ const PassengerProfile = ({passenger})=> {
                         </ul>
                     </div>
                 </div>
+            </div>
+            <div className="col-sm-6 d-flex flex-column justify-content-between">
+                <PaymentsChart />
+                <TripsChart />
             </div>
 
         </div>

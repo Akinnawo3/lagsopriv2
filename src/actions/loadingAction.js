@@ -1,14 +1,31 @@
-import {LOADING, LOADING_STATUS} from "Actions/types";
+import {
+        LOADING_END,
+        LOADING_START,
+        LOADING_STATUS_END,
+        LOADING_STATUS_START
+} from "Actions/types";
 
-export const isLoading = () => dispatch => {
+export const startLoading = () => dispatch => {
         dispatch({
-        type: LOADING,
+        type: LOADING_START,
         });
 };
 
-export const isStatusLoading = () => dispatch => {
+export const endLoading = () => dispatch => {
         dispatch({
-                type: LOADING_STATUS,
+                type: LOADING_END,
+        });
+};
+
+export const startStatusLoading = () => dispatch => {
+        dispatch({
+                type: LOADING_STATUS_START,
+        });
+};
+
+export const endStatusLoading = () => dispatch => {
+        dispatch({
+                type: LOADING_STATUS_END,
         });
 };
 

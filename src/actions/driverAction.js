@@ -1,21 +1,21 @@
 import  axios from 'axios'
 import {DRIVERS} from "Actions/types";
-import {isLoading} from "Actions/loadingAction";
+import {endLoading, startLoading} from "Actions/loadingAction";
 import {NotificationManager} from "react-notifications";
 
 
 
   export const getDrivers = () => async dispatch => {
   try {
-    dispatch(isLoading());
+    dispatch(startLoading());
     const res = await axios.get('http://212.71.246.199:7050/api/driver/');
     dispatch({
       type: DRIVERS,
       payload: res.data
     });
-    dispatch(isLoading());
+    dispatch(endLoading());
   } catch (err) {
-    dispatch(isLoading());
+    dispatch(endLoading());
       NotificationManager.error(err.response.data.result)
   }
 };

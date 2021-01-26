@@ -13,6 +13,9 @@ import './lib/reactifyCss';
 
 // app component
 import App from './container/App';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 import { configureStore } from './store';
 import axios from 'axios'
@@ -21,7 +24,7 @@ import axios from 'axios'
 
 const MainApp = () => {
 	(function () {
-		const token = localStorage.getItem("user_id");
+		const token = cookies.get("user_id");
 		if (token) {
 			axios.defaults.headers.common['Authorization'] = token;
 		}

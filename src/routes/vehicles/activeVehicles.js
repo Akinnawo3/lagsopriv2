@@ -126,10 +126,12 @@ const  ActiveVehicles = ({match, getVehicles, vehicles, loading, changeVehicleSt
 	}
 
 	const onAddUpdateUserModalClose = () => {
-		setFormData(
-			{...formData,
-				plateNo: '', type: '', model: '', desc: ''
-			})
+		if(editUser) {
+			setFormData(
+				{...formData,
+					plateNo: '', type: '', model: '', desc: '', make:  ''
+				})
+		}
 		setUpdateId(null)
 		setAddNewUserModal(false);
 		setEditUser(false);

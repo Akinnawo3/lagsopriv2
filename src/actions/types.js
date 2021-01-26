@@ -44,7 +44,9 @@ export const VEHICLES = "VEHICLES"
 export const ADMINS = "ADMINS"
 
 //loading
-export const LOADING = "LOADING"
-export const LOADING_STATUS = "LOADING_STATUS"
+export const LOADING_START = "LOADING_START"
+export const LOADING_END = "LOADING_END"
+export const LOADING_STATUS_START = "LOADING_STATUS_START"
+export const LOADING_STATUS_END = "LOADING_STATUS_END"
 
 export const PASSENGERS = "PASSENGERS"

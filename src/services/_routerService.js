@@ -11,7 +11,13 @@ import {
    AsyncBookingTypes,
    AsyncFees,
    AsyncCancellations,
-   AsyncPromoDiscount
+   AsyncPromoDiscount,
+   AsyncDriverRatings,
+   AsyncUserRatings,
+   AsyncTaxiRatings,
+   AsyncGooleMapsComponent,
+   AsyncSupport,
+   AsyncAnalytics, AsyncEmergency
 } from 'Components/AsyncComponent/AsyncComponent';
 import DriverRoutes from "Routes/drivers/driverRoutes";
 import VehicleRoutes from "Routes/vehicles/vehicleRoutes";
@@ -75,10 +81,33 @@ export default [
       component: PassengerRoutes
    },
    {
-      path: 'maps',
-      component: Maps
+      path: 'map',
+      component: AsyncGooleMapsComponent
    },
-
+   {
+      path: 'driver-ratings',
+      component: AsyncDriverRatings
+   },
+   {
+      path: 'user-ratings',
+      component: AsyncUserRatings
+   },
+   {
+      path: 'taxi-ratings',
+      component: AsyncTaxiRatings
+   },
+   {
+      path: 'support',
+      component: AsyncSupport
+   },
+   {
+      path: 'analytics',
+      component: AsyncAnalytics
+   },
+   {
+      path: 'emergency',
+      component: AsyncEmergency
+   },
    {
       path: 'login',
       component: Login

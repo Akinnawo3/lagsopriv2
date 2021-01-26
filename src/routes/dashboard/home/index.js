@@ -33,7 +33,7 @@ import {
 	ordersData,
 	trafficStatus,
 } from './data';
-import GoogleMapComponent from "Routes/maps/google-map";
+import GoogleMapComponent from "Components/maps/google-map";
 
 export default class HomeDashboard extends Component {
 	render() {
@@ -52,9 +52,9 @@ export default class HomeDashboard extends Component {
 						<RctCollapsibleCard
 							colClasses="col-sm-12 col-md-4 col-lg-4 w-xs-full"
 							heading={<IntlMessages id="widgets.trips" />}
-							collapsible
-							reloadable
-							closeable
+							// collapsible
+							// reloadable
+							// closeable
 							fullBlock
 							customClasses="overflow-hidden"
 						>

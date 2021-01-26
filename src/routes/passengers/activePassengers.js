@@ -162,11 +162,11 @@ const  ActivePassengers = ({match, getPassengers, passengers, loading, changePas
 											</TableCell>
 											<TableCell>{passenger.timestamp ? new Date(passenger.timestamp).toLocaleString() : ''}</TableCell>
 											<TableCell>
-												<button type="button" className="rct-link-btn text-primary"><Link to={`/admin/passengers/${passenger.id}`}><i className="ti-eye"/></Link></button>
+												<button type="button" className="rct-link-btn text-primary" title="view details"><Link to={`/admin/passengers/${passenger.id}`}><i className="ti-eye"/></Link></button>
 												{passenger.phoneNumberStatus === 0 &&
-												<button type="button" className="rct-link-btn text-success  ml-lg-3" onClick={()=> changePassengerStatus(passenger.id, 1)}><i className="ti-check"/></button>}
+												<button type="button" className="rct-link-btn text-success  ml-lg-3" title="Activate" onClick={()=> changePassengerStatus(passenger.id, 1)}><i className="ti-check"/></button>}
 												{passenger.phoneNumberStatus === 1 &&
-												<button type="button" className="rct-link-btn ml-lg-3 text-danger" onClick={() => onSuspend(passenger.id)}><i className="ti-close"/></button>}
+												<button type="button" className="rct-link-btn ml-lg-3 text-danger" title="Suspend" onClick={() => onSuspend(passenger.id)}><i className="ti-close"/></button>}
 											</TableCell>
 										</TableRow>
 									))}

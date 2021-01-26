@@ -3,10 +3,13 @@ import { ReactExcel, readFile, generateObjects } from '@ramonak/react-excel';
 import axios from "axios";
 import {connect} from "react-redux";
 import {getAdmins} from "Actions/adminAction";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import {NotificationManager} from "react-notifications";
 
 const Upload = ({getAdmins, oncloseModal}) => {
     const [initialData, setInitialData] = useState(undefined);
     const [currentSheet, setCurrentSheet] = useState({});
+    const [loading, setLoading] = useState(false)
 
     const handleUpload = (event) => {
         const file = event.target.files[0];
@@ -21,16 +24,20 @@ const Upload = ({getAdmins, oncloseModal}) => {
         const result2 = result.map(function(el) {
             let o = Object.assign({}, el);
             o.password = "password"
+            o.authId = Math.floor(Math.random() * 100)
             return o;
         })
         try {
+            setLoading(true)
           await  Promise.all(result2.map(driver =>
               axios.post('http://165.22.116.11:8090/api/admin/', driver)
             ))
+            setLoading(false)
             await oncloseModal()
            await getAdmins();
         }catch (e) {
-            console.log(e)
+            setLoading(false)
+            NotificationManager.error(e.message);
         }
     };
 

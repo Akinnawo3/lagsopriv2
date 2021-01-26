@@ -1,21 +1,21 @@
 import  axios from 'axios'
 import {VEHICLES} from "Actions/types";
-import {isLoading, isStatusLoading} from "Actions/loadingAction";
+import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "Actions/loadingAction";
 import {NotificationManager} from "react-notifications";
 
 
 
 export const getVehicles = () => async dispatch => {
   try {
-    dispatch(isLoading());
+    dispatch(startLoading());
     const res = await axios.get('http://167.172.57.163:7063/api/vehicles/');
     dispatch({
       type: VEHICLES,
       payload: res.data
     });
-    dispatch(isLoading());
+    dispatch(endLoading());
   } catch (err) {
-    dispatch(isLoading());
+    dispatch(endLoading());
     NotificationManager.error(err.response.data.result)
   }
 };
@@ -45,13 +45,13 @@ export const updateVehicle = (id, plateNo, type, model, make, desc) => async dis
 export const  changeVehicleStatus= (id, status) => async dispatch => {
   const body = {status}
   try {
-    dispatch(isStatusLoading())
+    dispatch(startStatusLoading())
     await axios.put(`http://167.172.57.163:7063/api/vehicles/${id}/`, body)
-    dispatch(isStatusLoading())
+    dispatch(endStatusLoading())
     await NotificationManager.success('Vehicle Updated Successfully!');
     await dispatch(getVehicles());
   } catch (err) {
-    dispatch(isStatusLoading())
+    dispatch(endStatusLoading())
     NotificationManager.error(err.response.data.result);
   }
 };
@@ -60,7 +60,7 @@ export const deleteVehicle = (id) => async dispatch => {
   try {
     await axios.delete(`http://167.172.57.163:7063/api/vehicles/${id}/`)
     await NotificationManager.success('Driver Deleted Successfully!');
-    await dispatch(getDrivers());
+    await dispatch(getVehicles());
   } catch (err) {
     NotificationManager.error(err.response.data.result);
   }

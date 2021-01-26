@@ -31,6 +31,18 @@ const AsyncPromoDiscount = Loadable({
 	loader: () => import("Routes/promo-discounts/promoDiscount"),
 	loading: () => <RctPageLoader />,
 });
+const AsyncDriverRatings = Loadable({
+	loader: () => import("Routes/ratings/driver-ratings"),
+	loading: () => <RctPageLoader />,
+});
+const AsyncUserRatings = Loadable({
+	loader: () => import("Routes/ratings/user-ratings"),
+	loading: () => <RctPageLoader />,
+});
+const AsyncTaxiRatings = Loadable({
+	loader: () => import("Routes/ratings/taxi-ratings"),
+	loading: () => <RctPageLoader />,
+});
 const AsyncRefundsPending = Loadable({
 	loader: () => import("Routes/refunds/pendingRefunds"),
 	loading: () => <RctPageLoader />,
@@ -120,6 +132,21 @@ const AsyncPassengersInactive = Loadable({
 
 const AsyncPassenger = Loadable({
 	loader: () => import("Routes/passengers/passenger"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncSupport = Loadable({
+	loader: () => import("Routes/support/support"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncEmergency= Loadable({
+	loader: () => import("Routes/emergency/emergency"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncAnalytics = Loadable({
+	loader: () => import("Routes/analytics/analytics"),
 	loading: () => <RctPageLoader />,
 });
 
@@ -237,5 +264,11 @@ export {
 	AsyncHomeDashboardComponent,
 	AsyncPassenger,
 	AsyncPassengersActive,
-	AsyncPassengersInactive
+	AsyncPassengersInactive,
+	AsyncDriverRatings,
+	AsyncUserRatings,
+	AsyncTaxiRatings,
+	AsyncSupport,
+	AsyncAnalytics,
+	AsyncEmergency
 };

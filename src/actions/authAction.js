@@ -1,32 +1,35 @@
 import { NotificationManager } from 'react-notifications';
 import {LOGIN_USER_SUCCESS,} from 'Actions/types';
-import {isLoading} from "./loadingAction";
-import api from '../api'
+import {endLoading, startLoading} from "./loadingAction";
+import axios from 'axios'
+import cookies from "Util/cookies";
 
 
 
 export const loginUser = (username, password) => async dispatch => {
     const body = {username, password}
     try {
-        dispatch(isLoading());
-        const res = await api.post('api/login/', body)
+        dispatch(startLoading());
+        const res = await axios.post('http://212.71.246.199:8000/api/login/', body)
         const token  = res.data.Authorized
-        localStorage.setItem("user_id", token);
+        cookies.set('user_id', token);
+        // localStorage.setItem("user_id", token);
         location.replace("/");
         dispatch({
             type: LOGIN_USER_SUCCESS,
             payload: res.data
         });
-        dispatch(isLoading());
+        dispatch(endLoading());
     } catch (err) {
-        dispatch(isLoading());
-        NotificationManager.error(err.message);
+        dispatch(endLoading());
+        NotificationManager.error('Username or Password Incorrect');
 
     }
 };
 
 
 export const logoutUser = () => {
-    localStorage.removeItem("user_id");
+    cookies.remove('user_id');
+    // localStorage.removeItem("user_id");
     location.replace("/login");
 };

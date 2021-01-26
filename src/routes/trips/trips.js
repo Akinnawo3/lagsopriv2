@@ -31,6 +31,7 @@ import {
 
 } from 'reactstrap';
 import AddNewDriverForm from "Routes/drivers/components/addNewdriverForm";
+import IconButton from "@material-ui/core/IconButton";
 
 // For Basic Table
 let id = 0;
@@ -157,8 +158,8 @@ const getEmployeePayrolls = () => {
 												: <TableCell><Badge color="danger">Cancelled</Badge></TableCell>
 											}
 											<TableCell>
-												<ViewBtn />
-												{/*<IconButton className="text-danger" aria-label="Add an alarm"><i className="zmdi zmdi-close"></i></IconButton>*/}
+												{/*<ViewBtn />*/}
+												<IconButton className="text-primary" title="View Trip Details"><i className="ti-eye"></i></IconButton>
 											</TableCell>
 										</TableRow>
 									))}
