@@ -8,7 +8,7 @@ import {NotificationManager} from "react-notifications";
   export const getPassengers = () => async dispatch => {
   try {
     dispatch(startLoading());
-    const res = await axios.get('http://212.71.246.199:7070/api/passenger/');
+    const res = await axios.get('http://134.209.16.20:7070/api/passenger/');
     dispatch({
       type: PASSENGERS,
       payload: res.data
@@ -25,7 +25,7 @@ export const  changePassengerStatus= (id, phoneNumberStatus) => async dispatch =
   const body = {phoneNumberStatus}
   try {
     dispatch(startStatusLoading())
-    await axios.put(`http://212.71.246.199:7070/api/passenger/${id}/`, body)
+    await axios.put(`http://134.209.16.20:7070/api/passenger/${id}/`, body)
     await dispatch(endStatusLoading())
     await NotificationManager.success('Driver Updated Successfully!');
     await dispatch(getPassengers());

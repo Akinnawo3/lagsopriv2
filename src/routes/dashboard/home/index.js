@@ -33,7 +33,7 @@ import {
 	ordersData,
 	trafficStatus,
 } from './data';
-import GoogleMapComponent from "Components/maps/google-map";
+import GoogleMapComponent from "../../../components/Maps/GoogleMapComponent";
 
 export default class HomeDashboard extends Component {
 	render() {

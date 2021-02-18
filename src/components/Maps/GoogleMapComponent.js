@@ -3,17 +3,6 @@
  */
 import React, {useEffect, useState} from 'react';
 import GoogleMap from 'google-map-react';
-import { Input, Button } from 'reactstrap';
-import SelectSearch from 'react-select-search';
-// import PropTypes from 'prop-types';
-
-// intl messages
-// import IntlMessages from 'Util/IntlMessages';
-
-// page title bar
-// import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
-
-// rct card box
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import {NotificationManager} from "react-notifications";
 
