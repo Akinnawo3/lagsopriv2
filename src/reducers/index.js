@@ -10,6 +10,9 @@ import vehicleReducer from "./vehicleReducer";
 import adminsReducer from "./adminReducer";
 import loadingReducer from "./LoadingReducer";
 import passengerReducer from "./passengerReducer";
+import classTypesReducer from "./classTypesReducer";
+import bookingTypesReducer from "./bookingTypesReducer";
+import promoDiscountReducer from "./promoDiscountReducer";
 
 const reducers = combineReducers({
    settings,
@@ -20,6 +23,9 @@ const reducers = combineReducers({
    admins: adminsReducer,
    loading: loadingReducer,
    passenger: passengerReducer,
+   classTypes: classTypesReducer,
+   bookingTypes: bookingTypesReducer,
+   promoDiscounts: promoDiscountReducer
 });
 
 export default reducers;

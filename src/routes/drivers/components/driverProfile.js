@@ -17,7 +17,7 @@ const DriverProfile = ({driver})=> {
                                 className="pull-left"><strong>Last name</strong></span>{driver.lastName? driver.lastName: 'not available'}
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>phone number</strong></span>{driver.phoneNo? '0' + driver.phoneNo.substr(4): 'not available'}
+                                className="pull-left"><strong>phone number</strong></span>{driver.phoneNumber? '0' + driver.phoneNumber.substr(4): 'not available'}
                             </li>
                             <li className="list-group-item text-right"><span
                                 className="pull-left"><strong>Residential Address</strong></span>{driver.residentialAddress? driver.residentialAddress: 'not available'}

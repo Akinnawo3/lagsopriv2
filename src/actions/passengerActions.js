@@ -27,7 +27,7 @@ export const  changePassengerStatus= (id, phoneNumberStatus) => async dispatch =
     dispatch(startStatusLoading())
     await axios.put(`http://134.209.16.20:7070/api/passenger/${id}/`, body)
     await dispatch(endStatusLoading())
-    await NotificationManager.success('Driver Updated Successfully!');
+    await NotificationManager.success('Passenger Updated Successfully!');
     await dispatch(getPassengers());
   } catch (err) {
     dispatch(endStatusLoading())

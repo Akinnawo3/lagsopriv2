@@ -12,15 +12,19 @@ import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import ViewBtn from "Routes/drivers/components/viewBtn";
 import Button from "@material-ui/core/Button";
-import {createDrivers, getDrivers} from "Actions/driverAction";
+import {createDrivers, getDrivers, getDrivers2} from "Actions/driverAction";
 import Upload from "Routes/drivers/components/upload";
 import { CSVLink } from "react-csv";
 import IconButton from "@material-ui/core/IconButton";
 import MobileSearchForm from "Components/Header/MobileSearchForm";
 import Pagination from "react-js-pagination";
+import state from "Assets/data/state/state";
+import bloodgroup from "Assets/data/bloodgroup/bloodgroup";
+import {getVehicles} from "Actions/vehicleAction";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 
-const  Drivers = ({match,getDrivers, drivers, createDrivers, isLoading}) => {
+const  Drivers = ({match,getDrivers, drivers, createDrivers, isLoading, getVehicles, vehicles, getDrivers2, loadingStatus}) => {
 	const [addNewUserModal, setAddNewUserModal] = useState(false)
 	const [addNewUserModal1, setAddNewUserModal1] = useState(false)
 	const [editUser, setEditUser] = useState(null)
@@ -66,7 +70,7 @@ const  Drivers = ({match,getDrivers, drivers, createDrivers, isLoading}) => {
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
-		await createDrivers( firstName, lastName, email, phoneNo, licenseNumber, stateOfOrigin, eyeGlass, lasdriId, bloodGroup, education);
+		await createDrivers( firstName, lastName, email, '+234' + phoneNo.substr(1) , licenseNumber, stateOfOrigin, eyeGlass, lasdriId, bloodGroup, education);
 		setFormData({
 			firstName: "",
 			lastname: "",
@@ -87,6 +91,7 @@ const  Drivers = ({match,getDrivers, drivers, createDrivers, isLoading}) => {
 
 	useEffect(()=> {
 	getDrivers();
+	getVehicles();
 	},[])
 
 	const paginate = pageNumber => {
@@ -159,14 +164,23 @@ const  Drivers = ({match,getDrivers, drivers, createDrivers, isLoading}) => {
 		{
 			firstName: 'John',
 			lastName: 'Deo',
-			email: 'johndeo@gmail.com',
-			phoneNumber: "12345678989"
+			email: 'jofvbdssqehsfdddwedhpdsddndeo@gmail.com',
+			phoneNumber: "11232314320345678989"
+		},
+		{
+			firstName: 'Johnd',
+			lastName: 'Deo',
+			email: 'jowwwhasaxfwsddwddwsddsddndeo@gmail.com',
+			phoneNumber: "2222252345678989"
 		}
 	]
 
 	return (
 			<div className="table-wrapper">
 				<PageTitleBar title={"Drivers"} match={match} />
+				{loadingStatus &&
+				<LinearProgress />
+				}
 				{isLoading && <Spinner />}
 				{!isLoading &&
 				<RctCollapsibleCard heading="All Drivers" fullBlock style={{minHeight: "70vh", background: 'red'}}>
@@ -174,7 +188,7 @@ const  Drivers = ({match,getDrivers, drivers, createDrivers, isLoading}) => {
 					<div className="search-wrapper">
 						<Input type="search" className="search-input-lg" name="searchData" value={searchData} onChange={onChangeSearch} placeholder="Search.." />
 					</div>
-					<IconButton mini="true" className="search-icon-btn" onClick={() => this.openMobileSearchForm()}>
+					<IconButton mini="true" className="search-icon-btn">
 						<i className="zmdi zmdi-search"></i>
 					</IconButton>
 					<MobileSearchForm
@@ -204,7 +218,7 @@ const  Drivers = ({match,getDrivers, drivers, createDrivers, isLoading}) => {
 						<a href="#" onClick={(e) => opnAddNewUserModal1(e)} color="primary" className="btn-sm btn-outline-default mr-10 bg-danger text-white"><i className="zmdi zmdi-upload mr-2"></i>Upload</a>
 
 						{/*<a href="#" onClick={e => e.preventDefault()} className="btn-sm btn-outline-default mr-10">Export to Excel</a>*/}
-						<a href="#" onClick={(e) => opnAddNewUserModal(e)} color="primary" className="caret btn-sm mr-10">Create New Admin <i className="zmdi zmdi-plus"></i></a>
+						<a href="#" onClick={(e) => opnAddNewUserModal(e)} color="primary" className="caret btn-sm mr-10">Create New Driver <i className="zmdi zmdi-plus"></i></a>
 					</div>
 					<div className="table-responsive" style={{minHeight: "50vh"}}>
 						<Table>
@@ -214,6 +228,7 @@ const  Drivers = ({match,getDrivers, drivers, createDrivers, isLoading}) => {
 									<TableCell>Last Name</TableCell>
 									<TableCell>Status</TableCell>
 									<TableCell>Ratings</TableCell>
+									<TableCell>Vehicle</TableCell>
 									<TableCell>App Status</TableCell>
 									<TableCell>Action</TableCell>
 								</TableRow>
@@ -225,7 +240,7 @@ const  Drivers = ({match,getDrivers, drivers, createDrivers, isLoading}) => {
 											<TableCell>{driver.firstName}</TableCell>
 											<TableCell>{driver.lastName}</TableCell>
 											{driver.status == 1 &&
-												<TableCell><Badge color="success">Active</Badge></TableCell>
+												<TableCell><Badge color="primary">Verified</Badge></TableCell>
 											}
 											{driver.status == 0 &&
 												 <TableCell><Badge color="warning">Pending</Badge></TableCell>
@@ -234,7 +249,7 @@ const  Drivers = ({match,getDrivers, drivers, createDrivers, isLoading}) => {
 											<TableCell><Badge color="danger">Inactive</Badge></TableCell>
 											}
 											{driver.status == 2 &&
-											<TableCell><Badge color="primary">Verified</Badge></TableCell>
+											<TableCell><Badge color="success">Approved</Badge></TableCell>
 											}
 											<TableCell>
 												<StarRatings
@@ -244,6 +259,12 @@ const  Drivers = ({match,getDrivers, drivers, createDrivers, isLoading}) => {
 													starDimension="18px"
 												/>
 											</TableCell>
+											{vehicles && vehicles.map(vehicle => {
+												if(driver.vehicleId  == vehicle.id) {
+													return <TableCell key={vehicle.id}>{vehicle.plateNo}</TableCell>
+												}
+											})}
+											{!driver.vehicleId && <TableCell></TableCell>}
 											{driver.appStatus == 0 &&
 											<TableCell><Badge color="danger">Offline</Badge></TableCell>
 											}
@@ -251,7 +272,7 @@ const  Drivers = ({match,getDrivers, drivers, createDrivers, isLoading}) => {
 											<TableCell><Badge color="success">Online</Badge></TableCell>
 											}
 											<TableCell>
-												<ViewBtn driver={driver} />
+												<ViewBtn driver={driver}  vehicles={vehicles} getDrivers2={getDrivers2}/>
 											</TableCell>
 										</TableRow>
 									))}
@@ -311,11 +332,22 @@ const  Drivers = ({match,getDrivers, drivers, createDrivers, isLoading}) => {
 								<div className="col-sm-6">
 									<FormGroup>
 										<Label for="stateOfOrigin">State of Origin</Label>
-										<Input type="text"  name="stateOfOrigin" onChange={onChange} value={stateOfOrigin}  required/>
+										<Input type="select"  name="stateOfOrigin" onChange={onChange} value={stateOfOrigin}  required>
+											<option value="">select</option>
+											{state.map(stateData => (
+												<option key={stateData} value={stateData}>{stateData}</option>
+											))}
+										</Input>
+
 									</FormGroup>
 									<FormGroup>
 										<Label for="education">Education</Label>
-										<Input type="text"  name="education" onChange={onChange} value={education} required />
+										<Input type="select"  name="education" onChange={onChange} value={education} required>
+											<option value="">select</option>
+											<option value="SSCE">SSCE</option>
+											<option value="BSC">BSC</option>
+											<option value="PHD">PHD</option>
+										</Input>
 									</FormGroup>
 									<FormGroup>
 										<Label for="eyeGlass">Eye Glass</Label>
@@ -327,7 +359,12 @@ const  Drivers = ({match,getDrivers, drivers, createDrivers, isLoading}) => {
 									</FormGroup>
 									<FormGroup>
 										<Label for="bloodGroup">Blood Group</Label>
-										<Input type="text" name="bloodGroup" onChange={onChange} value={bloodGroup} required />
+										<Input type="select" name="bloodGroup" onChange={onChange} value={bloodGroup} required>
+											<option value="">select</option>
+											{bloodgroup.map(blood=> (
+												<option key={blood} value={blood}>{blood}</option>
+											))}
+										</Input>
 									</FormGroup>
 									<FormGroup>
 										<Label for="licenseNumber">license Number</Label>
@@ -364,8 +401,10 @@ const  Drivers = ({match,getDrivers, drivers, createDrivers, isLoading}) => {
 function mapDispatchToProps(dispatch) {
 	return {
 		getDrivers: () => dispatch(getDrivers()),
+		getDrivers2: () => dispatch(getDrivers2()),
 		createDrivers: (first, last, email, phone, licenseNo, stateOfOrigin, eyeGlasses, lasdriId, bloodGroup, education) =>
-			dispatch(createDrivers(first, last, email, phone, licenseNo, stateOfOrigin, eyeGlasses, lasdriId, bloodGroup, education))
+			dispatch(createDrivers(first, last, email, phone, licenseNo, stateOfOrigin, eyeGlasses, lasdriId, bloodGroup, education)),
+		getVehicles: () => dispatch(getVehicles()),
 	};
 }
 
@@ -373,6 +412,8 @@ function mapDispatchToProps(dispatch) {
 const mapStateToProps = state => ({
 	drivers: state.driver.drivers,
 	isLoading: state.loading.loading,
+	vehicles: state.vehicle.vehicles,
+	loadingStatus: state.loading.loadingStatus
 });
 
 export default connect( mapStateToProps, mapDispatchToProps) (Drivers);

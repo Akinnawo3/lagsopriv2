@@ -100,7 +100,7 @@ const  InactivePassengers = ({match, getPassengers, passengers, loading, changeP
 						<div className="search-wrapper">
 							<Input type="search" className="search-input-lg" name="searchData" value={searchData} onChange={onChangeSearch} placeholder="Search.." />
 						</div>
-						<IconButton mini="true" className="search-icon-btn" onClick={() => this.openMobileSearchForm()}>
+						<IconButton mini="true" className="search-icon-btn">
 							<i className="zmdi zmdi-search"></i>
 						</IconButton>
 						<MobileSearchForm

@@ -34,6 +34,7 @@ import {
 	trafficStatus,
 } from './data';
 import GoogleMapComponent from "../../../components/Maps/GoogleMapComponent";
+import GoogleMapComponentUser from "Components/Maps/GoogleMapComponentUsers";
 
 export default class HomeDashboard extends Component {
 	render() {
@@ -46,20 +47,23 @@ export default class HomeDashboard extends Component {
 				</Helmet>
 				<PageTitleBar title={<IntlMessages id="sidebar.dashboard" />} match={match} />
 				<div className="row">
-					<div className="col-sm-12 col-md-8 w-xs-half-block">
+					<div className="col-sm-12 col-md-6 w-xs-half-block">
 						<GoogleMapComponent />
 					</div>
-						<RctCollapsibleCard
-							colClasses="col-sm-12 col-md-4 col-lg-4 w-xs-full"
-							heading={<IntlMessages id="widgets.trips" />}
-							// collapsible
-							// reloadable
-							// closeable
-							fullBlock
-							customClasses="overflow-hidden"
-						>
-							<SupportRequest />
-						</RctCollapsibleCard>
+					<div className="col-sm-12 col-md-6 w-xs-half-block">
+						<GoogleMapComponentUser />
+					</div>
+						{/*<RctCollapsibleCard*/}
+						{/*	colClasses="col-sm-12 col-md-4 col-lg-4 w-xs-full"*/}
+						{/*	heading={<IntlMessages id="widgets.trips" />}*/}
+						{/*	// collapsible*/}
+						{/*	// reloadable*/}
+						{/*	// closeable*/}
+						{/*	fullBlock*/}
+						{/*	customClasses="overflow-hidden"*/}
+						{/*>*/}
+						{/*	<SupportRequest />*/}
+						{/*</RctCollapsibleCard>*/}
 
 				</div>
 				<div className="row">
@@ -97,12 +101,25 @@ export default class HomeDashboard extends Component {
 					<div className="col-sm-12 col-md-12 col-lg-7 d-sm-full">
 						<div className="row">
 							<div className="col-sm-6 col-md-6 col-lg-6">
-									<BookingInfo />
+									{/*<BookingInfo />*/}
+								<RctCollapsibleCard
+									// colClasses="col-sm-12 col-md-4 col-lg-4 w-xs-full"
+									heading={<IntlMessages id="widgets.trips" />}
+									// collapsible
+									// reloadable
+									// closeable
+									fullBlock
+									customClasses="overflow-hidden"
+								>
+									<SupportRequest />
+								</RctCollapsibleCard>
+								{/*<SupportRequest />*/}
 								<TodayOrdersStatsWidget />
 							</div>
 							<div className="col-sm-6 col-md-6 col-lg-6">
 								<div className="dash-cards-lg">
-									<OnlineVisitorsWidget />
+									<BookingInfo />
+									{/*<OnlineVisitorsWidget />*/}
 								</div>
 								<FollowersWidget />
 								<NewOrderCountdown />

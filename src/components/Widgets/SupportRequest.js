@@ -32,7 +32,7 @@ class SupportRequest extends Component {
                      <i className="ti-eye"></i>
                   </IconButton>
                </ListItem>
-               <ListItem className="px-15 py-0 d-flex justify-content-between align-content-center">
+               <ListItem className="bg-light px-15 py-0 d-flex justify-content-between align-content-center">
                   <p className="mb-0 content-title"><IntlMessages id="widgets.waiting" /></p>
                   <Badge color="warning" className="px-4">25</Badge>
                   <IconButton color="default">

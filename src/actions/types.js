@@ -50,3 +50,12 @@ export const LOADING_STATUS_START = "LOADING_STATUS_START"
 export const LOADING_STATUS_END = "LOADING_STATUS_END"
 
 export const PASSENGERS = "PASSENGERS"
+
+//class Types
+export const CLASS_TYPE = "CLASS_TYPE"
+
+//Booking Type
+export const BOOKING_TYPE = 'BOOKING_TYPE'
+
+//Promo
+export const PROMO_TYPE = 'PROMO_TYPE'

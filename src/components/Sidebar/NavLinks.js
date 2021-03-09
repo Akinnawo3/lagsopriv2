@@ -63,7 +63,7 @@ export default {
             {
                "path": "/admin/drivers/active",
                "new_item": false,
-               "menu_title": "sidebar.active"
+               "menu_title": "sidebar.approved"
             },
             {
                "path": "/admin/drivers/verified",

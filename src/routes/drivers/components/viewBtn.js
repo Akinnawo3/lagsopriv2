@@ -8,8 +8,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import {Link} from "react-router-dom";
 import {changeDriverStatus} from "Actions/driverAction";
+import AssignForm from "Routes/drivers/components/assignForm";
+import {ModalHeader, ModalBody, Modal} from "reactstrap";
 
- const ViewBtn = ({driver, changeDriverStatus}) => {
+ const ViewBtn = ({driver, changeDriverStatus, vehicles, getDrivers2}) => {
      const [anchorEl, setAnchorEl] = useState(null);
      const [addNewUserModal, setAddNewUserModal] = useState(false)
 
@@ -44,11 +46,11 @@ import {changeDriverStatus} from "Actions/driverAction";
                     {driver.status == 0 && <MenuItem onClick={()=> {
                         changeDriverStatus(driver.id, '1');
                         handleClose()
-                    }}>Approve</MenuItem>}
+                    }}>Verify</MenuItem>}
                     {driver.status == 1 && <MenuItem onClick={()=> {
                         changeDriverStatus(driver.id, '2');
                         handleClose()
-                    }}>Verify</MenuItem>}
+                    }}>Approve</MenuItem>}
                     {driver.status == 2 && <MenuItem onClick={()=> {
                         changeDriverStatus(driver.id, '3');
                         handleClose()
@@ -57,20 +59,20 @@ import {changeDriverStatus} from "Actions/driverAction";
                         changeDriverStatus(driver.id, '1');
                         handleClose()
                     }}>Reactivate</MenuItem>}
-                    {/*{driver.status == 2 && <MenuItem onClick={(e)=> {*/}
-                    {/*    opnAddNewUserModal(e)*/}
-                    {/*    handleClose()*/}
-                    {/*}}>Assign</MenuItem>}*/}
+                    {driver.status == 2 && <MenuItem onClick={(e)=> {
+                        opnAddNewUserModal(e)
+                        handleClose()
+                    }}>Assign</MenuItem>}
 
                 </Menu>
-                {/*<Modal isOpen={addNewUserModal} toggle={() => onAddUpdateUserModalClose()}>*/}
-                {/*    <ModalHeader toggle={() => onAddUpdateUserModalClose()}>*/}
-                {/*        Assign Vehicle*/}
-                {/*    </ModalHeader>*/}
-                {/*    <ModalBody>*/}
-                {/*        <AssignForm driver={driver} vehicles={vehicles} />*/}
-                {/*    </ModalBody>*/}
-                {/*</Modal>*/}
+                <Modal isOpen={addNewUserModal} toggle={() => onAddUpdateUserModalClose()}>
+                    <ModalHeader toggle={() => onAddUpdateUserModalClose()}>
+                        Assign Vehicle
+                    </ModalHeader>
+                    <ModalBody>
+                        <AssignForm driver={driver}  vehicles={vehicles} onAddUpdateUserModalClose={onAddUpdateUserModalClose} getDrivers2={getDrivers2}/>
+                    </ModalBody>
+                </Modal>
             </div>
         );
  }

@@ -18,10 +18,11 @@ import {changeVehicleStatus, createVehicles, getVehicles, updateVehicle} from "A
 import Button from "@material-ui/core/Button";
 import Upload from "./components/upload";
 import { Form, FormGroup, Label, Input, Badge,  Modal, ModalHeader, ModalBody, ModalFooter, } from 'reactstrap';
+import {getDrivers} from "Actions/driverAction";
 
 
 
-const  Vehicles = ({match, getVehicles, vehicles, loading, changeVehicleStatus, loadingStatus, createVehicles, updateVehicle}) => {
+const  Vehicles = ({match, getVehicles, vehicles, loading, changeVehicleStatus, loadingStatus, createVehicles, updateVehicle, getDrivers, drivers}) => {
 	const [addNewUserModal, setAddNewUserModal] = useState(false)
 	const [editUser, setEditUser] = useState(false)
 	const [updateId, setUpdateId] = useState(null)
@@ -40,6 +41,7 @@ const  Vehicles = ({match, getVehicles, vehicles, loading, changeVehicleStatus, 
 
 	useEffect(()=> {
 		getVehicles();
+		getDrivers()
 	},[])
 
 	useEffect(()=> {
@@ -173,7 +175,7 @@ const  Vehicles = ({match, getVehicles, vehicles, loading, changeVehicleStatus, 
 					<div className="search-wrapper">
 						<Input type="search" className="search-input-lg" name="searchData" value={searchData} onChange={onChangeSearch} placeholder="Search.." />
 					</div>
-					<IconButton mini="true" className="search-icon-btn" onClick={() => this.openMobileSearchForm()}>
+					<IconButton mini="true" className="search-icon-btn">
 						<i className="zmdi zmdi-search"></i>
 					</IconButton>
 					<MobileSearchForm
@@ -292,7 +294,7 @@ const  Vehicles = ({match, getVehicles, vehicles, loading, changeVehicleStatus, 
 			</Modal>
 			<Modal isOpen={addNewUserModal1} toggle={() => onAddUpdateUserModalClose1()}>
 				<ModalHeader toggle={() => onAddUpdateUserModalClose1()}>
-					Upload Admin
+					Upload Vehicle
 				</ModalHeader>
 				<ModalBody>
 					<Upload oncloseModal={onAddUpdateUserModalClose1} />
@@ -319,6 +321,7 @@ function mapDispatchToProps(dispatch) {
 		changeVehicleStatus: (id, status) => dispatch(changeVehicleStatus(id, status)),
 		createVehicles: (plateNo, type, model, make, status, desc) => dispatch(createVehicles(plateNo, type, model, make, status, desc)),
 		updateVehicle: (id, plateNo, type, model, make, desc) => dispatch(updateVehicle(id, plateNo, type, model, make, desc)),
+		getDrivers: () => dispatch(getDrivers()),
 
 	};
 }
@@ -326,6 +329,7 @@ function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = state => ({
 	vehicles: state.vehicle.vehicles,
+	drivers: state.driver.drivers,
 	loading: state.loading.loading,
 	loadingStatus: state.loading.loadingStatus
 });

@@ -7,14 +7,14 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 import {NotificationManager} from "react-notifications";
 
 
-const  GoogleMapComponent  = ({match})=> {
+const  GoogleMapComponentUser  = ({match})=> {
     const [center, setCenter] = useState([6.459970538, 3.301247232])
     const [search, setSearch] = useState('')
     const [zoom, setZoom] = useState(14)
     const [options, setOptions] = useState([])
     const AnyReactComponent = ({text, cord}) =>
         <div>
-            <div className="tooltipo"> <i className="zmdi zmdi-car text-secondary zoom" style={{fontSize: '30px'}}><span className="ml-1 font-weight-bold text-secondary" style={{fontSize: '10px'}}>{text}</span></i>
+            <div className="tooltipo"> <i className="zmdi zmdi-pin text-primary zoom" style={{fontSize: '30px'}}><span className="ml-1 font-weight-bold text-primary" style={{fontSize: '10px'}}>{text}</span></i>
                 <div className="tooltiptexto">
                     <div>
                         Driver name: {cord.name}
@@ -109,7 +109,7 @@ const  GoogleMapComponent  = ({match})=> {
     return (
       <div className="map-wrapper">
         {/*<PageTitleBar title={<IntlMessages id="sidebar.googleMaps" />} match={this.props.match} />*/}
-        <RctCollapsibleCard heading="Drivers Map">
+        <RctCollapsibleCard heading="Riders Map">
             {/*<div className="mb-3 d-flex align-items-center">*/}
             {/*    <SelectSearch autoComplete="on" search={true} options={options} placeholder="Search Vehicle" onChange={handleChange} />*/}
             {/*    /!*<Input type="search"  placeholder="Search vehicle via plate no" onChange={handleChange} />*!/*/}
@@ -135,15 +135,14 @@ const  GoogleMapComponent  = ({match})=> {
                 />
             ))}
           </GoogleMap>
-            <div>Static Vehicles: 10</div>
-            <div>Moving Vehicles: 10</div>
-            {/*<div>Stationary Vehicles: 10</div>*/}
+            <div>Transit: 10</div>
+            <div>Booking: 10</div>
         </RctCollapsibleCard>
       </div>
     );
 
 }
 
-export default GoogleMapComponent
+export default GoogleMapComponentUser
 
 
