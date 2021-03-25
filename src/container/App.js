@@ -16,6 +16,10 @@ import {
    AsyncSessionPage500Component,
 } from 'Components/AsyncComponent/AsyncComponent';
 import LinearProgress from "@material-ui/core/LinearProgress";
+import axios from "axios";
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 
 
@@ -36,10 +40,25 @@ const InitialPath = ({ component: Component, authUser, ...rest }) =>
             />}
    />;
 
+
+
+axios.interceptors.response.use(response => {
+    return response;
+}, error => {
+
+    if (error.response.status === 401) {
+        cookies.remove('user_id');
+        location.replace("/login");
+    }
+    return Promise.reject(error);
+});
+
+
+
+
 class App extends Component {
    render() {
-
-      const { location, match, user } = this.props;
+       const { location, match, user } = this.props;
       if (location.pathname === '/') {
          if (user === null) {
             return (<Redirect to={'/login'} />);

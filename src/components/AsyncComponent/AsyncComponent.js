@@ -47,6 +47,11 @@ const AsyncRefundsPending = Loadable({
 	loader: () => import("Routes/refunds/pendingRefunds"),
 	loading: () => <RctPageLoader />,
 });
+
+const AsyncRefundsDetails = Loadable({
+	loader: () => import("Routes/refunds/refundDetails"),
+	loading: () => <RctPageLoader />,
+});
 const AsyncRefundsCompleted = Loadable({
 	loader: () => import("Routes/refunds/completedRefunds"),
 	loading: () => <RctPageLoader />,
@@ -57,6 +62,16 @@ const AsyncCancellations = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+const AsyncSchedule = Loadable({
+	loader: () => import("Routes/schedule/schedule"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncScheduleDetails = Loadable({
+	loader: () => import("Routes/schedule/scheduleDetails"),
+	loading: () => <RctPageLoader />,
+});
+
 const AsyncPayments = Loadable({
 	loader: () => import("Routes/payments/payments"),
 	loading: () => <RctPageLoader />,
@@ -64,6 +79,10 @@ const AsyncPayments = Loadable({
 
 const AsyncPaymentsSuccessful = Loadable({
 	loader: () => import("Routes/payments/successfulPayments"),
+	loading: () => <RctPageLoader />,
+});
+const AsyncPaymentsDetails = Loadable({
+	loader: () => import("Routes/payments/paymentDetails"),
 	loading: () => <RctPageLoader />,
 });
 
@@ -115,6 +134,11 @@ const AsyncInactiveVehicles = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+const AsyncAreas = Loadable({
+	loader: () => import("Routes/area/areas"),
+	loading: () => <RctPageLoader />,
+});
+
 const AsyncPassengers = Loadable({
 	loader: () => import("Routes/passengers/passengers"),
 	loading: () => <RctPageLoader />,
@@ -135,13 +159,56 @@ const AsyncPassenger = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+const AsyncEmergency= Loadable({
+	loader: () => import("Routes/emergency/emergency"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncEmergencyDetails= Loadable({
+	loader: () => import("Routes/emergency/emergencyDetails"),
+	loading: () => <RctPageLoader />,
+});
+
 const AsyncSupport = Loadable({
 	loader: () => import("Routes/support/support"),
 	loading: () => <RctPageLoader />,
 });
 
-const AsyncEmergency= Loadable({
-	loader: () => import("Routes/emergency/emergency"),
+
+const AsyncSupportDetails = Loadable({
+	loader: () => import("Routes/support/supportDetails"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncSupportSetup = Loadable({
+	loader: () => import("Routes/support/supportSetup"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncSupportNew = Loadable({
+	loader: () => import("Routes/support/newSupport"),
+	loading: () => <RctPageLoader />,
+});
+const AsyncSupportOpened = Loadable({
+	loader: () => import("Routes/support/openedSupport"),
+	loading: () => <RctPageLoader />,
+});
+const AsyncSupportClosed = Loadable({
+	loader: () => import("Routes/support/closedSupport"),
+	loading: () => <RctPageLoader />,
+});
+const AsyncSupportUnresolved = Loadable({
+	loader: () => import("Routes/support/unresolvedSupport"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncSupportType = Loadable({
+	loader: () => import("Routes/support/supportTypes"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncSupportInProgress = Loadable({
+	loader: () => import("Routes/support/inProgressSupport"),
 	loading: () => <RctPageLoader />,
 });
 
@@ -163,6 +230,11 @@ const AsyncTrips = Loadable({
 
 const AsyncAdmins = Loadable({
 	loader: () => import("Routes/admin/admins"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncUsers = Loadable({
+	loader: () => import("Routes/users/users"),
 	loading: () => <RctPageLoader />,
 });
 
@@ -270,5 +342,20 @@ export {
 	AsyncTaxiRatings,
 	AsyncSupport,
 	AsyncAnalytics,
-	AsyncEmergency
+	AsyncEmergency,
+	AsyncEmergencyDetails,
+	AsyncUsers,
+	AsyncSupportDetails,
+	AsyncSupportSetup,
+	AsyncSupportNew,
+	AsyncSupportOpened,
+	AsyncSupportClosed,
+	AsyncSupportUnresolved,
+	AsyncSupportInProgress,
+	AsyncAreas,
+	AsyncSupportType,
+	AsyncRefundsDetails,
+	AsyncPaymentsDetails,
+	AsyncSchedule,
+	AsyncScheduleDetails
 };

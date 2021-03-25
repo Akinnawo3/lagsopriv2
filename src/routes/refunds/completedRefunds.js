@@ -21,6 +21,7 @@ import {
 
 } from 'reactstrap';
 import AddNewDriverForm from "Routes/drivers/components/addNewdriverForm";
+import {Link} from "react-router-dom";
 
 
 
@@ -94,16 +95,17 @@ const  CompletedRefunds = ({match}) => {
                         <TableHead>
                             <TableRow hover>
                                 <TableCell>Name</TableCell>
-                                <TableCell>Phone No</TableCell>
-                                <TableCell>Email</TableCell>
+                                {/*<TableCell>Phone No</TableCell>*/}
+                                {/*<TableCell>Email</TableCell>*/}
                                 <TableCell>Payment Ref</TableCell>
-                                <TableCell>Amt to refund</TableCell>
-                                <TableCell>Payment Method</TableCell>
+                                {/*<TableCell>Amt to refund</TableCell>*/}
+                                {/*<TableCell>Payment Method</TableCell>*/}
                                 <TableCell>Date/time</TableCell>
-                                <TableCell>Pick up</TableCell>
-                                <TableCell>Drop off</TableCell>
-                                <TableCell>Reason fo refund</TableCell>
+                                {/*<TableCell>Pick up</TableCell>*/}
+                                {/*<TableCell>Drop off</TableCell>*/}
+                                {/*<TableCell>Reason fo refund</TableCell>*/}
                                 <TableCell>Status</TableCell>
+                                <TableCell>Action</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -111,16 +113,20 @@ const  CompletedRefunds = ({match}) => {
                                 {employeePayroll && employeePayroll.map((employee, key) => (
                                     <TableRow hover key={key}>
                                         <TableCell>Mike Dean</TableCell>
-                                        <TableCell>07032838025</TableCell>
-                                        <TableCell>zeno@gmail.com</TableCell>
+                                        {/*<TableCell>07032838025</TableCell>*/}
+                                        {/*<TableCell>zeno@gmail.com</TableCell>*/}
                                         <TableCell>derg98788r738r33r</TableCell>
-                                        <TableCell>₦500</TableCell>
-                                        <TableCell>Card</TableCell>
+                                        {/*<TableCell>₦500</TableCell>*/}
+                                        {/*<TableCell>Card</TableCell>*/}
                                         <TableCell>5/12/2020 1:30pm</TableCell>
-                                        <TableCell>Ajah</TableCell>
-                                        <TableCell>Lekki</TableCell>
-                                        <TableCell>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</TableCell>
+                                        {/*<TableCell>Ajah</TableCell>*/}
+                                        {/*<TableCell>Lekki</TableCell>*/}
+                                        {/*<TableCell>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</TableCell>*/}
                                         <TableCell><Badge color="success">Completed</Badge></TableCell>
+                                        <TableCell>
+                                            <button type="button" className="rct-link-btn text-primary"><Link to={`/admin/refunds/1`}><i className="ti-eye"></i></Link></button>
+
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </Fragment>

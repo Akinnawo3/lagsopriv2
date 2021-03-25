@@ -2,12 +2,13 @@ import axios from 'axios'
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "Actions/loadingAction";
 import {PROMO_TYPE} from "Actions/types";
 import {NotificationManager} from "react-notifications";
+import api from "../environments/environment";
 
 export const createPromoDiscount = (promoCode, type, usageLimit, discountPrice, discountPercentage, endDate) => async dispatch => {
   const body = {promoCode, type, usageLimit, discountPrice, discountPercentage, endDate}
   try {
     await dispatch(startLoading());
-     await axios.post('http://134.209.16.20:7061/api/promos/', body)
+     await axios.post(`${api.promo}/api/promos/`, body)
      await NotificationManager.success('Promo Created Successfully!');
      await dispatch(getPromoDiscount2());
     dispatch(endLoading());
@@ -20,7 +21,7 @@ export const createPromoDiscount = (promoCode, type, usageLimit, discountPrice, 
 export const getPromoDiscount = () => async dispatch => {
   try {
     await dispatch(startLoading());
-    const res = await axios.get('http://134.209.16.20:7061/api/promos/')
+    const res = await axios.get(`${api.promo}/api/promos/`)
     dispatch({
       type: PROMO_TYPE,
       payload: res.data
@@ -36,7 +37,7 @@ export const getPromoDiscount = () => async dispatch => {
 
 export const getPromoDiscount2 = () => async dispatch => {
   try {
-    const res = await axios.get('http://134.209.16.20:7061/api/promos/')
+    const res = await axios.get(`${api.promo}/api/promos/`)
     dispatch({
       type: PROMO_TYPE,
       payload: res.data
@@ -52,7 +53,7 @@ export const updatePromoDiscount = (id, promoCode, type, usageLimit, discountPri
   const body = {promoCode, type, usageLimit, discountPrice, discountPercentage, endDate}
   try {
     await dispatch(startStatusLoading())
-    await axios.put(`http://134.209.16.20:7061/api/promos/${id}/`, body)
+    await axios.put(`${api.promo}/api/promos/${id}/`, body)
     await NotificationManager.success('Promo Updated Successfully!');
     await dispatch(endStatusLoading())
     await dispatch(getPromoDiscount2());
@@ -65,7 +66,7 @@ export const updatePromoDiscount = (id, promoCode, type, usageLimit, discountPri
 export const deletePromoDiscount = (id) => async dispatch => {
   try {
     dispatch(startStatusLoading())
-    await axios.delete(`http://134.209.16.20:7061/api/promos/${id}/`)
+    await axios.delete(`${api.promo}/api/promos/${id}/`)
     await NotificationManager.success('Promo Deleted Successfully!');
     await dispatch(endStatusLoading())
     await dispatch(getPromoDiscount2());

@@ -4,12 +4,17 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import { Helmet } from "react-helmet";
 import { RctCard } from 'Components/RctCard';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
-import {getDrivers} from "Actions/driverAction";
+import {changeDriverStatus, getDrivers} from "Actions/driverAction";
 import DriverProfile from "Routes/drivers/components/driverProfile";
 import DriverRatings from "Routes/drivers/components/driverRatings";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import {Badge } from 'reactstrap';
+import TableCell from "@material-ui/core/TableCell";
+import TableRow from "@material-ui/core/TableRow";
 
 // For Tab Content
 function TabContainer(props) {
@@ -20,7 +25,7 @@ function TabContainer(props) {
     );
 }
 
- const Driver  = ({location, match, getDrivers, drivers}) => {
+ const Driver  = ({location, match, getDrivers, drivers, changeDriverStatus, loadingStatus}) => {
     const [activeTab, setActiveTab] = useState(location.state ? location.state.activeTab : 0);
     const [driverDetails, setDriverDetails] = useState({});
 
@@ -45,6 +50,9 @@ function TabContainer(props) {
 
         return (
             <div className="userProfile-wrapper">
+                {loadingStatus &&
+                <LinearProgress />
+                }
                 <Helmet>
                     <title>User Profile</title>
                     <meta name="description" content="User Profile" />
@@ -62,7 +70,39 @@ function TabContainer(props) {
                                 width="200"
                                 height="200"
                             />
+
+                            {driverDetails.status == 1 &&
+                            <div className="mt-4" style={{textAlign: 'center'}}>Status: Accepted</div>
+                            }
+                            {driverDetails.status == 0 &&
+                            <div className="mt-4" style={{textAlign: 'center'}}>Status: Pending</div>
+                            }
+                            {driverDetails.status == 3 &&
+                            <div className="mt-4" style={{textAlign: 'center'}}>Status: Inactive</div>
+                            }
+                            {driverDetails.status == 2 &&
+                            <div className="mt-4" style={{textAlign: 'center'}}>Status: Approved</div>
+                            }
+
+                            {driverDetails.status == 0 &&
+                            <div style={{textAlign: 'center'}}>
+                                <Button disabled={loadingStatus} onClick={()=> {changeDriverStatus(driverDetails.id, '1')}} className="bg-primary mt-3 text-white">Accept</Button>
+                            </div>}
+                            {driverDetails.status == 1 &&
+                            <div style={{textAlign: 'center'}}>
+                                <Button disabled={loadingStatus} onClick={()=> {changeDriverStatus(driverDetails.id, '2')}} className="bg-success mt-3 text-white">Approve</Button>
+                            </div>}
+                            {driverDetails.status == 2 &&
+                            <div style={{textAlign: 'center'}}>
+                                <Button disabled={loadingStatus} onClick={()=> {changeDriverStatus(driverDetails.id, '3')}} className="bg-danger mt-3 text-white">Suspend</Button>
+                            </div>}
+                            {driverDetails.status == 3 &&
+                            <div style={{textAlign: 'center'}}>
+                                <Button disabled={loadingStatus} onClick={()=> {changeDriverStatus(driverDetails.id, '1')}} className="bg-warning mt-3 text-white">Reactivate</Button>
+                            </div>}
+
                         </div>
+
                         {/*<div className="user-info">*/}
                         {/*    <span className="user-name ml-4">Lucile Beck</span>*/}
                         {/*    /!*<i className="zmdi zmdi-chevron-down dropdown-icon mx-4"></i>*!/*/}
@@ -120,11 +160,13 @@ function TabContainer(props) {
 function mapDispatchToProps(dispatch) {
     return {
         getDrivers: () => dispatch(getDrivers()),
+        changeDriverStatus: (id, status) => dispatch(changeDriverStatus(id, status)),
     };
 }
 
 const mapStateToProps = state => ({
     drivers: state.driver.drivers,
+    loadingStatus: state.loading.loadingStatus
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(Driver)

@@ -2,12 +2,13 @@ import axios from 'axios'
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "Actions/loadingAction";
 import {CLASS_TYPE} from "Actions/types";
 import {NotificationManager} from "react-notifications";
+import api from "../environments/environment";
 
 export const createClassType = (class_name, class_description) => async dispatch => {
   const body = {class_name, class_description}
   try {
     await dispatch(startLoading());
-     await axios.post('http://134.209.16.20:7090/api/classTypes/', body)
+     await axios.post(`${api.classTypes}/api/classTypes/`, body)
      await NotificationManager.success('ClassType Created Successfully!');
      await dispatch(getClassTypes2());
     dispatch(endLoading());
@@ -20,7 +21,7 @@ export const createClassType = (class_name, class_description) => async dispatch
 export const getClassTypes = () => async dispatch => {
   try {
     await dispatch(startLoading());
-    const res = await axios.get('http://134.209.16.20:7090/api/classTypes/')
+    const res = await axios.get(`${api.classTypes}/api/classTypes/`)
     dispatch({
       type: CLASS_TYPE,
       payload: res.data
@@ -36,7 +37,7 @@ export const getClassTypes = () => async dispatch => {
 
 export const getClassTypes2 = () => async dispatch => {
   try {
-    const res = await axios.get('http://134.209.16.20:7090/api/classTypes/')
+    const res = await axios.get(`${api.classTypes}/api/classTypes/`)
     dispatch({
       type: CLASS_TYPE,
       payload: res.data
@@ -52,7 +53,7 @@ export const updateClassType = (id, class_name, class_description) => async disp
   const body = {class_name, class_description}
   try {
     await dispatch(startStatusLoading())
-    await axios.put(`http://134.209.16.20:7090/api/classTypes/${id}/`, body)
+    await axios.put(`${api.classTypes}/api/classTypes/${id}/`, body)
     await NotificationManager.success('ClassTYpe Updated Successfully!');
     await dispatch(endStatusLoading())
     await dispatch(getClassTypes2());
@@ -65,7 +66,7 @@ export const updateClassType = (id, class_name, class_description) => async disp
 export const deleteClassType = (id) => async dispatch => {
   try {
     dispatch(startStatusLoading())
-    await axios.delete(`http://134.209.16.20:7090/api/classTypes/${id}/`)
+    await axios.delete(`${api.classTypes}/api/classTypes/${id}/`)
     await NotificationManager.success('ClassType Deleted Successfully!');
     await dispatch(endStatusLoading())
     await dispatch(getClassTypes2());

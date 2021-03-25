@@ -59,3 +59,12 @@ export const BOOKING_TYPE = 'BOOKING_TYPE'
 
 //Promo
 export const PROMO_TYPE = 'PROMO_TYPE'
+
+//Fee type
+
+export const FEE_TYPE = 'FEE_TYPE'
+
+export const AREAS = 'AREAS'
+
+export const TICKET_TYPE = 'TICKET_TYPE'
+export const SUPPORT = 'SUPPORT'

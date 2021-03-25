@@ -14,7 +14,15 @@ const  GoogleMapComponent  = ({match})=> {
     const [options, setOptions] = useState([])
     const AnyReactComponent = ({text, cord}) =>
         <div>
-            <div className="tooltipo"> <i className="zmdi zmdi-car text-secondary zoom" style={{fontSize: '30px'}}><span className="ml-1 font-weight-bold text-secondary" style={{fontSize: '10px'}}>{text}</span></i>
+            <div className="tooltipo">
+                <img
+                    src={require('Assets/img/car.png')}
+                    // alt="user profile"
+                    className="img-fluid rounded-circle"
+                    width="46"
+                    height="46"
+                />
+                {/*<i className="zmdi zmdi-car text-secondary zoom" style={{fontSize: '30px'}}><span className="ml-1 font-weight-bold text-secondary" style={{fontSize: '10px'}}>{text}</span></i>*/}
                 <div className="tooltiptexto">
                     <div>
                         Driver name: {cord.name}

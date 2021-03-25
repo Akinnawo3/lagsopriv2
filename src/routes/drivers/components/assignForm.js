@@ -35,6 +35,7 @@ const AssignForm = ({ driver, vehicles, onAddUpdateUserModalClose, getDrivers2 }
         try {
             setLoading(true)
            await axios.put(`http://134.209.16.20:7050/api/driver/${driver.id}/`, {vehicleId: vehicle})
+            await axios.put(`http://167.172.57.163:7063/api/vehicles/${vehicle}/`, {driver_id: driver.id, status: 2})
            await setLoading(false)
             getDrivers2()
             onAddUpdateUserModalClose()

@@ -44,22 +44,22 @@ import {ModalHeader, ModalBody, Modal} from "reactstrap";
                 <Menu id="simple-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose} >
                     <MenuItem ><Link to={`/admin/drivers/${driver.id}`}>Profile</Link></MenuItem>
                     {driver.status == 0 && <MenuItem onClick={()=> {
-                        changeDriverStatus(driver.id, '1');
+                        changeDriverStatus(driver.id, '1', driver.email, driver.firstName);
                         handleClose()
-                    }}>Verify</MenuItem>}
+                    }}>Accept</MenuItem>}
                     {driver.status == 1 && <MenuItem onClick={()=> {
-                        changeDriverStatus(driver.id, '2');
+                        changeDriverStatus(driver.id, '2', driver.email, driver.firstName);
                         handleClose()
                     }}>Approve</MenuItem>}
                     {driver.status == 2 && <MenuItem onClick={()=> {
-                        changeDriverStatus(driver.id, '3');
+                        changeDriverStatus(driver.id, '3', driver.email, driver.firstName);
                         handleClose()
-                    }}>Revoke</MenuItem>}
+                    }}>Suspend</MenuItem>}
                     {driver.status == 3 && <MenuItem onClick={()=> {
-                        changeDriverStatus(driver.id, '1');
+                        changeDriverStatus(driver.id, '1', driver.email, driver.firstName);
                         handleClose()
                     }}>Reactivate</MenuItem>}
-                    {driver.status == 2 && <MenuItem onClick={(e)=> {
+                    {driver.status == 2 && !driver.vehicleId && <MenuItem onClick={(e)=> {
                         opnAddNewUserModal(e)
                         handleClose()
                     }}>Assign</MenuItem>}
@@ -80,7 +80,7 @@ import {ModalHeader, ModalBody, Modal} from "reactstrap";
 
 function mapDispatchToProps(dispatch) {
     return {
-        changeDriverStatus: (id, status) => dispatch(changeDriverStatus(id, status)),
+        changeDriverStatus: (id, status, emailAddress, driverName) => dispatch(changeDriverStatus(id, status, emailAddress, driverName)),
     };
 }
 

@@ -13,6 +13,10 @@ import passengerReducer from "./passengerReducer";
 import classTypesReducer from "./classTypesReducer";
 import bookingTypesReducer from "./bookingTypesReducer";
 import promoDiscountReducer from "./promoDiscountReducer";
+import feesReducer from "./feesReducer";
+import areasReducer from "./areaReducer";
+import ticketTypesReducer from "./ticketTypesReducer";
+import supportReducer from "./supportReducer";
 
 const reducers = combineReducers({
    settings,
@@ -25,7 +29,11 @@ const reducers = combineReducers({
    passenger: passengerReducer,
    classTypes: classTypesReducer,
    bookingTypes: bookingTypesReducer,
-   promoDiscounts: promoDiscountReducer
+   promoDiscounts: promoDiscountReducer,
+   fees: feesReducer,
+   areas: areasReducer,
+   ticketTypes: ticketTypesReducer,
+   support: supportReducer,
 });
 
 export default reducers;

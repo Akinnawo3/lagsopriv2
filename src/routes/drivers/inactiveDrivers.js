@@ -240,7 +240,7 @@ const  InactiveDrivers = ({match,getDrivers, drivers, createDrivers, isLoading, 
 										<TableCell>{driver.firstName}</TableCell>
 										<TableCell>{driver.lastName}</TableCell>
 										{driver.status == 1 &&
-										<TableCell><Badge color="primary">Verified</Badge></TableCell>
+										<TableCell><Badge color="primary">Accepted</Badge></TableCell>
 										}
 										{driver.status == 0 &&
 										<TableCell><Badge color="warning">Pending</Badge></TableCell>

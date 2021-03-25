@@ -17,7 +17,7 @@ import {
    AsyncTaxiRatings,
    AsyncGooleMapsComponent,
    AsyncSupport,
-   AsyncAnalytics, AsyncEmergency
+   AsyncAnalytics, AsyncEmergency, AsyncUsers, AsyncAreas, AsyncSchedule
 } from 'Components/AsyncComponent/AsyncComponent';
 import DriverRoutes from "Routes/drivers/driverRoutes";
 import VehicleRoutes from "Routes/vehicles/vehicleRoutes";
@@ -25,6 +25,9 @@ import RefundsRoutes from "Routes/refunds/refundsRoutes";
 import Maps from "Routes/maps";
 import Login from  "Routes/session/login"
 import PassengerRoutes from "Routes/passengers/passengerRoutes";
+import EmergencyRoutes from "Routes/emergency/emergencyRoutes";
+import SupportRoutes from "Routes/support/supportRoutes";
+import ScheduleRoutes from "Routes/schedule/scheduleRoutes";
 
 
 export default [
@@ -39,6 +42,10 @@ export default [
    {
       path: 'admins',
       component: AsyncAdmins
+   },
+   {
+      path: 'users',
+      component: AsyncUsers
    },
    {
       path: 'class-types',
@@ -85,6 +92,10 @@ export default [
       component: AsyncGooleMapsComponent
    },
    {
+      path: 'schedule',
+      component: ScheduleRoutes
+   },
+   {
       path: 'driver-ratings',
       component: AsyncDriverRatings
    },
@@ -97,8 +108,12 @@ export default [
       component: AsyncTaxiRatings
    },
    {
+      path: 'areas',
+      component: AsyncAreas
+   },
+   {
       path: 'support',
-      component: AsyncSupport
+      component: SupportRoutes
    },
    {
       path: 'analytics',
@@ -106,7 +121,7 @@ export default [
    },
    {
       path: 'emergency',
-      component: AsyncEmergency
+      component: EmergencyRoutes
    },
    {
       path: 'login',

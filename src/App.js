@@ -22,9 +22,13 @@ import axios from 'axios'
 
 
 
+
+
+
 const MainApp = () => {
 	(function () {
 		const token = cookies.get("user_id");
+		// console.log(token)
 		if (token) {
 			axios.defaults.headers.common['Authorization'] = token;
 		}

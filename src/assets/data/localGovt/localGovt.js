@@ -1,0 +1,22 @@
+export default [
+    'Alimosho',
+    'Ajeromi-Ifelodun',
+    'Kosofe',
+    'Mushin',
+    'Oshodi-Isolo',
+    'Ojo',
+    'Ikorodu',
+    'Surulere',
+    'Agege',
+    'Ifako-Ijaiye',
+    'Somolu',
+    'Amuwo-Odofin',
+    'Lagos Mainland',
+    'Ikeja',
+    'Eti-Osa',
+    'Badagry',
+    'Apapa',
+    'Lagos Island',
+    'Epe',
+    'Ibeju-Lekki'
+]

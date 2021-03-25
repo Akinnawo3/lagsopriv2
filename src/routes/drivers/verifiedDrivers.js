@@ -183,7 +183,7 @@ const  VerifiedDrivers = ({match,getDrivers, drivers, createDrivers, isLoading, 
 			}
 			{isLoading && <Spinner />}
 			{!isLoading &&
-			<RctCollapsibleCard heading="All Drivers" fullBlock style={{minHeight: "70vh", background: 'red'}}>
+			<RctCollapsibleCard heading="Accepted Drivers" fullBlock style={{minHeight: "70vh", background: 'red'}}>
 				<li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
 					<div className="search-wrapper">
 						<Input type="search" className="search-input-lg" name="searchData" value={searchData} onChange={onChangeSearch} placeholder="Search.." />
@@ -240,7 +240,7 @@ const  VerifiedDrivers = ({match,getDrivers, drivers, createDrivers, isLoading, 
 										<TableCell>{driver.firstName}</TableCell>
 										<TableCell>{driver.lastName}</TableCell>
 										{driver.status == 1 &&
-										<TableCell><Badge color="primary">Verified</Badge></TableCell>
+										<TableCell><Badge color="primary">Accepted</Badge></TableCell>
 										}
 										{driver.status == 0 &&
 										<TableCell><Badge color="warning">Pending</Badge></TableCell>

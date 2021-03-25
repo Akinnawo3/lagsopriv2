@@ -240,7 +240,7 @@ const  Drivers = ({match,getDrivers, drivers, createDrivers, isLoading, getVehic
 											<TableCell>{driver.firstName}</TableCell>
 											<TableCell>{driver.lastName}</TableCell>
 											{driver.status == 1 &&
-												<TableCell><Badge color="primary">Verified</Badge></TableCell>
+												<TableCell><Badge color="primary">Accepted</Badge></TableCell>
 											}
 											{driver.status == 0 &&
 												 <TableCell><Badge color="warning">Pending</Badge></TableCell>
@@ -260,7 +260,7 @@ const  Drivers = ({match,getDrivers, drivers, createDrivers, isLoading, getVehic
 												/>
 											</TableCell>
 											{vehicles && vehicles.map(vehicle => {
-												if(driver.vehicleId  == vehicle.id) {
+												if(driver.vehicleId  === vehicle.id) {
 													return <TableCell key={vehicle.id}>{vehicle.plateNo}</TableCell>
 												}
 											})}

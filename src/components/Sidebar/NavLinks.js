@@ -27,7 +27,19 @@ export default {
                "new_item": false,
                "path": "/admin/fees"
             },
+            {
+               "menu_title": "sidebar.areas",
+               "new_item": false,
+               "path": "/admin/areas"
+            },
          ]
+      },
+      {
+         "menu_title": "sidebar.users",
+         "menu_icon": "icon-user",
+         "type_multi": null,
+         "new_item": false,
+         "path": "/admin/users"
       },
       {
          "menu_title": "sidebar.passengers",
@@ -68,7 +80,7 @@ export default {
             {
                "path": "/admin/drivers/verified",
                "new_item": false,
-               "menu_title": "sidebar.verified"
+               "menu_title": "sidebar.accepted"
             },
             {
                "path": "/admin/drivers/pending",
@@ -256,11 +268,60 @@ export default {
          "path": "/admin/map"
       },
       {
-         "menu_title": "sidebar.support",
-         "menu_icon": "zmdi zmdi-hospital",
+         "menu_title": "sidebar.schedule",
+         "menu_icon": "mdi zmdi-hospital",
          "type_multi": null,
          "new_item": false,
-         "path": "/admin/support"
+         "path": "/admin/schedule"
+      },
+
+      {
+         "menu_title": "sidebar.ticket",
+         "menu_icon": " mdi zmdi-hospital",
+         "type_multi": null,
+         "new_item": false,
+         "child_routes": [
+            {
+               "path": "/admin/support/setup",
+               "new_item": false,
+               "menu_title": "sidebar.ticket setup"
+            },
+            {
+               "path": "/admin/support/create",
+               "new_item": false,
+               "menu_title": "sidebar.ticket create"
+            },
+            {
+               "path": "/admin/support",
+               "new_item": false,
+               "menu_title": "sidebar.ticket all"
+            },
+            {
+               "path": "/admin/support/new",
+               "new_item": false,
+               "menu_title": "sidebar.ticket new"
+            },
+            {
+               "path": "/admin/support/opened",
+               "new_item": false,
+               "menu_title": "sidebar.ticket opened"
+            },
+            {
+               "path": "/admin/support/in-progress",
+               "new_item": false,
+               "menu_title": "sidebar.ticket in-progress"
+            },
+            {
+               "path": "/admin/support/closed",
+               "new_item": false,
+               "menu_title": "sidebar.ticket closed"
+            },
+            {
+               "path": "/admin/support/unresolved",
+               "new_item": false,
+               "menu_title": "sidebar.ticket unresolved"
+            },
+         ]
       },
    ],
 }

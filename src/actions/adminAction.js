@@ -2,15 +2,16 @@ import axios from 'axios'
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "Actions/loadingAction";
 import {ADMINS} from "Actions/types";
 import {NotificationManager} from "react-notifications";
+import api from "../environments/environment";
 
 export const createAdmin = (password, first, last, email, phone) => async dispatch => {
   try {
     await dispatch(startLoading());
-    const res = await axios.post('http://212.71.246.199:8000/admin/users/', {username:email, password: 'password'})
+    const res = await axios.post(`${api.auth}/admin/users/`, {username:email, password: 'password'})
     if(res.data) {
       const authId = res.data.auth_id
       const body = {authId, password, first, last, email, phone}
-      await axios.post('http://165.22.116.11:8090/api/admin/', body)
+      await axios.post(`${api.admins}/api/admin/`, body)
       await NotificationManager.success('Admin Created Successfully!');
       await dispatch(getAdmins2());
       dispatch(endLoading());
@@ -24,7 +25,7 @@ export const createAdmin = (password, first, last, email, phone) => async dispat
 export const getAdmins = () => async dispatch => {
   try {
     await dispatch(startLoading());
-    const res = await axios.get('http://165.22.116.11:8090/api/admin/')
+    const res = await axios.get(`${api.admins}/api/admin/`)
     dispatch({
       type: ADMINS,
       payload: res.data
@@ -40,7 +41,7 @@ export const getAdmins = () => async dispatch => {
 
 export const getAdmins2 = () => async dispatch => {
   try {
-    const res = await axios.get('http://165.22.116.11:8090/api/admin/')
+    const res = await axios.get(`${api.admins}/api/admin/`)
     dispatch({
       type: ADMINS,
       payload: res.data
@@ -56,7 +57,7 @@ export const updateAdmin = (id, first, last, email, phone) => async dispatch => 
   const body = {first, last, email, phone}
   try {
     await dispatch(startStatusLoading())
-    await axios.put(`http://165.22.116.11:8090/api/admin/${id}/`, body)
+    await axios.put(`${api.admins}/api/admin/${id}/`, body)
     await NotificationManager.success('Admin Updated Successfully!');
     await dispatch(endStatusLoading())
     await dispatch(getAdmins());
@@ -69,7 +70,7 @@ export const updateAdmin = (id, first, last, email, phone) => async dispatch => 
 export const deleteAdmin = (id) => async dispatch => {
   try {
     dispatch(startStatusLoading())
-    await axios.delete(`http://165.22.116.11:8090/api/admin/${id}/`)
+    await axios.delete(`${api.admins}/api/admin/${id}/`)
     await NotificationManager.success('Admin Deleted Successfully!');
     await dispatch(endStatusLoading())
     await dispatch(getAdmins());

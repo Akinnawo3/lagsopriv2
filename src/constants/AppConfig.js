@@ -2,8 +2,8 @@
  * App Config File
  */
 const AppConfig = {
-   appLogo: require('Assets/img/zen0.png'),          // App Logo
-   brandName: 'Zeno',                                    // Brand Name
+   appLogo: require('Assets/img/lagosRide.png'),          // App Logo
+   brandName: 'Lagos Ride',                                    // Brand Name
    navCollapsed: false,                                      // Sidebar collapse
    darkMode: false,                                          // Dark Mode
    boxLayout: false,                                         // Box Layout

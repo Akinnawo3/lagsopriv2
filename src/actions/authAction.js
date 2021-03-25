@@ -3,6 +3,7 @@ import {LOGIN_USER_SUCCESS,} from 'Actions/types';
 import {endLoading, startLoading} from "./loadingAction";
 import axios from 'axios'
 import cookies from "Util/cookies";
+import api from "../environments/environment";
 
 
 
@@ -10,7 +11,7 @@ export const loginUser = (username, password) => async dispatch => {
     const body = {username, password}
     try {
         dispatch(startLoading());
-        const res = await axios.post('http://212.71.246.199:8000/api/login/', body)
+        const res = await axios.post(`${api.auth}/api/login/`, body)
         const token  = res.data.Authorized
         cookies.set('user_id', token);
         // localStorage.setItem("user_id", token);

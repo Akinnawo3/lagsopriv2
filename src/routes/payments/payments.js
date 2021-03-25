@@ -11,6 +11,7 @@ import { Media, Badge } from 'reactstrap';
 import api from 'Api';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
+import {Link} from "react-router-dom";
 
 
 
@@ -82,15 +83,17 @@ const  Payments = ({match}) => {
                         <TableHead>
                             <TableRow hover>
                                 <TableCell>Name</TableCell>
-                                <TableCell>Phone No</TableCell>
-                                <TableCell>Email</TableCell>
+                                {/*<TableCell>Phone No</TableCell>*/}
+                                {/*<TableCell>Email</TableCell>*/}
                                 <TableCell>Payment Ref</TableCell>
-                                <TableCell>Normal Amt</TableCell>
-                                <TableCell>Discount Amt</TableCell>
-                                <TableCell>Actual Amt paid</TableCell>
-                                <TableCell>Payment Method</TableCell>
+                                {/*<TableCell>Amt to refund</TableCell>*/}
+                                {/*<TableCell>Payment Method</TableCell>*/}
                                 <TableCell>Date/time</TableCell>
+                                {/*<TableCell>Pick up</TableCell>*/}
+                                {/*<TableCell>Drop off</TableCell>*/}
+                                {/*<TableCell>Reason fo refund</TableCell>*/}
                                 <TableCell>Status</TableCell>
+                                <TableCell>Action</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -98,15 +101,20 @@ const  Payments = ({match}) => {
                                 {employeePayroll && employeePayroll.map((employee, key) => (
                                     <TableRow hover key={key}>
                                         <TableCell>Mike Dean</TableCell>
-                                        <TableCell>07032838025</TableCell>
-                                        <TableCell>zeno@gmail.com</TableCell>
+                                        {/*<TableCell>07032838025</TableCell>*/}
+                                        {/*<TableCell>zeno@gmail.com</TableCell>*/}
                                         <TableCell>derg98788r738r33r</TableCell>
-                                        <TableCell>₦500</TableCell>
-                                        <TableCell>₦100</TableCell>
-                                        <TableCell>₦400</TableCell>
-                                        <TableCell>Card</TableCell>
+                                        {/*<TableCell>₦500</TableCell>*/}
+                                        {/*<TableCell>Card</TableCell>*/}
                                         <TableCell>5/12/2020 1:30pm</TableCell>
-                                        <TableCell><Badge color="success">Successful</Badge></TableCell>
+                                        {/*<TableCell>Ajah</TableCell>*/}
+                                        {/*<TableCell>Lekki</TableCell>*/}
+                                        {/*<TableCell>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</TableCell>*/}
+                                        <TableCell><Badge color="success">Completed</Badge></TableCell>
+                                        <TableCell>
+                                            <button type="button" className="rct-link-btn text-primary"><Link to={`/admin/payments/1`}><i className="ti-eye"></i></Link></button>
+
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </Fragment>

@@ -7,7 +7,7 @@ import { Route, Switch } from 'react-router-dom';
 
 // async components
 import {
-    AsyncRefunds, AsyncRefundsCompleted, AsyncRefundsPending,
+    AsyncRefunds, AsyncRefundsCompleted, AsyncRefundsDetails, AsyncRefundsPending,
 } from 'Components/AsyncComponent/AsyncComponent';
 
 const RefundsRoutes = ({ match }) => (
@@ -15,6 +15,7 @@ const RefundsRoutes = ({ match }) => (
         <Switch>
             <Route path={`/admin/refunds/pending`} component={AsyncRefundsPending} />
             <Route path={`/admin/refunds/completed`} component={AsyncRefundsCompleted} />
+            <Route path={`/admin/refunds/:id`} component={AsyncRefundsDetails} />
             <Route path={`/admin/refunds`} component={AsyncRefunds} />
         </Switch>
     </div>
