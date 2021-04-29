@@ -28,8 +28,6 @@ const  Support = ({match, support, getSupport, getTicketTypes, ticketTypes, load
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost)
 
-
-
     useEffect(()=> {
         getSupport();
         getTicketTypes();
@@ -39,6 +37,7 @@ const  Support = ({match, support, getSupport, getTicketTypes, ticketTypes, load
     useEffect(()=> {
         if(support.length > 0) {
             setPosts(support.sort((a, b) => parseFloat(b.id) - parseFloat(a.id)))
+            console.log(support)
         }
     },[support])
 
@@ -72,11 +71,11 @@ const  Support = ({match, support, getSupport, getTicketTypes, ticketTypes, load
                                 {posts && currentPosts.map((sup, key) => (
                                     <TableRow hover key={key}>
                                         {ticketTypes && ticketTypes.map(ticket => {
-                                            if(ticket.id  == sup.ticket_id) {
+                                            if(ticket.id  == sup.ticketId) {
                                                 return <TableCell key={ticket.id}>{ticket.name}</TableCell>
                                             }
                                         })}
-                                        {sup.status == 1  && <TableCell>New</TableCell>}
+                                        {(sup.status == 1 || sup.status ===  null)  && <TableCell>New</TableCell>}
                                         {sup.status == 2  && <TableCell>Opened</TableCell>}
                                         {sup.status == 3  && <TableCell>In-progress</TableCell>}
                                         {sup.status == 4  && <TableCell>Closed</TableCell>}

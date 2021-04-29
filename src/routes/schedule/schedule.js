@@ -1,5 +1,5 @@
 /**
- * Basic Table
+ * Schedule
  */
 import React, { useState, useEffect, Fragment } from 'react';
 import Table from '@material-ui/core/Table';
@@ -8,48 +8,67 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { Media, Badge , Input} from 'reactstrap';
-import api from 'Api';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import Button from "@material-ui/core/Button";
-import GoogleMapComponent from "Components/Maps/GoogleMapComponent";
 import GoogleMapComponentSchedule from "Components/Maps/GoogleMapComponentSchedule";
-import IntlMessages from "Util/IntlMessages";
-import {SupportRequest, TodayOrdersStatsWidget} from "Components/Widgets";
-import DoughnutChart from "Components/Charts/DoughnutChart";
 import ComponentChart from "Routes/schedule/component/chart";
 import {Link} from "react-router-dom";
+import {connect} from "react-redux";
+import {getSchedule} from "Actions/fdtActions";
+import Spinner from "../../spinner/Spinner";
 
 
 
-const  Schedule = ({match}) => {
-    const [employeePayroll, setEmployeePayroll] = useState(null)
-    const [anchorEl, setAnchorEl] = useState(null);
 
-    const handleClose = () => {
-        setAnchorEl(null)
-    };
-    const  handleClick = event => {
-        setAnchorEl(event.currentTarget)
-    };
-
+const  Schedule = ({match, getSchedule, schedule, loading}) => {
 
     useEffect(()=> {
-        getEmployeePayrolls();
+       getSchedule()
     },[])
 
 
-
-    // get employee payrols
-    const getEmployeePayrolls = () => {
-        api.get('employeePayrols.js')
-            .then((response) => {
-                setEmployeePayroll(response.data)
-            })
-            .catch(error => {
-                // error handling
-            })
+    const getStatus = (id) => {
+        if(id == 0) {
+            return (
+                <Badge color="warning">Pending</Badge>
+            )
+        }else if(id == 1) {
+            return (
+                <Badge color="Success">Completed</Badge>
+            )
+        }else if(id == 2) {
+            return (
+                <Badge color="danger">Cancelled</Badge>
+            )
+        }else {
+            return (
+                ''
+            )
+        }
     }
+
+    const getClassTrip = (id) => {
+        if(id == 1) {
+            return (
+                'Class A'
+            )
+        }else if(id == 2) {
+            return (
+                'Class B'
+            )
+        }else if(id == 3) {
+            return (
+                'Class C'
+            )
+        }else {
+            return (
+                'Class D'
+            )
+        }
+    }
+
+
 
 
     return (
@@ -68,6 +87,11 @@ const  Schedule = ({match}) => {
                             customClasses="overflow-hidden"
                             style={{background: 'red'}}
                         >
+                                <div style={{marginRight: '20px', width: 'fit-content', float: 'right', marginTop: '-40px'}}>
+                                    <Input type="select"   required style={{boxShadow: '0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%', backgroundColor: 'rgba(18, 156, 233, 0.12)', zIndex: 2, position: 'relative',}}>
+                                        <option value="1">Today</option>
+                                    </Input>
+                                </div>
                             <div className="text-center py-10" style={{height: '335px'}}>
                                 <div className="mt-3">
                                     <ComponentChart />
@@ -95,7 +119,7 @@ const  Schedule = ({match}) => {
                 </div>
 
                 <div className="d-flex align-items-center justify-content-between">
-                    <div className="pl-3" style={{color: '#2E407B'}}>FDT</div>
+                    <div className="pl-3" style={{color: '#2E407B'}}>Schedule</div>
                     <div className="float-right d-flex align-items-center p-3">
                         <div style={{marginRight: '20px'}}>
                             <Input type="select"   required style={{boxShadow: '0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%', backgroundColor: 'rgba(68, 84, 138, 0.08)'}}>
@@ -128,12 +152,13 @@ const  Schedule = ({match}) => {
                     </div>
                 </div>
                 <div className="table-responsive">
+                    {loading && <Spinner />}
                     {/*<Link className="table-responsive" to={`/admin/schedule/1`}>*/}
-                    <Table>
+                    {!loading &&  <Table>
                         <TableHead>
                             <TableRow hover>
-                                <TableCell>Date</TableCell>
-                                <TableCell>Time</TableCell>
+                                {/*<TableCell>Date</TableCell>*/}
+                                {/*<TableCell>Time</TableCell>*/}
                                 <TableCell>Class</TableCell>
                                 <TableCell>Pick up</TableCell>
                                 <TableCell>Drop off</TableCell>
@@ -144,24 +169,25 @@ const  Schedule = ({match}) => {
                         </TableHead>
                         <TableBody>
                             <Fragment>
-                                {employeePayroll && employeePayroll.map((employee, key) => (
-                                        <TableRow hover key={key}>
-                                            <TableCell>10 March ‘21</TableCell>
-                                            <TableCell>5:00pm</TableCell>
-                                            <TableCell>c</TableCell>
-                                            <TableCell>Civic centre Civic centre..</TableCell>
-                                            <TableCell>Oshodi Oshodi Oshodi....</TableCell>
-                                            <TableCell>1 of 3</TableCell>
-                                            <TableCell><Badge color="danger">Failed</Badge></TableCell>
-                                            <TableCell>
-                                                <button type="button" className="rct-link-btn text-primary"><Link to={`/admin/schedule/1`}><i className="ti-eye"></i></Link></button>
+                                {schedule.length > 0 && schedule.map((record, key) => (
+                                    <TableRow hover key={key}>
+                                        {/*<TableCell>{record['dates']}</TableCell>*/}
+                                        {/*<TableCell>{record.time}</TableCell>*/}
+                                        <TableCell>{getClassTrip(record.classTrip)}</TableCell>
+                                        <TableCell>{record.pickupAddress}</TableCell>
+                                        <TableCell>{record.dropoffAddress}</TableCell>
+                                        <TableCell>{record.joinedBy ? `${Object.keys(JSON.parse(record.joinedBy)).length + 1} of ${record.classTrip}` : `1 of ${record.classTrip}`}</TableCell>
+                                        <TableCell> {record.fdtStatus == 1 ? <Badge type="button" className="btn btn-success">Success</Badge>
+                                            : record.fdtStatus == 0 ? <Badge type="button" className="btn btn-warning">Pending</Badge>: <Badge type="button" className="btn btn-danger">Cancelled</Badge>}</TableCell>
+                                        <TableCell>
+                                            <button type="button" className="rct-link-btn text-primary"><Link to={`/admin/schedule/${record.id}`}><i className="ti-eye"></i></Link></button>
 
-                                            </TableCell>
-                                        </TableRow>
+                                        </TableCell>
+                                    </TableRow>
                                 ))}
                             </Fragment>
                         </TableBody>
-                    </Table>
+                    </Table>}
                     {/*</Link>*/}
                 </div>
             </RctCollapsibleCard>
@@ -170,8 +196,19 @@ const  Schedule = ({match}) => {
 
 }
 
-export default Schedule;
+function mapDispatchToProps(dispatch) {
+    return {
+        getSchedule: () => dispatch(getSchedule()),
+    };
+}
+
+const mapStateToProps = state => ({
+    schedule: state.fdt.schedule,
+    loading: state.loading.loading,
+    loadingStatus: state.loading.loadingStatus
 
 
-// box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
-// background-color: #e0e0e0;
+
+});
+
+export default connect( mapStateToProps, mapDispatchToProps) (Schedule);

@@ -26,14 +26,13 @@ const Upload = ({getDrivers, oncloseModal}) => {
             const result2 = await result.map(function(item) { return item["email"]; });
            await result2.forEach(res => finalData.push({username: res, password: 'password'}))
            const res = await Promise.all(finalData.map(user =>
-                    axios.post('http://212.71.246.199:8000/admin/users/', user)
+                    axios.post(`${api.admins}/admin/users/`, user)
                 ))
 
             const newData = await res.map(myValue => resData.push({authId: myValue.data.auth_id}))
 
             const DriverData = [...result, ...newData]
 
-            console.log(DriverData, 'nnnnnnnnnnnn')
             // console.log(resData, 'llllllllll')
 
 

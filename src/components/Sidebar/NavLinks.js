@@ -140,22 +140,22 @@ export default {
                "menu_title": "sidebar.all"
             },
             {
-               "path": "/admin/trips",
+               "path": "/admin/trips/waiting",
                "new_item": false,
                "menu_title": "sidebar.waiting"
             },
             {
-               "path": "/admin/trips",
+               "path": "/admin/trips/completed",
                "new_item": false,
                "menu_title": "sidebar.completed"
             },
             {
-               "path": "/admin/trips",
+               "path": "/admin/trips/current",
                "new_item": false,
                "menu_title": "sidebar.current"
             },
             {
-               "path": "/admin/trips",
+               "path": "/admin/trips/cancelled",
                "new_item": false,
                "menu_title": "sidebar.cancelled"
             },
@@ -224,6 +224,27 @@ export default {
          "path": "/admin/promo-discounts"
       },
       {
+         "menu_title": "sidebar.revenue",
+         "menu_icon": "icon-credit-card",
+         "type_multi": null,
+         "new_item": false,
+         "path": "/admin/revenue"
+      },
+      {
+         "menu_title": "sidebar.voucher",
+         "menu_icon": "zmdi zmdi-time-interval",
+         "type_multi": null,
+         "new_item": false,
+         "path": "/admin/voucher"
+      },
+      {
+         "menu_title": "sidebar.referral",
+         "menu_icon": "zmdi zmdi-time-interval",
+         "type_multi": null,
+         "new_item": false,
+         "path": "/admin/referral"
+      },
+      {
          "menu_title": "sidebar.ratings",
          "menu_icon": " icon-star",
          "type_multi": null,
@@ -234,11 +255,11 @@ export default {
                "new_item": false,
                "menu_title": "sidebar.driver ratings"
             },
-            {
-               "path": "/admin/taxi-ratings",
-               "new_item": false,
-               "menu_title": "sidebar.taxi ratings"
-            },
+            // {
+            //    "path": "/admin/taxi-ratings",
+            //    "new_item": false,
+            //    "menu_title": "sidebar.taxi ratings"
+            // },
             {
                "path": "/admin/user-ratings",
                "new_item": false,
@@ -253,27 +274,37 @@ export default {
          "new_item": false,
          "path": "/admin/emergency"
       },
+      // {
+      //    "menu_title": "sidebar.analytics",
+      //    "menu_icon": "zmdi zmdi-hospital",
+      //    "type_multi": null,
+      //    "new_item": false,
+      //    "path": "/admin/analytics"
+      // },
       {
-         "menu_title": "sidebar.analytics",
-         "menu_icon": "zmdi zmdi-hospital",
-         "type_multi": null,
-         "new_item": false,
-         "path": "/admin/analytics"
-      },
-      {
-         "menu_title": "sidebar.maps",
+         "menu_title": "sidebar.fdt and schedule",
          "menu_icon": "zmdi zmdi-map",
          "type_multi": null,
          "new_item": false,
-         "path": "/admin/map"
+         "child_routes": [
+            {
+               "menu_title": "sidebar.Fdt",
+               "menu_icon": "mdi zmdi-hospital",
+               "type_multi": null,
+               "new_item": false,
+               "path": "/admin/fdt"
+            },
+            {
+               "menu_title": "sidebar.schedule",
+               "menu_icon": "mdi zmdi-hospital",
+               "type_multi": null,
+               "new_item": false,
+               "path": "/admin/schedule"
+            },
+         ]
       },
-      {
-         "menu_title": "sidebar.schedule",
-         "menu_icon": "mdi zmdi-hospital",
-         "type_multi": null,
-         "new_item": false,
-         "path": "/admin/schedule"
-      },
+
+
 
       {
          "menu_title": "sidebar.ticket",
@@ -322,6 +353,13 @@ export default {
                "menu_title": "sidebar.ticket unresolved"
             },
          ]
+      },
+      {
+         "menu_title": "sidebar.maps",
+         "menu_icon": "zmdi zmdi-map",
+         "type_multi": null,
+         "new_item": false,
+         "path": "/admin/map"
       },
    ],
 }

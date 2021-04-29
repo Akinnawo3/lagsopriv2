@@ -4,8 +4,8 @@ import {SUPPORT} from "Actions/types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 
-export const createSupport = (ticket_id, user_id, user_type, channel, desc, status) => async dispatch => {
-  const body = {ticket_id, user_id, user_type, channel, desc, status}
+export const createSupport = (ticketId, forType, channel, desc, status, assignedTo, email) => async dispatch => {
+  const body = {ticketId, forType, channel, desc, status, createdByType: 'SuperAdmin', assignedTo, forId: email}
   try {
     await dispatch(startLoading());
      await axios.post(`${api.support}/api/supports/`, body)

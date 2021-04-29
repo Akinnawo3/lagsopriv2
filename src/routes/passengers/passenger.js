@@ -7,11 +7,14 @@ import Typography from '@material-ui/core/Typography';
 import { Helmet } from "react-helmet";
 import { RctCard } from 'Components/RctCard';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
-import {getPassengers} from "Actions/passengerActions";
+import {getPassengerByAuthId, getPassengers} from "Actions/passengerActions";
 import PassengerProfile from "Routes/passengers/components/passengerProfile";
 import PassengerTripHistory from "Routes/passengers/components/passengerTripHistory";
 import Spinner from "../../spinner/Spinner";
 import PassengerPaymentHistory from "Routes/passengers/components/passengerPaymentHistory";
+import PassengerRatings from "Routes/passengers/components/passengerRatings";
+import {getRating, getRatingAverage} from "Actions/ratingAction";
+import {getPassengerTripCount, getPassengerTrips} from "Actions/tripAction";
 
 // For Tab Content
 function TabContainer(props) {
@@ -22,27 +25,32 @@ function TabContainer(props) {
     );
 }
 
- const Passenger  = ({location, match, getPassengers, passengers, loading}) => {
+ const Passenger  = ({location, match, getPassengerByAuthId, passengerDetails, loading, getRating, getRatingAverage, getTrips, getTripCount}) => {
     const [activeTab, setActiveTab] = useState(location.state ? location.state.activeTab : 0);
-    const [passengerDetails, setPassengerDetails] = useState({});
+     const [currentPage, setCurrentPage] = useState(1);
+     const [postsPerPage] = useState(10);
+
 
   const  handleChange = (event, value) => {
         setActiveTab(value)
     }
 
-    useEffect(()=> {
-        getPassengers()
-    },[])
 
      useEffect(()=> {
-         if (passengers && match.params.id){
-             passengers.map(passenger=> {
-                 if(passenger.id == match.params.id){
-                    setPassengerDetails(passenger)
-                 }
-             })
+         if (match.params.id){
+             getPassengerByAuthId(match.params.id)
+             getRating(match.params.id)
+             getRatingAverage(match.params.id)
+             getTrips(1, match.params.id);
+             getTripCount(match.params.id)
          }
-     },[passengers, match.params.id])
+     },[match.params.id])
+
+     const paginate = pageNumber => {
+         setCurrentPage(pageNumber);
+         getTrips(pageNumber);
+         window.scrollTo(0, 0);
+     };
 
 
         return (
@@ -52,7 +60,7 @@ function TabContainer(props) {
                     <meta name="description" content="User Profile" />
                 </Helmet>
                 {passengerDetails.firstName ?
-                    <PageTitleBar title={`${passengerDetails.firstName} ${passengerDetails.lastName}`} match={match}  /> :
+                    <PageTitleBar title={!loading ? `${passengerDetails.firstName} ${passengerDetails.lastName}`: ''} match={match}  /> :
                     <PageTitleBar title={`loading..`} match={match}  />
 
                 }
@@ -93,6 +101,10 @@ function TabContainer(props) {
                                     icon={<i className="icon-credit-card"></i>}
                                     label={"Payment History"}
                                 />
+                                <Tab
+                                    icon={<i className="icon-star"></i>}
+                                    label={"Ratings"}
+                                />
                                 {/*<Tab*/}
                                 {/*    icon={<i className="ti-home"></i>}*/}
                                 {/*    label={<IntlMessages id="components.address" />}*/}
@@ -105,16 +117,16 @@ function TabContainer(props) {
                         </TabContainer>}
                         {activeTab === 1 &&
                         <TabContainer>
-                            <PassengerTripHistory passengers={passengers}/>
+                            <PassengerTripHistory/>
                         </TabContainer>}
                         {activeTab === 2 &&
                         <TabContainer>
-                           <PassengerPaymentHistory  passengers={passengers}/>
+                           <PassengerPaymentHistory currentPage={currentPage} postsPerPage={postsPerPage} paginate={paginate} />
                         </TabContainer>}
-                        {/*{activeTab === 3 &&*/}
-                        {/*<TabContainer>*/}
-                        {/*    <Address />*/}
-                        {/*</TabContainer>}*/}
+                        {activeTab === 3 &&
+                        <TabContainer>
+                            <PassengerRatings />
+                        </TabContainer>}
                     </div>
                 </RctCard>
                 }
@@ -124,12 +136,16 @@ function TabContainer(props) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        getPassengers: () => dispatch(getPassengers()),
+        getPassengerByAuthId: (id) => dispatch(getPassengerByAuthId(id)),
+        getRating: (id) => dispatch(getRating(id)),
+        getRatingAverage: (id) => dispatch(getRatingAverage(id)),
+        getTrips: (pageNo, authId) => dispatch(getPassengerTrips(pageNo, authId)),
+        getTripCount: (authId) => dispatch(getPassengerTripCount(authId)),
     };
 }
 
 const mapStateToProps = state => ({
-    passengers: state.passenger.passengers,
+    passengerDetails: state.passenger.passenger,
     loading: state.loading.loading
 });
 

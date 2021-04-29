@@ -24,21 +24,21 @@ export default class OverallTrafficStatus extends Component {
 							<span className="text-muted mb-5 d-block"><IntlMessages id="widgets.today" /></span>
 							<div className="d-flex justify-content-between">
 								<h2 className="text-muted mb-0">{onlineSources}</h2>
-								<i className="ti-arrow-up text-info font-lg"></i>
+								{/*<i className="ti-arrow-up text-info font-lg"></i>*/}
 							</div>
 						</div>
 						<div className="col-xl-4 col-md-4 col-sm-4">
 							<span className="text-muted mb-5 d-block"><IntlMessages id="widgets.this month" /></span>
 							<div className="d-flex justify-content-between">
 								<h2 className="text-muted mb-0">{today} </h2>
-								<i className="ti-arrow-up text-info font-lg"></i>
+								{/*<i className="ti-arrow-up text-info font-lg"></i>*/}
 							</div>
 						</div>
 						<div className="col-xl-4 col-md-4 col-sm-4">
 							<span className="text-muted mb-5 d-block"><IntlMessages id="widgets.this year" /></span>
 							<div className="d-flex justify-content-between">
 								<h2 className="text-muted mb-0">{lastMonth} </h2>
-								<i className="ti-arrow-down text-pink font-lg"></i>
+								{/*<i className="ti-arrow-down text-pink font-lg"></i>*/}
 							</div>
 						</div>
 					</div>

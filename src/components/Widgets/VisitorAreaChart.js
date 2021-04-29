@@ -50,17 +50,17 @@ const VisitorAreaChart = ({ data }) => (
                 </div>
             </div>
         </RctCardContent>
-        <TinyAreaChart
-            label="Visitors"
-            chartdata={data.chartData.data}
-            labels={data.chartData.labels}
-            backgroundColor={hexToRgbA(ChartConfig.color.primary, 0.1)}
-            borderColor={hexToRgbA(ChartConfig.color.primary, 3)}
-            lineTension="0"
-            height={70}
-            gradient
-            hideDots
-        />
+        {/*<TinyAreaChart*/}
+        {/*    label="Visitors"*/}
+        {/*    chartdata={data.chartData.data}*/}
+        {/*    labels={data.chartData.labels}*/}
+        {/*    backgroundColor={hexToRgbA(ChartConfig.color.primary, 0.1)}*/}
+        {/*    borderColor={hexToRgbA(ChartConfig.color.primary, 3)}*/}
+        {/*    lineTension="0"*/}
+        {/*    height={70}*/}
+        {/*    gradient*/}
+        {/*    hideDots*/}
+        {/*/>*/}
     </RctCard >
 );
 

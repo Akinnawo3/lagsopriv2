@@ -1,43 +1,67 @@
 import React, { Component } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import ChartConfig from 'Constants/chart-config';
+import {getSchedule} from "Actions/fdtActions";
+import {connect} from "react-redux";
 
-const data = {
-    labels: [
-        'Successful Schedule',
-        'Pending Schedule',
-        'Failed Scheduled'
-    ],
-    datasets: [{
-        data: [250, 25, 125],
-        backgroundColor: [
-            ChartConfig.color.success,
-            ChartConfig.color.warning,
-            ChartConfig.color.danger
+
+
+const ComponentChart = ({schedule}) => {
+
+const successful = schedule.filter(item => item.fdtStatus == 1).length
+    const pending = schedule.filter(item => item.fdtStatus == 0).length
+    const failed = schedule.filter(item => item.fdtStatus == 2).length
+
+    const data = {
+        labels: [
+            'Successful Schedule',
+            'Pending Schedule',
+            'Failed Scheduled'
         ],
-        // hoverBackgroundColor: [
-        //     ChartConfig.color.primary,
-        //     ChartConfig.color.warning,
-        //     ChartConfig.color.info
-        // ]
-    }]
-};
+        datasets: [{
+            data: [successful, pending, failed],
+            backgroundColor: [
+                ChartConfig.color.success,
+                ChartConfig.color.warning,
+                ChartConfig.color.danger
+            ],
+            // hoverBackgroundColor: [
+            //     ChartConfig.color.primary,
+            //     ChartConfig.color.warning,
+            //     ChartConfig.color.info
+            // ]
+        }]
+    };
 
-const options = {
-    legend: {
-        display: false,
-        labels: {
-            fontColor: ChartConfig.legendFontColor
-        }
-    },
-    cutoutPercentage: 80
-};
+    const options = {
+        legend: {
+            display: false,
+            labels: {
+                fontColor: ChartConfig.legendFontColor
+            }
+        },
+        cutoutPercentage: 80
+    };
 
-export default class ComponentChart extends Component {
 
-    render() {
         return (
             <Doughnut data={data} options={options} height={100} />
         );
-    }
 }
+
+function mapDispatchToProps(dispatch) {
+    return {
+        getSchedule: () => dispatch(getSchedule()),
+    };
+}
+
+const mapStateToProps = state => ({
+    schedule: state.fdt.schedule,
+    loading: state.loading.loading,
+    loadingStatus: state.loading.loadingStatus
+
+
+
+});
+
+export default connect( mapStateToProps, mapDispatchToProps)(ComponentChart)

@@ -59,7 +59,7 @@ export const topSellingProducts = {
 
 // traffic Status
 export const trafficStatus = {
-   chartLabels: ['0.00', '1.0', '2.0', '3.0', '4.0', '5.0', '6.0'],
+   chartLabels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'oct', 'Nov', 'Dec'],
    chartDatasets: [
       {
          label: 'Series A',
@@ -68,17 +68,8 @@ export const trafficStatus = {
          borderWidth: 1,
          hoverBackgroundColor: ChartConfig.color.primary,
          hoverBorderColor: ChartConfig.color.primary,
-			data: [65, 59, 80, 81, 56, 55, 40]
+			data: [65, 59, 80, 81, 56, 55, 40, 34, 78, 26, 98, 100]
       },
-      {
-         label: 'Series B',
-         backgroundColor: ChartConfig.color.default,
-         borderColor: ChartConfig.color.default,
-         borderWidth: 1,
-         hoverBackgroundColor: ChartConfig.color.default,
-         hoverBorderColor: ChartConfig.color.default,
-			data: [45, 39, 40, 60, 35, 25, 60]
-      }
    ],
    onlineSources: '3500',
    today: '17,020',

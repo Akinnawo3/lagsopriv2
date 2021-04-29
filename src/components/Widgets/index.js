@@ -165,13 +165,13 @@ const VisitorAreaChartWidget = Loadable({
    loading: MyLoadingComponent
 })
 
-const SalesAreaChartWidget = Loadable({
-   loader: () => import("./SalesAreaChart"),
+const VehicleChartWidget = Loadable({
+   loader: () => import("./VehicleChart"),
    loading: MyLoadingComponent
 })
 
-const OrdersAreaChartWidget = Loadable({
-   loader: () => import("./OrdersAreaChart"),
+const DriverChartWidget = Loadable({
+   loader: () => import("./DriverChart"),
    loading: MyLoadingComponent
 })
 
@@ -504,8 +504,8 @@ export {
    PromoCoupons,
    Rating,
    VisitorAreaChartWidget,
-   SalesAreaChartWidget,
-   OrdersAreaChartWidget,
+   VehicleChartWidget,
+   DriverChartWidget,
    OverallTrafficStatusWidget,
    TotalSalesWidget,
    NetProfitWidget,

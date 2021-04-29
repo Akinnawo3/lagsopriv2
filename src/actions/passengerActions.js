@@ -1,5 +1,5 @@
 import  axios from 'axios'
-import {PASSENGERS} from "Actions/types";
+import {PASSENGERS, PASSENGER} from "Actions/types";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "Actions/loadingAction";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
@@ -36,6 +36,20 @@ export const  changePassengerStatus= (id, phoneNumberStatus) => async dispatch =
   }
 };
 
+export const getPassengerByAuthId = (authId) => async dispatch => {
+  try {
+    dispatch(startLoading());
+    const res = await axios.get(`${api.passengers}/api/get/auth/${authId}/`);
+    dispatch({
+      type: PASSENGER,
+      payload: res.data
+    });
+    dispatch(endLoading());
+  } catch (err) {
+    dispatch(endLoading());
+    // NotificationManager.error(err.response.data.result)
+  }
+};
 
 
 

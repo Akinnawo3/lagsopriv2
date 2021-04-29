@@ -1,8 +1,5 @@
 import React from 'react';
 import { Badge } from 'reactstrap';
-import PaymentsChart from "Routes/passengers/components/paymentsChart";
-import TripsChart from "Routes/passengers/components/tripsChart";
-
 
 
 const PassengerProfile = ({passenger})=> {
@@ -52,11 +49,6 @@ const PassengerProfile = ({passenger})=> {
                     </div>
                 </div>
             </div>
-            <div className="col-sm-6 d-flex flex-column justify-content-between">
-                <PaymentsChart />
-                <TripsChart />
-            </div>
-
         </div>
     );
 

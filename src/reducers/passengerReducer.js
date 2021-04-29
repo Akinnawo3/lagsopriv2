@@ -1,8 +1,9 @@
-import {PASSENGERS} from "Actions/types";
+import {PASSENGER, PASSENGERS} from "Actions/types";
 
 
 const initialState = {
   passengers: [],
+  passenger: [],
 };
 
 function passengerReducer(state = initialState, action) {
@@ -12,6 +13,12 @@ function passengerReducer(state = initialState, action) {
       return {
         ...state,
         passengers: payload,
+      };
+    }
+    case PASSENGER: {
+      return {
+        ...state,
+        passenger: payload,
       };
     }
     default:

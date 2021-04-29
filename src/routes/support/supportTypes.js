@@ -38,7 +38,7 @@ const  SupportType = (props) => {
     const [editUser, setEditUser] = useState(false)
     const [updateId, setUpdateId] = useState(null)
     const [deleteId, setDeleteId] = useState(null)
-    const [formData, setFormData] = useState({name: ''})
+    const [formData, setFormData] = useState({name: '', typeUser: '', issues: ''})
     const [searchData, setSearchData] = useState('')
     const inputEl = useRef(null);
     const [posts, setPosts] = useState([]);
@@ -59,7 +59,7 @@ const  SupportType = (props) => {
     };
 
     const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
-    const {name} = formData
+    const {name, typeUser, issues} = formData
 
     const opnAddNewUserModal = (e) => {
         e.preventDefault();
@@ -73,6 +73,8 @@ const  SupportType = (props) => {
                 setFormData(
                     {
                         name: ticketType.name,
+                        typeUser: ticketType.typeUser,
+                        issues: ticketType.issues
                     })
                 setUpdateId(ticketType.id)
             }
@@ -85,6 +87,8 @@ const  SupportType = (props) => {
         setFormData(
             {
                 name: '',
+                typeUser: '',
+                issues: ''
             })
         setUpdateId(null)
         setAddNewUserModal(false);
@@ -99,7 +103,7 @@ const  SupportType = (props) => {
     const onSubmit = async (e) => {
         e.preventDefault();
         onAddUpdateUserModalClose()
-        !editUser?  await createTicketType(name) : await updateTicketType(updateId, name)
+        !editUser?  await createTicketType(name, typeUser, issues) : await updateTicketType(updateId, name, typeUser, issues)
 
 
     };
@@ -170,18 +174,6 @@ const  SupportType = (props) => {
                         <i className="zmdi zmdi-download mr-2"></i>
                         Export to Excel
                     </CSVLink>
-                    {/*<CSVLink*/}
-                    {/*    // headers={headers}*/}
-                    {/*    data={sampleData}*/}
-                    {/*    filename={"sampleAdmins.csv"}*/}
-                    {/*    className="btn-sm btn-outline-default mr-10 bg-success text-white"*/}
-                    {/*    target="_blank"*/}
-                    {/*>*/}
-                    {/*    <i className="zmdi zmdi-download mr-2"></i>*/}
-
-                    {/*    Sample excel to upload*/}
-                    {/*</CSVLink>*/}
-                    {/*<a href="#" onClick={(e) => opnAddNewUserModal1(e)} color="primary" className="btn-sm btn-outline-default mr-10 bg-danger text-white"><i className="zmdi zmdi-upload mr-2"></i>Upload</a>*/}
                     <a href="#" onClick={(e) => opnAddNewUserModal(e)} color="primary" className="caret btn-sm mr-10">Create New TicketType <i className="zmdi zmdi-plus"></i></a>
                 </div>
                 <div className="table-responsive" style={{minHeight: "50vh"}}>
@@ -189,6 +181,8 @@ const  SupportType = (props) => {
                         <TableHead>
                             <TableRow hover>
                                 <TableCell>Name</TableCell>
+                                <TableCell>Type</TableCell>
+                                <TableCell>Issues</TableCell>
                                 <TableCell>Actions</TableCell>
                             </TableRow>
                         </TableHead>
@@ -197,6 +191,8 @@ const  SupportType = (props) => {
                                 {posts && currentPosts.map((ticketType, key) => (
                                     <TableRow hover key={key}>
                                         <TableCell>{ticketType.name}</TableCell>
+                                        <TableCell>{ticketType.typeUser === '1' ? 'Driver' : 'Passenger'}</TableCell>
+                                        <TableCell>{ticketType.issues}</TableCell>
                                         <TableCell>
                                             <button type="button" className="rct-link-btn" onClick={(e) => opnAddNewUserEditModal(ticketType.id)}><i className="ti-pencil"></i></button>
                                             <button type="button" className="rct-link-btn ml-lg-3 text-danger" onClick={() => onDelete(ticketType.id)}><i className="ti-close"></i></button>
@@ -231,6 +227,18 @@ const  SupportType = (props) => {
                             <Label for="firstName">Name</Label>
                             <Input type="text"  name="name" value={name} onChange={onChange}   required/>
                         </FormGroup>
+                        <FormGroup>
+                            <Label for="firstName">type</Label>
+                            <Input type="select"  name="typeUser" value={typeUser} onChange={onChange}   required>
+                                <option value=''>Select</option>
+                                <option value='1'>Driver</option>
+                                <option value='2'>Passenger</option>
+                            </Input>
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="firstName">Issues (Add issues separated by coma)</Label>
+                            <Input type="textarea"  name="issues" value={issues} onChange={onChange}   required/>
+                        </FormGroup>
                     </ModalBody>
                     <ModalFooter>
                         <Button type="submit" variant="contained" className="text-white btn-success">Submit</Button>
@@ -255,8 +263,8 @@ const  SupportType = (props) => {
 function mapDispatchToProps(dispatch) {
     return {
         getTicketTypes: () => dispatch(getTicketTypes()),
-        createTicketType: (name) => dispatch(createTicketType(name)),
-        updateTicketType: (id, name) => dispatch(updateTicketType(id, name)),
+        createTicketType: (name, typeUser, issues) => dispatch(createTicketType(name, typeUser, issues)),
+        updateTicketType: (id, name, typeUser, issues) => dispatch(updateTicketType(id, name, typeUser, issues)),
         deleteTicketType: (id) => dispatch(deleteTicketType(id)),
     };
 }

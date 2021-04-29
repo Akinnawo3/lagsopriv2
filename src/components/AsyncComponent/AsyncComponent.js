@@ -12,6 +12,10 @@ const AsyncDrivers = Loadable({
 	loader: () => import("Routes/drivers/drivers"),
 	loading: () => <RctPageLoader />,
 });
+const AsyncTripDetails = Loadable({
+	loader: () => import("Routes/trips/tripDetails"),
+	loading: () => <RctPageLoader />,
+});
 const AsyncClassTypes = Loadable({
 	loader: () => import("Routes/class-types/class-types"),
 	loading: () => <RctPageLoader />,
@@ -57,6 +61,28 @@ const AsyncRefundsCompleted = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+const AsyncVoucher = Loadable({
+	loader: () => import("Routes/voucher/voucher"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncRevenueSplit = Loadable({
+	loader: () => import("Routes/revenueSplit/revenueSplit"),
+	loading: () => <RctPageLoader />,
+});
+
+
+
+const AsyncReferral = Loadable({
+	loader: () => import("Routes/referral/referral"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncReferralDetails = Loadable({
+	loader: () => import("Routes/referral/referralDetails"),
+	loading: () => <RctPageLoader />,
+});
+
 const AsyncCancellations = Loadable({
 	loader: () => import("Routes/cancellations/cancellations"),
 	loading: () => <RctPageLoader />,
@@ -69,6 +95,16 @@ const AsyncSchedule = Loadable({
 
 const AsyncScheduleDetails = Loadable({
 	loader: () => import("Routes/schedule/scheduleDetails"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncFdt = Loadable({
+	loader: () => import("Routes/fdt/fdt"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncFdtDetails = Loadable({
+	loader: () => import("Routes/fdt/fdtDetails"),
 	loading: () => <RctPageLoader />,
 });
 
@@ -228,6 +264,27 @@ const AsyncTrips = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+const AsyncTripsCompleted = Loadable({
+	loader: () => import("Routes/trips/tripsCompleted"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncTripsCancelled = Loadable({
+	loader: () => import("Routes/trips/tripsCancelled"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncTripsWaiting = Loadable({
+	loader: () => import("Routes/trips/tripsWaiting"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncTripsCurrent = Loadable({
+	loader: () => import("Routes/trips/tripsCurrent"),
+	loading: () => <RctPageLoader />,
+});
+
+
 const AsyncAdmins = Loadable({
 	loader: () => import("Routes/admin/admins"),
 	loading: () => <RctPageLoader />,
@@ -357,5 +414,16 @@ export {
 	AsyncRefundsDetails,
 	AsyncPaymentsDetails,
 	AsyncSchedule,
-	AsyncScheduleDetails
+	AsyncScheduleDetails,
+	AsyncVoucher,
+	AsyncReferral,
+	AsyncReferralDetails,
+	AsyncRevenueSplit,
+	AsyncFdt,
+	AsyncFdtDetails,
+	AsyncTripDetails,
+	AsyncTripsCompleted,
+	AsyncTripsCancelled,
+	AsyncTripsWaiting,
+	AsyncTripsCurrent
 };

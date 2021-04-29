@@ -227,10 +227,10 @@ const  ActiveVehicles = ({match, getVehicles, vehicles, loading, changeVehicleSt
 										}
 										<TableCell>
 											<button type="button" className="rct-link-btn" onClick={(e) => opnAddNewUserEditModal(vehicle.id)}><i className="ti-pencil"></i></button>
-											{vehicle.status === 1 &&
-											<button type="button" className="rct-link-btn text-success  ml-lg-3" onClick={()=> changeVehicleStatus(vehicle.id, 2)}><i title="activate" className="ti-check"/></button>}
-											{vehicle.status === 2 &&
-											<button type="button" className="rct-link-btn ml-lg-3 text-danger" onClick={() => onSuspend(vehicle.id)}><i title="deactivate" className="ti-close"/></button>}
+											{/*{vehicle.status === 1 &&*/}
+											{/*<button type="button" className="rct-link-btn text-success  ml-lg-3" onClick={()=> changeVehicleStatus(vehicle.id, 2)}><i title="activate" className="ti-check"/></button>}*/}
+											{/*{vehicle.status === 2 &&*/}
+											{/*<button type="button" className="rct-link-btn ml-lg-3 text-danger" onClick={() => onSuspend(vehicle.id)}><i title="deactivate" className="ti-close"/></button>}*/}
 										</TableCell>
 									</TableRow>
 								))}

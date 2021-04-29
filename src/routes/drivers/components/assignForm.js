@@ -4,6 +4,7 @@ import { Form, FormGroup, Label, Input, ModalFooter } from 'reactstrap';
 import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import {NotificationManager} from "react-notifications";
+import api from "../../../environments/environment";
 
 const AssignForm = ({ driver, vehicles, onAddUpdateUserModalClose, getDrivers2 }) => {
     const [formData, setFormData] = useState({
@@ -34,8 +35,8 @@ const AssignForm = ({ driver, vehicles, onAddUpdateUserModalClose, getDrivers2 }
     const asignVehicle =  async () => {
         try {
             setLoading(true)
-           await axios.put(`http://134.209.16.20:7050/api/driver/${driver.id}/`, {vehicleId: vehicle})
-            await axios.put(`http://167.172.57.163:7063/api/vehicles/${vehicle}/`, {driver_id: driver.id, status: 2})
+           await axios.put(`${api.drivers}/api/driver/${driver.id}/`, {vehicleId: vehicle})
+            await axios.put(`${api.vehicles}/api/vehicles/${vehicle}/`, {driver_id: driver.id, status: 2})
            await setLoading(false)
             getDrivers2()
             onAddUpdateUserModalClose()

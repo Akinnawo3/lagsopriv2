@@ -72,7 +72,7 @@ const  NewSupport = ({match, support, getSupport, getTicketTypes, ticketTypes, l
                                 {posts && currentPosts.map((sup, key) => (
                                     <TableRow hover key={key}>
                                         {ticketTypes && ticketTypes.map(ticket => {
-                                            if(ticket.id  == sup.ticket_id) {
+                                            if(ticket.id  == sup.ticketId) {
                                                 return <TableCell key={ticket.id}>{ticket.name}</TableCell>
                                             }
                                         })}

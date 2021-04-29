@@ -4,8 +4,8 @@ import {TICKET_TYPE} from "Actions/types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 
-export const createTicketType = (name) => async dispatch => {
-  const body = {name}
+export const createTicketType = (name, typeUser, issues) => async dispatch => {
+  const body = {name, typeUser, issues}
   try {
     await dispatch(startLoading());
      await axios.post(`${api.ticket}/apitickets/`, body)
@@ -50,11 +50,11 @@ export const getTicketTypes2 = () => async dispatch => {
 };
 
 
-export const updateTicketType = (id, name) => async dispatch => {
-  const body = {name}
+export const updateTicketType = (id, name, typeUser, issues) => async dispatch => {
+  const body = {name, typeUser, issues}
   try {
     await dispatch(startStatusLoading())
-    await axios.put(`${api.classTypes}/apitickets/${id}/`, body)
+    await axios.put(`${api.ticket}/api/tickets/${id}/`, body)
     await NotificationManager.success('Ticket Updated Successfully!');
     await dispatch(endStatusLoading())
     await dispatch(getTicketTypes2());
@@ -67,7 +67,7 @@ export const updateTicketType = (id, name) => async dispatch => {
 export const deleteTicketType = (id) => async dispatch => {
   try {
     dispatch(startStatusLoading())
-    await axios.delete(`${api.classTypes}/apitickets/${id}/`)
+    await axios.delete(`${api.ticket}/api/tickets/${id}/`)
     await NotificationManager.success('ClassType Deleted Successfully!');
     await dispatch(endStatusLoading())
     await dispatch(getTicketTypes2());

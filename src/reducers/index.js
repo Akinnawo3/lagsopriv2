@@ -17,6 +17,10 @@ import feesReducer from "./feesReducer";
 import areasReducer from "./areaReducer";
 import ticketTypesReducer from "./ticketTypesReducer";
 import supportReducer from "./supportReducer";
+import ratingReducer from "./ratingReducer";
+import fdtReducer from "./fdtReducer";
+import tripReducer from "./tripReducer";
+import sosReducer from "./sosReducer";
 
 const reducers = combineReducers({
    settings,
@@ -34,6 +38,10 @@ const reducers = combineReducers({
    areas: areasReducer,
    ticketTypes: ticketTypesReducer,
    support: supportReducer,
+   rating: ratingReducer,
+   fdt: fdtReducer,
+   trips: tripReducer,
+   sos: sosReducer,
 });
 
 export default reducers;

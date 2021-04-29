@@ -1,8 +1,9 @@
-import {DRIVERS} from "Actions/types";
+import {DRIVER, DRIVERS} from "Actions/types";
 
 
 const initialState = {
   drivers: [],
+  driver: {},
 };
 
 function driverReducer(state = initialState, action) {
@@ -12,6 +13,12 @@ function driverReducer(state = initialState, action) {
       return {
         ...state,
         drivers: payload,
+      };
+    }
+    case DRIVER: {
+      return {
+        ...state,
+        driver: payload,
       };
     }
     default:

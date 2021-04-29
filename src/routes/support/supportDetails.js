@@ -40,12 +40,12 @@ const SupportDetails = ({getTicketTypes, getSupport, ticketTypes, support, match
     useEffect(()=> {
         if(support.length > 0) {
             ticketTypes.map(ticket => {
-                if(ticket.id == supportDetails.ticket_id) {
+                if(ticket.id == supportDetails.ticketId) {
                    setTickets(ticket.name)
                 }
             })
         }
-    }, [supportDetails.ticket_id])
+    }, [supportDetails.ticketId])
 
     // const [anchorEl, setAnchorEl] = useState(null);
     const [addNewUserModal, setAddNewUserModal] = useState(false)
@@ -84,10 +84,16 @@ const SupportDetails = ({getTicketTypes, getSupport, ticketTypes, support, match
                                     className="pull-left"><strong>Type of ticket</strong></span>{tickets}
                                 </li>
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>user type</strong></span>{supportDetails.user_type}
+                                    className="pull-left"><strong>user type</strong></span>{supportDetails.forType}
                                 </li>
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>user Id</strong></span>{supportDetails.user_id}
+                                    className="pull-left"><strong>Created By</strong></span>{supportDetails.createdBy}
+                                </li>
+                                <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Created For</strong></span>{supportDetails.forId}
+                                </li>
+                                <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Assigned To</strong></span>{supportDetails.assignedTo}
                                 </li>
                                 <li className="list-group-item text-right"><span
                                     className="pull-left"><strong>Channel</strong></span>{supportDetails.channel}
@@ -99,9 +105,21 @@ const SupportDetails = ({getTicketTypes, getSupport, ticketTypes, support, match
                                 <li className="list-group-item text-right"><span
                                     className="pull-left"><strong>Image</strong></span>
                                 </li>
-                                <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Status</strong></span><Badge onClick={()=> opnAddNewUserModal()} style={{cursor: 'pointer'}} color="danger">opened</Badge>
-                                </li>
+                                {supportDetails.status == 1 && <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Status</strong></span><Badge onClick={()=> opnAddNewUserModal()} style={{cursor: 'pointer'}} color="danger">New</Badge>
+                                </li>}
+                                {supportDetails.status == 2 && <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Status</strong></span><Badge onClick={()=> opnAddNewUserModal()} style={{cursor: 'pointer'}} color="secondary">Open</Badge>
+                                </li>}
+                                {supportDetails.status == 3 && <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Status</strong></span><Badge onClick={()=> opnAddNewUserModal()} style={{cursor: 'pointer'}} color="warning">In-progress</Badge>
+                                </li>}
+                                {supportDetails.status == 4 && <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Status</strong></span><Badge onClick={()=> opnAddNewUserModal()} style={{cursor: 'pointer'}} color="success">Closed</Badge>
+                                </li>}
+                                {supportDetails.status == 5 && <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Status</strong></span><Badge onClick={()=> opnAddNewUserModal()} style={{cursor: 'pointer'}} color="primary">Unresolved</Badge>
+                                </li>}
                             </ul>
                         </div>
                         <Modal isOpen={addNewUserModal} toggle={() => onAddUpdateUserModalClose()}>

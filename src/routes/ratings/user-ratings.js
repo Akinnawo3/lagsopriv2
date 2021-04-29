@@ -1,45 +1,74 @@
-import React, {useState, useEffect, Fragment, useRef} from 'react';
+import React, {useEffect, Fragment, useState} from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { Media, Badge } from 'reactstrap';
-import api from 'Api';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import {getAdmins} from "Actions/adminAction";
 import {connect} from "react-redux";
 import StarRatings from "react-star-ratings";
+import {getPassengerRatings} from "Actions/ratingAction";
+import Spinner from "../../spinner/Spinner";
+import Pagination from "react-js-pagination";
+import {getPassengers} from "Actions/passengerActions";
+import {Link} from "react-router-dom";
 
 
 
 
-const  UserRatings = ({match, getAdmins, admins}) => {
-    const [employeePayroll, setEmployeePayroll] = useState(null)
+const  UserRatings = ({match, getPassengerRatings, passengerRatings,  getPassengers, passengers, isLoading}) => {
+    const [posts, setPosts] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage] = useState(10);
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost)
 
     useEffect(()=> {
-        getEmployeePayrolls();
-        getAdmins();
+        getPassengerRatings();
+        getPassengers();
     },[])
 
+    useEffect(()=> {
+        if(passengers.length > 0) {
+            setPosts(passengers.sort((a, b) => parseFloat(b.id) - parseFloat(a.id)))
+        }
+    },[passengers])
 
+    const paginate = pageNumber => {
+        setCurrentPage(pageNumber);
+        window.scrollTo(0, 0);
+    };
 
-    // get employee payrols
-    const getEmployeePayrolls = () => {
-        api.get('employeePayrols.js')
-            .then((response) => {
-                setEmployeePayroll(response.data)
+    var value = 0
+    const  getRatingStar =  (id) => {
+        let star = <TableCell>
+            <StarRatings
+                rating={value}
+                starRatedColor="red"
+                numberOfStars={5}
+                starDimension="18px"
+            />
+        </TableCell>
+
+        if(passengerRatings.length > 0) {
+            passengerRatings.map(rating => {
+                if(rating.userId == id) {
+                    value = rating.rating
+                }
             })
-            .catch(error => {
-                // error handling
-            })
+        }
+        return star
     }
+
 
     return (
         <div className="table-wrapper">
             <PageTitleBar title={"Ratings"} match={match} />
-            <RctCollapsibleCard heading="User Ratings" fullBlock>
+            {isLoading && <Spinner />}
+            {!isLoading &&
+            <RctCollapsibleCard heading="Passenger Ratings" fullBlock>
                 <div className="float-right">
                     <a href="#" onClick={e => e.preventDefault()} className="btn-sm btn-outline-default mr-10">Export to Excel</a>
                     {/*<a href="#" onClick={(e) => opnAddNewUserModal(e)} color="primary" className="caret btn-sm mr-10">Add New Driver <i className="zmdi zmdi-plus"></i></a>*/}
@@ -49,37 +78,36 @@ const  UserRatings = ({match, getAdmins, admins}) => {
                         <TableHead>
                             <TableRow hover>
                                 <TableCell>Full Name</TableCell>
-                                <TableCell>Reviews</TableCell>
                                 <TableCell>Ratings</TableCell>
-                                <TableCell>Date</TableCell>
+                                <TableCell>Action</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             <Fragment>
-                                {employeePayroll && employeePayroll.map((employee, key) => (
+                                {posts.length > 0 && currentPosts.map((passenger, key) => (
                                     <TableRow hover key={key}>
-                                        <TableCell>John Deo</TableCell>
+                                        <TableCell>{passenger.firstName} {passenger.lastName}</TableCell>
+                                        {getRatingStar(passenger.authId)}
                                         <TableCell>
-                                            A nice Passenger
-                                        </TableCell>
-                                        <TableCell>
-                                            <StarRatings
-                                                rating={3}
-                                                starRatedColor="red"
-                                                numberOfStars={5}
-                                                starDimension="18px"
-                                            />
-                                        </TableCell>
-                                        <TableCell>
-                                            01-18-2021
-                                        </TableCell>
+                                            <button type="button" className="rct-link-btn text-primary" title="view details"><Link to={`/admin/passengers/${passenger.authId}`}><i className="ti-eye"/></Link></button></TableCell>
                                     </TableRow>
                                 ))}
                             </Fragment>
                         </TableBody>
                     </Table>
                 </div>
-            </RctCollapsibleCard>
+                <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
+                    {posts.length > 0 &&
+                    <Pagination
+                        activePage={currentPage}
+                        itemClass="page-item"
+                        linkClass="page-link"
+                        itemsCountPerPage={postsPerPage}
+                        totalItemsCount={posts.length}
+                        onChange={paginate}
+                    />}
+                </div>
+            </RctCollapsibleCard>}
         </div>
     );
 
@@ -87,13 +115,15 @@ const  UserRatings = ({match, getAdmins, admins}) => {
 
 function mapDispatchToProps(dispatch) {
     return {
-        getAdmins: () => dispatch(getAdmins()),
+        getPassengerRatings: () => dispatch(getPassengerRatings()),
+        getPassengers: () => dispatch(getPassengers()),
     };
 }
 
 const mapStateToProps = state => ({
-    admins: state.admins.admins,
-    isLoading: state.admins.isLoading,
+    passengers: state.passenger.passengers,
+    passengerRatings: state.rating.passengerRating,
+    isLoading: state.loading.loading,
 
 
 

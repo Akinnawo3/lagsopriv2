@@ -1,5 +1,5 @@
 /**
- * Ecommerce Dashboard
+ * Dashboard
  */
 
 import React, { Component } from 'react'
@@ -35,6 +35,8 @@ import {
 } from './data';
 import GoogleMapComponent from "../../../components/Maps/GoogleMapComponent";
 import GoogleMapComponentUser from "Components/Maps/GoogleMapComponentUsers";
+import VehicleChart from "Components/Widgets/VehicleChart";
+import DriverChart from "Components/Widgets/DriverChart";
 
 export default class HomeDashboard extends Component {
 	render() {
@@ -74,12 +76,12 @@ export default class HomeDashboard extends Component {
 					</div>
 
 					<div className="col-sm-12 col-md-4 w-xs-half-block">
-						<OrdersAreaChartWidget
+						<DriverChart
 							data={ordersData}
 						/>
 					</div>
 					<div className="col-sm-6 col-md-4 w-xs-full">
-						<SalesAreaChartWidget
+						<VehicleChart
 							data={salesData}
 						/>
 					</div>

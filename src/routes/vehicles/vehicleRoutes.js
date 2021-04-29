@@ -1,5 +1,5 @@
 /**
- * Users DriverRoutes
+ * VehicleRoutes
  */
 /* eslint-disable */
 import React from 'react';

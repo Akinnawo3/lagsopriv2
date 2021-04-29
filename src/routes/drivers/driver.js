@@ -8,13 +8,14 @@ import Button from '@material-ui/core/Button';
 import { Helmet } from "react-helmet";
 import { RctCard } from 'Components/RctCard';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
-import {changeDriverStatus, getDrivers} from "Actions/driverAction";
+import {changeDriverStatus, getDriverByAuthId, getDrivers} from "Actions/driverAction";
 import DriverProfile from "Routes/drivers/components/driverProfile";
 import DriverRatings from "Routes/drivers/components/driverRatings";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import {Badge } from 'reactstrap';
-import TableCell from "@material-ui/core/TableCell";
-import TableRow from "@material-ui/core/TableRow";
+import {getRating, getRatingAverage} from "Actions/ratingAction";
+import Spinner from "../../spinner/Spinner";
+import DriverTrips from "Routes/drivers/components/driverTrips";
+import {getDriverTripCount, getDriverTrips} from "Actions/tripAction";
 
 // For Tab Content
 function TabContainer(props) {
@@ -25,46 +26,50 @@ function TabContainer(props) {
     );
 }
 
- const Driver  = ({location, match, getDrivers, drivers, changeDriverStatus, loadingStatus}) => {
+ const Driver  = ({location, match, getDrivers, changeDriverStatus, loadingStatus, getRating, getRatingAverage, getDriverByAuthId, driverDetails, loading,  getTrips, getTripCount}) => {
     const [activeTab, setActiveTab] = useState(location.state ? location.state.activeTab : 0);
-    const [driverDetails, setDriverDetails] = useState({});
+     const [currentPage, setCurrentPage] = useState(1);
+     const [postsPerPage] = useState(10);
 
   const  handleChange = (event, value) => {
         setActiveTab(value)
     }
 
-    useEffect(()=> {
-        getDrivers()
-    },[])
-
      useEffect(()=> {
-         if (drivers && match.params.id){
-             drivers.map(driver=> {
-                 if(driver.id == match.params.id){
-                    setDriverDetails(driver)
-                 }
-             })
+         if (match.params.id){
+             getDriverByAuthId(match.params.id)
+             getRating(match.params.id)
+             getRatingAverage(match.params.id)
+             getTrips(1, match.params.id);
+             getTripCount(match.params.id)
          }
-     },[drivers, match.params.id])
+     },[match.params.id])
+
+
+     const paginate = pageNumber => {
+         setCurrentPage(pageNumber);
+         getTrips(pageNumber);
+         window.scrollTo(0, 0);
+     };
+
+
 
 
         return (
             <div className="userProfile-wrapper">
-                {loadingStatus &&
-                <LinearProgress />
-                }
                 <Helmet>
-                    <title>User Profile</title>
-                    <meta name="description" content="User Profile" />
+                    <title>Driver Profile</title>
+                    <meta name="description" content="Driver Profile" />
                 </Helmet>
-                <PageTitleBar title={`${driverDetails.firstName} ${driverDetails.lastName}`} match={match}  />
-                <RctCard>
+                <PageTitleBar title={!loading ? `${driverDetails.firstName} ${driverDetails.lastName}`: ''} match={match}  />
+                {loading && <Spinner />}
+                {!loading && <RctCard>
                     <div
                         className="d-flex align-items-center py-5 justify-content-center mb-4 mt-2"
                     >
                         <div className="user-profile mt-2">
                             <img
-                                src={require('Assets/avatars/user-15.jpg')}
+                                src={require('Assets/avatars/avatar.png')}
                                 alt="user profile"
                                 className="img-fluid rounded-circle"
                                 width="200"
@@ -125,6 +130,10 @@ function TabContainer(props) {
                                     icon={<i className="icon-star"></i>}
                                     label={"Ratings"}
                                 />
+                                <Tab
+                                    icon={<i className="icon-graph"></i>}
+                                    label={"Trip History"}
+                                />
                                 {/*<Tab*/}
                                 {/*    icon={<i className="ti-comment-alt"></i>}*/}
                                 {/*    label={<IntlMessages id="widgets.messages" />}*/}
@@ -143,6 +152,10 @@ function TabContainer(props) {
                         <TabContainer>
                             <DriverRatings driver={driverDetails} />
                         </TabContainer>}
+                        {activeTab === 2 &&
+                        <TabContainer>
+                            <DriverTrips currentPage={currentPage} postsPerPage={postsPerPage} paginate={paginate} />
+                        </TabContainer>}
                         {/*{activeTab === 2 &&*/}
                         {/*<TabContainer>*/}
                         {/*    <Messages />*/}
@@ -152,7 +165,7 @@ function TabContainer(props) {
                         {/*    <Address />*/}
                         {/*</TabContainer>}*/}
                     </div>
-                </RctCard>
+                </RctCard>}
             </div>
         );
 }
@@ -160,13 +173,22 @@ function TabContainer(props) {
 function mapDispatchToProps(dispatch) {
     return {
         getDrivers: () => dispatch(getDrivers()),
+        getDriverByAuthId: (id) => dispatch(getDriverByAuthId(id)),
         changeDriverStatus: (id, status) => dispatch(changeDriverStatus(id, status)),
+        getRating: (id) => dispatch(getRating(id)),
+        getRatingAverage: (id) => dispatch(getRatingAverage(id)),
+        getTrips: (pageNo, authId) => dispatch(getDriverTrips(pageNo, authId)),
+        getTripCount: (authId) => dispatch(getDriverTripCount(authId)),
     };
 }
 
 const mapStateToProps = state => ({
     drivers: state.driver.drivers,
-    loadingStatus: state.loading.loadingStatus
+    driverDetails: state.driver.driver,
+    loadingStatus: state.loading.loadingStatus,
+    trips: state.trips.driverTrips,
+    tripCount: state.trips.tripCountDriver,
+    loading: state.loading.loading
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(Driver)

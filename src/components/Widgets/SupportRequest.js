@@ -25,47 +25,47 @@ class SupportRequest extends Component {
                <DoughnutChart />
             </div>
             <List className="list-unstyled p-0">
-               <ListItem className="bg-light px-15 py-0 d-flex justify-content-between align-content-center">
+               <ListItem className=" px-15 py-10 d-flex justify-content-between align-content-center bg-white">
                   <p className="mb-0 content-title"><IntlMessages id="widgets.total" /></p>
                   <Badge color="primary" className="px-4">250</Badge>
-                  <IconButton color="default">
-                     <i className="ti-eye"></i>
-                  </IconButton>
+                  {/*<IconButton color="default">*/}
+                  {/*   <i className="ti-eye"></i>*/}
+                  {/*</IconButton>*/}
                </ListItem>
-               <ListItem className="bg-light px-15 py-0 d-flex justify-content-between align-content-center">
+               <ListItem className="bg-white px-15 py-10 d-flex justify-content-between align-content-center">
                   <p className="mb-0 content-title"><IntlMessages id="widgets.waiting" /></p>
                   <Badge color="warning" className="px-4">25</Badge>
-                  <IconButton color="default">
-                     <i className="ti-eye"></i>
-                  </IconButton>
+                  {/*<IconButton color="default">*/}
+                  {/*   <i className="ti-eye"></i>*/}
+                  {/*</IconButton>*/}
                </ListItem>
-               <ListItem className="bg-light px-15 py-0 d-flex justify-content-between align-content-center">
+               <ListItem className="bg-white px-15 py-10 d-flex justify-content-between align-content-center">
                   <p className="mb-0 content-title"><IntlMessages id="widgets.completed" /></p>
                   <Badge color="success" className="px-4">125</Badge>
-                  <IconButton color="default">
-                     <i className="ti-eye"></i>
-                  </IconButton>
+                  {/*<IconButton color="default">*/}
+                  {/*   <i className="ti-eye"></i>*/}
+                  {/*</IconButton>*/}
                </ListItem>
-               <ListItem className="bg-light px-15 py-0 d-flex justify-content-between align-content-center">
+               <ListItem className="bg-white px-15 py-10 d-flex justify-content-between align-content-center">
                   <p className="mb-0 content-title"><IntlMessages id="widgets.current" /></p>
                   <Badge color="warning" className="px-4">125</Badge>
-                  <IconButton color="default">
-                     <i className="ti-eye"></i>
-                  </IconButton>
+                  {/*<IconButton color="default">*/}
+                  {/*   <i className="ti-eye"></i>*/}
+                  {/*</IconButton>*/}
                </ListItem>
-               <ListItem className="bg-light px-15 py-0 d-flex justify-content-between align-content-center">
+               <ListItem className="bg-white px-15 py-10 d-flex justify-content-between align-content-center">
                   <p className="mb-0 content-title"><IntlMessages id="widgets.cancelled" /></p>
                   <Badge color="danger" className="px-4">125</Badge>
-                  <IconButton color="default">
-                     <i className="ti-eye"></i>
-                  </IconButton>
+                  {/*<IconButton color="default">*/}
+                  {/*   <i className="ti-eye"></i>*/}
+                  {/*</IconButton>*/}
                </ListItem>
             </List>
             <RctCardFooter customClasses="d-flex justify-content-between border-0 align-items-center">
-               <p className="fs-12 mb-0 text-base">
-                  <span><i className="mr-5 zmdi zmdi-refresh"></i></span>
-                  <IntlMessages id="widgets.updated10Minago" />
-               </p>
+               {/*<p className="fs-12 mb-0 text-base">*/}
+               {/*   <span><i className="mr-5 zmdi zmdi-refresh"></i></span>*/}
+               {/*   <IntlMessages id="widgets.updated10Minago" />*/}
+               {/*</p>*/}
                {/*<Button variant="contained" color="primary" className="btn-xs text-white">*/}
                {/*   <IntlMessages id="button.assignNow" />*/}
                {/*</Button>*/}

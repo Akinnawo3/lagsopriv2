@@ -42,7 +42,7 @@ import {ModalHeader, ModalBody, Modal} from "reactstrap";
                 {/*    <IconButton variant="contained" color="primary" className="text-white" aria-owns={anchorEl ? 'simple-menu' : null} aria-haspopup="true" onClick={this.handleClick} aria-label="Delete"><i className="ti-eye"></i></IconButton>*/}
                 </Button>
                 <Menu id="simple-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose} >
-                    <MenuItem ><Link to={`/admin/drivers/${driver.id}`}>Profile</Link></MenuItem>
+                    <MenuItem ><Link to={`/admin/drivers/${driver.authId}`}>Profile</Link></MenuItem>
                     {driver.status == 0 && <MenuItem onClick={()=> {
                         changeDriverStatus(driver.id, '1', driver.email, driver.firstName);
                         handleClose()

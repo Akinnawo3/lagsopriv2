@@ -30,7 +30,7 @@ const Upload = ({getAdmins, oncloseModal}) => {
         try {
             setLoading(true)
           await  Promise.all(result2.map(driver =>
-              axios.post('http://165.22.116.11:8090/api/admin/', driver)
+              axios.post(`${api.admins}/api/admin/`, driver)
             ))
             setLoading(false)
             await oncloseModal()

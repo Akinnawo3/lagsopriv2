@@ -1,71 +1,77 @@
 import React, {useEffect, useState} from 'react';
-import { Form, FormGroup, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter, Badge } from 'reactstrap';
-import AssignForm from "Routes/drivers/components/assignForm";
+import {Badge, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
 import Button from "@material-ui/core/Button";
-import {deleteTicketType, getTicketTypes, getTicketTypes2, updateTicketType} from "Actions/ticketTypeAction";
-import {getSupport, getSupport2, updateSupport} from "Actions/supportAction";
 import {connect} from "react-redux";
 import {Helmet} from "react-helmet";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import {getFdtDetails} from "Actions/fdtActions";
+import Spinner from "../../spinner/Spinner";
 
 
 
-const ScheduleDetails = ({getTicketTypes, getSupport, ticketTypes, support, match, updateSupport})=> {
-    const [supportDetails, setSupportDetails] = useState({})
-    const [tickets, setTickets] = useState('')
-    const [formData, setFormData] = useState({status: ''})
+const ScheduleDetails = ({getFdtDetails, match, fdtDetails, loading})=> {
 
-    const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
-
-    const {status} = formData
 
 
     useEffect(()=> {
-        getSupport()
-        getTicketTypes();
-    },[])
-
-    useEffect(()=> {
-        if (support && match.params.id){
-            support.map(sup=> {
-                if(sup.id == match.params.id){
-                    setSupportDetails(sup)
-                    setFormData({status: sup.status})
-                }
-            })
+        if (match.params.id){
+            getFdtDetails(match.params.id)
         }
-    },[support, match.params.id])
+    },[match.params.id])
 
 
-    useEffect(()=> {
-        if(support.length > 0) {
-            ticketTypes.map(ticket => {
-                if(ticket.id == supportDetails.ticket_id) {
-                   setTickets(ticket.name)
-                }
-            })
+    const getStatus = (id) => {
+        if(id == 0) {
+            return (
+                <Badge color="warning">Pending</Badge>
+            )
+        }else if(id == 1) {
+            return (
+                <Badge color="Success">Completed</Badge>
+            )
+        }else if(id == 2) {
+            return (
+                <Badge color="danger">Cancelled</Badge>
+            )
+        }else {
+            return (
+                ''
+            )
         }
-    }, [supportDetails.ticket_id])
-
-    // const [anchorEl, setAnchorEl] = useState(null);
-    const [addNewUserModal, setAddNewUserModal] = useState(false)
-
-    const opnAddNewUserModal = () => {
-        // e.preventDefault();
-        setAddNewUserModal(true)
     }
 
-
-
-    const onAddUpdateUserModalClose = () => {
-        setAddNewUserModal(false);
+    const getClassTrip = (id) => {
+        if(id == 1) {
+            return (
+               'Class A'
+            )
+        }else if(id == 2) {
+            return (
+               'Class B'
+            )
+        }else if(id == 3) {
+            return (
+                'Class C'
+            )
+        }else {
+            return (
+                'Class D'
+            )
+        }
     }
 
-    const onSubmit = async (e) => {
-        e.preventDefault();
-        updateSupport(supportDetails.id, status)
-        onAddUpdateUserModalClose()
-    };
+    const getPosition = (id) => {
+        if(id === 0) {
+            return '-10px'
+        }else if(id ===1) {
+            return '-15px'
+        }else if(id ===2) {
+            return '-20px'
+        }else if(id ===3) {
+            return '-25px'
+        }
+    }
+
 
 
     return (
@@ -75,7 +81,8 @@ const ScheduleDetails = ({getTicketTypes, getSupport, ticketTypes, support, matc
                 <meta name="description" content="Ticket Details" />
             </Helmet>
             <PageTitleBar title={`Schedule details`} match={match}  />
-            <div className="row" style={{minHeight: '90vh'}}>
+            {loading && <Spinner />}
+            {!loading && <div className="row" style={{minHeight: '70vh'}}>
                 <div className="col-sm-6">
                     <div className="tab-content">
                         <div className="tab-pane active" id="home">
@@ -84,99 +91,77 @@ const ScheduleDetails = ({getTicketTypes, getSupport, ticketTypes, support, matc
                                     Trip Details
                                 </div>
                                 <div style={{marginLeft: '50px'}}>
-                                    <Badge color="warning">Pending</Badge>
+                                    {getStatus(fdtDetails.fdtStatus)}
                                 </div>
                             </div>
                             <div className="p-4">
                                 <div className="scheduleHeader">
-                                    Yesterday, 5:00pm <span className="ml-3">Class D</span>
+                                    {fdtDetails['dates']} <span className="ml-3">{getClassTrip(fdtDetails.classTrip)}</span>
                                 </div>
+
                                 <div className="schedulePickup mt-4">
                                     Pick up location
                                 </div>
                                 <div className="scheduleHeader mt-3">
-                                    Civic centre Civic centre..
+                                    {fdtDetails.pickupAddress}
                                 </div>
                                 <div className="schedulePickup mt-4">
                                     Drop off location
                                 </div>
                                 <div className="scheduleHeader mt-3">
-                                    Oshodi Oshodi Oshodi....
+                                    {fdtDetails.dropoffAddress}
                                 </div>
                                 <div className="schedulePickup mt-4">
                                     Riders
                                 </div>
                                 <div className="mt-3">
-                                    <img
-                                        src={require('Assets/img/black-linear-studios-zVa0taIta_0-unsplash 1.png')}
+                                    {fdtDetails.joinedBy &&
+                                    <div className='d-flex'>
+                                            <img
+                                                src={require('Assets/avatars/avatar.png')}
+                                                // alt="user profile"
+                                                className="img-fluid rounded-circle"
+                                                width="32"
+                                                height="32"
+                                            />
+                                        {Object.keys(JSON.parse(fdtDetails.joinedBy)).map((record, index) => (
+                                            // <div  key={record}>
+                                                <img  key={record}
+                                                    src={require('Assets/avatars/avatar.png')}
+                                                    // alt="user profile"
+                                                    className="img-fluid rounded-circle"
+                                                    width="32"
+                                                    height="32"
+                                                    style={{marginLeft: getPosition(index)}}
+                                                />
+                                            // </div>
+                                        ))}
+                                    </div>}
+                                    {!fdtDetails.joinedBy && <img
+                                        src={require('Assets/avatars/avatar.png')}
                                         // alt="user profile"
                                         className="img-fluid rounded-circle"
                                         width="32"
                                         height="32"
-                                    />
-                                    <img
-                                        src={require('Assets/img/black-linear-studios-zVa0taIta_0-unsplash 2.png')}
-                                        // alt="user profile"
-                                        className="img-fluid rounded-circle"
-                                        width="32"
-                                        height="32"
-                                        style={{marginLeft: '-10px'}}
-                                    />
-                                    <img
-                                        src={require('Assets/img/black-linear-studios-zVa0taIta_0-unsplash 2.png')}
-                                        // alt="user profile"
-                                        className="img-fluid rounded-circle"
-                                        width="32"
-                                        height="32"
-                                        style={{marginLeft: '-10px'}}
-                                    />
-                                    <img
-                                        src={require('Assets/img/black-linear-studios-zVa0taIta_0-unsplash 2.png')}
-                                        // alt="user profile"
-                                        className="img-fluid rounded-circle"
-                                        width="32"
-                                        height="32"
-                                        style={{marginLeft: '-10px'}}
-                                    />
+                                    />}
                                     <div className="d-flex align-items-center justify-content-between">
-                                        <div className="scheduleHeader mt-4">
-                                            1 of <span className="schedulePickup">4</span>
-                                        </div>
+                                        {fdtDetails.joinedBy ?
+                                            <div className="scheduleHeader mt-4">
+                                                {Object.keys(JSON.parse(fdtDetails.joinedBy)).length + 1} of <span className="schedulePickup">{fdtDetails.classTrip}</span>
+                                            </div>:
+                                            <div className="scheduleHeader mt-4">
+                                                1 of <span className="schedulePickup">{fdtDetails.classTrip}</span>
+                                            </div>}
                                         <Button type="button" variant="contained" className="text-white btn-primary">Trigger trip suggestion</Button>
 
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <Modal isOpen={addNewUserModal} toggle={() => onAddUpdateUserModalClose()}>
-                            <ModalHeader toggle={() => onAddUpdateUserModalClose()}>
-                                Update Ticket Status
-                            </ModalHeader>
-                            <ModalBody>
-                                <Form onSubmit={onSubmit}>
-                                    <FormGroup>
-                                        <Label for="phoneNumber">status </Label>
-                                        <Input type="select"  name="status" value={status} onChange={onChange}  required>
-                                            <option value="1">New</option>
-                                            <option value="2">Opened</option>
-                                            <option value="3">In-progress</option>
-                                            <option value="4">Closed</option>
-                                            <option value="5">Unresolved</option>
-                                        </Input>
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <Label>Reply </Label>
-                                        <Input type="textarea"  name="education"   />
-                                    </FormGroup>
-                                    <Button type="submit" variant="contained" className="text-white btn-success">Submit</Button>
-
-                                </Form>
-                            </ModalBody>
-                        </Modal>
                     </div>
                 </div>
 
-            </div>
+            </div>}
         </div>
     );
 
@@ -184,17 +169,12 @@ const ScheduleDetails = ({getTicketTypes, getSupport, ticketTypes, support, matc
 
 function mapDispatchToProps(dispatch) {
     return {
-        getTicketTypes: () => dispatch(getTicketTypes2()),
-        getSupport: () => dispatch(getSupport2()),
-        updateSupport: (id, status) => dispatch(updateSupport(id, status)),
-        updateTicketType: (id, name) => dispatch(updateTicketType(id, name)),
-        deleteTicketType: (id) => dispatch(deleteTicketType(id)),
+        getFdtDetails: (id) => dispatch(getFdtDetails(id)),
     };
 }
 
 const mapStateToProps = state => ({
-    support: state.support.support,
-    ticketTypes: state.ticketTypes.ticketTypes,
+    fdtDetails: state.fdt.fdtDetails,
     loading: state.loading.loading,
     loadingStatus: state.loading.loadingStatus
 

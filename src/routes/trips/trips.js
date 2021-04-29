@@ -1,5 +1,5 @@
 /**
- * Basic Table
+ * Trips
  */
 import React, { useState, useEffect, Fragment } from 'react';
 import Table from '@material-ui/core/Table';
@@ -8,105 +8,38 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { Media, Badge } from 'reactstrap';
-// import IconButton from '@material-ui/core/IconButton';
-import StarRatings from 'react-star-ratings';
-// api
-import api from 'Api';
-
-// page title bar
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
-
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
-
-// rct card box
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import ViewBtn from "Routes/trips/components/viewBtn";
-import Button from "@material-ui/core/Button";
-import {
-	Modal,
-	ModalHeader,
-	ModalBody,
-	ModalFooter,
+import {connect} from "react-redux";
+import {getTripCount, getTrips} from "Actions/tripAction";
+import Spinner from "../../spinner/Spinner";
+import {Link} from "react-router-dom";
+import Pagination from "react-js-pagination";
 
-} from 'reactstrap';
-import AddNewDriverForm from "Routes/drivers/components/addNewdriverForm";
-import IconButton from "@material-ui/core/IconButton";
 
-// For Basic Table
-let id = 0;
-
-function createData(name, calories, fat, carbs, protein) {
-	id += 1;
-	return { id, name, calories, fat, carbs, protein };
-}
-
-const data = [
-	createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-	createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-	createData('Eclair', 262, 16.0, 24, 6.0),
-	createData('Cupcake', 305, 3.7, 67, 4.3),
-	createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
-const  Trips = ({match}) => {
-	const [employeePayroll, setEmployeePayroll] = useState(null)
-	const [addNewUserModal, setAddNewUserModal] = useState(false)
-	const [editUser, setEditUser] = useState(null)
-	const [addNewUserDetail, setAddNewUserDetail] = useState({
-		id: '',
-		name: '',
-		avatar: '',
-		type: '',
-		emailAddress: '',
-		status: 'Active',
-		lastSeen: '',
-		accountType: '',
-		badgeClass: 'badge-success',
-		dateCreated: 'Just Now',
-		checked: false
-	})
+const  Trips = ({match, trips, getTrips, isLoading, getTripCount, tripCount}) => {
+	const [currentPage, setCurrentPage] = useState(1);
+	const [postsPerPage] = useState(10);
 
 useEffect(()=> {
-	getEmployeePayrolls();
+	getTrips(1);
+	getTripCount()
 	},[])
 
 
+	const paginate = pageNumber => {
+		setCurrentPage(pageNumber);
+		getTrips(pageNumber);
+		window.scrollTo(0, 0);
+	};
 
-	// get employee payrols
-const getEmployeePayrolls = () => {
-		api.get('employeePayrols.js')
-			.then((response) => {
-				setEmployeePayroll(response.data)
-			})
-			.catch(error => {
-				// error handling
-			})
-	}
-
-	const opnAddNewUserModal = (e) => {
-		e.preventDefault();
-		setAddNewUserModal(true)
-	}
-
-	const onChangeAddNewUserDetails = (key, value) => {
-			setAddNewUserDetail({...addNewUserDetail, [key]: value})
-	}
-
-	const onUpdateUserDetails = (key, value) => {
-		setEditUser({...editUser, [key]: value})
-	}
-
-	const onAddUpdateUserModalClose = () => {
-		setAddNewUserModal(false);
-		setEditUser(null);
-	}
 
 
 	return (
 			<div className="table-wrapper">
 				<PageTitleBar title={"Trips"} match={match} />
-				<RctCollapsibleCard heading="All Trips" fullBlock>
+				{isLoading && <Spinner />}
+				{!isLoading && <RctCollapsibleCard heading="All Trips" fullBlock>
 					<div className="float-right">
 						<a href="#" onClick={e => e.preventDefault()} className="btn-sm btn-outline-default mr-10">Export to Excel</a>
 						{/*<a href="#" onClick={(e) => opnAddNewUserModal(e)} color="primary" className="caret btn-sm mr-10">Add New Driver <i className="zmdi zmdi-plus"></i></a>*/}
@@ -116,12 +49,8 @@ const getEmployeePayrolls = () => {
 							<TableHead>
 								<TableRow hover>
 									<TableCell>Trip Id</TableCell>
-									<TableCell>Full Name</TableCell>
-									<TableCell>Pick Up</TableCell>
-									<TableCell>Drop Off</TableCell>
-									<TableCell>Booking Date/Time</TableCell>
+									<TableCell>Date/Time</TableCell>
 									<TableCell>Class</TableCell>
-									<TableCell>Type</TableCell>
 									<TableCell>Status</TableCell>
 									{/*<TableCell>Ratings</TableCell>*/}
 									<TableCell>Action</TableCell>
@@ -129,37 +58,31 @@ const getEmployeePayrolls = () => {
 							</TableHead>
 							<TableBody>
 								<Fragment>
-									{employeePayroll && employeePayroll.map((employee, key) => (
-										<TableRow hover key={key}>
+									{trips.length > 0 && trips.map((trip) => (
+										<TableRow hover key={trip._id}>
 											<TableCell>
 												<Media>
 													{/*<Media left>*/}
 													{/*	<Media object src={employee.employeeAvatar} alt="User Profile 1" className="rounded-circle mr-20" width="40" height="40" />*/}
 													{/*</Media>*/}
-													<Media body><h5 className="m-0 pt-15">AD12</h5></Media>
+													<Media body><h5 className="m-0 pt-15">{trip._id}</h5></Media>
 												</Media>
 											</TableCell>
-											<TableCell>Mike Dean</TableCell>
-											<TableCell>Ajah</TableCell>
 											<TableCell>
-												Lekki
+												{new Date(trip.createdAt).toDateString()} {new Date(trip.createdAt).toLocaleTimeString()}
 											</TableCell>
 											<TableCell>
-												5/12/2020 1:30pm
+												{trip.ride_class}
 											</TableCell>
+											<TableCell><Badge
+												color={trip.ride_status === 'completed' ? "success" : trip.ride_status === 'cancel' ? 'danger' : trip.ride_status === 'waiting' ? 'warning' : 'secondary'}>
+												{trip.ride_status === 'on_trip' ? 'current' : trip.ride_status === 'on_pickup' ? 'on route' : trip.ride_status}
+											</Badge></TableCell>
 											<TableCell>
-												A
-											</TableCell>
-											<TableCell>
-												FDT
-											</TableCell>
-											{employee.status === 1 ?
-												<TableCell><Badge color="success">Completed</Badge></TableCell>
-												: <TableCell><Badge color="danger">Cancelled</Badge></TableCell>
-											}
-											<TableCell>
+												<button type="button" className="rct-link-btn text-primary" title="view details"><Link to={`/admin/trips/${trip._id}`}><i className="ti-eye"/></Link></button>
+
 												{/*<ViewBtn />*/}
-												<IconButton className="text-primary" title="View Trip Details"><i className="ti-eye"></i></IconButton>
+												{/*<IconButton className="text-primary" title="View Trip Details"><i className="ti-eye"><Link to={`/admin/trips/${trip._id}`}><i className="ti-eye"/></Link></i></IconButton>*/}
 											</TableCell>
 										</TableRow>
 									))}
@@ -167,10 +90,35 @@ const getEmployeePayrolls = () => {
 							</TableBody>
 						</Table>
 					</div>
-				</RctCollapsibleCard>
+					<div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
+						{trips.length > 0 &&
+						<Pagination
+							activePage={currentPage}
+							itemClass="page-item"
+							linkClass="page-link"
+							itemsCountPerPage={postsPerPage}
+							totalItemsCount={tripCount?.total}
+							onChange={paginate}
+						/>}
+					</div>
+				</RctCollapsibleCard>}
 			</div>
 		);
 
 }
 
-export default Trips;
+function mapDispatchToProps(dispatch) {
+	return {
+		getTrips: (pageNo) => dispatch(getTrips(pageNo)),
+		getTripCount: () => dispatch(getTripCount()),
+	};
+}
+
+
+const mapStateToProps = state => ({
+	trips: state.trips.trips,
+	tripCount: state.trips.tripCount,
+	isLoading: state.loading.loading,
+});
+
+export default connect( mapStateToProps, mapDispatchToProps) (Trips);

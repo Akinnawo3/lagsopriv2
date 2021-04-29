@@ -1,5 +1,5 @@
 import  axios from 'axios'
-import {DRIVERS} from "Actions/types";
+import {DRIVERS, DRIVER} from "Actions/types";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "Actions/loadingAction";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
@@ -23,15 +23,12 @@ import api from "../environments/environment";
 
 export const getDrivers2 = () => async dispatch => {
   try {
-    // dispatch(startStatusLoading)
     const res = await axios.get(`${api.drivers}/api/driver/`);
     dispatch({
       type: DRIVERS,
       payload: res.data
     });
-    // dispatch(endStatusLoading())
   } catch (err) {
-    // dispatch(endStatusLoading())
     NotificationManager.error(err.response.data.result)
   }
 };
@@ -76,7 +73,7 @@ export const  changeDriverStatus= (id, status, emailAddress, driverName) => asyn
             Your request to join LagosRide has been accepted. You can go ahead to make payments for the 10% of the cost of vehicle to start earning.
             Make payments, and go back to your account profile to upload your payment receipt.
             Thank you for choosing LagosRide.`, subject: 'driver accepted', typeEmail: 'gmail'}
-      await axios.post('http://212.71.246.199:7004/api/me/mail/', mail)
+      await axios.post('http://134.209.16.20:7065/api/me/mail/', mail)
     }
     dispatch(endStatusLoading())
   } catch (err) {
@@ -92,6 +89,22 @@ export const deleteDriver = (id) => async dispatch => {
     await dispatch(getDrivers());
   } catch (err) {
     NotificationManager.error(err.response.data.result);
+  }
+};
+
+
+export const getDriverByAuthId = (authId) => async dispatch => {
+  try {
+    dispatch(startLoading());
+   const res = await axios.get(`${api.drivers}/api/get/auth/${authId}/`)
+    dispatch({
+      type: DRIVER,
+      payload: res.data
+    });
+    dispatch(endLoading());
+  } catch (err) {
+    dispatch(endLoading());
+    console.log(err)
   }
 };
 

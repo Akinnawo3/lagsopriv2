@@ -166,12 +166,6 @@ const  Drivers = ({match,getDrivers, drivers, createDrivers, isLoading, getVehic
 			lastName: 'Deo',
 			email: 'jofvbdssqehsfdddwedhpdsddndeo@gmail.com',
 			phoneNumber: "11232314320345678989"
-		},
-		{
-			firstName: 'Johnd',
-			lastName: 'Deo',
-			email: 'jowwwhasaxfwsddwddwsddsddndeo@gmail.com',
-			phoneNumber: "2222252345678989"
 		}
 	]
 

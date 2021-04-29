@@ -17,7 +17,7 @@ import {
    AsyncTaxiRatings,
    AsyncGooleMapsComponent,
    AsyncSupport,
-   AsyncAnalytics, AsyncEmergency, AsyncUsers, AsyncAreas, AsyncSchedule
+   AsyncAnalytics, AsyncEmergency, AsyncUsers, AsyncAreas, AsyncSchedule, AsyncVoucher, AsyncReferral, AsyncRevenueSplit
 } from 'Components/AsyncComponent/AsyncComponent';
 import DriverRoutes from "Routes/drivers/driverRoutes";
 import VehicleRoutes from "Routes/vehicles/vehicleRoutes";
@@ -28,6 +28,9 @@ import PassengerRoutes from "Routes/passengers/passengerRoutes";
 import EmergencyRoutes from "Routes/emergency/emergencyRoutes";
 import SupportRoutes from "Routes/support/supportRoutes";
 import ScheduleRoutes from "Routes/schedule/scheduleRoutes";
+import ReferralRoutes from "Routes/referral/referralRoutes";
+import FdtRoutes from "Routes/fdt/fdtRoutes";
+import TripRoutes from "Routes/trips/tripsRoutes";
 
 
 export default [
@@ -60,6 +63,18 @@ export default [
       component: AsyncFees
    },
    {
+      path: 'voucher',
+      component: AsyncVoucher
+   },
+   {
+      path: 'referral',
+      component: ReferralRoutes
+   },
+   {
+      path: 'revenue',
+      component: AsyncRevenueSplit
+   },
+   {
       path: 'promo-discounts',
       component: AsyncPromoDiscount
    },
@@ -77,7 +92,7 @@ export default [
    },
    {
       path: 'trips',
-      component: AsyncTrips
+      component: TripRoutes
    },
    {
       path: 'vehicles',
@@ -94,6 +109,10 @@ export default [
    {
       path: 'schedule',
       component: ScheduleRoutes
+   },
+   {
+      path: 'fdt',
+      component: FdtRoutes
    },
    {
       path: 'driver-ratings',

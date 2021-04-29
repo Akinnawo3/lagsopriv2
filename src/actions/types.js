@@ -35,6 +35,7 @@ export const SIGNUP_USER_FAILURE = 'SIGNUP_USER_FAILURE';
 
 //driver
 export const DRIVERS = "DRIVERS"
+export const DRIVER = "DRIVER"
 
 
 //vehicle
@@ -50,6 +51,7 @@ export const LOADING_STATUS_START = "LOADING_STATUS_START"
 export const LOADING_STATUS_END = "LOADING_STATUS_END"
 
 export const PASSENGERS = "PASSENGERS"
+export const PASSENGER = "PASSENGER"
 
 //class Types
 export const CLASS_TYPE = "CLASS_TYPE"
@@ -68,3 +70,17 @@ export const AREAS = 'AREAS'
 
 export const TICKET_TYPE = 'TICKET_TYPE'
 export const SUPPORT = 'SUPPORT'
+
+export const PASSENGER_RATING = 'PASSENGER_RATING'
+export const DRIVER_RATING = 'DRIVER_RATING'
+export const RATING = 'RATING'
+export const RATING_AVERAGE = 'RATING_AVERAGE'
+export const FDT = 'FDT'
+export const SCHEDULE = 'SCHEDULE'
+export const FDT_DETAILS = 'FDT_DETAILS'
+export const TRIPS = 'TRIPS'
+export const TRIP_COUNT = 'TRIP_COUNT'
+export const DRIVER_TRIPS = 'DRIVER_TRIPS'
+export const TRIP_COUNT_DRIVER = 'TRIP_COUNT_DRIVER'
+export const SOS = 'SOS'
+
