@@ -15,14 +15,10 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 
 import {
 	VisitorAreaChartWidget,
-	SalesAreaChartWidget,
-	OrdersAreaChartWidget,
 	SupportRequest,
 	OverallTrafficStatusWidget,
-	OnlineVisitorsWidget,
 	TodayOrdersStatsWidget,
 	BookingInfo,
-	NewOrderCountdown,
 	FollowersWidget,
 } from "Components/Widgets";
 
@@ -124,7 +120,7 @@ export default class HomeDashboard extends Component {
 									{/*<OnlineVisitorsWidget />*/}
 								</div>
 								<FollowersWidget />
-								<NewOrderCountdown />
+								{/*<NewOrderCountdown />*/}
 							</div>
 						</div>
 					</div>
