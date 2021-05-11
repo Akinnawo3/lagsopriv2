@@ -32,7 +32,7 @@ import {
 import GoogleMapComponent from "../../../components/Maps/GoogleMapComponent";
 import GoogleMapComponentUser from "Components/Maps/GoogleMapComponentUsers";
 import VehicleChart from "Components/Widgets/VehicleChart";
-import DriverChart from "Components/Widgets/DriverChart";
+import DriverChart from "../../../components/Widgets/VehicleChart";
 
 export default class HomeDashboard extends Component {
 	render() {
@@ -51,19 +51,7 @@ export default class HomeDashboard extends Component {
 					<div className="col-sm-12 col-md-6 w-xs-half-block">
 						<GoogleMapComponentUser />
 					</div>
-						{/*<RctCollapsibleCard*/}
-						{/*	colClasses="col-sm-12 col-md-4 col-lg-4 w-xs-full"*/}
-						{/*	heading={<IntlMessages id="widgets.trips" />}*/}
-						{/*	// collapsible*/}
-						{/*	// reloadable*/}
-						{/*	// closeable*/}
-						{/*	fullBlock*/}
-						{/*	customClasses="overflow-hidden"*/}
-						{/*>*/}
-						{/*	<SupportRequest />*/}
-						{/*</RctCollapsibleCard>*/}
-
-				</div>
+						</div>
 				<div className="row">
 					<div className="col-sm-6 col-md-4 w-xs-half-block">
 						<VisitorAreaChartWidget

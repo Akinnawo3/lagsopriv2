@@ -13,7 +13,7 @@ import QueueAnim from 'rc-queue-anim';
 import { Fab } from '@material-ui/core';
 
 // components
-import { SessionSlider } from 'Components/Widgets';
+// import { SessionSlider } from 'Components/Widgets';
 
 // app config
 import AppConfig from 'Constants/AppConfig';
@@ -119,9 +119,9 @@ class SignupFirebase extends Component {
                               <p><Link to="/terms-condition" className="text-muted">Terms of Service</Link></p>
                            </div>
                         </div>
-                        <div className="col-sm-5 col-md-5 col-lg-4">
-                           <SessionSlider />
-                        </div>
+                        {/*<div className="col-sm-5 col-md-5 col-lg-4">*/}
+                        {/*   <SessionSlider />*/}
+                        {/*</div>*/}
                      </div>
                   </div>
                </div>

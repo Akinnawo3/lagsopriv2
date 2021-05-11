@@ -39,6 +39,11 @@ const TodayOrdersStatsWidget = Loadable({
    loading: MyLoadingComponent
 })
 
+const VehicleChartWidget = Loadable({
+   loader: () => import("./VehicleChart"),
+   loading: MyLoadingComponent
+})
+
 
 
 
@@ -53,4 +58,5 @@ export {
    VisitorAreaChartWidget,
    OverallTrafficStatusWidget,
    TodayOrdersStatsWidget,
+   VehicleChartWidget
 }

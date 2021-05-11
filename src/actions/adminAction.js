@@ -7,7 +7,7 @@ import api from "../environments/environment";
 export const createAdmin = (password, first, last, email, phone) => async dispatch => {
   try {
     await dispatch(startLoading());
-    const res = await axios.post(`${api.auth}/admin/users/`, {username:email, password: 'password'})
+    const res = await axios.post(`${api.auth}/admin/users/`, {email, password: 'password', phoneNumber: phone})
     if(res.data) {
       const authId = res.data.auth_id
       const body = {authId, password, first, last, email, phone}
