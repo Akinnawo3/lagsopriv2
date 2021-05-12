@@ -29,7 +29,7 @@ useEffect(()=> {
 
 	const paginate = pageNumber => {
 		setCurrentPage(pageNumber);
-		getTrips(pageNumber);
+		getTrips(pageNumber, 'completed');
 		window.scrollTo(0, 0);
 	};
 

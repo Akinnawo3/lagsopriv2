@@ -32,7 +32,7 @@ import {
 import GoogleMapComponent from "../../../components/Maps/GoogleMapComponent";
 import GoogleMapComponentUser from "Components/Maps/GoogleMapComponentUsers";
 import VehicleChart from "Components/Widgets/VehicleChart";
-import DriverChart from "../../../components/Widgets/VehicleChart";
+import DriverChart from "Components/Widgets/DriverChart";
 
 export default class HomeDashboard extends Component {
 	render() {
