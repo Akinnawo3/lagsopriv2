@@ -1,8 +1,58 @@
-import React from 'react';
+import React, {useState, useCallback, useEffect, useRef} from 'react';
+import {Badge, ModalHeader, Modal, ModalBody, Form, FormGroup, Label, Input, ModalFooter} from "reactstrap";
+import Button from "@material-ui/core/Button";
+import {getStatus, getStatusColor} from "Helpers/helpers";
+import {changeDriverStatus} from "Actions/driverAction";
+import {connect} from "react-redux";
+import {assignVehicleOnProfile} from "Actions/vehicleAction";
+import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
+import {Link} from "react-router-dom";
+
+
+const DriverProfile = ({driver, changeDriverStatus, loadingStatus, vehicles, assignVehicle, vehicleDetails})=> {
+    const [isViewerOpen, setIsViewerOpen] = useState(false);
+    const [addVehicleModal, setAddVehicleModal] = useState(false)
+    const [vehicleData, setVehicleData] = useState({})
+    const inputEl = useRef(null);
+    const [formData, setFormData] = useState({
+        firstname: driver?.first_name, lastname: driver?.last_name,  email: driver?.email, vehicle: ""
+    });
+    const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+    const {vehicle} = formData;
+
+    const openImageViewer = useCallback(index => {
+        setIsViewerOpen(true);
+    }, []);
+
+    const opnAddVehicleModal = () => {
+        setAddVehicleModal(true)
+    }
 
 
 
-const DriverProfile = ({driver})=> {
+    const onAddVehicleModalClose = () => {
+        setAddVehicleModal(false);
+    }
+
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        onAddVehicleModalClose()
+      await  assignVehicle(vehicle, driver?.auth_id, driver, vehicleData, '5M',)
+
+    };
+
+    const onSuspend = () => {
+        inputEl.current.open();
+    }
+
+    useEffect(() => {
+       if(vehicle && vehicles.length > 0)  {
+         const vehicleValue =  vehicles.find(element => element.vehicle_id === vehicle)
+           setVehicleData(vehicleValue)
+       }
+    },[vehicle])
+
 
     return (
         <div className="row" style={{fontSize: '0.8rem'}}>
@@ -11,70 +61,227 @@ const DriverProfile = ({driver})=> {
                     <div className="tab-pane active" id="home">
                         <ul className="list-group">
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>DMS Id</strong></span>{driver.dms_id}
+                                className="pull-left"><strong>DMS Id</strong></span>{driver?.driver_data?.dms_id}
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>First name</strong></span>{driver.firstName? driver.firstName: 'not available'}
+                                className="pull-left"><strong>First name</strong></span>{driver?.first_name}
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>Last name</strong></span>{driver.lastName? driver.lastName: 'not available'}
+                                className="pull-left"><strong>Last name</strong></span>{driver?.last_name}
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>phone number</strong></span>{driver.phoneNumber? '0' + driver.phoneNumber.substr(4): 'not available'}
+                                className="pull-left"><strong>Phone Number</strong></span>{driver?.phone_number}
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>Residential Address</strong></span>{driver.residentialAddress? driver.residentialAddress: 'not available'}
+                                className="pull-left"><strong>Residential Address</strong></span>{driver?.home_address}
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>Email</strong></span>{driver.email? driver.email: 'not available'}
+                                className="pull-left"><strong>Email</strong></span>{driver.email}
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>State of Origin</strong></span>{driver.stateOfOrigin? driver.stateOfOrigin: 'not available'}
+                                className="pull-left"><strong>State of Origin</strong></span>{driver?.state}
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>Date of birth</strong></span>{driver.dateOfBirth? driver.dateOfBirth: 'not available'}
+                                className="pull-left"><strong>Date of Birth</strong></span>{driver?.dob}
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>Eye Glass</strong></span>{driver.eyeGlasses? driver.eyeGlasses: 'not available'}
+                                className="pull-left"><strong>Blood Group</strong></span>{driver?.blood_group}
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>Blood Group</strong></span>{driver.bloodGroup? driver.bloodGroup: 'not available'}
-                            </li>
-                            {/*{(driver.facialMark && driver.facialMark == 0) && <li className="list-group-item text-right"><span*/}
-                            {/*    className="pull-left"><strong>Facial Marks</strong></span>{driver.facialMark == 0? 'Yes': 'not available'}*/}
-                            {/*</li>}*/}
-                            {/*{(driver.facialMark && driver.facialMark == 1) && <li className="list-group-item text-right"><span*/}
-                            {/*    className="pull-left"><strong>Facial Marks</strong></span>{driver.facialMark == 1? 'No': 'not available'}*/}
-                            {/*</li>}*/}
-                            <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>Disability</strong></span>{driver.disability? driver.disability: 'not available'}
+                                className="pull-left"><strong>Eye Glasses</strong></span>{driver?.driver_data?.eye_glasses === 0 ? 'No' : 'Yes'}
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>Driving license</strong></span>{driver.licenseNo? driver.licenseNo: 'not available'}
+                                className="pull-left"><strong>Facial Mark</strong></span>{driver?.driver_data?.facial_mark === 0 ? 'No' : 'Yes'}
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>NIN</strong></span>{driver.nin? driver.nin: 'not available'}
+                                className="pull-left"><strong>Disability</strong></span>{driver?.driver_data?.disability === 0 ? 'No' : 'Yes'}
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>LASDRI ID</strong></span>{driver.lasdriId? driver.lasdriId: 'not available'}
+                                className="pull-left"><strong>Driving License</strong></span>{driver?.driver_data?.license_id}
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>Payment receipt</strong></span> <img
-                                src={driver.receiptUrl}
-                                alt="receipt"
-                                className="img-fluid"
-                                width="150"
-                                height="150"
-                            />
+                                className="pull-left"><strong>LASDRI ID</strong></span>{driver?.driver_data?.lasdri_id}
+                            </li>
+                            {(driver?.driver_data?.vehicle_id === vehicleDetails?.vehicle_id) &&
+                                <>
+                                    <li className="list-group-item text-right"><span
+                                        className="pull-left"><strong>Vehicle Plate No</strong></span><Link to={`/admin/vehicles/${vehicleDetails?.vehicle_id}`}>{vehicleDetails?.car_number_plate}</Link>
+                                    </li>
+                                    <li className="list-group-item text-right"><span
+                                        className="pull-left"><strong>Vehicle Modal</strong></span>{vehicleDetails?.car_make}
+                                    </li>
+                                    <li className="list-group-item text-right"><span
+                                        className="pull-left"><strong>Vehicle Year</strong></span>{vehicleDetails?.car_model}
+                                    </li>
+                                    {/*<li className="list-group-item text-right"><span*/}
+                                    {/*    className="pull-left"><strong>Vehicle Description</strong></span>{vehicleDetails?.car_desc}*/}
+                                    {/*</li>*/}
+                                </>
+                            }
+                            <li className="list-group-item text-right"><span
+                                className="pull-left"><strong>Status</strong></span><Badge color={getStatusColor(driver?.driver_data?.driver_status)}>{getStatus(driver.driver_data?.driver_status)}</Badge>
+
+                            </li>
+                            <li className="list-group-item text-right"><span
+                                className="pull-left"><strong>App Status</strong></span><Badge color={driver?.driver_data?.online ? 'success': 'danger'}>{driver?.driver_data?.online ? 'Online': 'Offline'}</Badge>
+
+                            </li>
+                            <li className="list-group-item">
+                                <span  className="pull-left d-flex">
+                                    {driver?.driver_data?.driver_status ===  0 &&
+                                    <div className='text-center'>
+                                        <Button disabled={loadingStatus} onClick={()=> {changeDriverStatus(driver?.auth_id, '1', driver, '3M', 'Driver Accepted')}} className="bg-primary mt-3 text-white">Accept Driver</Button>
+                                    </div>}
+                                     {driver?.driver_data?.driver_status ===  1 &&
+                                     <div className='text-center'>
+                                         <Button disabled={loadingStatus} onClick={()=> {changeDriverStatus(driver?.auth_id, '2', driver, '4M', 'Driver Approved')}} className="bg-success mt-3 text-white">Approve Driver</Button>
+                                     </div>}
+                                     {driver?.driver_data?.driver_status ===  2 &&
+                                     <div className='text-center'>
+                                         <Button disabled={loadingStatus} onClick={() => onSuspend()} className="bg-danger mt-3 text-white">Suspend Driver</Button>
+                                     </div>}
+                                     {driver?.driver_data?.driver_status ===  3 &&
+                                     <div className='text-center'>
+                                         <Button disabled={loadingStatus} onClick={()=> {changeDriverStatus(driver?.auth_id, '1')}} className="bg-warning mt-3 text-white">Reactivate Driver</Button>
+                                     </div>}
+                                     {driver?.driver_data?.driver_status === 2 && !driver.driver_data?.vehicle_id &&
+                                     <div className='text-center ml-2'>
+                                         <Button disabled={loadingStatus} onClick={()=> {opnAddVehicleModal()}} className="bg-warning mt-3 text-white">Assign Vehicle</Button>
+                                     </div>}
+                                </span>
+
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
+            <div className="col-sm-6 px-4">
+                <div className='text-center px-3 h-50'>
+                   <div className="font-weight-bold">Payment Receipt</div>
+                    <img
+                        onClick={ () => openImageViewer(0) }
+                        src={driver?.driver_data?.receipt_url}
+                        alt="receipt"
+                        className="img-fluid mt-2"
+                        // width="100%"
+                        // height="10%"
+                        style={{width: '100%', height: '100%', objectFit: 'cover', cursor: 'pointer'}}
+                    />
+                </div>
 
+                {/*<div className='d-flex justify-content-end align-items-end'>*/}
+                {/*    {driver?.driver_data?.driver_status ===  0 &&*/}
+                {/*    <div className='text-center ml-2'>*/}
+                {/*        <Button disabled={loadingStatus} onClick={()=> {changeDriverStatus(driver?.auth_id, '1')}} className="bg-primary mt-3 text-white">Accept Driver</Button>*/}
+                {/*    </div>}*/}
+                {/*    {driver?.driver_data?.driver_status ===  1 &&*/}
+                {/*    <div className='text-center ml-2'>*/}
+                {/*        <Button disabled={loadingStatus} onClick={()=> {changeDriverStatus(driver?.auth_id, '2')}} className="bg-success mt-3 text-white">Approve Driver</Button>*/}
+                {/*    </div>}*/}
+                {/*    {driver?.driver_data?.driver_status ===  2 &&*/}
+                {/*    <div className='text-center ml-2'>*/}
+                {/*        <Button disabled={loadingStatus} onClick={() => onSuspend()} className="bg-danger mt-3 text-white">Suspend Driver</Button>*/}
+                {/*    </div>}*/}
+                {/*    {driver?.driver_data?.driver_status ===  3 &&*/}
+                {/*    <div className='text-center ml-2'>*/}
+                {/*        <Button disabled={loadingStatus} onClick={()=> {changeDriverStatus(driver?.auth_id, '1')}} className="bg-warning mt-3 text-white">Reactivate Driver</Button>*/}
+                {/*    </div>}*/}
+                {/*    {driver?.driver_data?.driver_status === 2 && !driver.driver_data?.vehicle_id &&*/}
+                {/*    <div className='text-center ml-2'>*/}
+                {/*        <Button disabled={loadingStatus} onClick={()=> {opnAddVehicleModal()}} className="bg-warning mt-3 text-white">Assign Vehicle</Button>*/}
+                {/*    </div>}*/}
+                {/*</div>*/}
+            </div>
+            <Modal size='lg' isOpen={isViewerOpen} toggle={() => setIsViewerOpen(!isViewerOpen)}>
+                <ModalHeader toggle={() => setIsViewerOpen(!isViewerOpen)}>
+                    Receipt Preview
+                </ModalHeader>
+                         <img
+                            src={driver?.driver_data?.receipt_url}
+                            alt="receipt"
+                        />
+            </Modal>
+            <Modal isOpen={addVehicleModal} toggle={() => onAddVehicleModalClose()}>
+                <ModalHeader toggle={() => onAddVehicleModalClose()}>
+                    Assign Vehicle
+                </ModalHeader>
+                <ModalBody>
+                    <div>
+                        <Form onSubmit={onSubmit}>
+                            <FormGroup>
+                                <Label for="userName">First Name</Label>
+                                <Input
+                                    onChange={onChange}
+                                    readOnly={true}
+                                    type="text"
+                                    name="firstname"
+                                    value={driver?.first_name}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="userName">Last Name</Label>
+                                <Input
+                                    onChange={onChange}
+                                    readOnly={true}
+                                    type="text"
+                                    name="lastname"
+                                    value={driver?.last_name}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="userEmail">Email</Label>
+                                <Input
+                                    onChange={onChange}
+                                    type="email"
+                                    name="email"
+                                    readOnly={true}
+                                    value={driver?.email}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="exampleSelect">Vehicles</Label>
+                                <Input type="select" name="vehicle" onChange={onChange} value={vehicle} required={true}>
+                                    <option value="">Select Vehicle</option>
+                                    {vehicles && vehicles.map(vehicle => (
+                                        <option  key={vehicle.vehicle_id} value={vehicle.vehicle_id}>{vehicle.car_number_plate}</option>
+                                    ))}
+                                </Input>
+                            </FormGroup>
+                            <ModalFooter>
+                                <Button type="submit" variant="contained" className="text-white btn-success">Assign</Button>
+                            </ModalFooter>
+                        </Form>
+                    </div>
+                </ModalBody>
+            </Modal>
+            <DeleteConfirmationDialog
+                ref={inputEl}
+                title="Are You Sure Want To Suspend Driver?"
+                message="This driver will be inactive."
+                onConfirm={() => {
+                    changeDriverStatus(driver?.auth_id, '3');
+                    inputEl.current.close();
+                }}
+            />
         </div>
     );
 
 }
 
-export default DriverProfile
+function mapDispatchToProps(dispatch) {
+    return {
+        changeDriverStatus: (auth_id, driver_status, driverData,  message_type, subject) => dispatch(changeDriverStatus(auth_id, driver_status, driverData, message_type, subject)),
+        assignVehicle: (vehicle_id, driver_auth_id, driverData, vehicleData, message_type) => dispatch(assignVehicleOnProfile(vehicle_id, driver_auth_id, driverData, vehicleData, message_type)),
+
+
+    };
+}
+
+const mapStateToProps = state => ({
+    loadingStatus: state.loading.loadingStatus,
+    vehicles: state.vehicle.vehicles,
+    vehicleDetails: state.vehicle.vehicleDetails,
+});
+
+
+export default connect( mapStateToProps, mapDispatchToProps) (DriverProfile)

@@ -1,52 +1,132 @@
 import  axios from 'axios'
-import {SOS} from "Actions/types";
-import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "Actions/loadingAction";
+import {SOS, SOS_COUNT, SOS_DETAILS, SOS_USER_DETAILS, SOS_NUMBERS} from "./types";
+import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 
 
 
-  export const getSOS = () => async dispatch => {
+  export const getSOS = (page_no, spinner) => async dispatch => {
   try {
-    dispatch(startLoading());
-    const res = await axios.get(`${api.sos}/api/sos/`);
-    dispatch({
-      type: SOS,
-      payload: res.data
-    });
+  spinner &&  dispatch(startLoading());
+  !spinner && dispatch(startStatusLoading())
+    const res = await axios.get(`${api.sos}/api/v1.1/sos/?page_no=${page_no}&no_per_page=20`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      dispatch({
+        type: SOS,
+        payload: res.data.data
+      });
+    }
     dispatch(endLoading());
+    dispatch(endStatusLoading())
   } catch (err) {
     dispatch(endLoading());
+    dispatch(endStatusLoading())
       NotificationManager.error(err.response.data.message)
   }
 };
 
-export const setSOSNumber = (number) => async dispatch => {
+export const getSOSDetails = (sos_id, spinner) => async dispatch => {
   try {
-    dispatch(startLoading());
-    const res = await axios.post(`${api.sos}/api/numbers/`, {number});
-   if(res.data) {
-     await NotificationManager.success('Number Added Successfully!');
-   }
-
+    spinner &&  dispatch(startLoading());
+    !spinner && dispatch(startStatusLoading())
+    const res = await axios.get(`${api.sos}/api/v1.1/sos/${sos_id}/`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      if(res?.data?.data?.userId) {
+      const res2 =  await axios.get(`${api.user}/v1.1/admin/users/${res.data.data.userId}`)
+        dispatch({
+          type: SOS_USER_DETAILS,
+          payload: res2.data.data
+        });
+      }
+      dispatch({
+        type: SOS_DETAILS,
+        payload: res.data.data
+      });
+    }
     dispatch(endLoading());
+    dispatch(endStatusLoading())
   } catch (err) {
     dispatch(endLoading());
+    dispatch(endStatusLoading())
+    NotificationManager.error(err.response.data.message)
+  }
+};
+
+export const getSOSCount = () => async dispatch => {
+  try {
+    const res = await axios.get(`${api.sos}/api/v1.1/sos/count`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      dispatch({
+        type: SOS_COUNT,
+        payload: res.data.data
+      });
+    }
+  } catch (err) {
+  }
+};
+
+export const setSOSNumber = (phone_number) => async dispatch => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.post(`${api.sos}/api/v1.1/phone_numbers/`, {phone_number});
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      await dispatch(getSOSNumber())
+      await NotificationManager.success('Number Added Successfully!');
+    }
+
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
     NotificationManager.error(err.response.data.message)
     console.log(err.response.data)
   }
 };
 
-export const getSOSNumber = (number) => async dispatch => {
+export const getSOSNumber = (spinner) => async dispatch => {
   try {
-    dispatch(startLoading());
-    const res = await axios.post(`${api.sos}/api/numbers/`, {number});
-    console.log(res.data, 'uuuu')
+   spinner && dispatch(startLoading());
+   !spinner && dispatch(startStatusLoading())
+    const res = await axios.get(`${api.sos}/api/v1.1/phone_numbers/`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      dispatch({
+        type: SOS_NUMBERS,
+        payload: res.data.data
+      });
+    }
     dispatch(endLoading());
+    dispatch(endStatusLoading())
   } catch (err) {
+    dispatch(endStatusLoading())
     dispatch(endLoading());
     NotificationManager.error(err.response.data.message)
-    console.log(err.response.data)
+  }
+};
+
+export const deleteSOSNumber = (id) => async dispatch => {
+  try {
+   dispatch(startStatusLoading())
+    const res = await axios.delete(`${api.sos}/api/v1.1/phone_numbers/${id}`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      await  dispatch(getSOSNumber())
+      await NotificationManager.success('Number Deleted Successfully!');
+    }
+    dispatch(endStatusLoading())
+  } catch (err) {
+    dispatch(endStatusLoading())
+    NotificationManager.error(err.response.data.message)
   }
 };
 

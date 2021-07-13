@@ -7,10 +7,10 @@ import {connect} from "react-redux"
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import {Link} from "react-router-dom";
-import {changeDriverStatus} from "Actions/driverAction";
+import {changeDriverStatus} from "../../../actions/driverAction";
 import {Modal, ModalHeader, ModalBody} from 'reactstrap';
 import AssignForm from "Routes/drivers/components/assignForm";
-import {changeVehicleStatus} from "Actions/vehicleAction";
+import {changeVehicleStatus} from "../../../actions/vehicleAction";
 
  const ViewBtn = ({vehicle, changeVehicleStatus}) => {
      const [anchorEl, setAnchorEl] = useState(null);

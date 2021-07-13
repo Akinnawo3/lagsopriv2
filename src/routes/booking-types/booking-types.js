@@ -17,12 +17,12 @@ import {
 } from 'reactstrap';
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import {connect} from "react-redux";
-import Spinner from "../../spinner/Spinner";
+import Spinner from "../../components/spinner/Spinner";
 import IconButton from "@material-ui/core/IconButton";
 import MobileSearchForm from "Components/Header/MobileSearchForm";
 import {CSVLink} from "react-csv";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import {createBookingType, deleteBookingType, getBookingTypes, updateBookingType} from "Actions/bookingTypesAction";
+import {createBookingType, deleteBookingType, getBookingTypes, updateBookingType} from "../../actions/bookingTypesAction";
 
 const  BookingTypes = (props) => {
     const {
@@ -135,10 +135,6 @@ const  BookingTypes = (props) => {
         }
     },[bookingTypes])
 
-
-    const removeDeleteId = ()=> {
-        setDeleteId(null)
-    }
 
     return (
         <div className="table-wrapper">
@@ -253,7 +249,6 @@ const  BookingTypes = (props) => {
                     deleteBookingType(deleteId);
                     inputEl.current.close();
                 }}
-                removeDeleteId={removeDeleteId}
             />
         </div>
     );

@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { ReactExcel, readFile, generateObjects } from '@ramonak/react-excel';
 import axios from "axios";
 import {connect} from "react-redux";
-import {getAdmins} from "Actions/adminAction";
+import {getAdmins} from "../../../actions/adminAction";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import {NotificationManager} from "react-notifications";
 

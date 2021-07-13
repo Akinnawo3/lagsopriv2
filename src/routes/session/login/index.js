@@ -12,14 +12,14 @@ import {loginUser} from "Actions/authAction";
 
 
 const Signin = ({loginUser,  loading}) => {
-   const [formData, setFormData] = useState({username: '', password: ''});
+   const [formData, setFormData] = useState({phone_number: '', password: ''});
 
    const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
-   const { username, password } = formData;
+   const { phone_number, password } = formData;
 
    const onSubmit =  (e) => {
       e.preventDefault();
-      loginUser(username, password);
+      loginUser(phone_number, password);
    };
 
    return (
@@ -32,11 +32,6 @@ const Signin = ({loginUser,  loading}) => {
                 <Toolbar>
                    <div className="container">
                       <div className="d-flex justify-content-between">
-                         {/*<div className="session-logo">*/}
-                         {/*   <Link to="/">*/}
-                         {/*      <img src={AppConfig.appLogo} alt="session-logo" className="img-fluid" width="110" height="35" />*/}
-                         {/*   </Link>*/}
-                         {/*</div>*/}
                       </div>
                    </div>
                 </Toolbar>
@@ -51,15 +46,16 @@ const Signin = ({loginUser,  loading}) => {
                             </div>
                             <Form onSubmit={onSubmit}>
                                <FormGroup className="has-wrapper">
-                                  <Input type="mail" value={username} name="username" id="user-mail" className="has-input input-lg" placeholder="Enter Email Address" onChange={onChange} required/>
-                                  <span className="has-icon"><i className="ti-email"></i></span>
+                                  <Input type="number" value={phone_number} name="phone_number" className="has-input input-lg" placeholder="Enter phone number" onChange={onChange} required/>
+                                  <span className="has-icon"><i className="ti-mobile"></i></span>
                                </FormGroup>
                                <FormGroup className="has-wrapper">
-                                  <Input value={password} type="Password" name="password" id="pwd" className="has-input input-lg" placeholder="Password" onChange={onChange} required/>
+                                  <Input value={password} type="Password" name="password"  className="has-input input-lg" placeholder="Password" onChange={onChange} required/>
                                   <span className="has-icon"><i className="ti-lock"></i></span>
                                </FormGroup>
                                <FormGroup className="mb-15">
                                   <Button
+                                      disabled={loading}
                                       color="primary"
                                       className="btn-block text-white w-100"
                                       variant="contained"

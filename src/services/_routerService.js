@@ -17,7 +17,15 @@ import {
    AsyncTaxiRatings,
    AsyncGooleMapsComponent,
    AsyncSupport,
-   AsyncAnalytics, AsyncEmergency, AsyncUsers, AsyncAreas, AsyncSchedule, AsyncVoucher, AsyncReferral, AsyncRevenueSplit
+   AsyncAnalytics,
+   AsyncEmergency,
+   AsyncUsers,
+   AsyncAreas,
+   AsyncSchedule,
+   AsyncVoucher,
+   AsyncReferral,
+   AsyncRevenueSplit,
+   AsyncCancellationReasons
 } from 'Components/AsyncComponent/AsyncComponent';
 import DriverRoutes from "Routes/drivers/driverRoutes";
 import VehicleRoutes from "Routes/vehicles/vehicleRoutes";
@@ -31,6 +39,7 @@ import ScheduleRoutes from "Routes/schedule/scheduleRoutes";
 import ReferralRoutes from "Routes/referral/referralRoutes";
 import FdtRoutes from "Routes/fdt/fdtRoutes";
 import TripRoutes from "Routes/trips/tripsRoutes";
+import RatingsRoutes from "Routes/ratings/ratingsRoutes";
 
 
 export default [
@@ -61,6 +70,10 @@ export default [
    {
       path: 'fees',
       component: AsyncFees
+   },
+   {
+      path: 'cancellation-reasons',
+      component: AsyncCancellationReasons
    },
    {
       path: 'voucher',
@@ -115,17 +128,10 @@ export default [
       component: FdtRoutes
    },
    {
-      path: 'driver-ratings',
-      component: AsyncDriverRatings
+      path: 'ratings',
+      component: RatingsRoutes
    },
-   {
-      path: 'user-ratings',
-      component: AsyncUserRatings
-   },
-   {
-      path: 'taxi-ratings',
-      component: AsyncTaxiRatings
-   },
+
    {
       path: 'areas',
       component: AsyncAreas

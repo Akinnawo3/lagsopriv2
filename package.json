@@ -133,6 +133,7 @@
 		"react-select": "^3.1.0",
 		"react-select-search": "^2.2.4",
 		"react-sidebar": "^3.0.2",
+		"react-simple-image-viewer": "^0.0.8",
 		"react-slick": "^0.27.11",
 		"react-star-rating-component": "^1.4.1",
 		"react-star-ratings": "^2.3.0",

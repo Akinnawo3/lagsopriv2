@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import ChartConfig from 'Constants/chart-config';
-import {getSchedule} from "Actions/fdtActions";
+import {getSchedule} from "../../../actions/fdtActions";
 import {connect} from "react-redux";
 
 

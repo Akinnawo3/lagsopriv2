@@ -1,54 +1,72 @@
 import React, {useEffect, useState} from 'react';
+import axios from 'axios'
 import { Form, FormGroup, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter, Badge } from 'reactstrap';
-import AssignForm from "Routes/drivers/components/assignForm";
 import Button from "@material-ui/core/Button";
-import {deleteTicketType, getTicketTypes, getTicketTypes2, updateTicketType} from "Actions/ticketTypeAction";
-import {getSupport, getSupport2, updateSupport} from "Actions/supportAction";
 import {connect} from "react-redux";
 import {Helmet} from "react-helmet";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import {assignSupportTickets, getSupportTicket, updateSupportTickets} from "Actions/supportAction";
+import api from "../../environments/environment";
+import {Link} from "react-router-dom";
+import {getTicketType} from "Actions/ticketTypeAction";
+import {getAdmins} from "Actions/adminAction";
 
 
 
-const SupportDetails = ({getTicketTypes, getSupport, ticketTypes, support, match, updateSupport})=> {
-    const [supportDetails, setSupportDetails] = useState({})
-    const [tickets, setTickets] = useState('')
+const SupportDetails = ({getSupportTicket, match, updateSupportTicket, supportDetails, ticket, getTicketType, admins, getAdmins, assignSupportTicket})=> {
+    // const [tickets, setTickets] = useState('')
     const [formData, setFormData] = useState({status: ''})
+    const [assignedToData, setAssignedToData] = useState({})
+    const [createdBy, setCreatedBy] = useState({})
+    const [createdFor, setCreatedFor] = useState({})
+    const [adminId, setAdminId] = useState('')
+    const [addNewUserModal, setAddNewUserModal] = useState(false)
+    const [addNewUserModal2, setAddNewUserModal2] = useState(false)
+
+    useEffect(()=> {
+        if (match.params.id){
+            getSupportTicket(match.params.id)
+            getAdmins()
+        }
+    },[match.params.id])
+
+    useEffect(()=> {
+        if(supportDetails?.assigned_to) {
+            assignedTo(supportDetails?.assigned_to)
+        }
+
+    },[supportDetails?.assigned_to])
+
+    useEffect(()=> {
+        if(supportDetails?.created_by) {
+            getCreatedBy(supportDetails?.created_by)
+            setFormData({
+                status: supportDetails?.status
+            })
+        }
+
+    },[supportDetails?.created_by])
+
+    useEffect(()=> {
+        if(supportDetails?.for_id) {
+            getCreatedFor(supportDetails?.for_id)
+        }
+
+    },[supportDetails?.for_id])
+
+    useEffect(()=> {
+        if(supportDetails?.support_id) {
+            getTicketType(supportDetails?.support_id)
+        }
+
+    },[supportDetails?.support_id])
+
 
     const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const {status} = formData
 
 
-    useEffect(()=> {
-        getSupport()
-        getTicketTypes();
-    },[])
-
-    useEffect(()=> {
-        if (support && match.params.id){
-            support.map(sup=> {
-                if(sup.id == match.params.id){
-                    setSupportDetails(sup)
-                    setFormData({status: sup.status})
-                }
-            })
-        }
-    },[support, match.params.id])
-
-
-    useEffect(()=> {
-        if(support.length > 0) {
-            ticketTypes.map(ticket => {
-                if(ticket.id == supportDetails.ticketId) {
-                   setTickets(ticket.name)
-                }
-            })
-        }
-    }, [supportDetails.ticketId])
-
-    // const [anchorEl, setAnchorEl] = useState(null);
-    const [addNewUserModal, setAddNewUserModal] = useState(false)
 
     const opnAddNewUserModal = () => {
         // e.preventDefault();
@@ -61,65 +79,132 @@ const SupportDetails = ({getTicketTypes, getSupport, ticketTypes, support, match
         setAddNewUserModal(false);
     }
 
+    const opnAddNewUserModal2 = () => {
+        setAddNewUserModal2(true)
+    }
+
+
+
+    const onAddUpdateUserModalClose2 = () => {
+        setAddNewUserModal2(false);
+    }
+
     const onSubmit = async (e) => {
         e.preventDefault();
-        updateSupport(supportDetails.id, status)
+        updateSupportTicket(supportDetails?.id, status)
         onAddUpdateUserModalClose()
     };
 
+    const onSubmit2 = async (e) => {
+        e.preventDefault();
+        assignSupportTicket(supportDetails?.id, adminId)
+        onAddUpdateUserModalClose2()
+    };
+
+    const assignedTo = async (auth_id) => {
+        try {
+           const res = await axios.get(`${api.user}/v1.1/admin/users/${auth_id}`)
+            setAssignedToData(res.data.data)
+
+        }catch (e) {
+
+        }
+    }
+    const getCreatedBy = async (auth_id) => {
+        try {
+            const res = await axios.get(`${api.user}/v1.1/admin/users/${auth_id}`)
+            setCreatedBy(res.data.data)
+
+        }catch (e) {
+
+        }
+    }
+
+    const getCreatedFor = async (auth_id) => {
+        try {
+            const res = await axios.get(`${api.user}/v1.1/admin/users/${auth_id}`)
+            setCreatedFor(res.data.data)
+
+        }catch (e) {
+
+        }
+    }
+
 
     return (
-        <div>
+        <div style={{minHeight: '90vh'}}>
             <Helmet>
                 <title>User Profile</title>
                 <meta name="description" content="Ticket Details" />
             </Helmet>
             <PageTitleBar title={`Ticket details`} match={match}  />
-            <div className="row" style={{minHeight: '90vh'}}>
+            <div className="row"  style={{fontSize: '0.8rem'}}>
                 <div className="col-sm-6">
                     <div className="tab-content">
                         <div className="tab-pane active" id="home">
                             <ul className="list-group">
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Type of ticket</strong></span>{tickets}
+                                    className="pull-left"><strong>Ticket Id</strong></span>{supportDetails?.ticket_id}
                                 </li>
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>user type</strong></span>{supportDetails.forType}
+                                    className="pull-left"><strong>Created By</strong></span>
+                                    {createdBy?.auth_id === supportDetails?.created_by &&
+                                    <>
+                                        {createdBy?.first_name} {createdBy?.last_name}
+                                    </>
+                                    }
                                 </li>
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Created By</strong></span>{supportDetails.createdBy}
+                                    className="pull-left"><strong>Created For</strong></span>
+                                    {createdFor?.auth_id === supportDetails?.for_id &&
+                                    <Link
+                                        to={createdFor?.user_type === 'driver' ? `/admin/drivers/${createdFor.auth_id}` : `/admin/passengers/${createdFor.auth_id}`}>{createdFor?.first_name} {createdFor?.last_name}</Link>
+                                    }
                                 </li>
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Created For</strong></span>{supportDetails.forId}
+                                    className="pull-left"><strong>User type</strong></span>{supportDetails?.for_type}
                                 </li>
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Assigned To</strong></span>{supportDetails.assignedTo}
+                                    className="pull-left"><strong>Assigned To</strong></span>
+                                    {assignedToData?.auth_id === supportDetails?.assigned_to &&
+                                        <>
+                                            {assignedToData?.first_name} {assignedToData?.last_name}
+                                        </>
+                                    }
                                 </li>
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Channel</strong></span>{supportDetails.channel}
+                                    className="pull-left"><strong>Channel</strong></span>{supportDetails?.channel}
                                 </li>
 
+                                {supportDetails?.status == 1 && <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Status</strong></span><Badge color="danger">New</Badge>
+                                </li>}
+                                {supportDetails?.status == 2 && <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Status</strong></span><Badge color="secondary">Open</Badge>
+                                </li>}
+                                {supportDetails?.status == 3 && <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Status</strong></span><Badge color="warning">In-progress</Badge>
+                                </li>}
+                                {supportDetails?.status == 4 && <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Status</strong></span><Badge color="success">Closed</Badge>
+                                </li>}
+                                {supportDetails?.status == 5 && <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Status</strong></span><Badge color="primary">Unresolved</Badge>
+                                </li>}
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Description</strong></span>{supportDetails.desc}
+                                    className="pull-left"><strong>Ticket Type</strong></span>{ticket?.name}
                                 </li>
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Image</strong></span>
+                                    className="pull-left"><strong>Description</strong></span>{supportDetails?.desc}
                                 </li>
-                                {supportDetails.status == 1 && <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Status</strong></span><Badge onClick={()=> opnAddNewUserModal()} style={{cursor: 'pointer'}} color="danger">New</Badge>
-                                </li>}
-                                {supportDetails.status == 2 && <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Status</strong></span><Badge onClick={()=> opnAddNewUserModal()} style={{cursor: 'pointer'}} color="secondary">Open</Badge>
-                                </li>}
-                                {supportDetails.status == 3 && <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Status</strong></span><Badge onClick={()=> opnAddNewUserModal()} style={{cursor: 'pointer'}} color="warning">In-progress</Badge>
-                                </li>}
-                                {supportDetails.status == 4 && <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Status</strong></span><Badge onClick={()=> opnAddNewUserModal()} style={{cursor: 'pointer'}} color="success">Closed</Badge>
-                                </li>}
-                                {supportDetails.status == 5 && <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Status</strong></span><Badge onClick={()=> opnAddNewUserModal()} style={{cursor: 'pointer'}} color="primary">Unresolved</Badge>
-                                </li>}
+                                <li className="list-group-item text-right"><span
+                                    className="pull-left">
+                                    <Button onClick={()=> opnAddNewUserModal()} className="bg-primary mt-3 text-white">Update Ticket</Button>
+                                    {!supportDetails?.assigned_to &&
+                                    <Button onClick={()=> opnAddNewUserModal2()} className="bg-success mt-3 text-white ml-4">Assign</Button>
+                                    }
+                                </span>
+                                </li>
                             </ul>
                         </div>
                         <Modal isOpen={addNewUserModal} toggle={() => onAddUpdateUserModalClose()}>
@@ -138,12 +223,24 @@ const SupportDetails = ({getTicketTypes, getSupport, ticketTypes, support, match
                                             <option value="5">Unresolved</option>
                                         </Input>
                                     </FormGroup>
-                                    <FormGroup>
-                                        <Label>Reply </Label>
-                                        <Input type="textarea"  name="education"   />
-                                    </FormGroup>
                                     <Button type="submit" variant="contained" className="text-white btn-success">Submit</Button>
-
+                                </Form>
+                            </ModalBody>
+                        </Modal>
+                        <Modal isOpen={addNewUserModal2} toggle={() => onAddUpdateUserModalClose2()}>
+                            <ModalHeader toggle={() => onAddUpdateUserModalClose2()}>
+                                Assign Admin
+                            </ModalHeader>
+                            <ModalBody>
+                                <Form onSubmit={onSubmit2}>
+                                    <Label>Assign To</Label>
+                                    <Input type="select"  name="assignedTo"  value={adminId} onChange={(e) =>setAdminId(e.target.value)} required>
+                                        <option value="">Select</option>
+                                        {admins?.length > 0 && admins.map(admin => (
+                                            <option key={admin.auth_id} value={admin.auth_id}>{admin.first_name} {admin.last_name}</option>
+                                        ))}
+                                    </Input>
+                                    <Button type="submit" variant="contained" className="text-white btn-success mt-3">Submit</Button>
                                 </Form>
                             </ModalBody>
                         </Modal>
@@ -158,19 +255,20 @@ const SupportDetails = ({getTicketTypes, getSupport, ticketTypes, support, match
 
 function mapDispatchToProps(dispatch) {
     return {
-        getTicketTypes: () => dispatch(getTicketTypes2()),
-        getSupport: () => dispatch(getSupport2()),
-        updateSupport: (id, status) => dispatch(updateSupport(id, status)),
-        updateTicketType: (id, name) => dispatch(updateTicketType(id, name)),
-        deleteTicketType: (id) => dispatch(deleteTicketType(id)),
+        getTicketType: (id) => dispatch(getTicketType(id)),
+        getSupportTicket: (ticket_id) => dispatch(getSupportTicket(ticket_id)),
+        updateSupportTicket: (id, status) => dispatch(updateSupportTickets(id, status)),
+        assignSupportTicket: (id, assigned_to) => dispatch(assignSupportTickets(id, assigned_to)),
+        getAdmins: () => dispatch(getAdmins()),
     };
 }
 
 const mapStateToProps = state => ({
-    support: state.support.support,
-    ticketTypes: state.ticketTypes.ticketTypes,
+    supportDetails: state.support.supportDetails,
+    ticket: state.ticketTypes.ticket,
     loading: state.loading.loading,
-    loadingStatus: state.loading.loadingStatus
+    loadingStatus: state.loading.loadingStatus,
+    admins: state.admins.admins,
 
 
 

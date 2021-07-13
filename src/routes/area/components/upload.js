@@ -3,10 +3,10 @@ import { ReactExcel, readFile, generateObjects } from '@ramonak/react-excel';
 import axios from "axios";
 import {connect} from "react-redux";
 import {NotificationManager} from "react-notifications";
-import {getAreas} from "Actions/areaAction";
+import {getAreas, getAreasCount} from "Actions/areaAction";
 import api from "../../../environments/environment";
 
-const Upload = ({getAreas, oncloseModal}) => {
+const Upload = ({getAreas, oncloseModal, getAreaCount}) => {
     const [initialData, setInitialData] = useState(undefined);
     const [currentSheet, setCurrentSheet] = useState({});
     const [loading, setLoading] = useState(false)
@@ -24,16 +24,18 @@ const Upload = ({getAreas, oncloseModal}) => {
         try {
             setLoading(true)
           await  Promise.all(result.map(area =>
-              axios.post(`${api.area}/api/areas/`, area)
+              axios.post(`${api.area}/api/v1.1/areas/`, area)
             ))
             setLoading(false)
             await oncloseModal()
-           await getAreas();
+           await getAreas(1, true);
+            await getAreaCount()
         }catch (e) {
             setLoading(false)
             NotificationManager.error(e.message);
         }
     };
+
 
 
     return (
@@ -65,7 +67,8 @@ const Upload = ({getAreas, oncloseModal}) => {
 
 function mapDispatchToProps(dispatch) {
     return {
-        getAreas: () => dispatch(getAreas())
+        getAreas: (page_no, spinner) => dispatch(getAreas(page_no, spinner)),
+        getAreaCount: () => dispatch(getAreasCount()),
     };
 }
 

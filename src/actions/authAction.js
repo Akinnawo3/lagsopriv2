@@ -1,5 +1,5 @@
 import { NotificationManager } from 'react-notifications';
-import {LOGIN_USER_SUCCESS,} from 'Actions/types';
+import {LOGIN_USER} from './types';
 import {endLoading, startLoading} from "./loadingAction";
 import axios from 'axios'
 import cookies from "Util/cookies";
@@ -7,31 +7,61 @@ import api from "../environments/environment";
 
 
 
-export const loginUser = (username, password) => async dispatch => {
-    const body = {email:username, password}
+export const loginUser = (phone_number, password) => async dispatch => {
+    const body = {phone_number, password, user_type: 'admin'}
     try {
         dispatch(startLoading());
-        const res = await axios.post(`${api.auth}/api/login/`, body)
-        const token  = res.data.Authorized
-        const authId = res.data.auth_id
-        cookies.set('user_id', token);
-        cookies.set('authId', authId);
-        // localStorage.setItem("user_id", token);
-        location.replace("/");
-        dispatch({
-            type: LOGIN_USER_SUCCESS,
-            payload: res.data
-        });
+        const res = await axios.post(`${api.user}/v1.1/auth/login`, body)
+        if(res.data.status === 'error') {
+            NotificationManager.error(res.data.msg);
+        }else {
+            const userType = res.data.data.user_type
+            if((userType === 'superadmin') || (userType === 'admin')) {
+                const token  = res.data.data.token
+                await cookies.set('user_id', token);
+                await cookies.set('userProfile', JSON.stringify(res.data.data))
+                await  dispatch({
+                    type: LOGIN_USER,
+                    payload: res.data.data
+                })
+                location.replace("/");
+            }else {
+                NotificationManager.error('Invalid phone or password')
+            }
+        }
         dispatch(endLoading());
     } catch (err) {
         dispatch(endLoading());
-        NotificationManager.error('Username or Password Incorrect');
+        NotificationManager.error('Network error please try again or check your internet connection ');
 
     }
 };
 
 
-export const logoutUser = () => {
+// export const logoutUser = () => async dispatch => {
+//     try {
+//         dispatch(startLoading());
+//         const res = await axios.get(`${api.user}/v1.1/auth/logout`)
+//         console.log(res.data)
+//         if(res.data.status === 'error') {
+//             NotificationManager.error(res.data.msg);
+//         }else {
+//           await  cookies.remove('user_id');
+//           await  dispatch({
+//                 type: LOGOUT_USER,
+//             });
+//             location.replace("/login");
+//         }
+//         dispatch(endLoading());
+//     } catch (err) {
+//         dispatch(endLoading());
+//         NotificationManager.error('Network error please try again or check your internet connection ');
+//
+//     }
+// };
+
+
+export const logoutUser = async () => {
     cookies.remove('user_id');
     // localStorage.removeItem("user_id");
     location.replace("/login");

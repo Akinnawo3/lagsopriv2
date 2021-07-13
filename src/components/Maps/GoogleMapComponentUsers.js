@@ -24,15 +24,6 @@ const  GoogleMapComponentUser  = ({match})=> {
                     </div>
                 </div>
             </div>
-            {/*<div className="d-flex align-items-center justify-content-center myDIV zoom" style={{zIndex: '2'}}>*/}
-            {/*    <i className="zmdi zmdi-car text-secondary" style={{fontSize: '30px'}}/>*/}
-            {/*    <span className="ml-2 font-weight-bold text-secondary">{text}</span>*/}
-            {/*</div>*/}
-            {/*<div className= "hide bg-secondary text-white" style={{ position: 'absolute', marginTop: '-70px', marginLeft: "-65px"}}>*/}
-            {/*   <div className="text-center" style={{minWidth: '150px'}}>*/}
-            {/*     Driver name: {cord.name}*/}
-            {/*   </div>*/}
-            {/*</div>*/}
         </div>
     const data = [
         {
@@ -61,17 +52,6 @@ const  GoogleMapComponentUser  = ({match})=> {
         },
     ]
 
-    // const options = [
-    //     {name: 'Swedish', value: 'sv'},
-    //     {name: 'English', value: 'en'},
-    // ];
-
-    // const options = data.map(dat=> {
-    //     const dataarr = []
-    //     dataarr.push({name:dat.plate_no, value: dat.plate_no})
-    //     return dataarr
-    // })
-
     useEffect(()=> {
         const dataArr = []
         data.map(dat => {
@@ -84,37 +64,14 @@ const  GoogleMapComponentUser  = ({match})=> {
         // scrollwheel: false,
         panControl: false,
         mapTypeControl: false,
-        // styles: [{ stylers: [{ 'saturation': -100 }, { 'gamma': 0.8 }, { 'lightness': 4 }, { 'visibility': 'on' }] }]
     }
 
  const  _onClick = ({x, y, lat, lng, event}) => console.log(event)
 
-   const handleChange = (value)=> {
-        setSearch(value)
-    }
-
-    const getVehicleCord = ()=> {
-        if(search) {
-            data.map(dat=> {
-                if(dat.plate_no.toLowerCase() === search.toLocaleLowerCase()) {
-                    setCenter([dat.lat, dat.lng])
-                    // setZoom(17)
-                }
-            })
-        } else {
-            NotificationManager.error('Enter plate No');
-        }
-    }
 
     return (
       <div className="map-wrapper">
-        {/*<PageTitleBar title={<IntlMessages id="sidebar.googleMaps" />} match={this.props.match} />*/}
         <RctCollapsibleCard heading="Riders Map">
-            {/*<div className="mb-3 d-flex align-items-center">*/}
-            {/*    <SelectSearch autoComplete="on" search={true} options={options} placeholder="Search Vehicle" onChange={handleChange} />*/}
-            {/*    /!*<Input type="search"  placeholder="Search vehicle via plate no" onChange={handleChange} />*!/*/}
-            {/*    <Button onClick={()=> getVehicleCord()} className="ml-2">Search</Button>*/}
-            {/*</div>*/}
           <GoogleMap
             bootstrapURLKeys={{ key: "AIzaSyCw_5YoOp78lvq1Dgfri-TnDjRSf1cguf0" }}
             yesIWantToUseGoogleMapApiInternals={true}
@@ -123,7 +80,6 @@ const  GoogleMapComponentUser  = ({match})=> {
             options={MAP_OPTIONS}
             hoverDistance={40 / 2}
             onClick={_onClick}
-              // onGoogleApiLoaded={({ map, maps }) => this.renderMarkers(map, maps)}
           >
             {data.map((m, index)=> (
                 <AnyReactComponent

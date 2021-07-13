@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { ReactExcel, readFile, generateObjects } from '@ramonak/react-excel';
 import axios from "axios";
 import api from "../../../environments/environment";
-import  {getDrivers} from "Actions/driverAction";
+import  {getDrivers} from "../../../actions/driverAction";
 import {connect} from "react-redux";
 
 const Upload = ({getDrivers, oncloseModal}) => {

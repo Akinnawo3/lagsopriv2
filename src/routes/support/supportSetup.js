@@ -1,29 +1,36 @@
 import React, {useState, useEffect} from 'react'
 import Button from "@material-ui/core/Button";
-import  axios from 'axios'
+import axios from 'axios'
 import { Form, FormGroup, Label, Input } from 'reactstrap';
 import {
-    createTicketType,
-    deleteTicketType,
     getTicketTypes,
-    getTicketTypes2,
-    updateTicketType
 } from "Actions/ticketTypeAction";
 import {connect} from "react-redux";
-import {createSupport} from "Actions/supportAction";
-import api from "../../environments/environment";
+import {createSupportTickets} from "Actions/supportAction";
 import {getAdmins} from "Actions/adminAction";
+import api from "../../environments/environment";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import {NotificationManager} from "react-notifications";
+import {Helmet} from "react-helmet";
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
 
 
 
-const SupportSetup = ({getTicketTypes, ticketTypes, createSupport, admins, getAdmins}) => {
+const SupportSetup = ({getTicketTypes, ticketTypes, createSupport, admins, getAdmins, loadingStatus, match}) => {
 
     const [formData, setFormData] = useState({ticketId: '', forType: '', channel: '', desc: '', status: '', assignedTo: '', email: ''})
     const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
-    const {ticketId, forType, channel, desc, status, assignedTo, email} = formData
+    const {ticketId, forType, channel, desc, status, assignedTo} = formData
+    const [searchData, setSearchData] = useState('')
+    const [searchedUser, setSearchedUser] = useState([])
     const [loading, setLoading] = useState(false)
+    const [isShow, setIsShow] = useState(false)
+    const [userAuthId, setUserAuthId] = useState('')
+    const [focused, setFocused] = useState(false)
+    const onFocus = () => setFocused(true)
+    const onBlur = () => setFocused(false)
+
 
 
     useEffect(()=> {
@@ -31,68 +38,60 @@ const SupportSetup = ({getTicketTypes, ticketTypes, createSupport, admins, getAd
         getAdmins();
     },[])
 
-
-    const checkDriverEmail = async () => {
-        try {
-            setLoading(true)
-            const res =  await axios.get(`${api.drivers}/api/drivers/${email}`)
-            if(res.data) {
-              await  createSupport(ticketId, forType, channel, desc, status, assignedTo, res.data.authId)
-                setLoading(false)
-                setFormData({
-                    ticket_id: "",
-                    user_id: "",
-                    user_type: '',
-                    channel: '',
-                    desc: '',
-                    status: ''
-                })
-            }
-        }catch (e) {
-            setLoading(false)
-            NotificationManager.error(`Driver with email ${email} doesnt exist`)
-        }
-    }
-
-    const checkPassengerEmail = async () => {
-        try {
-            setLoading(true)
-            const res =  await axios.get(`${api.passengers}/api/passengers/${email}`)
-            if(res.data) {
-               await createSupport(ticketId, forType, channel, desc, status, assignedTo, res.data.authId)
-                setLoading(false)
-                setFormData({
-                    ticket_id: "",
-                    user_id: "",
-                    user_type: '',
-                    channel: '',
-                    desc: '',
-                    status: ''
-                })
-            }
-        }catch (e) {
-            setLoading(false)
-            NotificationManager.error(`Passenger with email ${email} doesnt exist`)
-        }
-    }
-
-
-
     const onSubmit = async (e) => {
         e.preventDefault();
-        if(forType === 'Driver') {
-            checkDriverEmail()
-        }else {
-            checkPassengerEmail()
-        }
+      await createSupport(ticketId, forType, channel, desc, status, assignedTo, userAuthId)
+        setFormData({ticketId: '', forType: '', channel: '', desc: '', status: '', assignedTo: '', email: ''});
+        setSearchData('');
     };
+
+    const onChangeSearch = (e) =>{
+        e.preventDefault();
+        setSearchData(e.target.value );
+    };
+
+
+    useEffect(() => {
+        if((searchData.length > 2) && focused) {
+            searchUser()
+        }else {
+            setIsShow(false)
+        }
+    },[searchData])
+
+    const searchUser = async () => {
+       try {
+           if (!forType) {
+               NotificationManager.error('select user type');
+               return
+           }
+           setLoading(true)
+      const res =  await  axios.get(`${api.user}/v1.1/admin/users?q=${searchData}&user_type=${forType}`)
+           setSearchedUser(res.data.data)
+           setIsShow(true)
+           setLoading(false)
+       } catch (e) {
+
+       }
+    }
+
+    const handleOption = (user) => {
+        setSearchData(`${user.first_name} ${user.last_name}`)
+        setUserAuthId(user.auth_id)
+        setIsShow(false)
+    }
 
     return (
         <div className="bg-white" style={{minHeight: '99vh'}}>
+            <Helmet>
+                <title>Create Ticket</title>
+                <meta name="description" content="Create Ticket" />
+            </Helmet>
+            <PageTitleBar title={`Create Tickets`} match={match}  />
             <Form onSubmit={onSubmit}>
                 <div className="row  justify-content-around">
                     <div className="col-sm-6 bg-white">
-                        <div className="font-weight-bold pb-5 font-2x pt-3">Ticket Details</div>
+                        {/*<div className="font-weight-bold pb-5 pt-3" style={{fontSize: '20px'}}>Ticket Details</div>*/}
                         <FormGroup>
                             <Label>Ticket Type</Label>
                             <Input type="select"  name="ticketId"  value={ticketId} onChange={onChange}  required>
@@ -107,7 +106,7 @@ const SupportSetup = ({getTicketTypes, ticketTypes, createSupport, admins, getAd
                             <Input type="textarea"  name="desc" value={desc} onChange={onChange}  required />
                         </FormGroup>
                         <FormGroup>
-                            <Label>status </Label>
+                            <Label>Status </Label>
                             <Input type="select"  name="status" value={status} onChange={onChange}  required>
                                 <option value="">Select</option>
                                 <option value="1">New</option>
@@ -128,25 +127,49 @@ const SupportSetup = ({getTicketTypes, ticketTypes, createSupport, admins, getAd
                     </div>
                     <div className="col-sm-5 bg-white">
                         <div>
-                            <div className="font-weight-bold pb-5 font-2x pt-3">User Details</div>
+                            {/*<div className="font-weight-bold pb-5 font-2x pt-3">User Details</div>*/}
                             <FormGroup>
                                 <Label>User Type</Label>
                                 <Input type="select"  name="forType" value={forType} onChange={onChange}  required>
                                     <option value="">Select</option>
-                                    <option value="Driver">Driver</option>
-                                    <option value="Passenger">Passenger</option>
+                                    <option value="driver">Driver</option>
+                                    <option value="rider">Passenger</option>
                                 </Input>
                             </FormGroup>
                             <FormGroup>
-                                <Label>Email </Label>
-                                <Input type="text"  name="email" value={email} onChange={onChange}  required />
+                                <Label  htmlFor="browser">Ticket For</Label>
+                                <Input onFocus={onFocus} onBlur={onBlur} type="search" className="search-input-lg" name="searchData" value={searchData} onChange={onChangeSearch} placeholder="Search.. name, email, phone number" autoComplete='off' />
+                                {loading && <div className="page-loader d-flex justify-content-center mb-30 mt-30">
+                                    <CircularProgress size={24} />
+                                </div>}
+                                {!loading && searchedUser?.length > 0 && isShow &&
+                                    <div className='pr-4 w-100' style={{position: 'absolute'}}>
+                                        <div className="bg-white" style={{border: '1px solid #EBEDF2', maxHeight: '200px', overflow:'auto', zIndex: 10, width: '100%'}}>
+                                            {searchedUser?.length > 0 && searchedUser.map(user => (
+                                                <option onClick={() => handleOption(user)} key={user.auth_id} className='p-2 custom-dropdown'>{user.first_name} {user.last_name}</option>
+                                            ))}
+                                        </div>
+                                    </div>
+                                }
+
                             </FormGroup>
+                            {/*    <FormGroup>*/}
+                            {/*    <label htmlFor="browser">User</label>*/}
+                            {/*    <input list="browsers" name="browser" id="browser">*/}
+
+                            {/*        <datalist id="browsers">*/}
+                            {/*            <option value="">Select</option>*/}
+                            {/*            <option value="driver">Driver</option>*/}
+                            {/*            <option value="rider">Passenger</option>*/}
+                            {/*        </datalist>*/}
+                            {/*    </input>*/}
+                            {/*</FormGroup>*/}
                             <FormGroup>
                                 <Label>Assign To</Label>
                                 <Input type="select"  name="assignedTo"  value={assignedTo} onChange={onChange}>
                                     <option value="">Select</option>
-                                    {admins && admins.map(admin => (
-                                        <option key={admin.authId} value={`${admin.firstName} ${admin.lastName}`}>{admin.firstName} {admin.lastName}</option>
+                                    {admins?.length > 0 && admins.map(admin => (
+                                        <option key={admin.auth_id} value={admin.auth_id}>{admin.first_name} {admin.last_name}</option>
                                     ))}
                                 </Input>
                             </FormGroup>
@@ -155,7 +178,7 @@ const SupportSetup = ({getTicketTypes, ticketTypes, createSupport, admins, getAd
                     </div>
                 </div>
                 <div className="mt-5 float-right" style={{paddingRight: '15px'}}>
-                    <Button disabled={loading} type="submit" variant="contained" className="text-white btn-success">{loading ? 'loading..' : 'Submit'}</Button>
+                    <Button disabled={loadingStatus} type="submit" variant="contained" className="text-white btn-success">{loadingStatus ? 'loading..' : 'Submit'}</Button>
 
                 </div>
             </Form>
@@ -165,11 +188,9 @@ const SupportSetup = ({getTicketTypes, ticketTypes, createSupport, admins, getAd
 
 function mapDispatchToProps(dispatch) {
     return {
-        getTicketTypes: () => dispatch(getTicketTypes2()),
-        createSupport: (ticketId, forType, channel, desc, status, assignedTo, email) => dispatch(createSupport(ticketId, forType, channel, desc, status, assignedTo, email)),
-        updateTicketType: (id, name) => dispatch(updateTicketType(id, name)),
-        deleteTicketType: (id) => dispatch(deleteTicketType(id)),
+        createSupport: (support_id, for_type, channel, desc, status, assigned_to, for_id) => dispatch(createSupportTickets(support_id, for_type, channel, desc, status, assigned_to, for_id)),
         getAdmins: () => dispatch(getAdmins()),
+        getTicketTypes: (page_no, spinner) => dispatch(getTicketTypes(page_no, spinner)),
     };
 }
 

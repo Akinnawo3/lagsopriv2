@@ -2,6 +2,7 @@
  * App.js Layout Start Here
  */
 import React, { Component } from 'react';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
 import { NotificationContainer } from 'react-notifications';
@@ -15,8 +16,6 @@ import {
    AsyncSessionPage404Component,
    AsyncSessionPage500Component,
 } from 'Components/AsyncComponent/AsyncComponent';
-import LinearProgress from "@material-ui/core/LinearProgress";
-import axios from "axios";
 import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
@@ -26,11 +25,11 @@ const cookies = new Cookies();
 /**
  * Initial Path To Check Whether User Is Logged In Or Not
  */
-const InitialPath = ({ component: Component, authUser, ...rest }) =>
+const InitialPath = ({ component: Component, authUser, isAdmin, ...rest }) =>
    <Route
       {...rest}
       render={props =>
-         authUser
+         (authUser && (isAdmin === 'superadmin' || isAdmin === 'admin'))
             ? <Component {...props} />
             : <Redirect
                to={{
@@ -58,7 +57,7 @@ axios.interceptors.response.use(response => {
 
 class App extends Component {
    render() {
-       const { location, match, user } = this.props;
+       const { location, match, user, userProfile} = this.props;
       if (location.pathname === '/') {
          if (user === null) {
             return (<Redirect to={'/login'} />);
@@ -72,6 +71,7 @@ class App extends Component {
             <InitialPath
                path={`${match.url}admin`}
                authUser={user}
+               isAdmin={userProfile?.user_type}
                component={RctDefaultLayout}
             />
             <Route path="/login" component={AsyncSessionLoginComponent} />
@@ -89,9 +89,9 @@ class App extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ authUser }) => {
-   const { user } = authUser;
-   return { user };
+const mapStateToProps = ({ authUser}) => {
+   const { user, userProfile } = authUser;
+   return { user, userProfile};
 };
 
 export default connect(mapStateToProps)(App);

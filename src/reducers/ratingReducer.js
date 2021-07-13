@@ -1,26 +1,22 @@
-import {DRIVER_RATING, PASSENGER_RATING, PASSENGERS, RATING, RATING_AVERAGE} from "Actions/types";
+import {RATINGS, RATING_COUNT, RATING, RATING_USER, RATING_COUNT_USER, RATING_USER_AVERAGE} from "Actions/types";
 
 
 const initialState = {
-  passengerRating: [],
-  driverRating: [],
-  rating: [],
-  ratingAverage: 0,
+  ratings: [],
+  ratingsUser: [],
+  rating: {},
+  ratingCount: 0,
+  ratingCountUser: 0,
+  ratingsUserAverage: 0,
 };
 
 function ratingReducer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
-    case PASSENGER_RATING: {
+    case RATINGS: {
       return {
         ...state,
-        passengerRating: payload,
-      };
-    }
-      case DRIVER_RATING: {
-      return {
-        ...state,
-        driverRating: payload,
+        ratings: payload,
       };
     }
     case RATING: {
@@ -29,10 +25,28 @@ function ratingReducer(state = initialState, action) {
         rating: payload,
       };
     }
-    case RATING_AVERAGE: {
+    case RATING_USER: {
       return {
         ...state,
-        ratingAverage: payload,
+        ratingsUser: payload,
+      };
+    }
+    case RATING_USER_AVERAGE: {
+      return {
+        ...state,
+        ratingsUserAverage: payload,
+      };
+    }
+    case RATING_COUNT: {
+      return {
+        ...state,
+        ratingCount: payload,
+      };
+    }
+    case RATING_COUNT_USER: {
+      return {
+        ...state,
+        ratingCountUser: payload,
       };
     }
     default:

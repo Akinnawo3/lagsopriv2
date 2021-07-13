@@ -2,27 +2,20 @@
  * Dashboard
  */
 
-import React, { Component } from 'react'
+import React from 'react'
 import { Helmet } from "react-helmet";
-// intl messages
 import IntlMessages from 'Util/IntlMessages';
-
-// page title bar
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
-
-// rct collapsible card
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 
 import {
 	VisitorAreaChartWidget,
-	SupportRequest,
+	TripCard,
 	OverallTrafficStatusWidget,
-	TodayOrdersStatsWidget,
-	BookingInfo,
-	FollowersWidget,
+	SchedulesWidget,
+	PaymentWidget,
+	RefundsWidget,
 } from "Components/Widgets";
-
-// widgets data
 import {
 	visitorsData,
 	salesData,
@@ -34,16 +27,14 @@ import GoogleMapComponentUser from "Components/Maps/GoogleMapComponentUsers";
 import VehicleChart from "Components/Widgets/VehicleChart";
 import DriverChart from "Components/Widgets/DriverChart";
 
-export default class HomeDashboard extends Component {
-	render() {
-		const { match } = this.props;
-		return (
+ const HomeDashboard = ({match}) => {
+ 	return (
 			<div className="ecom-dashboard-wrapper">
 				<Helmet>
 					<title>Dashboard</title>
-					<meta name="description" content="Reactify Ecommerce Dashboard" />
+					<meta name="description" content="Zeno Admin Dashboard" />
 				</Helmet>
-				<PageTitleBar title={<IntlMessages id="sidebar.dashboard" />} match={match} />
+				<PageTitleBar home title={<IntlMessages id="sidebar.dashboard" />} match={match} />
 				<div className="row">
 					<div className="col-sm-12 col-md-6 w-xs-half-block">
 						<GoogleMapComponent />
@@ -87,7 +78,6 @@ export default class HomeDashboard extends Component {
 					<div className="col-sm-12 col-md-12 col-lg-7 d-sm-full">
 						<div className="row">
 							<div className="col-sm-6 col-md-6 col-lg-6">
-									{/*<BookingInfo />*/}
 								<RctCollapsibleCard
 									// colClasses="col-sm-12 col-md-4 col-lg-4 w-xs-full"
 									heading={<IntlMessages id="widgets.trips" />}
@@ -97,17 +87,15 @@ export default class HomeDashboard extends Component {
 									fullBlock
 									customClasses="overflow-hidden"
 								>
-									<SupportRequest />
+									<TripCard />
 								</RctCollapsibleCard>
-								{/*<SupportRequest />*/}
-								<TodayOrdersStatsWidget />
+								<SchedulesWidget />
 							</div>
 							<div className="col-sm-6 col-md-6 col-lg-6">
 								<div className="dash-cards-lg">
-									<BookingInfo />
-									{/*<OnlineVisitorsWidget />*/}
+									<PaymentWidget />
 								</div>
-								<FollowersWidget />
+								<RefundsWidget />
 								{/*<NewOrderCountdown />*/}
 							</div>
 						</div>
@@ -115,5 +103,7 @@ export default class HomeDashboard extends Component {
 				</div>
 			</div>
 		)
-	}
+
 }
+
+export default HomeDashboard

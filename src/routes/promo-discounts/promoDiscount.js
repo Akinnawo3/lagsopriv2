@@ -17,7 +17,7 @@ import {
 } from 'reactstrap';
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import {connect} from "react-redux";
-import Spinner from "../../spinner/Spinner";
+import Spinner from "../../components/spinner/Spinner";
 import IconButton from "@material-ui/core/IconButton";
 import MobileSearchForm from "Components/Header/MobileSearchForm";
 import {CSVLink} from "react-csv";
@@ -27,7 +27,7 @@ import {
     deletePromoDiscount,
     getPromoDiscount,
     updatePromoDiscount
-} from "Actions/promoDiscountsAction";
+} from "../../actions/promoDiscountsAction";
 
 const  PromoDiscounts = (props) => {
     const {

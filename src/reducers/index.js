@@ -20,7 +20,10 @@ import supportReducer from "./supportReducer";
 import ratingReducer from "./ratingReducer";
 import fdtReducer from "./fdtReducer";
 import tripReducer from "./tripReducer";
-import sosReducer from "./sosReducer";
+import emergencyReducer from "./emergencyReducer";
+import usersReducer from "./userReducer";
+import cancellationReasonReducer from "./cancellationReasonReducer";
+import referralReducer from "./referralReducer";
 
 const reducers = combineReducers({
    settings,
@@ -41,7 +44,10 @@ const reducers = combineReducers({
    rating: ratingReducer,
    fdt: fdtReducer,
    trips: tripReducer,
-   sos: sosReducer,
+   sos: emergencyReducer,
+   users: usersReducer,
+   cancellationReasons: cancellationReasonReducer,
+   referrals: referralReducer
 });
 
 export default reducers;

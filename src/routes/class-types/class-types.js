@@ -17,11 +17,11 @@ import {
 } from 'reactstrap';
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import {connect} from "react-redux";
-import Spinner from "../../spinner/Spinner";
+import Spinner from "../../components/spinner/Spinner";
 import IconButton from "@material-ui/core/IconButton";
 import MobileSearchForm from "Components/Header/MobileSearchForm";
 import {CSVLink} from "react-csv";
-import {createClassType, deleteClassType, getClassTypes, updateClassType} from "Actions/classTypesAction";
+import {createClassType, deleteClassType, getClassTypes, updateClassType} from "../../actions/classTypesAction";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
 const  ClassTypes = (props) => {

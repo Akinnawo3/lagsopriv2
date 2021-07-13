@@ -1,82 +1,107 @@
 import axios from 'axios'
-import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "Actions/loadingAction";
-import {ADMINS} from "Actions/types";
+import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
+import {ADMINS, ADMIN_COUNT} from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
+import {configureStore} from "../store";
+import {changeCurrentPage, onAddUpdateUserModalClose} from "Routes/admin/admins";
 
-export const createAdmin = (password, first, last, email, phone) => async dispatch => {
+export const getAdmins = (page_no=1, spinner) => async dispatch => {
   try {
-    await dispatch(startLoading());
-    const res = await axios.post(`${api.auth}/admin/users/`, {email, password: 'password', phoneNumber: phone})
-    if(res.data) {
-      const authId = res.data.auth_id
-      const body = {authId, password, first, last, email, phone}
-      await axios.post(`${api.admins}/api/admin/`, body)
-      await NotificationManager.success('Admin Created Successfully!');
-      await dispatch(getAdmins2());
-      dispatch(endLoading());
+   spinner && await dispatch(startLoading());
+   !spinner && await dispatch(startStatusLoading())
+    const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=admin&item_per_page=20&page=${page_no}`)
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      dispatch({
+        type: ADMINS,
+        payload: res.data.data
+      });
+    }
+    dispatch(endLoading());
+    dispatch(endStatusLoading())
+  } catch (err) {
+    dispatch(endLoading());
+    dispatch(endStatusLoading())
+
+
+  }
+};
+
+export const getAdminCount = () => async dispatch => {
+  try {
+    const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=admin&component=count`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      dispatch({
+        type: ADMIN_COUNT,
+        payload: res.data.data.total ? res.data.data.total : 0
+      });
     }
   } catch (err) {
-    dispatch(endLoading());
-    NotificationManager.error(err.response.data.result);
   }
 };
 
-export const getAdmins = () => async dispatch => {
-  try {
-    await dispatch(startLoading());
-    const res = await axios.get(`${api.admins}/api/admin/`)
-    dispatch({
-      type: ADMINS,
-      payload: res.data
-    });
-    dispatch(endLoading());
-  } catch (err) {
-    dispatch(endLoading());
-    NotificationManager.error(err.response.data.result);
-
-
-  }
-};
-
-export const getAdmins2 = () => async dispatch => {
-  try {
-    const res = await axios.get(`${api.admins}/api/admin/`)
-    dispatch({
-      type: ADMINS,
-      payload: res.data
-    });
-  } catch (err) {
-    NotificationManager.error(err.response.data.result);
-
-
-  }
-};
-
-export const updateAdmin = (id, first, last, email, phone) => async dispatch => {
-  const body = {first, last, email, phone}
-  try {
-    await dispatch(startStatusLoading())
-    await axios.put(`${api.admins}/api/admin/${id}/`, body)
-    await NotificationManager.success('Admin Updated Successfully!');
-    await dispatch(endStatusLoading())
-    await dispatch(getAdmins());
-  } catch (err) {
-    dispatch(endStatusLoading())
-    NotificationManager.error(err.response.data.result);
-  }
-};
-
-export const deleteAdmin = (id) => async dispatch => {
+ export const createAdmin =  (first_name, last_name, email, phone_number) => async dispatch =>  {
+  const body = {first_name, last_name, email, phone_number, password: 'Password123'}
   try {
     dispatch(startStatusLoading())
-    await axios.delete(`${api.admins}/api/admin/${id}/`)
-    await NotificationManager.success('Admin Deleted Successfully!');
-    await dispatch(endStatusLoading())
-    await dispatch(getAdmins());
+    const res = await axios.post(`${api.user}/v1.1/admin`, body)
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      await onAddUpdateUserModalClose()
+      await changeCurrentPage()
+      await NotificationManager.success('Admin Created Successfully!');
+      await dispatch(getAdmins())
+    }
+    dispatch(endStatusLoading())
+  }catch (e) {
+    dispatch(endStatusLoading())
+    NotificationManager.error('Network error')
+  }
+}
+
+export const updateAdmin =  (auth_id, first_name, last_name, email, phone_number) => async dispatch =>  {
+  const body = {first_name, last_name, email, phone_number, password: 'Password123'}
+  try {
+    dispatch(startStatusLoading())
+    const res = await axios.put(`${api.user}/v1.1/admin/${auth_id}`, body)
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      await onAddUpdateUserModalClose()
+      await NotificationManager.success('Admin Updated Successfully!');
+      await dispatch(getAdmins())
+    }
+    dispatch(endStatusLoading())
+  }catch (e) {
+    dispatch(endStatusLoading())
+    NotificationManager.error('Network error')
+  }
+}
+
+
+export const deleteAdmin = (auth_id, adminsData) => async dispatch => {
+  try {
+    dispatch(startStatusLoading())
+    const res = await axios.delete(`${api.user}/v1.1/admin/users/${auth_id}`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+    const admins =  adminsData.filter((item) => item.auth_id !== auth_id)
+      dispatch({
+        type: ADMINS,
+        payload: admins
+      });
+    NotificationManager.success("Deleted successfully")
+    }
+    dispatch(endStatusLoading())
   } catch (err) {
-    await dispatch(endStatusLoading())
-    NotificationManager.error(err.response.data.result);
+    NotificationManager.error(err.response.data.error)
+    dispatch(endStatusLoading())
   }
 };
 

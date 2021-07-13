@@ -44,7 +44,7 @@ class NavMenuItem extends Component {
          return (
             <Fragment>
                <ListItem button component="li" onClick={onToggleMenu} className={`list-item ${classNames({ 'item-active': menu.open })}`}>
-                  <ListItemIcon className="menu-icon">
+                  <ListItemIcon className="menu-icon" style={{fontSize: '18px'}}>
                      <i className={menu.menu_icon}></i>
                   </ListItemIcon>
                   <span className="menu text-capitalize">
@@ -65,7 +65,7 @@ class NavMenuItem extends Component {
                               return (
                                  <ListItem button component="li" key={index}>
                                     <NavLink to={subMenu.path} activeClassName="item-active" >
-                                       <span className="menu">
+                                       <span className="menu" style={{fontSize: '12px'}}>
                                           <IntlMessages id={subMenu.menu_title} />
 
                                        </span>
@@ -88,7 +88,7 @@ class NavMenuItem extends Component {
                                        onClick={() => this.onToggleCollapseMenu(index)}
                                        className={`list-item ${classNames({ 'item-active': subMenuOpen === index })}`}
                                     >
-                                       <span className="menu">
+                                       <span className="menu" style={{fontSize: '12px'}}>
                                           <IntlMessages id={subMenu.menu_title} />
                                           {menu.new_item && menu.new_item === true ?
                                              <Chip label="new" className="new-item" color="secondary" />
@@ -102,7 +102,7 @@ class NavMenuItem extends Component {
                                           {subMenu.child_routes.map((nestedMenu, nestedKey) => (
                                              <ListItem button component="li" key={nestedKey}>
                                                 <NavLink activeClassName="item-active" to={nestedMenu.path}>
-                                                   <span className="menu pl-10 d-inline-block">
+                                                   <span className="menu pl-10 d-inline-block" style={{fontSize: '12px'}}>
                                                       <IntlMessages id={nestedMenu.menu_title} />
                                                       {menu.new_item && menu.new_item === true ?
                                                          <Chip label="new" className="new-item" color="secondary" />
@@ -128,7 +128,7 @@ class NavMenuItem extends Component {
       return (
          <ListItem button component="li">
             <NavLink activeClassName="item-active" to={menu.path}>
-               <ListItemIcon className="menu-icon">
+               <ListItemIcon className="menu-icon" style={{fontSize: '18px'}}>
                   <i className={menu.menu_icon}></i>
                </ListItemIcon>
                <span className="menu">

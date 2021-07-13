@@ -1,70 +1,232 @@
 import  axios from 'axios'
-import {VEHICLES} from "Actions/types";
-import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "Actions/loadingAction";
+import {VEHICLES, VEHICLES_COUNT, VEHICLE, DRIVER} from "./types";
+import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
+import {getDriver, getDrivers} from "Actions/driverAction";
 
 
 
-export const getVehicles = () => async dispatch => {
+export const getVehicles = (page_no= 1, assign= '', spinner) => async dispatch => {
   try {
-    dispatch(startLoading());
-    const res = await axios.get(`${api.vehicles}/api/vehicles/`);
-    dispatch({
-      type: VEHICLES,
-      payload: res.data
-    });
+   spinner && dispatch(startLoading());
+   !spinner && dispatch(startStatusLoading())
+    const res = await axios.get(`${api.vehicles}/v1.1/vehicles?item_per_page=20&page=${page_no}&assign=${assign}`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      dispatch({
+        type: VEHICLES,
+        payload: res.data.data
+      });
+    }
     dispatch(endLoading());
+    dispatch(endStatusLoading())
   } catch (err) {
+    dispatch(endStatusLoading())
     dispatch(endLoading());
-    NotificationManager.error(err.response.data.result)
+    NotificationManager.error(err.response.data.message)
   }
 };
 
-export const createVehicles = (plateNo, type, model, make, status, desc) => async dispatch => {
-  const body = {verified: 1, plateNo, type, model, make, status, desc}
+export const getVehicle = (vehicle_id, spinner) => async dispatch => {
   try {
-    await axios.post(`${api.vehicles}/api/vehicles/`, body)
-    await NotificationManager.success('Driver Created Successfully!');
-    await dispatch(getVehicles());
+    spinner && dispatch(startLoading())
+   !spinner && dispatch(startStatusLoading())
+    const res = await axios.get(`${api.vehicles}/v1.1/vehicles/${vehicle_id}`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      if(res.data.data.driver_auth_id){
+      await  dispatch(getDriver(res.data.data.driver_auth_id, true))
+      }
+      dispatch({
+        type: VEHICLE,
+        payload: res.data.data
+      });
+    }
+    spinner && dispatch(endLoading())
+   !spinner && dispatch(endStatusLoading())
   } catch (err) {
-    NotificationManager.error(err.response.data.result);
+    dispatch(endLoading())
+    dispatch(endStatusLoading())
   }
 };
 
-export const updateVehicle = (id, plateNo, type, model, make, desc) => async dispatch => {
-  const body = {plateNo, type, model, make, desc}
+export const getVehiclesCount = (assign= '') => async dispatch => {
   try {
-    await axios.put(`${api.vehicles}/api/vehicles/${id}/`, body)
-    await NotificationManager.success('Driver Updated Successfully!');
-    await dispatch(getVehicles());
+    const res = await axios.get(`${api.vehicles}/v1.1/vehicles?component=count&assign=${assign}`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      dispatch({
+        type: VEHICLES_COUNT,
+        payload: res.data.data.total ? res.data.data.total : 0
+      });
+    }
   } catch (err) {
-    NotificationManager.error(err.response.data.result);
+    NotificationManager.error(err.response.data.message)
   }
 };
 
-export const  changeVehicleStatus= (id, status) => async dispatch => {
-  const body = {status}
+export const createVehicles = (car_number_plate, car_make, car_model, car_desc, car_color) => async dispatch => {
+  dispatch(startStatusLoading())
+  const body = {car_number_plate, car_make, car_model, car_desc, car_color}
+  try {
+  const res =  await axios.post(`${api.vehicles}/v1.1/vehicles`, body)
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      await NotificationManager.success('Vehicle Created Successfully!');
+      await dispatch(getVehicles());
+    }
+    dispatch(endStatusLoading())
+  } catch (err) {
+    dispatch(endStatusLoading())
+    NotificationManager.error('network error, try again');
+  }
+};
+
+
+export const updateVehicle = (vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign) => async dispatch => {
+  const body = {car_number_plate, car_make, car_model, car_desc, car_color}
   try {
     dispatch(startStatusLoading())
-    await axios.put(`${api.vehicles}/api/vehicles/${id}/`, body)
+    const res =  await axios.put(`${api.vehicles}/v1.1/vehicles/${vehicle_id}`, body)
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      await NotificationManager.success('Vehicle Created Successfully!');
+      await dispatch(getVehicles(page_no, assign));
+    }
     dispatch(endStatusLoading())
-    await NotificationManager.success('Vehicle Updated Successfully!');
-    await dispatch(getVehicles());
   } catch (err) {
     dispatch(endStatusLoading())
     NotificationManager.error(err.response.data.result);
   }
 };
 
-export const deleteVehicle = (id) => async dispatch => {
+
+
+export const deleteVehicle = (vehicle_id, vehicles) => async dispatch => {
   try {
-    await axios.delete(`${api.vehicles}/api/vehicles/${id}/`)
-    await NotificationManager.success('Driver Deleted Successfully!');
-    await dispatch(getVehicles());
+    dispatch(startStatusLoading())
+ const res =    await axios.delete(`${api.vehicles}/v1.1/vehicles/${vehicle_id}`)
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      await NotificationManager.success('Vehicle Deleted Successfully!');
+      const vehicleData = await vehicles.filter(vehicle => vehicle.vehicle_id !== vehicle_id)
+      dispatch({
+        type: VEHICLES,
+        payload: vehicleData
+      });
+    }
+    dispatch(endStatusLoading())
   } catch (err) {
-    NotificationManager.error(err.response.data.result);
+    dispatch(endStatusLoading())
+    NotificationManager.error('network error, try again');
   }
 };
+
+export const revokeVehicle = (vehicle_id) => async dispatch => {
+  try {
+    dispatch(startStatusLoading())
+    const res =    await axios.post(`${api.vehicles}/v1.1/vehicles/revoke`, {vehicle_id})
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      await NotificationManager.success('Vehicle unassigned Successfully!');
+     await dispatch({
+        type: DRIVER,
+        payload: res.data.data
+      });
+      dispatch(getVehicle(vehicle_id))
+    }
+    dispatch(endStatusLoading())
+  } catch (err) {
+    dispatch(endStatusLoading())
+    NotificationManager.error('network error, try again');
+  }
+};
+
+// export const assignVehicle = (vehicle_id, driver_auth_id, page_no, driver_status) => async dispatch => {
+//   const body = {vehicle_id, driver_auth_id, page_no, driver_status}
+//   try {
+//     dispatch(startStatusLoading())
+//     const res =  await axios.post(`${api.vehicles}/v1.1/vehicles/assign`, body)
+//     if(res.data.status === 'error') {
+//       NotificationManager.error(res.data.msg);
+//     }else {
+//       await NotificationManager.success('Vehicle assigned Successfully!');
+//       await dispatch(getDrivers(driver_status, page_no));
+//     }
+//     dispatch(endStatusLoading())
+//   } catch (err) {
+//     dispatch(endStatusLoading())
+//     NotificationManager.error(err.response.data.error);
+//   }
+// };
+
+export const assignVehicleOnProfile = (vehicle_id, driver_auth_id, driverData, vehicleData, message_type, subject) => async dispatch => {
+  const body = {vehicle_id, driver_auth_id}
+  try {
+    dispatch(startStatusLoading())
+    const res =  await axios.post(`${api.vehicles}/v1.1/vehicles/assign`, body)
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      await NotificationManager.success('Vehicle assigned Successfully!');
+      await dispatch(sendVehicleAssignMessage(driverData, vehicleData, message_type, subject))
+      await dispatch(getDriver(driver_auth_id, true));
+    }
+    dispatch(endStatusLoading())
+  } catch (err) {
+    dispatch(endStatusLoading())
+    NotificationManager.error(err.response.data.error);
+  }
+};
+
+export const searchVehicles = (car_number_plate, assign) => async dispatch => {
+  try {
+    spinner && dispatch(startLoading());
+    !spinner && dispatch(startStatusLoading())
+    const res = await axios.get(`${api.vehicles}/v1.1/vehicles?assign=${assign}&car_number_plate=${car_number_plate}`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      dispatch({
+        type: VEHICLES,
+        payload: res.data.data
+      });
+    }
+    dispatch(endLoading());
+    dispatch(endStatusLoading())
+  } catch (err) {
+    dispatch(endStatusLoading())
+    dispatch(endLoading());
+    NotificationManager.error(err.response.data.message)
+  }
+};
+
+
+
+export const sendVehicleAssignMessage = (driverData, vehicleData, message_type) => async dispatch => {
+  const body = {
+    "data": {"first_name": driverData.first_name,
+      "license_number": vehicleData.car_number_plate,
+      "vehicle_model": vehicleData.car_make
+    },
+    "type_message": message_type,
+    "email": driverData.email,
+    'subject': 'Vehicle Assigned'
+  }
+  try {
+    await axios.post(`${api.messageWorker}/api/me/messageworker/`, body);
+  } catch (err) {
+  }
+};
+
+
 
 

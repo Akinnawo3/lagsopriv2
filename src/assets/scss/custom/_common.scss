@@ -101,6 +101,11 @@ a {
 }
 .pull-left{
   float:left;
+  padding-right: 20px;
+}
+.custom-dropdown:hover {
+  background-color: #007bff;
+  color: white;
 }
 .pull-right{
   float:right;
@@ -300,18 +305,30 @@ select {
 }
 
 
-.scheduleHeader {
+.schedulePickup {
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
   letter-spacing: 0.004em;
-  color: #2E407B;
+  color: #464D69;
 }
 
-.schedulePickup {
+.scheduleHeader {
   font-size: 12px;
   line-height: 14px;
   letter-spacing: 0.004em;
   color: #898888;
 
+}
+
+//.selectBoxShadow {
+//  box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+//  background-color: rgba(68, 84, 138, 0.08)
+//}
+
+.shadow {
+  -moz-box-shadow:    inset 0 0 10px gray;
+  -webkit-box-shadow: inset 0 0 10px gray;
+  box-shadow:         inset 0 0 10px gray;
+  background-color: rgba(68, 84, 138, 0.08)
 }

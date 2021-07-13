@@ -36,13 +36,17 @@ export const SIGNUP_USER_FAILURE = 'SIGNUP_USER_FAILURE';
 //driver
 export const DRIVERS = "DRIVERS"
 export const DRIVER = "DRIVER"
+export const DRIVERS_COUNT = "DRIVERS_COUNT"
 
 
 //vehicle
 export const VEHICLES = "VEHICLES"
+export  const VEHICLES_COUNT = 'VEHICLES_COUNT';
+export const VEHICLE = 'VEHICLE';
 
 //Admins
 export const ADMINS = "ADMINS"
+export const ADMIN_COUNT = 'ADMIN_COUNT'
 
 //loading
 export const LOADING_START = "LOADING_START"
@@ -52,6 +56,7 @@ export const LOADING_STATUS_END = "LOADING_STATUS_END"
 
 export const PASSENGERS = "PASSENGERS"
 export const PASSENGER = "PASSENGER"
+export const PASSENGER_COUNT = 'PASSENGER_COUNT'
 
 //class Types
 export const CLASS_TYPE = "CLASS_TYPE"
@@ -61,26 +66,64 @@ export const BOOKING_TYPE = 'BOOKING_TYPE'
 
 //Promo
 export const PROMO_TYPE = 'PROMO_TYPE'
+//referral
+export const REFERRAL = 'REFERRAL'
+export const REFERRAL_COUNT = 'REFERRAL_COUNT'
 
 //Fee type
 
 export const FEE_TYPE = 'FEE_TYPE'
 
 export const AREAS = 'AREAS'
+export const AREA_COUNT = 'AREA_COUNT'
+
+export const CANCELLATION_REASONS = 'CANCELLATION_REASONS';
 
 export const TICKET_TYPE = 'TICKET_TYPE'
-export const SUPPORT = 'SUPPORT'
+export const TICKET = 'TICKET'
+export const TICKET_TYPE_COUNT = 'TICKET_TYPE_COUNT'
+export const SUPPORT_TICKETS = 'SUPPORT_TICKETS'
+export const SUPPORT_TICKETS_COUNT = 'SUPPORT_TICKETS_COUNT'
+export const SUPPORT_TICKET_DETAILS = 'SUPPORT_TICKET_DETAILS'
 
-export const PASSENGER_RATING = 'PASSENGER_RATING'
-export const DRIVER_RATING = 'DRIVER_RATING'
+export const RATINGS = 'RATINGS'
+export const RATING_COUNT = 'RATING_COUNT'
 export const RATING = 'RATING'
-export const RATING_AVERAGE = 'RATING_AVERAGE'
+export const RATING_USER = 'RATING_USER'
+export const RATING_COUNT_USER = 'RATING_COUNT_USER'
+export const RATING_USER_AVERAGE = 'RATING_USER_AVERAGE'
 export const FDT = 'FDT'
 export const SCHEDULE = 'SCHEDULE'
 export const FDT_DETAILS = 'FDT_DETAILS'
+export const SCHEDULE_DETAILS = 'SCHEDULE_DETAILS'
+export const FDT_COUNT = 'FDT_COUNT'
+export const SCHEDULE_COUNT = 'SCHEDULE_COUNT'
 export const TRIPS = 'TRIPS'
+export const TRIP = 'TRIP'
+export const TRIP_COUNT_DRIVER_ALL = 'TRIP_COUNT_DRIVER_ALL'
+export const TRIP_COUNT_DRIVER_COMPLETED = 'RIP_COUNT_DRIVER_COMPLETED'
+export const TRIP_COUNT_DRIVER_CANCELLED = 'TRIP_COUNT_DRIVER_CANCELLED'
 export const TRIP_COUNT = 'TRIP_COUNT'
 export const DRIVER_TRIPS = 'DRIVER_TRIPS'
 export const TRIP_COUNT_DRIVER = 'TRIP_COUNT_DRIVER'
+export const TRIP_COUNT_PASSENGER_COMPLETED = 'TRIP_COUNT_PASSENGER_COMPLETED'
+export const TRIP_COUNT_PASSENGER_ALL = 'TRIP_COUNT_PASSENGER_ALL'
+export const TRIP_COUNT_PASSENGER_CANCELLED = 'TRIP_COUNT_PASSENGER_CANCELLED'
+export const TRIP_COUNT_PASSENGER = 'TRIP_COUNT_PASSENGER'
+export const PASSENGER_TRIPS = 'PASSENGER_TRIPS'
+
+
+
+
+
+
 export const SOS = 'SOS'
+export const SOS_COUNT = 'SOS_COUNT'
+export const SOS_DETAILS = 'SOS_DETAILS'
+export const SOS_USER_DETAILS = 'SOS_USER_DETAILS'
+export const SOS_NUMBERS = 'SOS_NUMBERS'
+
+//users
+export const USERS = 'USERS'
+export const USER_COUNT = 'USER_COUNT'
 

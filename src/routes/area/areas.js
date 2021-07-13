@@ -17,80 +17,78 @@ import {
 } from 'reactstrap';
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import {connect} from "react-redux";
-import Spinner from "../../spinner/Spinner";
-import IconButton from "@material-ui/core/IconButton";
 import MobileSearchForm from "Components/Header/MobileSearchForm";
-import {CSVLink} from "react-csv";
 import Upload from "./components/upload";
-import {createArea, deleteArea, getAreas, updateArea} from "Actions/areaAction";
+import {createArea, deleteArea, getAreas, getAreasCount, updateArea} from "Actions/areaAction";
 import localGovt from "Assets/data/localGovt/localGovt";
+import EmptyData from "Components/EmptyData/EmptyData";
+import {CSVLink} from "react-csv";
+// import CSVLink from "react-csv/src/components/Link";
 
-const  Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteArea}) => {
-    const [addNewUserModal, setAddNewUserModal] = useState(false)
-    const [editUser, setEditUser] = useState(false)
+const  Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteArea, getAreaCount, areaCount}) => {
+    const [addNewAreaModal, setAddNewAreaModal] = useState(false)
+    const [editArea, setEditArea] = useState(false)
     const [updateId, setUpdateId] = useState(null)
     const [deleteId, setDeleteId] = useState(null)
     const [formData, setFormData] = useState({localGovtName: '', areaName: ''})
     const [searchData, setSearchData] = useState('')
     const inputEl = useRef(null);
-    const [posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage] = useState(10);
-    const indexOfLastPost = currentPage * postsPerPage;
-    const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost)
     const [excelExport, setExcelExport] = useState([])
-    const [addNewUserModal1, setAddNewUserModal1] = useState(false)
+    const [addNewAreaModal1, setAddNewAreaModal1] = useState(false)
 
     useEffect(()=> {
-        getAreas();
+        getAreas(1, true);
+        getAreaCount()
     },[])
 
     const paginate = pageNumber => {
         setCurrentPage(pageNumber);
+        getAreas(pageNumber)
         window.scrollTo(0, 0);
     };
 
     const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
     const {localGovtName, areaName} = formData
 
-    const opnAddNewUserModal = (e) => {
+    const opnAddNewAreaModal = (e) => {
         e.preventDefault();
-        setAddNewUserModal(true)
+        setAddNewAreaModal(true)
     }
 
-    const opnAddNewUserModal1 = (e) => {
-        e.preventDefault();
-        setAddNewUserModal1(true)
+  const  opnAddUploadAreaModal = (e) => {
+      e.preventDefault();
+      setAddNewAreaModal1(true)
+  }
+
+
+    const onAddUpdateAreaModalClose1 = () => {
+        setAddNewAreaModal1(false);
     }
 
-    const onAddUpdateUserModalClose1 = () => {
-        setAddNewUserModal1(false);
-    }
-
-    const opnAddNewUserEditModal = (id) => {
+    const opnAddNewAreaEditModal = (id) => {
         areas.map(area => {
             if(area.id === id){
                 setFormData(
                     {
-                        localGovtName: area.localGovtName,
-                        areaName: area.areaName,
+                        // localGovtName: area.local_govt_name,
+                        areaName: area.area_name,
                     })
                 setUpdateId(area.id)
             }
         })
-        setAddNewUserModal(true)
-        setEditUser(true)
+        setAddNewAreaModal(true)
+        setEditArea(true)
     }
 
-    const onAddUpdateUserModalClose = () => {
+    const onAddUpdateAreaModalClose = () => {
         setFormData(
             {
                 localGovtName: '', areaName: ''
             })
         setUpdateId(null)
-        setAddNewUserModal(false);
-        setEditUser(false);
+        setAddNewAreaModal(false);
+        setEditArea(false);
     }
 
     const onDelete = (id) => {
@@ -100,8 +98,8 @@ const  Areas = ({match, getAreas, areas, createArea, updateArea, loading, delete
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        onAddUpdateUserModalClose()
-        !editUser?  await createArea(localGovtName, areaName) : await updateArea(updateId, localGovtName, areaName)
+        onAddUpdateAreaModalClose()
+        !editArea?  await createArea( areaName) : await updateArea(updateId, areaName)
 
 
     };
@@ -111,25 +109,12 @@ const  Areas = ({match, getAreas, areas, createArea, updateArea, loading, delete
         setSearchData(e.target.value );
     };
 
-    useEffect(()=> {
-        if(searchData && areas){
-            setCurrentPage(1)
-            const search = areas.filter(area => {
-                return (area.areaName.toLowerCase().includes(searchData.toLowerCase()) || area.localGovtName.toLowerCase().includes(searchData.toLowerCase()))
-            });
-            setPosts(search)
-        } else if(searchData === "") {
-            setPosts(areas.sort((a, b) => parseFloat(b.id) - parseFloat(a.id)))
-        }
-    },[searchData]);
 
     useEffect(()=> {
         if(areas) {
-            setPosts(areas.sort((a, b) => parseFloat(b.id) - parseFloat(a.id)))
             let result = areas.map(area=> {
                 return {
-                    localGovtName: area['localGovtName'],
-                    areaName: area['areaName'],
+                    areaName: area['area_name'],
                 }
             })
             setExcelExport(result)
@@ -138,28 +123,24 @@ const  Areas = ({match, getAreas, areas, createArea, updateArea, loading, delete
 
     const sampleData = [
         {
-            localGovtName: 'Ibeju-Lekki',
-            areaName: 'Onasa'
+            area_name: 'Lekki Phase 1'
         }
     ]
 
-    const removeDeleteId = ()=> {
-        setDeleteId(null)
-    }
 
     return (
         <div className="table-wrapper">
             <PageTitleBar title={"Areas"} match={match} />
-            {loading && <Spinner />}
             {!loading &&
             <RctCollapsibleCard heading="Areas" fullBlock>
                 <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+                    {!loading && areas.length > 0 &&
                     <div className="search-wrapper">
                         <Input type="search" className="search-input-lg" name="searchData" value={searchData} onChange={onChangeSearch} placeholder="Search.." />
-                    </div>
-                    <IconButton mini="true" className="search-icon-btn" onClick={() => this.openMobileSearchForm()}>
-                        <i className="zmdi zmdi-search"></i>
-                    </IconButton>
+                    </div>}
+                    {/*<IconButton mini="true" className="search-icon-btn" onClick={() => this.openMobileSearchForm()}>*/}
+                    {/*    <i className="zmdi zmdi-search"></i>*/}
+                    {/*</IconButton>*/}
                     <MobileSearchForm
                         // isOpen={isMobileSearchFormVisible}
                         // onClose={() => this.setState({ isMobileSearchFormVisible: false })}
@@ -187,26 +168,27 @@ const  Areas = ({match, getAreas, areas, createArea, updateArea, loading, delete
 
                         Sample excel to upload
                     </CSVLink>
-                    <a href="#" onClick={(e) => opnAddNewUserModal1(e)} color="primary" className="btn-sm btn-outline-default mr-10 bg-danger text-white"><i className="zmdi zmdi-upload mr-2"></i>Upload</a>
-                    <a href="#" onClick={(e) => opnAddNewUserModal(e)} color="primary" className="caret btn-sm mr-10">Create New Area <i className="zmdi zmdi-plus"></i></a>
+                    <a href="#" onClick={(e) => opnAddUploadAreaModal(e)} color="primary" className="btn-sm btn-outline-default mr-10 bg-danger text-white"><i className="zmdi zmdi-upload mr-2"></i>Upload</a>
+                    <a href="#" onClick={(e) => opnAddNewAreaModal(e)} color="primary" className="caret btn-sm mr-10">Create New Area <i className="zmdi zmdi-plus"></i></a>
                 </div>
+                {areas.length > 0 &&
                 <div className="table-responsive" style={{minHeight: "50vh"}}>
                     <Table>
                         <TableHead>
                             <TableRow hover>
-                                <TableCell>Local Govt Name</TableCell>
+                                {/*<TableCell>Local Govt Name</TableCell>*/}
                                 <TableCell>Area Name</TableCell>
                                 <TableCell>Actions</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             <Fragment>
-                                {posts && currentPosts.map((area, key) => (
+                                {areas.map((area, key) => (
                                     <TableRow hover key={key}>
-                                        <TableCell>{area.localGovtName}</TableCell>
-                                        <TableCell>{area.areaName}</TableCell>
+                                        {/*<TableCell>{area.local_govt_name}</TableCell>*/}
+                                        <TableCell>{area.area_name}</TableCell>
                                         <TableCell>
-                                            <button type="button" className="rct-link-btn" onClick={(e) => opnAddNewUserEditModal(area.id)}><i className="ti-pencil"></i></button>
+                                            <button type="button" className="rct-link-btn" onClick={(e) => opnAddNewAreaEditModal(area.id)}><i className="ti-pencil"></i></button>
                                             <button type="button" className="rct-link-btn ml-lg-3 text-danger" onClick={() => onDelete(area.id)}><i className="ti-close"></i></button>
                                         </TableCell>
                                     </TableRow>
@@ -214,36 +196,37 @@ const  Areas = ({match, getAreas, areas, createArea, updateArea, loading, delete
                             </Fragment>
                         </TableBody>
                     </Table>
-                    {posts.length < 1 && <div className="d-flex align-items-center justify-content-center w-100 p-5">No Area Found</div>}
-                </div>
+                </div>}
+                {areas.length < 1 && <EmptyData />}
+
+                {!loading && areas.length > 0 &&
                 <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
-                    {posts.length > 0 &&
                     <Pagination
                         activePage={currentPage}
                         itemClass="page-item"
                         linkClass="page-link"
-                        itemsCountPerPage={postsPerPage}
-                        totalItemsCount={posts.length}
+                        itemsCountPerPage={20}
+                        totalItemsCount={areaCount}
                         onChange={paginate}
-                    />}
-                </div>
+                    />
+                </div>}
             </RctCollapsibleCard>
             }
-            <Modal isOpen={addNewUserModal} toggle={() => onAddUpdateUserModalClose()}>
-                <ModalHeader toggle={() => onAddUpdateUserModalClose()}>
-                    {editUser ? 'Update Area': 'Create New Area'}
+            <Modal isOpen={addNewAreaModal} toggle={() => onAddUpdateAreaModalClose()}>
+                <ModalHeader toggle={() => onAddUpdateAreaModalClose()}>
+                    {editArea ? 'Update Area': 'Create New Area'}
                 </ModalHeader>
                 <Form onSubmit={onSubmit}>
                     <ModalBody>
-                                <FormGroup>
-                                    <Label>Local Govt Name</Label>
-                                    <Input type="select" name="localGovtName" onChange={onChange} value={localGovtName} required>
-                                        <option value="">select</option>
-                                        {localGovt.map(local=> (
-                                            <option key={local} value={local}>{local}</option>
-                                        ))}
-                                    </Input>
-                                </FormGroup>
+                                {/*<FormGroup>*/}
+                                {/*    <Label>Local Govt Name</Label>*/}
+                                {/*    <Input type="select" name="localGovtName" onChange={onChange} value={localGovtName} required>*/}
+                                {/*        <option value="">select</option>*/}
+                                {/*        {localGovt.map(local=> (*/}
+                                {/*            <option key={local} value={local}>{local}</option>*/}
+                                {/*        ))}*/}
+                                {/*    </Input>*/}
+                                {/*</FormGroup>*/}
                                 <FormGroup>
                                     <Label>Area Name</Label>
                                     <Input type="text"  name="areaName" value={areaName} onChange={onChange}  required />
@@ -254,12 +237,12 @@ const  Areas = ({match, getAreas, areas, createArea, updateArea, loading, delete
                     </ModalFooter>
                 </Form>
             </Modal>
-            <Modal isOpen={addNewUserModal1} toggle={() => onAddUpdateUserModalClose1()}>
-                <ModalHeader toggle={() => onAddUpdateUserModalClose1()}>
+            <Modal isOpen={addNewAreaModal1} toggle={() => onAddUpdateAreaModalClose1()}>
+                <ModalHeader toggle={() => onAddUpdateAreaModalClose1()}>
                     Upload Area
                 </ModalHeader>
                 <ModalBody>
-                    <Upload oncloseModal={onAddUpdateUserModalClose1} />
+                    <Upload oncloseModal={onAddUpdateAreaModalClose1} />
                 </ModalBody>
             </Modal>
             <DeleteConfirmationDialog
@@ -267,10 +250,9 @@ const  Areas = ({match, getAreas, areas, createArea, updateArea, loading, delete
                 title="Are You Sure Want To Delete?"
                 message="This will delete area permanently."
                 onConfirm={() => {
-                    deleteArea(deleteId);
+                    deleteArea(deleteId, areas);
                     inputEl.current.close();
                 }}
-                removeDeleteId={removeDeleteId}
             />
         </div>
     );
@@ -279,15 +261,17 @@ const  Areas = ({match, getAreas, areas, createArea, updateArea, loading, delete
 
 function mapDispatchToProps(dispatch) {
     return {
-        getAreas: () => dispatch(getAreas()),
-        createArea: (localGovtName, areaName) => dispatch(createArea(localGovtName, areaName)),
-        updateArea: (id, localGovtName, areaName) => dispatch(updateArea(id, localGovtName, areaName)),
-        deleteArea: (id) => dispatch( deleteArea(id)),
+        getAreas: (page_no, spinner) => dispatch(getAreas(page_no, spinner)),
+        getAreaCount: () => dispatch(getAreasCount()),
+        createArea: (area_name) => dispatch(createArea( area_name)),
+        updateArea: (id, area_name) => dispatch(updateArea(id, area_name)),
+        deleteArea: (id, areas) => dispatch( deleteArea(id, areas)),
     };
 }
 
 const mapStateToProps = state => ({
     areas: state.areas.areas,
+    areaCount: state.areas.areaCount,
     loading: state.loading.loading,
 });
 

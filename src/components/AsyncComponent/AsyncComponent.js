@@ -26,6 +26,12 @@ const AsyncFees = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+const AsyncCancellationReasons = Loadable({
+	loader: () => import("Routes/cancellationReasons/cancellationReasons"),
+	loading: () => <RctPageLoader />,
+});
+
+
 const AsyncRefunds = Loadable({
 	loader: () => import("Routes/refunds/refunds"),
 	loading: () => <RctPageLoader />,
@@ -43,8 +49,8 @@ const AsyncUserRatings = Loadable({
 	loader: () => import("Routes/ratings/user-ratings"),
 	loading: () => <RctPageLoader />,
 });
-const AsyncTaxiRatings = Loadable({
-	loader: () => import("Routes/ratings/taxi-ratings"),
+const AsyncRatingsDetails = Loadable({
+	loader: () => import("Routes/ratings/ratingDetails"),
 	loading: () => <RctPageLoader />,
 });
 const AsyncRefundsPending = Loadable({
@@ -78,10 +84,10 @@ const AsyncReferral = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
-const AsyncReferralDetails = Loadable({
-	loader: () => import("Routes/referral/referralDetails"),
-	loading: () => <RctPageLoader />,
-});
+// const AsyncReferralDetails = Loadable({
+// 	loader: () => import("Routes/referral/referralDetails"),
+// 	loading: () => <RctPageLoader />,
+// });
 
 const AsyncCancellations = Loadable({
 	loader: () => import("Routes/cancellations/cancellations"),
@@ -165,6 +171,10 @@ const AsyncActiveVehicles = Loadable({
 	loader: () => import("Routes/vehicles/activeVehicles"),
 	loading: () => <RctPageLoader />,
 });
+const AsyncVehicleDetails = Loadable({
+	loader: () => import("Routes/vehicles/vehicleDetails"),
+	loading: () => <RctPageLoader />,
+});
 const AsyncInactiveVehicles = Loadable({
 	loader: () => import("Routes/vehicles/inactiveVehicles"),
 	loading: () => <RctPageLoader />,
@@ -180,16 +190,6 @@ const AsyncPassengers = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
-const AsyncPassengersActive = Loadable({
-	loader: () => import("Routes/passengers/activePassengers"),
-	loading: () => <RctPageLoader />,
-});
-
-const AsyncPassengersInactive = Loadable({
-	loader: () => import("Routes/passengers/inactivePassengers"),
-	loading: () => <RctPageLoader />,
-});
-
 const AsyncPassenger = Loadable({
 	loader: () => import("Routes/passengers/passenger"),
 	loading: () => <RctPageLoader />,
@@ -197,6 +197,11 @@ const AsyncPassenger = Loadable({
 
 const AsyncEmergency= Loadable({
 	loader: () => import("Routes/emergency/emergency"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncEmergencyNumber = Loadable({
+	loader: () => import("Routes/emergency/emergencyNumber"),
 	loading: () => <RctPageLoader />,
 });
 
@@ -392,11 +397,10 @@ export {
 	AsyncSessionPage500Component,
 	AsyncHomeDashboardComponent,
 	AsyncPassenger,
-	AsyncPassengersActive,
-	AsyncPassengersInactive,
+	// AsyncPassengersActive,
+	// AsyncPassengersInactive,
 	AsyncDriverRatings,
 	AsyncUserRatings,
-	AsyncTaxiRatings,
 	AsyncSupport,
 	AsyncAnalytics,
 	AsyncEmergency,
@@ -417,7 +421,7 @@ export {
 	AsyncScheduleDetails,
 	AsyncVoucher,
 	AsyncReferral,
-	AsyncReferralDetails,
+	// AsyncReferralDetails,
 	AsyncRevenueSplit,
 	AsyncFdt,
 	AsyncFdtDetails,
@@ -425,5 +429,9 @@ export {
 	AsyncTripsCompleted,
 	AsyncTripsCancelled,
 	AsyncTripsWaiting,
-	AsyncTripsCurrent
+	AsyncTripsCurrent,
+	AsyncCancellationReasons,
+	AsyncVehicleDetails,
+	AsyncRatingsDetails,
+	AsyncEmergencyNumber
 };

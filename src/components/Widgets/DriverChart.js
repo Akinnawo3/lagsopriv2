@@ -1,14 +1,11 @@
 /**
- * Users Area Chart Widget
+ * Driver Chart Widget
  */
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import CountUp from 'react-countup';
 
 // chart
 import TinyAreaChart from 'Components/Charts/TinyAreaChart';
-
-// chart config
-import ChartConfig from 'Constants/chart-config';
 
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
@@ -16,45 +13,102 @@ import IntlMessages from 'Util/IntlMessages';
 // rct card box
 import { RctCard, RctCardContent } from 'Components/RctCard';
 
-// helpers
-import { hexToRgbA } from 'Helpers/helpers';
+// chart config
+import ChartConfig from 'Constants/chart-config';
 
-const DriverChart = ({ data }) => (
-    <RctCard>
-        <RctCardContent>
-            <div className="clearfix">
-                <div className="float-left">
-                    <h3 className="mb-15 fw-semi-bold"><IntlMessages id="widgets.drivers" /></h3>
-                    <div className="d-flex">
-                        <div className="mr-50">
-                            <span className="fs-14 d-block"><IntlMessages id="widgets.active" /></span>
-                            <CountUp separator="," className="counter-point" start={0} end={data.today} duration={5} useEasing={true} />
+// helpers
+import {getFirstDayOfMonth, getLastDayOfMonth, hexToRgbA} from 'Helpers/helpers';
+import axios from "axios";
+import api from "../../environments/environment";
+import {NotificationManager} from "react-notifications";
+
+const DriverChart = ({ data }) => {
+    const [driverCount, setDriverCount] = useState(0)
+    const [driverOffline, setDriverOffline] = useState(0)
+    const [driverOnline, setDriverOnline] = useState(0)
+
+    useEffect(() => {
+        getDriverCount();
+        getDriverOffline();
+        getDriverOnline()
+    },[])
+    const getDriverCount = async () => {
+        try {
+            const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=driver&component=count`);
+            if (res.data.status === 'error') {
+                NotificationManager.error(res.data.msg);
+            } else {
+                setDriverCount(res.data.data.total ? res.data.data.total : 0)
+            }
+        } catch (err) {
+        }
+    }
+
+    const getDriverOffline = async () => {
+        try {
+            const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=driver&component=count&driver_online_status=0`);
+            if (res.data.status === 'error') {
+                NotificationManager.error(res.data.msg);
+            } else {
+                setDriverOffline(res.data.data.total ? res.data.data.total : 0)
+            }
+        } catch (err) {
+        }
+    }
+
+    const getDriverOnline = async () => {
+        try {
+            const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=driver&component=count&driver_online_status=1`);
+            if (res.data.status === 'error') {
+                NotificationManager.error(res.data.msg);
+            } else {
+                setDriverOnline(res.data.data.total ? res.data.data.total : 0)
+            }
+        } catch (err) {
+        }
+    }
+
+    return (
+        <RctCard>
+            <RctCardContent>
+                <div className="clearfix">
+                    <div className="w-100">
+                        <div className="d-flex justify-content-between w-100">
+                            <h3 className="mb-15 fw-semi-bold"><IntlMessages id="widgets.drivers"/></h3>
+                            {/*<div className="float-right hidden-md-down">*/}
+                            {/*    <div className="featured-section-icon">*/}
+                            <i className="icon-user" style={{fontSize: '30px'}}></i>
+                            {/*</div>*/}
+                            {/*</div>*/}
                         </div>
-                        <div className="">
-                            <span className="fs-14 d-block"><IntlMessages id="widgets.inactive" /></span>
-                            <CountUp separator="," className="counter-point" start={0} end={data.totalRevenue} duration={5} useEasing={true} />
+                        <div className="d-flex">
+                            <div className="mr-50">
+                                <span className="fs-14 d-block"><IntlMessages id="widgets.online"/></span>
+                                <CountUp separator="," className="counter-point" start={0} end={driverOnline} duration={5}
+                                         useEasing={true}/>
+                            </div>
+                            <div className="mr-50">
+                                <span className="fs-14 d-block"><IntlMessages id="widgets.offline"/></span>
+                                <CountUp
+                                    separator=","
+                                    className="counter-point"
+                                    start={0}
+                                    end={driverOffline}
+                                    duration={5}
+                                    useEasing={true}
+                                />
+                            </div>
+                            <div className="">
+                                <span className="fs-14 d-block"><IntlMessages id="widgets.total"/></span>
+                                <CountUp separator="," className="counter-point" start={0} end={driverCount} duration={5}
+                                         useEasing={true}/>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div className="float-right hidden-md-down">
-                    <div className="featured-section-icon">
-                        <i className="zmdi zmdi-car"></i>
-                    </div>
-                </div>
-            </div>
-        </RctCardContent>
-        {/*<TinyAreaChart*/}
-        {/*    label="Sales"*/}
-        {/*    chartdata={data.chartData.data}*/}
-        {/*    labels={data.chartData.labels}*/}
-        {/*    backgroundColor={hexToRgbA(ChartConfig.color.info, 0.1)}*/}
-        {/*    borderColor={hexToRgbA(ChartConfig.color.info, 3)}*/}
-        {/*    lineTension="0"*/}
-        {/*    height={70}*/}
-        {/*    gradient*/}
-        {/*    hideDots*/}
-        {/*/>*/}
-    </RctCard>
-);
+            </RctCardContent>
+        </RctCard>
+    )
+};
 
 export default DriverChart;

@@ -1,7 +1,8 @@
-import {ADMINS} from "Actions/types";
+import {ADMIN_COUNT, ADMINS} from "Actions/types";
 
 const initialState = {
   admins: [],
+  adminCount: 0,
 };
 
 function adminsReducer(state = initialState, action) {
@@ -11,6 +12,12 @@ function adminsReducer(state = initialState, action) {
       return {
         ...state,
         admins: payload,
+      };
+    }
+    case ADMIN_COUNT: {
+      return {
+        ...state,
+        adminCount: payload,
       };
     }
     default:

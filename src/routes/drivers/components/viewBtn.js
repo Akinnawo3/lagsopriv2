@@ -7,13 +7,13 @@ import {connect} from "react-redux"
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import {Link} from "react-router-dom";
-import {changeDriverStatus} from "Actions/driverAction";
+import {changeDriverStatus} from "../../../actions/driverAction";
 import AssignForm from "Routes/drivers/components/assignForm";
 import {ModalHeader, ModalBody, Modal} from "reactstrap";
 
- const ViewBtn = ({driver, changeDriverStatus, vehicles, getDrivers2}) => {
+ const ViewBtn = ({driver, changeDriverStatus, vehicles, getDrivers2, currentPage, status}) => {
      const [anchorEl, setAnchorEl] = useState(null);
-     const [addNewUserModal, setAddNewUserModal] = useState(false)
+     const [addVehicleModal, setAddVehicleModal] = useState(false)
 
   const  button = undefined;
    const handleClose = () => {
@@ -23,15 +23,15 @@ import {ModalHeader, ModalBody, Modal} from "reactstrap";
         setAnchorEl(event.currentTarget)
     };
 
-     const opnAddNewUserModal = (e) => {
+     const opnAddVehicleModal = (e) => {
          e.preventDefault();
-         setAddNewUserModal(true)
+         setAddVehicleModal(true)
      }
 
 
 
-     const onAddUpdateUserModalClose = () => {
-         setAddNewUserModal(false);
+     const onAddVehicleModalClose = () => {
+         setAddVehicleModal(false);
      }
 
 
@@ -42,35 +42,35 @@ import {ModalHeader, ModalBody, Modal} from "reactstrap";
                 {/*    <IconButton variant="contained" color="primary" className="text-white" aria-owns={anchorEl ? 'simple-menu' : null} aria-haspopup="true" onClick={this.handleClick} aria-label="Delete"><i className="ti-eye"></i></IconButton>*/}
                 </Button>
                 <Menu id="simple-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose} >
-                    <MenuItem ><Link to={`/admin/drivers/${driver.authId}`}>Profile</Link></MenuItem>
-                    {driver.status == 0 && <MenuItem onClick={()=> {
-                        changeDriverStatus(driver.id, '1', driver.email, driver.firstName);
-                        handleClose()
-                    }}>Accept</MenuItem>}
-                    {driver.status == 1 && <MenuItem onClick={()=> {
-                        changeDriverStatus(driver.id, '2', driver.email, driver.firstName);
-                        handleClose()
-                    }}>Approve</MenuItem>}
-                    {driver.status == 2 && <MenuItem onClick={()=> {
-                        changeDriverStatus(driver.id, '3', driver.email, driver.firstName);
-                        handleClose()
-                    }}>Suspend</MenuItem>}
-                    {driver.status == 3 && <MenuItem onClick={()=> {
-                        changeDriverStatus(driver.id, '1', driver.email, driver.firstName);
-                        handleClose()
-                    }}>Reactivate</MenuItem>}
-                    {driver.status == 2 && !driver.vehicleId && <MenuItem onClick={(e)=> {
-                        opnAddNewUserModal(e)
-                        handleClose()
-                    }}>Assign</MenuItem>}
+                    <MenuItem ><Link to={`/admin/drivers/${driver.auth_id}`}>Profile</Link></MenuItem>
+                    {/*{driver.driver_data?.driver_status === 0 && <MenuItem onClick={()=> {*/}
+                    {/*    changeDriverStatus(driver.auth_id, '1', status, currentPage);*/}
+                    {/*    handleClose()*/}
+                    {/*}}>Accept</MenuItem>}*/}
+                    {/*{driver.driver_data?.driver_status === 1 && <MenuItem onClick={()=> {*/}
+                    {/*    changeDriverStatus(driver.auth_id, '2', status, currentPage);*/}
+                    {/*    handleClose()*/}
+                    {/*}}>Approve</MenuItem>}*/}
+                    {/*{driver.driver_data?.driver_status === 2 && <MenuItem onClick={()=> {*/}
+                    {/*    changeDriverStatus(driver.auth_id, '3', status, currentPage);*/}
+                    {/*    handleClose()*/}
+                    {/*}}>Suspend</MenuItem>}*/}
+                    {/*{driver.driver_data?.driver_status === 3 && <MenuItem onClick={()=> {*/}
+                    {/*    changeDriverStatus(driver.auth_id, '1', status, currentPage);*/}
+                    {/*    handleClose()*/}
+                    {/*}}>Reactivate</MenuItem>}*/}
+                    {/*{driver.driver_data?.driver_status == 2 && !driver.driver_data?.vehicle_id && <MenuItem onClick={(e)=> {*/}
+                    {/*    opnAddVehicleModal(e)*/}
+                    {/*    handleClose()*/}
+                    {/*}}>Assign</MenuItem>}*/}
 
                 </Menu>
-                <Modal isOpen={addNewUserModal} toggle={() => onAddUpdateUserModalClose()}>
-                    <ModalHeader toggle={() => onAddUpdateUserModalClose()}>
+                <Modal isOpen={addVehicleModal} toggle={() => onAddVehicleModalClose()}>
+                    <ModalHeader toggle={() => onAddVehicleModalClose()}>
                         Assign Vehicle
                     </ModalHeader>
                     <ModalBody>
-                        <AssignForm driver={driver}  vehicles={vehicles} onAddUpdateUserModalClose={onAddUpdateUserModalClose} getDrivers2={getDrivers2}/>
+                        <AssignForm driver={driver}  vehicles={vehicles} onAddVehicleModalClose={onAddVehicleModalClose} driver_status={status} current_page={currentPage}/>
                     </ModalBody>
                 </Modal>
             </div>
@@ -80,7 +80,7 @@ import {ModalHeader, ModalBody, Modal} from "reactstrap";
 
 function mapDispatchToProps(dispatch) {
     return {
-        changeDriverStatus: (id, status, emailAddress, driverName) => dispatch(changeDriverStatus(id, status, emailAddress, driverName)),
+        changeDriverStatus: (auth_id, driver_status, status, current_page) => dispatch(changeDriverStatus(auth_id, driver_status, status, current_page)),
     };
 }
 

@@ -9,18 +9,18 @@ const MyLoadingComponent = () => (
    <PreloadWidget />
 )
 
-const SupportRequest = Loadable({
-   loader: () => import("./SupportRequest"),
+const TripCard = Loadable({
+   loader: () => import("./TripCard"),
    loading: MyLoadingComponent
 });
 
-const FollowersWidget = Loadable({
-   loader: () => import("./Followers"),
+const RefundsWidget = Loadable({
+   loader: () => import("./RefundWidget"),
    loading: MyLoadingComponent
 })
 
-const BookingInfo = Loadable({
-   loader: () => import("./BookingInfo"),
+const PaymentWidget = Loadable({
+   loader: () => import("./PaymentWidget"),
    loading: MyLoadingComponent
 })
 
@@ -34,8 +34,8 @@ const OverallTrafficStatusWidget = Loadable({
    loading: MyLoadingComponent
 })
 
-const TodayOrdersStatsWidget = Loadable({
-   loader: () => import("./TodayOrdersStats"),
+const SchedulesWidget = Loadable({
+   loader: () => import("./ScheduleWidget"),
    loading: MyLoadingComponent
 })
 
@@ -52,11 +52,11 @@ const VehicleChartWidget = Loadable({
 
 
 export {
-   SupportRequest,
-   FollowersWidget,
-   BookingInfo,
+   TripCard,
+   RefundsWidget,
+   PaymentWidget,
    VisitorAreaChartWidget,
    OverallTrafficStatusWidget,
-   TodayOrdersStatsWidget,
+   SchedulesWidget,
    VehicleChartWidget
 }

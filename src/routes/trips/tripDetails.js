@@ -1,125 +1,92 @@
 import React, {useEffect, useState} from 'react';
 import {Badge, Modal, ModalBody, ModalHeader} from 'reactstrap';
-import Button from "@material-ui/core/Button";
 import {connect} from "react-redux";
 import {Helmet} from "react-helmet";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import {getFdtDetails} from "Actions/fdtActions";
-import Spinner from "../../spinner/Spinner";
-import {getTrips} from "Actions/tripAction";
-import {getDriverByAuthId} from "Actions/driverAction";
+import {getTrip} from "Actions/tripAction";
+import {formatTime} from "Helpers/helpers";
 import {Link} from "react-router-dom";
 
 
 
-const TripDetails = ({getTrips, match, loading, trips, getDriverByAuthId, driver})=> {
-    const [trip, setTrip] = useState({})
+const TripDetails = ({getTrip, match, loading, trip})=> {
     const [isModal, setIsModal] = useState(false)
     const [riderDetails, setRiderDetails] = useState({});
 
-useEffect(() => {
-    getTrips();
-}, [])
-
     useEffect(()=> {
-        if (match.params.id && trips.length > 0){
-            trips.map(trip => {
-                if(trip._id == match.params.id) {
-                   setTrip(trip)
-                    getDriverByAuthId(trip.driver_id)
-                }
-            })
-        }
-    },[match.params.id, trips])
+       getTrip(match.params.id, true)
+    },[match.params.id])
 
+    const viewRiderDetails = async (data) => {
+      await  setRiderDetails(data);
+      setIsModal(true)
 
-    console.log(trip, 'oooooooo')
-
-
-    const getPosition = (id) => {
-        if(id === 0) {
-            return '-10px'
-        }else if(id ===1) {
-            return '-15px'
-        }else if(id ===2) {
-            return '-20px'
-        }else if(id ===3) {
-            return '-25px'
-        }
     }
-
-
-
     return (
-        <div>
+        <div className='mb-5' style={{minHeight: '90vh'}}>
             <Helmet>
                 <title>User Profile</title>
                 <meta name="description" content="Trip Details" />
             </Helmet>
             <PageTitleBar title={`Trip details`} match={match}  />
-            {loading && <Spinner />}
-            {!loading && <div className="row" style={{minHeight: '70vh'}}>
+            {!loading &&
+            <div className="row" style={{fontSize: '0.8rem'}}>
                 <div className="col-sm-6">
-                    <div className="tab-content">
+                    <div className="tab-content px-4">
                         <div className="tab-pane active" id="home">
-                            <div className="d-flex align-items-center p-3">
-                                <div className="scheduleHeader font-weight-bold">
-                                    {trip._id}
-                                </div>
-                                <div style={{marginLeft: '50px'}}>
-                                    {trip.ride_status}
-                                </div>
-                            </div>
-                            <div className="p-4">
-                                <div className="schedulePickup">
-                                    Class
-                                </div>
-                                <div className="scheduleHeader mt-1">
-                                    {trip.ride_class}
-                                </div>
-                                <div className="schedulePickup mt-4">
-                                    Date
-                                </div>
-                                <div className="scheduleHeader mt-1">
-                                    {new Date(trip.createdAt).toDateString()}
-                                </div>
-                                <div className="schedulePickup mt-4">
-                                    Driver Name
-                                </div>
-                                <div className="scheduleHeader mt-1">
-                                    <Link to={`/admin/drivers/${driver.id}`}>{driver?.firstName} {driver?.lastName}</Link>
-                                </div>
-                                <div className="schedulePickup mt-4">
-                                    Riders
-                                </div>
-                                <div className="mt-3 d-flex">
-                                    {trip?.riders?.length > 0 && trip.riders.map((rider, index) => (
-                                            <img
-                                                onClick={() => {
-                                                    setRiderDetails(rider);
-                                                    setIsModal(true)
-                                                }}
-                                                key={index}
-                                                src={require('Assets/avatars/avatar.png')}
-                                                // alt="user profile"
-                                                className="img-fluid rounded-circle"
-                                                width="32"
-                                                height="32"
-                                                style={{marginLeft: getPosition(index), cursor: 'pointer'}}
-                                            />
-                                    ))
-                                    }
-                                </div>
-                            </div>
+                            <ul className="list-group">
+                                <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Trip Id</strong></span>{trip?.trip_id}
+                                </li>
+                                <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Trip Class</strong></span>{trip?.ride_class}
+                                </li>
+                                <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Trip Type</strong></span>{trip?.ride_type}
+                                </li>
+                                <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Driver Name</strong></span>
+                                    <Link to={`/admin/drivers/${trip?.driver_data?.driver_id}`}>{trip?.driver_data?.name}</Link>
+                                </li>
+                                <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Driver Email</strong></span>{trip?.driver_data?.email}
+                                </li>
+                                <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Driver Phone Number</strong></span>{trip?.driver_data?.phone}
+                                </li>
+                                <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Vehicle Plate Number</strong></span>{trip?.driver_data?.car_number_plate}
+                                </li>
+                                <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Vehicle Model</strong></span>{trip?.driver_data?.car_model}
+                                </li>
+                                <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Trip Status</strong></span>
+                                    <Badge
+                                        color={trip?.ride_status === 'completed' ? "success" : trip?.ride_status === 'cancel' ? 'danger' : trip?.ride_status === 'waiting' ? 'warning' : 'secondary'}>
+                                        {trip?.ride_status === 'on_trip' ? 'current' : trip?.ride_status === 'on_pickup' ? 'on route' : trip?.ride_status}
+                                    </Badge>
+                                </li>
+                                <li className="list-group-item text-right"><span
+                                    className="pull-left" style={{fontSize: '1rem'}}><strong>Rider(s)</strong></span>{trip?.home_area}
+                                </li>
+                                {trip?.riders?.length > 0 && trip?.riders.map(rider => (
+                                    <li key={rider.rider_id} className="list-group-item text-right"><span
+                                        className="pull-left"><Link to={`/admin/passengers/${rider?.rider_id}`}>{rider?.name}</Link></span>
+                                        <button onClick={() => viewRiderDetails(rider)} type="button" className="rct-link-btn text-primary" title="view details"><i className="ti-eye"/></button>
+
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
                     </div>
                 </div>
-
-            </div>}
-            <Modal isOpen={isModal} toggle={() => setIsModal(false)}>
+            </div>
+            }
+            <Modal size='lg' isOpen={isModal} toggle={() => setIsModal(false)}>
 
                 <ModalHeader toggle={() => setIsModal(false)}>
-                    Rider Trip details
+                    Rider details
                 </ModalHeader>
                 <ModalBody>
                     <div className='row'>
@@ -236,7 +203,7 @@ useEffect(() => {
                                 Estimated Time
                             </div>
                             <div className="scheduleHeader mt-1">
-                                {riderDetails?.est_time}sec
+                                {formatTime(riderDetails?.est_time)}
                             </div>
                         </div>
                         <div className='col-6'>
@@ -244,7 +211,7 @@ useEffect(() => {
                                 Time Spent
                             </div>
                             <div className="scheduleHeader mt-1">
-                                {riderDetails?.end_time}sec
+                                {formatTime(riderDetails?.end_time)}
                             </div>
                         </div>
                     </div>
@@ -254,7 +221,7 @@ useEffect(() => {
                                 Waiting Time
                             </div>
                             <div className="scheduleHeader mt-1">
-                                {riderDetails?.waiting_time}sec
+                                {formatTime(riderDetails?.waiting_time)}
                             </div>
                         </div>
                         <div className='col-6'>
@@ -262,7 +229,7 @@ useEffect(() => {
                                Delay Time
                             </div>
                             <div className="scheduleHeader mt-1">
-                                {riderDetails?.delay_time}sec
+                                {formatTime(riderDetails?.delay_time)}
                             </div>
                         </div>
                     </div>
@@ -287,6 +254,32 @@ useEffect(() => {
                     <div className='row mt-4'>
                         <div className='col-6'>
                             <div className="schedulePickup">
+                                Accepted Time
+                            </div>
+                            <div className="scheduleHeader mt-1">
+                                {/*{riderDetails?.accepted_at}*/}
+                                {new Date(riderDetails?.accepted_at).toLocaleTimeString()}
+                            </div>
+                        </div>
+                        <div className='col-6'>
+                            <div className="schedulePickup">
+                                Delayed Trip At
+                            </div>
+                            <div className="scheduleHeader mt-1">
+                                {riderDetails?.delay_trip_at}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/*cancel_reason: {cancel_by: "driver", cancel_reason_option: "Flat tire",…}*/}
+                    {/*cancel_by: "driver"*/}
+                    {/*cancel_reason_option: "Flat tire"*/}
+                    {/*cancel_reason_others: "My car has a flat tire so please I can’t continued"*/}
+
+
+                    <div className='row mt-4'>
+                        <div className='col-6'>
+                            <div className="schedulePickup">
                                 Class Type
                             </div>
                             <div className="scheduleHeader mt-1">
@@ -298,10 +291,45 @@ useEffect(() => {
                                 Status
                             </div>
                             <div className="scheduleHeader mt-1">
-                                {riderDetails?.status}
+                                <Badge color={riderDetails?.status === 'completed' ? "success" : riderDetails?.status === 'cancel' ? 'danger' : riderDetails?.status === 'waiting' ? 'warning' : 'secondary'}>
+                                    {riderDetails?.status === 'on_trip' ? 'current' : riderDetails?.status === 'on_pickup' ? 'on route' : riderDetails?.status}
+                                </Badge>
                             </div>
                         </div>
                     </div>
+                    { riderDetails?.status === 'cancel' &&
+                        <>
+                    <div className='row mt-4'>
+                        <div className='col-6'>
+                            <div className="schedulePickup">
+                                Cancelled By
+                            </div>
+                            <div className="scheduleHeader mt-1 text-capitalize">
+                                {riderDetails?.cancel_reason?.cancel_by}
+                            </div>
+                        </div>
+                        <div className='col-6'>
+                            <div className="schedulePickup">
+                                Cancel Option
+                            </div>
+                            <div className="scheduleHeader mt-1">
+                                {riderDetails?.cancel_reason?.cancel_reason_option}
+                            </div>
+                        </div>
+                    </div>
+                            <div className='row mt-4'>
+                                <div className='col-6'>
+                                    <div className="schedulePickup">
+                                        Cancel Comment
+                                    </div>
+                                    <div className="scheduleHeader mt-1">
+                                        {riderDetails?.cancel_reason?.cancel_reason_others}
+                                    </div>
+                                </div>
+                            </div>
+                    </>
+
+                    }
                 </ModalBody>
                 {/*<ModalFooter>*/}
                 {/*    <Button type="submit" variant="contained" className="text-white btn-success">Submit</Button>*/}
@@ -314,14 +342,12 @@ useEffect(() => {
 
 function mapDispatchToProps(dispatch) {
     return {
-        getTrips: () => dispatch(getTrips()),
-        getDriverByAuthId: (id) => dispatch(getDriverByAuthId(id))
+        getTrip: (trip_id, spinner) => dispatch(getTrip(trip_id, spinner)),
     };
 }
 
 const mapStateToProps = state => ({
-    trips: state.trips.trips,
-    driver: state.driver.driver,
+    trip: state.trips.trip,
     loading: state.loading.loading,
     loadingStatus: state.loading.loadingStatus
 

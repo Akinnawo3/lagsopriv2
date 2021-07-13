@@ -1,8 +1,10 @@
-import {VEHICLES} from "Actions/types";
+import {VEHICLE, VEHICLES, VEHICLES_COUNT} from "Actions/types";
 
 
 const initialState = {
   vehicles: [],
+  vehicleDetails: {},
+  vehiclesCount: 0,
 };
 
 function vehicleReducer(state = initialState, action) {
@@ -12,6 +14,18 @@ function vehicleReducer(state = initialState, action) {
       return {
         ...state,
         vehicles: payload,
+      };
+    }
+    case VEHICLE: {
+      return {
+        ...state,
+        vehicleDetails: payload,
+      };
+    }
+    case VEHICLES_COUNT: {
+      return {
+        ...state,
+        vehiclesCount: payload,
       };
     }
     default:

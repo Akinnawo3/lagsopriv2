@@ -1,7 +1,8 @@
-import {AREAS} from "Actions/types";
+import {AREA_COUNT, AREAS} from "Actions/types";
 
 const initialState = {
   areas: [],
+  areaCount: 0,
 };
 
 function areasReducer(state = initialState, action) {
@@ -11,6 +12,12 @@ function areasReducer(state = initialState, action) {
       return {
         ...state,
         areas: payload,
+      };
+    }
+    case AREA_COUNT: {
+      return {
+        ...state,
+        areaCount: payload,
       };
     }
     default:

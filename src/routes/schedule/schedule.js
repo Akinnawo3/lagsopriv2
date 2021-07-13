@@ -7,163 +7,43 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { Media, Badge , Input} from 'reactstrap';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import Button from "@material-ui/core/Button";
-import GoogleMapComponentSchedule from "Components/Maps/GoogleMapComponentSchedule";
-import ComponentChart from "Routes/schedule/component/chart";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
-import {getSchedule} from "Actions/fdtActions";
-import Spinner from "../../spinner/Spinner";
+import {getFdtCount, getSchedule, getScheduleCount} from "Actions/fdtActions";
+import Pagination from "react-js-pagination";
+import EmptyData from "Components/EmptyData/EmptyData";
 
 
 
 
-const  Schedule = ({match, getSchedule, schedule, loading}) => {
+const  Schedule = ({match, getSchedule, schedule, loading, getScheduleCount, scheduleCount}) => {
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(()=> {
-       getSchedule()
+        getSchedule(1, true)
+        getScheduleCount();
     },[])
 
-
-    const getStatus = (id) => {
-        if(id == 0) {
-            return (
-                <Badge color="warning">Pending</Badge>
-            )
-        }else if(id == 1) {
-            return (
-                <Badge color="Success">Completed</Badge>
-            )
-        }else if(id == 2) {
-            return (
-                <Badge color="danger">Cancelled</Badge>
-            )
-        }else {
-            return (
-                ''
-            )
-        }
-    }
-
-    const getClassTrip = (id) => {
-        if(id == 1) {
-            return (
-                'Class A'
-            )
-        }else if(id == 2) {
-            return (
-                'Class B'
-            )
-        }else if(id == 3) {
-            return (
-                'Class C'
-            )
-        }else {
-            return (
-                'Class D'
-            )
-        }
-    }
-
+    const paginate = async (pageNumber) => {
+        await setCurrentPage(pageNumber);
+        await window.scrollTo(0, 0);
+        getSchedule(pageNumber)
+    };
 
 
 
     return (
         <div className="table-wrapper">
             <PageTitleBar title={"Schedules"} match={match} />
-            <RctCollapsibleCard fullBlock>
-                <div className='row'>
-                    <div className="col-sm-6 col-md-6 col-lg-6">
-                        <GoogleMapComponentSchedule />
-                    </div>
-                    <div className="col-sm-6 col-md-6 col-lg-6">
-                        {/*<BookingInfo />*/}
-                        <RctCollapsibleCard
-                            heading={'Status'}
-                            fullBlock
-                            customClasses="overflow-hidden"
-                            style={{background: 'red'}}
-                        >
-                                <div style={{marginRight: '20px', width: 'fit-content', float: 'right', marginTop: '-40px'}}>
-                                    <Input type="select"   required style={{boxShadow: '0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%', backgroundColor: 'rgba(18, 156, 233, 0.12)', zIndex: 2, position: 'relative',}}>
-                                        <option value="1">Today</option>
-                                    </Input>
-                                </div>
-                            <div className="text-center py-10" style={{height: '335px'}}>
-                                <div className="mt-3">
-                                    <ComponentChart />
-                                </div>
-                                <div className="d-flex align-items-center justify-content-center" style={{marginTop: '50px'}}>
-                                    <div className='d-flex align-items-center justify-content-center'>
-                                        <div style={{background: '#FAD202', height: '20px', width: '20px', borderRadius: '5px'}} />
-                                        <div className="pl-2">Pending</div>
-                                    </div>
-                                    <div className='d-flex align-items-center justify-content-center ml-3'>
-                                        <div style={{background: '#24C790', height: '20px', width: '20px', borderRadius: '5px'}} />
-                                        <div className="pl-2">Success</div>
-                                    </div>
-                                    <div className='d-flex align-items-center justify-content-center ml-3'>
-                                        <div style={{background: '#FB4B0C', height: '20px', width: '20px', borderRadius: '5px'}} />
-                                        <div className="pl-2">Failed</div>
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </RctCollapsibleCard>
-                    </div>
-
-                </div>
-
-                <div className="d-flex align-items-center justify-content-between">
-                    <div className="pl-3" style={{color: '#2E407B'}}>Schedule</div>
-                    <div className="float-right d-flex align-items-center p-3">
-                        <div style={{marginRight: '20px'}}>
-                            <Input type="select"   required style={{boxShadow: '0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%', backgroundColor: 'rgba(68, 84, 138, 0.08)'}}>
-                                <option value="1">Date</option>
-                            </Input>
-                        </div>
-                        <div style={{marginRight: '20px'}}>
-                            <Input type="select"   required style={{boxShadow: '0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%', backgroundColor: 'rgba(68, 84, 138, 0.08)'}}>
-                                <option value="1">Area</option>
-                            </Input>
-                        </div>
-                        <div style={{marginRight: '20px'}}>
-                            <Input type="select"   required style={{boxShadow: '0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%', backgroundColor: 'rgba(68, 84, 138, 0.08)'}}>
-                                <option value="1">Time</option>
-                            </Input>
-                        </div>
-                        <div style={{marginRight: '20px'}}>
-                            <Input type="select"   required style={{boxShadow: '0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%', backgroundColor: 'rgba(68, 84, 138, 0.08)'}}>
-                                <option value="">Status</option>
-                            </Input>
-                        </div>
-                        <div style={{marginRight: '20px'}}>
-                            <Input type="select"   required style={{boxShadow: '0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%', backgroundColor: 'rgba(68, 84, 138, 0.08)'}}>
-                                <option value="1">Class</option>
-                            </Input>
-                        </div>
-                        <Button type="button" variant="contained" className="text-white btn-success">Apply</Button>
-
-                        {/*<a href="#" onClick={(e) => opnAddNewUserModal(e)} color="primary" className="caret btn-sm mr-10">Add New Driver <i className="zmdi zmdi-plus"></i></a>*/}
-                    </div>
-                </div>
-                <div className="table-responsive">
-                    {loading && <Spinner />}
-                    {/*<Link className="table-responsive" to={`/admin/schedule/1`}>*/}
+            <RctCollapsibleCard heading={'Schedules'} fullBlock style={{minHeight: "70vh"}}>
+                <div className="table-responsive" style={{minHeight: "50vh"}}>
                     {!loading &&  <Table>
                         <TableHead>
                             <TableRow hover>
-                                {/*<TableCell>Date</TableCell>*/}
-                                {/*<TableCell>Time</TableCell>*/}
-                                <TableCell>Class</TableCell>
-                                <TableCell>Pick up</TableCell>
-                                <TableCell>Drop off</TableCell>
-                                <TableCell>Riders</TableCell>
-                                <TableCell>Status</TableCell>
+                                <TableCell>First Name</TableCell>
+                                <TableCell>Last Name</TableCell>
                                 <TableCell>Action</TableCell>
                             </TableRow>
                         </TableHead>
@@ -171,26 +51,30 @@ const  Schedule = ({match, getSchedule, schedule, loading}) => {
                             <Fragment>
                                 {schedule.length > 0 && schedule.map((record, key) => (
                                     <TableRow hover key={key}>
-                                        {/*<TableCell>{record['dates']}</TableCell>*/}
-                                        {/*<TableCell>{record.time}</TableCell>*/}
-                                        <TableCell>{getClassTrip(record.classTrip)}</TableCell>
-                                        <TableCell>{record.pickupAddress}</TableCell>
-                                        <TableCell>{record.dropoffAddress}</TableCell>
-                                        <TableCell>{record.joinedBy ? `${Object.keys(JSON.parse(record.joinedBy)).length + 1} of ${record.classTrip}` : `1 of ${record.classTrip}`}</TableCell>
-                                        <TableCell> {record.fdtStatus == 1 ? <Badge type="button" className="btn btn-success">Success</Badge>
-                                            : record.fdtStatus == 0 ? <Badge type="button" className="btn btn-warning">Pending</Badge>: <Badge type="button" className="btn btn-danger">Cancelled</Badge>}</TableCell>
+                                        <TableCell>{record.users?.first_name}</TableCell>
+                                        <TableCell>{record.users?.last_name}</TableCell>
                                         <TableCell>
-                                            <button type="button" className="rct-link-btn text-primary"><Link to={`/admin/schedule/${record.id}`}><i className="ti-eye"></i></Link></button>
-
+                                            <button type="button" className="rct-link-btn text-primary"><Link to={`/admin/schedule/${record.auth_id}`}><i className="ti-eye"></i></Link></button>
                                         </TableCell>
                                     </TableRow>
                                 ))}
                             </Fragment>
                         </TableBody>
                     </Table>}
-                    {/*</Link>*/}
+                </div>
+                <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
+
+                    <Pagination
+                        activePage={currentPage}
+                        itemClass="page-item"
+                        linkClass="page-link"
+                        itemsCountPerPage={20}
+                        totalItemsCount={scheduleCount}
+                        onChange={paginate}
+                    />
                 </div>
             </RctCollapsibleCard>
+            {schedule?.length < 1 && <EmptyData />}
         </div>
     );
 
@@ -198,12 +82,14 @@ const  Schedule = ({match, getSchedule, schedule, loading}) => {
 
 function mapDispatchToProps(dispatch) {
     return {
-        getSchedule: () => dispatch(getSchedule()),
+        getSchedule: (page_no, spinner) => dispatch(getSchedule(page_no, spinner)),
+        getScheduleCount: () => dispatch(getScheduleCount()),
     };
 }
 
 const mapStateToProps = state => ({
     schedule: state.fdt.schedule,
+    scheduleCount: state.fdt.scheduleCount,
     loading: state.loading.loading,
     loadingStatus: state.loading.loadingStatus
 

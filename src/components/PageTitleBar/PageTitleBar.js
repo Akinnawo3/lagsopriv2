@@ -29,14 +29,16 @@ const getUrlString = (path, sub, index) => {
    }
 };
 
-const PageTitleBar = ({ title, match, enableBreadCrumb }) => {
+const PageTitleBar = ({ title, match, enableBreadCrumb, home }) => {
    const path = match.path.substr(1);
    const subPath = path.split('/');
    return (
       <div className="page-title d-flex justify-content-between align-items-center">
          {title &&
             <div className="page-title-wrap">
-               <i className="ti-angle-left"></i>
+               {!home &&
+               <i disabled={true} onClick={()=> window.history.back()} className="ti-angle-left" style={{cursor: 'pointer'}}></i>
+               }
                <h2 className="">{title}</h2>
             </div>
          }

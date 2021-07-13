@@ -1,6 +1,6 @@
 import axios from 'axios'
-import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "Actions/loadingAction";
-import {PROMO_TYPE} from "Actions/types";
+import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
+import {PROMO_TYPE} from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 

@@ -8,7 +8,7 @@ import { Media, Badge } from 'reactstrap';
 import api from 'Api';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import {getAdmins} from "Actions/adminAction";
+import {getAdmins} from "../../actions/adminAction";
 import {connect} from "react-redux";
 import StarRatings from "react-star-ratings";
 

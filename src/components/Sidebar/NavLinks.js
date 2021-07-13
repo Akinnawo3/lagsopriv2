@@ -3,7 +3,7 @@ export default {
    category1: [
       {
          "menu_title": "sidebar.setup",
-         "menu_icon": " icon-settings",
+         "menu_icon": "icon-settings",
          "type_multi": null,
          // "new_item": true,
          "child_routes": [
@@ -12,20 +12,25 @@ export default {
                "new_item": false,
                "path": "/admin/admins"
             },
-            {
-               "menu_title": "sidebar.class-types",
-               "new_item": false,
-               "path": "/admin/class-types"
-            },
-            {
-               "menu_title": "sidebar.booking-types",
-               "new_item": false,
-               "path": "/admin/booking-types"
-            },
+            // {
+            //    "menu_title": "sidebar.class-types",
+            //    "new_item": false,
+            //    "path": "/admin/class-types"
+            // },
+            // {
+            //    "menu_title": "sidebar.booking-types",
+            //    "new_item": false,
+            //    "path": "/admin/booking-types"
+            // },
             {
                "menu_title": "sidebar.fees",
                "new_item": false,
                "path": "/admin/fees"
+            },
+            {
+               "menu_title": "sidebar.cancellationReasons",
+               "new_item": false,
+               "path": "/admin/cancellation-reasons"
             },
             {
                "menu_title": "sidebar.areas",
@@ -51,14 +56,14 @@ export default {
                "path": "/admin/passengers",
                "menu_title": "sidebar.all"
             },
-            {
-               "path": "/admin/passengers/active",
-               "menu_title": "sidebar.active"
-            },
-            {
-               "path": "/admin/passengers/inactive",
-               "menu_title": "sidebar.inactive"
-            }
+            // {
+            //    "path": "/admin/passengers/active",
+            //    "menu_title": "sidebar.active"
+            // },
+            // {
+            //    "path": "/admin/passengers/inactive",
+            //    "menu_title": "sidebar.inactive"
+            // }
          ]
       },
       {
@@ -73,12 +78,12 @@ export default {
                "menu_title": "sidebar.all"
             },
             {
-               "path": "/admin/drivers/active",
+               "path": "/admin/drivers/approved",
                "new_item": false,
                "menu_title": "sidebar.approved"
             },
             {
-               "path": "/admin/drivers/verified",
+               "path": "/admin/drivers/accepted",
                "new_item": false,
                "menu_title": "sidebar.accepted"
             },
@@ -163,13 +168,13 @@ export default {
 
          ]
       },
-      {
-         "menu_title": "sidebar.cancellation",
-         "menu_icon": "zmdi zmdi-close",
-         "type_multi": null,
-         "new_item": false,
-         "path": "/admin/cancellations"
-      },
+      // {
+      //    "menu_title": "sidebar.cancellation",
+      //    "menu_icon": "zmdi zmdi-close",
+      //    "type_multi": null,
+      //    "new_item": false,
+      //    "path": "/admin/cancellations"
+      // },
       {
          "menu_title": "sidebar.payments",
          "menu_icon": "icon-credit-card",
@@ -193,29 +198,29 @@ export default {
             },
          ]
       },
-      {
-         "menu_title": "sidebar.refunds",
-         "menu_icon": "zmdi zmdi-money",
-         "type_multi": null,
-         "new_item": false,
-         "child_routes": [
-            {
-               "path": "/admin/refunds",
-               "new_item": false,
-               "menu_title": "sidebar.all"
-            },
-            {
-               "path": "/admin/refunds/pending",
-               "new_item": false,
-               "menu_title": "sidebar.pending"
-            },
-            {
-               "path": "/admin/refunds/completed",
-               "new_item": false,
-               "menu_title": "sidebar.completed"
-            },
-         ]
-      },
+      // {
+      //    "menu_title": "sidebar.refunds",
+      //    "menu_icon": "zmdi zmdi-money",
+      //    "type_multi": null,
+      //    "new_item": false,
+      //    "child_routes": [
+      //       {
+      //          "path": "/admin/refunds",
+      //          "new_item": false,
+      //          "menu_title": "sidebar.all"
+      //       },
+      //       {
+      //          "path": "/admin/refunds/pending",
+      //          "new_item": false,
+      //          "menu_title": "sidebar.pending"
+      //       },
+      //       {
+      //          "path": "/admin/refunds/completed",
+      //          "new_item": false,
+      //          "menu_title": "sidebar.completed"
+      //       },
+      //    ]
+      // },
       {
          "menu_title": "sidebar.promodiscounts",
          "menu_icon": "zmdi zmdi-time-interval",
@@ -230,13 +235,13 @@ export default {
          "new_item": false,
          "path": "/admin/revenue"
       },
-      {
-         "menu_title": "sidebar.voucher",
-         "menu_icon": "zmdi zmdi-time-interval",
-         "type_multi": null,
-         "new_item": false,
-         "path": "/admin/voucher"
-      },
+      // {
+      //    "menu_title": "sidebar.voucher",
+      //    "menu_icon": "zmdi zmdi-time-interval",
+      //    "type_multi": null,
+      //    "new_item": false,
+      //    "path": "/admin/voucher"
+      // },
       {
          "menu_title": "sidebar.referral",
          "menu_icon": "zmdi zmdi-time-interval",
@@ -251,17 +256,12 @@ export default {
          "new_item": false,
          "child_routes": [
             {
-               "path": "/admin/driver-ratings",
+               "path": "/admin/ratings",
                "new_item": false,
                "menu_title": "sidebar.driver ratings"
             },
-            // {
-            //    "path": "/admin/taxi-ratings",
-            //    "new_item": false,
-            //    "menu_title": "sidebar.taxi ratings"
-            // },
             {
-               "path": "/admin/user-ratings",
+               "path": "/admin/ratings/passengers",
                "new_item": false,
                "menu_title": "sidebar.user ratings"
             },
@@ -272,7 +272,18 @@ export default {
          "menu_icon": "zmdi zmdi-hospital",
          "type_multi": null,
          "new_item": false,
-         "path": "/admin/emergency"
+         "child_routes": [
+            {
+               "path": "/admin/emergency",
+               "new_item": false,
+               "menu_title": "sidebar.emergency",
+            },
+            {
+               "path": "/admin/emergency/numbers",
+               "new_item": false,
+               "menu_title": "sidebar.emergencyNumber",
+            },
+         ]
       },
       // {
       //    "menu_title": "sidebar.analytics",
@@ -315,7 +326,7 @@ export default {
             {
                "path": "/admin/support/setup",
                "new_item": false,
-               "menu_title": "sidebar.ticket setup"
+               "menu_title": "sidebar.ticket types"
             },
             {
                "path": "/admin/support/create",

@@ -5,12 +5,14 @@ import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import {NotificationManager} from "react-notifications";
 import api from "../../../environments/environment";
+import {changeDriverStatus} from "Actions/driverAction";
+import {connect} from "react-redux";
+import {assignVehicle} from "Actions/vehicleAction";
 
-const AssignForm = ({ driver, vehicles, onAddUpdateUserModalClose, getDrivers2 }) => {
+const AssignForm = ({ driver, vehicles, assignVehicle, driver_status, current_page, onAddUpdateUserModalClose }) => {
     const [formData, setFormData] = useState({
         firstname: "", lastname: "",  email: "", vehicle: ""
     });
-    const [loading, setLoading] = useState(false)
 
     const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -20,38 +22,23 @@ const AssignForm = ({ driver, vehicles, onAddUpdateUserModalClose, getDrivers2 }
 
     useEffect(()=> {
        if(driver) {
-           setFormData({...formData, firstname: driver.firstName, lastname: driver.lastName, email: driver.email})
+           setFormData({...formData, firstname: driver.first_name, lastname: driver.last_name, email: driver.email})
        }
     },[driver])
 
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        asignVehicle()
+     await   assignVehicle(vehicle, driver.auth_id, current_page, driver_status)
+      await  onAddUpdateUserModalClose()
 
     };
 
 
-    const asignVehicle =  async () => {
-        try {
-            setLoading(true)
-           await axios.put(`${api.drivers}/api/driver/${driver.id}/`, {vehicleId: vehicle})
-            await axios.put(`${api.vehicles}/api/vehicles/${vehicle}/`, {driver_id: driver.id, status: 2})
-           await setLoading(false)
-            getDrivers2()
-            onAddUpdateUserModalClose()
-            await NotificationManager.success('Vehicle Assigned Successfully!');
-        }catch (e) {
-            setLoading(false)
-        }
-    }
 
 
     return (
         <div>
-            {loading &&
-            <LinearProgress />
-            }
             <Form onSubmit={onSubmit}>
                 <FormGroup>
                     <Label for="userName">First Name</Label>
@@ -87,8 +74,8 @@ const AssignForm = ({ driver, vehicles, onAddUpdateUserModalClose, getDrivers2 }
                     <Label for="exampleSelect">Vehicles</Label>
                     <Input type="select" name="vehicle" onChange={onChange} value={vehicle} required={true}>
                         <option value="">Select Vehicle</option>
-                        {vehicles && vehicles.filter(vehicle=> vehicle.status == 1).map(vehicle => (
-                            <option key={vehicle.id} value={vehicle.id}>{vehicle.plateNo}</option>
+                        {vehicles && vehicles.map(vehicle => (
+                            <option key={vehicle.vehicle_id} value={vehicle.vehicle_id}>{vehicle.car_number_plate}</option>
                         ))}
                     </Input>
                 </FormGroup>
@@ -100,4 +87,11 @@ const AssignForm = ({ driver, vehicles, onAddUpdateUserModalClose, getDrivers2 }
     );
 };
 
-export default AssignForm;
+function mapDispatchToProps(dispatch) {
+    return {
+        assignVehicle: (vehicle_id, driver_auth_id, page_no, driver_status) => dispatch(assignVehicle(vehicle_id, driver_auth_id, page_no, driver_status)),
+    };
+}
+
+
+export default connect( null, mapDispatchToProps) (AssignForm);

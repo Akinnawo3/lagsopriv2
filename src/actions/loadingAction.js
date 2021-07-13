@@ -3,7 +3,7 @@ import {
         LOADING_START,
         LOADING_STATUS_END,
         LOADING_STATUS_START
-} from "Actions/types";
+} from "./types";
 
 export const startLoading = () => dispatch => {
         dispatch({

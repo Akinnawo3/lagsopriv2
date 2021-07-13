@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { ReactExcel, readFile, generateObjects } from '@ramonak/react-excel';
 import axios from "axios";
 import {connect} from "react-redux";
-import {getVehicles} from "Actions/vehicleAction";
+import {getVehicles} from "../../../actions/vehicleAction";
 
 const Upload = ({getVehicles, oncloseModal}) => {
     const [initialData, setInitialData] = useState(undefined);

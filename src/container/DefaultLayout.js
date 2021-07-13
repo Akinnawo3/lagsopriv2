@@ -1,5 +1,5 @@
 /**
- * App DriverRoutes
+ * App Layouts
  */
 import React, { Component } from 'react';
 import { Route, withRouter } from 'react-router-dom';
@@ -10,12 +10,17 @@ import RctAppLayout from 'Components/RctAppLayout';
 
 // router service
 import routerService from "../services/_routerService";
+import Spinner from "Components/spinner/Spinner";
+import RctThemeProvider from "./RctThemeProvider";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 class DefaultLayout extends Component {
 	render() {
-		const { match } = this.props;
+		const { match, isLoading} = this.props;
 		return (
 			<RctAppLayout>
+				{isLoading && <Spinner />}
+
 				{routerService && routerService.map((route,key)=>
 					<Route key={key} path={`${match.url}/${route.path}`} component={route.component} />
 				)}
@@ -24,4 +29,11 @@ class DefaultLayout extends Component {
 	}
 }
 
-export default withRouter(connect(null)(DefaultLayout));
+const mapStateToProps = ({ loading}) => {
+	const isLoading = loading.loading
+	const isLoadingStatus = loading.loadingStatus
+	return {isLoading, isLoadingStatus};
+};
+
+
+export default withRouter(connect(mapStateToProps)(DefaultLayout));
