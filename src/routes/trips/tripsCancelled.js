@@ -20,7 +20,7 @@ const  TripsCancelled = ({match, getTrips, getTripCount}) => {
 	return (
 		<div className="table-wrapper">
 			<PageTitleBar title={"Trips"} match={match} />
-			<TripsTable status={'cancel'} />
+			<TripsTable status={'cancel'} header={'Cancelled Trips'} />
 		</div>
 	);
 

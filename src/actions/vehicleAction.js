@@ -7,11 +7,11 @@ import {getDriver, getDrivers} from "Actions/driverAction";
 
 
 
-export const getVehicles = (page_no= 1, assign= '', spinner) => async dispatch => {
+export const getVehicles = (page_no= 1, assign= '', spinner, car_number_plate='') => async dispatch => {
   try {
    spinner && dispatch(startLoading());
    !spinner && dispatch(startStatusLoading())
-    const res = await axios.get(`${api.vehicles}/v1.1/vehicles?item_per_page=20&page=${page_no}&assign=${assign}`);
+    const res = await axios.get(`${api.vehicles}/v1.1/vehicles?item_per_page=20&page=${page_no}&assign=${assign}&car_number_plate=${car_number_plate}`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -53,9 +53,9 @@ export const getVehicle = (vehicle_id, spinner) => async dispatch => {
   }
 };
 
-export const getVehiclesCount = (assign= '') => async dispatch => {
+export const getVehiclesCount = (assign= '', car_number_plate='') => async dispatch => {
   try {
-    const res = await axios.get(`${api.vehicles}/v1.1/vehicles?component=count&assign=${assign}`);
+    const res = await axios.get(`${api.vehicles}/v1.1/vehicles?component=count&assign=${assign}&car_number_plate=${car_number_plate}`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -129,7 +129,7 @@ export const deleteVehicle = (vehicle_id, vehicles) => async dispatch => {
   }
 };
 
-export const revokeVehicle = (vehicle_id) => async dispatch => {
+export const revokeVehicle = (vehicle_id, vehicleDetails, driverDetails) => async dispatch => {
   try {
     dispatch(startStatusLoading())
     const res =    await axios.post(`${api.vehicles}/v1.1/vehicles/revoke`, {vehicle_id})
@@ -141,6 +141,7 @@ export const revokeVehicle = (vehicle_id) => async dispatch => {
         type: DRIVER,
         payload: res.data.data
       });
+     await dispatch(sendVehicleUnassignMessage(driverDetails, vehicleDetails))
       dispatch(getVehicle(vehicle_id))
     }
     dispatch(endStatusLoading())
@@ -187,42 +188,64 @@ export const assignVehicleOnProfile = (vehicle_id, driver_auth_id, driverData, v
   }
 };
 
-export const searchVehicles = (car_number_plate, assign) => async dispatch => {
-  try {
-    spinner && dispatch(startLoading());
-    !spinner && dispatch(startStatusLoading())
-    const res = await axios.get(`${api.vehicles}/v1.1/vehicles?assign=${assign}&car_number_plate=${car_number_plate}`);
-    if(res.data.status === 'error') {
-      NotificationManager.error(res.data.msg);
-    }else {
-      dispatch({
-        type: VEHICLES,
-        payload: res.data.data
-      });
-    }
-    dispatch(endLoading());
-    dispatch(endStatusLoading())
-  } catch (err) {
-    dispatch(endStatusLoading())
-    dispatch(endLoading());
-    NotificationManager.error(err.response.data.message)
-  }
-};
+// export const searchVehicles = (car_number_plate, assign) => async dispatch => {
+//   try {
+//     spinner && dispatch(startLoading());
+//     !spinner && dispatch(startStatusLoading())
+//     const res = await axios.get(`${api.vehicles}/v1.1/vehicles?assign=${assign}&car_number_plate=${car_number_plate}`);
+//     if(res.data.status === 'error') {
+//       NotificationManager.error(res.data.msg);
+//     }else {
+//       dispatch({
+//         type: VEHICLES,
+//         payload: res.data.data
+//       });
+//     }
+//     dispatch(endLoading());
+//     dispatch(endStatusLoading())
+//   } catch (err) {
+//     dispatch(endStatusLoading())
+//     dispatch(endLoading());
+//     NotificationManager.error(err.response.data.message)
+//   }
+// };
 
 
 
 export const sendVehicleAssignMessage = (driverData, vehicleData, message_type) => async dispatch => {
   const body = {
-    "data": {"first_name": driverData.first_name,
-      "license_number": vehicleData.car_number_plate,
-      "vehicle_model": vehicleData.car_make
-    },
-    "type_message": message_type,
-    "email": driverData.email,
-    'subject': 'Vehicle Assigned'
+    type: 'generic',
+    email: driverData.email,
+    name: driverData.first_name,
+    message: `Your payment has been acknowledged, and a vehicle (${vehicleData.car_number_plate}, ${vehicleData.car_color} ${vehicleData.car_make}, ${vehicleData.car_model}) has been assigned to you. Kindly log into the app to start earning. Thank you for partnering with us.`,
+    phone_number: driverData.phone_number,
+    subject: 'Vehicle Assigned'
   }
   try {
-    await axios.post(`${api.messageWorker}/api/me/messageworker/`, body);
+    await axios.post(`${api.messageWorker}/v1.1/messages/send`, body);
+  } catch (err) {
+  }
+};
+
+export const sendVehicleUnassignMessage = (driverData, vehicleData, message_type) => async dispatch => {
+  const body = {
+    type: 'generic',
+    email: driverData.email,
+    name: driverData.first_name,
+    message: `Vehicle ${vehicleData.car_number_plate}, ${vehicleData.car_color} ${vehicleData.car_make}, ${vehicleData.car_model} has been unassigned from you. \n ` +
+        '\n' +
+        `You will no longer be able to receive ride request for this vehicle.\n` +
+        '\n' +
+        `You will be required to report to the office for further actions. \n` +
+        '\n' +
+        `Sincerely,\n` +
+        '\n' +
+        `LagosRide.`,
+    phone_number: driverData.phone_number,
+    subject: 'Vehicle Unassigned'
+  }
+  try {
+    await axios.post(`${api.messageWorker}/v1.1/messages/send`, body);
   } catch (err) {
   }
 };

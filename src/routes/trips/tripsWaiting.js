@@ -20,7 +20,7 @@ const  TripsWaiting = ({match, getTrips, getTripCount}) => {
 	return (
 		<div className="table-wrapper">
 			<PageTitleBar title={"Trips"} match={match} />
-			<TripsTable status={'waiting'} />
+			<TripsTable status={'waiting'} header={'Waiting Trips'} />
 		</div>
 	);
 

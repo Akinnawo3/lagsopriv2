@@ -142,13 +142,15 @@ export const searchDrivers = (searchData, status) => async dispatch => {
 
 export const sendDriverMessage = (driverData, message_type, subject) => async dispatch => {
  const body = {
-                "data": {"first_name": driverData.first_name},
-                "type_message": message_type,
-                "email": driverData.email,
-                subject
-                }
+   type: 'generic',
+   email: driverData.email,
+   name: driverData.first_name,
+   message: message_type,
+   phone_number: driverData.phone_number,
+   subject
+ }
   try {
-    await axios.post(`${api.messageWorker}/api/me/messageworker/`, body);
+    await axios.post(`${api.messageWorker}/v1.1/messages/send`, body);
   } catch (err) {
   }
 };

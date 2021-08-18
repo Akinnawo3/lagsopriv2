@@ -10,7 +10,6 @@ import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import {getPassenger} from "Actions/passengerActions";
 import PassengerProfile from "Routes/passengers/components/passengerProfile";
 import PassengerTripHistory from "Routes/passengers/components/passengerTripHistory";
-import PassengerPaymentHistory from "Routes/passengers/components/passengerPaymentHistory";
 import PassengerRatings from "Routes/passengers/components/passengerRatings";
 import {
     getPassengerTripCountDisplayAll, getPassengerTripCountDisplayCancelled, getPassengerTripCountDisplayCompleted,
@@ -18,6 +17,10 @@ import {
     getPassengerTrips
 } from "Actions/tripAction";
 import {getUserRating, getUserRatingAverage, getUserRatingsCount} from "Actions/ratingAction";
+import {getWalletBalance, getWallets, getWalletsCount} from "Actions/walletAction";
+import Wallets from "Components/Wallets/wallets";
+import {getPayments, getPaymentsCount} from "Actions/paymentAction";
+import PaymentsComponent from "Components/PaymentsComponent/paymentsComponent";
 
 // For Tab Content
 function TabContainer(props) {
@@ -28,18 +31,41 @@ function TabContainer(props) {
     );
 }
 
- const Passenger  = ({location, match, getPassenger, passengerDetails, loading, getUserRating, getUserRatingCount, getUserRatingAverage, getTrips,  getPassengerTripCountDisplayAll, getPassengerTripCountDisplayCompleted, getPassengerTripCountDisplayCancelled, getPassengerTrips, getPassengerTripCount,}) => {
+ const Passenger  = (props) => {
+
+   const  {
+       location,
+       match,
+       getPassenger,
+       passengerDetails,
+       loading,
+       getUserRating,
+       getUserRatingCount,
+       getUserRatingAverage,
+       getPassengerTripCountDisplayAll,
+       getPassengerTripCountDisplayCompleted,
+       getPassengerTripCountDisplayCancelled,
+       getPassengerTrips,
+       getPassengerTripCount,
+       getWallets,
+       getWalletsCount,
+       getWalletsBalance,
+       wallets,
+       wallet,
+       walletsCount,
+       paymentsCount,
+       payments,
+       getPayments,
+       getPaymentsCount
+   } = props
+
     const [activeTab, setActiveTab] = useState(location.state ? location.state.activeTab : 0);
-     const [currentPage, setCurrentPage] = useState(1);
-     const [postsPerPage] = useState(10);
 
-
-  const  handleChange = (event, value) => {
+   const  handleChange = (event, value) => {
         setActiveTab(value)
     }
 
-
-     useEffect(()=> {
+    useEffect(()=> {
          if (match.params.id){
              getPassenger(match.params.id)
              getPassengerTrips(1, match.params.id, true, '')
@@ -50,14 +76,13 @@ function TabContainer(props) {
              getUserRating(1, 'rider', match.params.id)
              getUserRatingCount('rider', match.params.id)
              getUserRatingAverage('rider', match.params.id)
+             getWallets(1, '', match.params.id)
+             getWalletsCount('', match.params.id)
+             getWalletsBalance(match.params.id)
+             getPayments(1, '', match.params.id)
+             getPaymentsCount('', match.params.id)
          }
      },[match.params.id])
-
-     const paginate = pageNumber => {
-         setCurrentPage(pageNumber);
-         getTrips(pageNumber);
-         window.scrollTo(0, 0);
-     };
 
 
         return (
@@ -111,6 +136,10 @@ function TabContainer(props) {
                                 />
                                 <Tab
                                     icon={<i className="icon-credit-card"></i>}
+                                    label={"Wallets History"}
+                                />
+                                <Tab
+                                    icon={<i className="icon-credit-card"></i>}
                                     label={"Payment History"}
                                 />
                             </Tabs>
@@ -125,11 +154,15 @@ function TabContainer(props) {
                         </TabContainer>}
                         {activeTab === 2 &&
                         <TabContainer>
-                            <PassengerRatings />
+                            <PassengerRatings auth_id={match.params.id} />
                         </TabContainer>}
                         {activeTab === 3 &&
                         <TabContainer>
-                            <PassengerPaymentHistory />
+                            <Wallets auth_id={match.params.id} wallets={wallets} wallet={wallet} walletsCount={walletsCount} />
+                        </TabContainer>}
+                        {activeTab === 4 &&
+                        <TabContainer>
+                            <PaymentsComponent auth_id={match.params.id} payments={payments}  paymentsCount={paymentsCount} />
                         </TabContainer>}
                     </div>
                 </RctCard>
@@ -149,13 +182,26 @@ function mapDispatchToProps(dispatch) {
         getUserRating: (page_no, user_type, auth_id) => dispatch(getUserRating(page_no,user_type, auth_id)),
         getUserRatingCount: (user_type, auth_id) => dispatch(getUserRatingsCount(user_type, auth_id)),
         getUserRatingAverage: (user_type, auth_id) => dispatch(getUserRatingAverage(user_type, auth_id)),
+        getWallets: (pageNo, transaction_status, auth_id) => dispatch(getWallets(pageNo, transaction_status, auth_id)),
+        getWalletsCount: (transaction_status, auth_id) => dispatch(getWalletsCount(transaction_status, auth_id)),
+        getWalletsBalance: (auth_id) => dispatch(getWalletBalance(auth_id)),
+        getPayments: (pageNo, transaction_status, auth_id) => dispatch(getPayments(pageNo, transaction_status, auth_id)),
+        getPaymentsCount: (transaction_status, auth_id) => dispatch(getPaymentsCount(transaction_status, auth_id)),
+
+
+
 
     };
 }
 
 const mapStateToProps = state => ({
     passengerDetails: state.passenger.passenger,
-    loading: state.loading.loading
+    loading: state.loading.loading,
+    wallets: state.wallets.wallets,
+    wallet: state.wallets.wallet,
+    walletsCount: state.wallets.walletsCount,
+    payments: state.payments.payments,
+    paymentsCount: state.payments.paymentsCount,
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(Passenger)

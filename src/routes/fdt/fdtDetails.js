@@ -23,58 +23,6 @@ const FdtDetails = ({getFdtDetails, match, loading, fdtDetails})=> {
         setIsModal(true)
     }
 
-    console.log(fdtDetails, 'ddd')
-
-
-
-    // auth_id: "60d31ac644159dc5dd1dad1b"
-    // trip_data: Array(3)
-    // 0:
-    // end_address: "40 Oladipo Bateye Road, Ikeja, Nigeria"
-    // end_lat: 6.5744221
-    // end_lon: 3.3458747
-    // start_address: "Bridgegate Estate, Iberekodo Street, Lekki, Nigeria"
-    // start_lat: 6.446528
-    // start_lon: 3.5177175
-    // trip_date: "2021-07-05"
-    // trip_status: 0
-    // trip_time: "06:00"
-    // __proto__: Object
-    // 1: {trip_date: "2021-07-03", trip_status: 0, start_address: "Ejim Apartments, Prince Ibrahim Eletu Avenue, Lagos, Nigeria", start_lon: 3.5092497, start_lat: 6.442997099999999, …}
-    // 2: {trip_date: "2021-07-04", trip_status: 0, start_address: "Bridgegate Estate, Iberekodo Street, Lekki, Nigeria", start_lon: 3.5177175, start_lat: 6.446528, …}
-    // length: 3
-    // __proto__: Array(0)
-    // users:
-    //     avatar: ""
-    // blood_group: ""
-    // dob: ""
-    // education: ""
-    // email: "fike.odulaja@gmail.com"
-    // email_status: 0
-    // first_name: "Fike"
-    // gender: "female"
-    // home_address: "Bridgegate Estate, Iberekodo Street, Lekki, Nigeria"
-    // home_area: "a"
-    // home_coordinate:
-    //     latitude: 6.446528
-    // longitude: 3.5177175
-    // __proto__: Object
-    // last_name: "Odulaja"
-    // phone_number: "09029427239"
-    // phone_status: 0
-    // referer: ""
-    // ride_partner: "all"
-    // state: ""
-    // trip_notification: 1
-    // update_count: 1
-    // user_type: "rider"
-    // work_address: "40 Oladipo Bateye Road, Ikeja, Nigeria"
-    // work_area: "i"
-    // work_coordinate: {}
-    //
-
-
-
     return (
         <div className='mb-5' style={{minHeight: '90vh'}}>
             <Helmet>
@@ -201,7 +149,7 @@ const FdtDetails = ({getFdtDetails, match, loading, fdtDetails})=> {
                                     </div>
                                     <div className="scheduleHeader mt-1">
                                         <Badge color={data?.trip_status === 1 ? "success" : data?.trip_status === 2 ? 'danger' : 'warning'}>
-                                                   {data?.trip_status === 1 ? 'Completed' : data?.trip_status === 2 ? 'Cancelled' : 'Pending'}
+                                                   {data?.trip_status === 1 ? 'Accepted' : data?.trip_status === 2 ? 'Declined' : 'Pending'}
                                                   </Badge>
                                     </div>
                                 </div>

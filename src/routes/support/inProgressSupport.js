@@ -12,7 +12,7 @@ import SupportTable from "Routes/support/components/supportTable";
 const  InProgressSupport = ({match, getSupportTickets, getSupportTicketsCount}) => {
 
     useEffect(()=> {
-        getSupportTickets(1, 3, true);
+        getSupportTickets(1, 2, true);
         getSupportTicketsCount(3)
     },[])
 

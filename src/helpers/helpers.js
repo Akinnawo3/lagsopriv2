@@ -2,6 +2,9 @@
  * Helpers Functions
  */
 import moment from 'moment';
+import TableCell from "@material-ui/core/TableCell";
+import TableRow from "@material-ui/core/TableRow";
+import React from "react";
 
 /**
  * Function to convert hex to rgba
@@ -62,6 +65,8 @@ export function getAppLayout(url) {
     return path[1];
 }
 
+// 0=pending, 1=processing, 2=successful, 3=failed
+
 export function getStatus(status) {
     if(status === 0) {
         return  'Pending'
@@ -74,6 +79,39 @@ export function getStatus(status) {
     }
 }
 
+export function getStatus3(status) {
+    if(status === 0) {
+        return  'Pending'
+    }else if(status === 1) {
+        return 'Processing'
+    } else if (status === 2){
+        return 'Successful'
+    }else {
+        return 'Unsuccessful'
+    }
+}
+
+export function getStatus4(status) {
+    if(status === 0) {
+        return  'Pending'
+    }else if(status === 1) {
+        return 'Successful'
+    }else {
+        return 'Unsuccessful'
+    }
+}
+
+export function getStatusColor4(status) {
+    if(status === 0) {
+        return  'warning'
+    }else if(status === 1) {
+        return 'success'
+    }else {
+        return 'danger'
+    }
+}
+
+
 export function getStatusColor(status) {
     if(status === 0) {
         return  'warning'
@@ -85,6 +123,40 @@ export function getStatusColor(status) {
         return 'danger'
     }
 }
+
+
+export function getStatus2(status) {
+    if(status === 0) {
+        return  'Pending'
+    }else if(status === 1) {
+        return 'Completed'
+    } else if (status === 2){
+        return 'Failed'
+    }else if (status === -1){
+        return 'Debited'
+    }
+    else {
+        return 'Failed'
+    }
+}
+
+// -1=debit, 0=pending, 1=complete, or 2=cancel/failed
+
+
+export function getStatusColor2(status) {
+    if(status === 0) {
+        return  'warning'
+    }else if(status === 1 || status === -1) {
+        return 'success'
+    } else if (status === 2){
+        return 'danger'
+    }else {
+        return 'danger'
+    }
+}
+
+
+
 
 
 let timeZone = (date) => {
@@ -182,4 +254,21 @@ export const getTodayDate = () => {
     const year = date.getFullYear()
     return `${year}-${month}-${day}`
 }
+
+export const getTicketStatus = (status) => {
+    if(status == 0) {
+        return 'New'
+    } else if(status == 1) {
+        return 'Opened'
+    }else if(status == 2) {
+        return 'In-progress'
+    } else if(status == 3) {
+        return 'Closed'
+    }else if(status == 4) {
+        return 'Unresolved'
+    }else {
+        return ''
+    }
+}
+
 

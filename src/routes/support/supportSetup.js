@@ -40,7 +40,7 @@ const SupportSetup = ({getTicketTypes, ticketTypes, createSupport, admins, getAd
 
     const onSubmit = async (e) => {
         e.preventDefault();
-      await createSupport(ticketId, forType, channel, desc, status, assignedTo, userAuthId)
+      await createSupport(ticketId, channel, desc, status, assignedTo, userAuthId)
         setFormData({ticketId: '', forType: '', channel: '', desc: '', status: '', assignedTo: '', email: ''});
         setSearchData('');
     };
@@ -97,7 +97,7 @@ const SupportSetup = ({getTicketTypes, ticketTypes, createSupport, admins, getAd
                             <Input type="select"  name="ticketId"  value={ticketId} onChange={onChange}  required>
                                 <option value="">Select</option>
                                 {ticketTypes && ticketTypes.map(ticket => (
-                                    <option key={ticket.id} value={ticket.id}>{ticket.name}</option>
+                                    <option key={ticket.support_id} value={ticket.support_id}>{ticket.title}</option>
                                 ))}
                             </Input>
                         </FormGroup>
@@ -120,10 +120,10 @@ const SupportSetup = ({getTicketTypes, ticketTypes, createSupport, admins, getAd
                             <Label>Channel</Label>
                             <Input type="text" name="channel" value={channel} onChange={onChange} required />
                         </FormGroup>
-                        <FormGroup>
-                            <Label>Upload images </Label>
-                            <Input type="file"  onChange={onChange} />
-                        </FormGroup>
+                        {/*<FormGroup>*/}
+                        {/*    <Label>Upload images </Label>*/}
+                        {/*    <Input type="file"  onChange={onChange} />*/}
+                        {/*</FormGroup>*/}
                     </div>
                     <div className="col-sm-5 bg-white">
                         <div>
@@ -138,7 +138,7 @@ const SupportSetup = ({getTicketTypes, ticketTypes, createSupport, admins, getAd
                             </FormGroup>
                             <FormGroup>
                                 <Label  htmlFor="browser">Ticket For</Label>
-                                <Input onFocus={onFocus} onBlur={onBlur} type="search" className="search-input-lg" name="searchData" value={searchData} onChange={onChangeSearch} placeholder="Search.. name, email, phone number" autoComplete='off' />
+                                <Input onFocus={onFocus} onBlur={onBlur} type="search" className="search-input-lg" name="searchData" value={searchData} onChange={onChangeSearch} placeholder="Search.. name, email, phone number" autoComplete='off'  required/>
                                 {loading && <div className="page-loader d-flex justify-content-center mb-30 mt-30">
                                     <CircularProgress size={24} />
                                 </div>}
@@ -166,7 +166,7 @@ const SupportSetup = ({getTicketTypes, ticketTypes, createSupport, admins, getAd
                             {/*</FormGroup>*/}
                             <FormGroup>
                                 <Label>Assign To</Label>
-                                <Input type="select"  name="assignedTo"  value={assignedTo} onChange={onChange}>
+                                <Input type="select"  name="assignedTo"  value={assignedTo} onChange={onChange} required>
                                     <option value="">Select</option>
                                     {admins?.length > 0 && admins.map(admin => (
                                         <option key={admin.auth_id} value={admin.auth_id}>{admin.first_name} {admin.last_name}</option>
@@ -188,7 +188,7 @@ const SupportSetup = ({getTicketTypes, ticketTypes, createSupport, admins, getAd
 
 function mapDispatchToProps(dispatch) {
     return {
-        createSupport: (support_id, for_type, channel, desc, status, assigned_to, for_id) => dispatch(createSupportTickets(support_id, for_type, channel, desc, status, assigned_to, for_id)),
+        createSupport: (support_id, channel, desc, status, assigned_to, for_id) => dispatch(createSupportTickets(support_id, channel, desc, status, assigned_to, for_id)),
         getAdmins: () => dispatch(getAdmins()),
         getTicketTypes: (page_no, spinner) => dispatch(getTicketTypes(page_no, spinner)),
     };

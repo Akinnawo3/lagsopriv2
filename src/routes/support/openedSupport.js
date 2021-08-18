@@ -12,7 +12,7 @@ import SupportTable from "Routes/support/components/supportTable";
 const  OpenedSupport = ({match, getSupportTickets, getSupportTicketsCount}) => {
 
     useEffect(()=> {
-        getSupportTickets(1, 2, true);
+        getSupportTickets(1, 1, true);
         getSupportTicketsCount(2)
     },[])
 

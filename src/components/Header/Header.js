@@ -169,7 +169,8 @@ class Header extends Component {
 // map state to props
 const mapStateToProps = ({ settings, loading }) => {
 	const isLoadingStatus = loading.loadingStatus
-	return {settings, isLoadingStatus};
+	const navCollapsed = settings.navCollapsed
+	return {settings, isLoadingStatus, navCollapsed};
 };
 
 // const mapStateToProps = state => ({

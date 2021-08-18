@@ -20,7 +20,7 @@ useEffect(()=> {
 	return (
 			<div className="table-wrapper">
 				<PageTitleBar title={"Trips"} match={match} />
-				<TripsTable status={''} />
+				<TripsTable status={''} header={'All trips'} />
 			</div>
 		);
 

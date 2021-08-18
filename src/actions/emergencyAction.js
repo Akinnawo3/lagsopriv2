@@ -36,8 +36,8 @@ export const getSOSDetails = (sos_id, spinner) => async dispatch => {
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
-      if(res?.data?.data?.userId) {
-      const res2 =  await axios.get(`${api.user}/v1.1/admin/users/${res.data.data.userId}`)
+      if(res?.data?.data?.user_id) {
+      const res2 =  await axios.get(`${api.user}/v1.1/admin/users/${res.data.data.user_id}`)
         dispatch({
           type: SOS_USER_DETAILS,
           payload: res2.data.data

@@ -204,7 +204,7 @@ const  Admins = ({match, getAdmins, admins, updateAdmin, loading, deleteAdmin, a
                                         <TableCell>{admin.email}</TableCell>
                                         <TableCell>
                                             <button type="button" className="rct-link-btn" onClick={(e) => opnAddNewUserEditModal(admin.auth_id)}><i className="ti-pencil"></i></button>
-                                            <button type="button" className="rct-link-btn ml-lg-3 text-danger" onClick={() => onDelete(admin.auth_id)}><i className="ti-close"></i></button>
+                                            <button type="button" className="rct-link-btn ml-lg-3 text-danger" onClick={() => onDelete(admin.auth_id)}><i className="ti-trash"></i></button>
                                         </TableCell>
                                     </TableRow>
                                 ))}

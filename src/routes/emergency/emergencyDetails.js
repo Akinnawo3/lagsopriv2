@@ -16,6 +16,7 @@ const EmergencyDetails = ({match, loading, sosDetails, getSOSDetails, sosUserDet
       }
     },[match.params.id])
 
+
     return (
         <div style={{minHeight: '90vh'}}>
             <Helmet>
@@ -32,17 +33,17 @@ const EmergencyDetails = ({match, loading, sosDetails, getSOSDetails, sosUserDet
                                 <li className="list-group-item text-right"><span
                                     className="pull-left"><strong>Name</strong></span>
                                     <Link
-                                        to={sosUserDetails?.user_type === 'driver' ? `/admin/drivers/${sosUserDetails.auth_id}` : `/admin/passengers/${sosUserDetails?.auth_id}`}>{sosUserDetails?.first_name} {sosUserDetails?.last_name}</Link>
+                                        to={sosDetails?.type === 'driver' ? `/admin/drivers/${sosUserDetails.auth_id}` : `/admin/passengers/${sosUserDetails?.auth_id}`}>{sosUserDetails?.first_name} {sosUserDetails?.last_name}</Link>
                                 </li>
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>User Type</strong></span>{sosUserDetails?.user_type}
+                                    className="pull-left"><strong>User Type</strong></span>{sosDetails?.type}
                                 </li>
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>User Phone number</strong></span>{sosUserDetails?.phone_number}
+                                    className="pull-left"><strong>User Phone number</strong></span>{sosDetails.user_phone_number}
                                 </li>
                                 <li className="list-group-item text-right"><span
                                     className="pull-left"><strong>Trip Id</strong></span>
-                                    <Link to={`/admin/trips/${sosDetails?.trip_id}`}>{sosDetails?.trip_id}</Link>
+                                    <Link to={`/admin/trips/${sosDetails?.trip_id}`}>{sosDetails.trip_id}</Link>
                                 </li>
                                 <li className="list-group-item text-right"><span
                                     className="pull-left"><strong>Address</strong></span>{sosDetails?.address}

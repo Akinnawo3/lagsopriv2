@@ -44,27 +44,31 @@ const TripDetails = ({getTrip, match, loading, trip})=> {
                                 <li className="list-group-item text-right"><span
                                     className="pull-left"><strong>Trip Type</strong></span>{trip?.ride_type}
                                 </li>
-                                <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Driver Name</strong></span>
-                                    <Link to={`/admin/drivers/${trip?.driver_data?.driver_id}`}>{trip?.driver_data?.name}</Link>
-                                </li>
-                                <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Driver Email</strong></span>{trip?.driver_data?.email}
-                                </li>
-                                <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Driver Phone Number</strong></span>{trip?.driver_data?.phone}
-                                </li>
-                                <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Vehicle Plate Number</strong></span>{trip?.driver_data?.car_number_plate}
-                                </li>
-                                <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Vehicle Model</strong></span>{trip?.driver_data?.car_model}
-                                </li>
+                                {/*{ (trip?.ride_type !== 'fdt' || trip?.ride_type !== 'schedule') && (trip?.ride_status !== 'cancel') &&*/}
+                                {/*    <>*/}
+                                        <li className="list-group-item text-right"><span
+                                            className="pull-left"><strong>Driver Name</strong></span>
+                                            {trip?.driver_data?.name ? <Link to={`/admin/drivers/${trip?.driver_data?.driver_id}`}>{trip?.driver_data?.name}</Link>: 'N/A'}
+                                        </li>
+                                        <li className="list-group-item text-right"><span
+                                            className="pull-left"><strong>Driver Email</strong></span>{trip?.driver_data?.email ? trip?.driver_data?.email : 'N/A'}
+                                        </li>
+                                        <li className="list-group-item text-right"><span
+                                            className="pull-left"><strong>Driver Phone Number</strong></span>{trip?.driver_data?.phone ? trip?.driver_data?.phone : 'N/A'}
+                                        </li>
+                                        <li className="list-group-item text-right"><span
+                                            className="pull-left"><strong>Vehicle Plate Number</strong></span>{trip?.driver_data?.car_number_plate ? trip?.driver_data?.car_number_plate : 'N/A'}
+                                        </li>
+                                        <li className="list-group-item text-right"><span
+                                            className="pull-left"><strong>Vehicle Model</strong></span>{trip?.driver_data?.car_model ? trip?.driver_data?.car_model : 'N/A'}
+                                        </li>
+                                    {/*</>*/}
+                                {/*}*/}
                                 <li className="list-group-item text-right"><span
                                     className="pull-left"><strong>Trip Status</strong></span>
                                     <Badge
                                         color={trip?.ride_status === 'completed' ? "success" : trip?.ride_status === 'cancel' ? 'danger' : trip?.ride_status === 'waiting' ? 'warning' : 'secondary'}>
-                                        {trip?.ride_status === 'on_trip' ? 'current' : trip?.ride_status === 'on_pickup' ? 'on route' : trip?.ride_status}
+                                        {trip?.ride_status === 'on_trip' ? 'current' : trip?.ride_status === 'on_pickup' ? 'on route' : trip?.ride_status === 'cancel' ? 'cancelled' : trip?.ride_status}
                                     </Badge>
                                 </li>
                                 <li className="list-group-item text-right"><span
@@ -88,7 +92,7 @@ const TripDetails = ({getTrip, match, loading, trip})=> {
                 <ModalHeader toggle={() => setIsModal(false)}>
                     Rider details
                 </ModalHeader>
-                <ModalBody>
+                <ModalBody className='px-4'>
                     <div className='row'>
                       <div className='col-6'>
                           <div className="schedulePickup">
@@ -236,7 +240,7 @@ const TripDetails = ({getTrip, match, loading, trip})=> {
                     <div className='row mt-4'>
                         <div className='col-6'>
                             <div className="schedulePickup">
-                                Number of Riders
+                                Rider Number
                             </div>
                             <div className="scheduleHeader mt-1">
                                 {riderDetails?.rider}
@@ -270,13 +274,6 @@ const TripDetails = ({getTrip, match, loading, trip})=> {
                             </div>
                         </div>
                     </div>
-
-                    {/*cancel_reason: {cancel_by: "driver", cancel_reason_option: "Flat tire",…}*/}
-                    {/*cancel_by: "driver"*/}
-                    {/*cancel_reason_option: "Flat tire"*/}
-                    {/*cancel_reason_others: "My car has a flat tire so please I can’t continued"*/}
-
-
                     <div className='row mt-4'>
                         <div className='col-6'>
                             <div className="schedulePickup">
@@ -292,7 +289,7 @@ const TripDetails = ({getTrip, match, loading, trip})=> {
                             </div>
                             <div className="scheduleHeader mt-1">
                                 <Badge color={riderDetails?.status === 'completed' ? "success" : riderDetails?.status === 'cancel' ? 'danger' : riderDetails?.status === 'waiting' ? 'warning' : 'secondary'}>
-                                    {riderDetails?.status === 'on_trip' ? 'current' : riderDetails?.status === 'on_pickup' ? 'on route' : riderDetails?.status}
+                                    {riderDetails?.status === 'on_trip' ? 'current' : riderDetails?.status === 'on_pickup' ? 'on route': riderDetails?.status === 'cancel' ? 'cancelled' : riderDetails?.status}
                                 </Badge>
                             </div>
                         </div>

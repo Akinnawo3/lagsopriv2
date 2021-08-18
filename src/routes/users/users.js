@@ -68,7 +68,7 @@ const  Users = ({match, getUsers, loading, users, userCount, getUserCount,  dele
                                         <TableCell>{user.user_type}</TableCell>
 
                                         <TableCell>
-                                            <button type="button" className="rct-link-btn ml-lg-3 text-danger" onClick={() => onDelete(user.auth_id)}><i className="ti-close"></i></button>
+                                            <button type="button" className="rct-link-btn ml-lg-3 text-danger" onClick={() => onDelete(user.auth_id)}><i className="ti-trash"></i></button>
                                         </TableCell>
                                     </TableRow>
                                 ))}

@@ -117,7 +117,8 @@ const DriverTrips = ({
                                                             {trip.ride_class}
                                                         </TableCell>
 
-                                                        <TableCell><Badge color={trip.ride_status === 'completed' ? "success" : trip.ride_status === 'cancel' ? 'danger' : trip.ride_status === 'waiting' ? 'warning' : 'secondary'}>												{trip.ride_status === 'on_trip' ? 'current' : trip.ride_status === 'on_pickup' ? 'on route' : trip.ride_status}
+                                                        <TableCell><Badge color={trip.ride_status === 'completed' ? "success" : trip.ride_status === 'cancel' ? 'danger' : trip.ride_status === 'waiting' ? 'warning' : 'secondary'}>
+                                                            {trip.ride_status === 'on_trip' ? 'current' : trip.ride_status === 'on_pickup' ? 'on route': trip?.ride_status === 'cancel' ? 'cancelled' : trip.ride_status}
                                                         </Badge></TableCell>
                                                         <TableCell>
                                                             <button type="button" className="rct-link-btn text-primary" title="view details"><Link to={`/admin/trips/${trip.trip_id}`}><i className="ti-eye"/></Link></button>
@@ -130,7 +131,7 @@ const DriverTrips = ({
                                             </Fragment>
                                         </TableBody>
                                     </Table>
-                                    <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
+                                    <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2 w-100">
                                         <Pagination
                                             activePage={currentPage}
                                             itemClass="page-item"

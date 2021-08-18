@@ -73,7 +73,7 @@ const  EmergencyNumber = ({match, setSOSNumber, getSOSNumber, sosNumbers, loadin
                                     <TableRow hover key={data.id}>
                                         <TableCell>{data.phone_number}</TableCell>
                                         <TableCell>
-                                            <button type="button" className="rct-link-btn ml-lg-3 text-danger ml-2" onClick={() => onDelete(data.id)}><i className="ti-close"></i></button>
+                                            <button type="button" className="rct-link-btn ml-lg-3 text-danger ml-2" onClick={() => onDelete(data.id)}><i className="ti-trash"></i></button>
                                         </TableCell>
                                     </TableRow>
                                 ))}

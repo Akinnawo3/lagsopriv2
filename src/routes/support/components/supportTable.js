@@ -12,7 +12,7 @@ import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import Pagination from "react-js-pagination";
 import EmptyData from "Components/EmptyData/EmptyData";
-import {calculatePostDate} from "Helpers/helpers";
+import {calculatePostDate, getTicketStatus} from "Helpers/helpers";
 import {getSupportTickets} from "Actions/supportAction";
 import {Badge} from "reactstrap";
 
@@ -29,8 +29,23 @@ const  SupportTable = ({support, getSupportTickets,loading, support_type, suppor
     };
 
 
-
-
+    // email: "tajibuwa@gmail.com"
+    // first_last: "Dean"
+    // first_name: "Mike"
+    // phone_number: "07032838025"
+    // user_type: "admin"
+    // assign_to: "611b6c839f0781cec3ebb5aa"
+    // auth_id: "611a827d9f07814794ebb48a"
+    // comment: "A description"
+    // createdAt: "2021-08-17T08:01:13.993Z"
+    // status: 1
+    // updatedAt: "2021-08-17T08:01:13.993Z"
+    // user_data: {first_name: "Ayorinde", first_last: "Kudoro", email: "kudoroayorinde@gmail.com",…}
+    // email: "kudoroayorinde@gmail.com"
+    // first_last: "Kudoro"
+    // first_name: "Ayorinde"
+    // phone_number: "08034895313"
+    // user_type: "rider"
     return (
         <div>
             {!loading && support?.length > 0 &&   <RctCollapsibleCard heading={header} fullBlock>
@@ -52,19 +67,16 @@ const  SupportTable = ({support, getSupportTickets,loading, support_type, suppor
                             <Fragment>
                                 {support.map((sup, key) => (
                                     <TableRow hover key={key}>
-                                        {sup.status == 1   && <TableCell>New</TableCell>}
-                                        {sup.status == 2  && <TableCell>Opened</TableCell>}
-                                        {sup.status == 3  && <TableCell>In-progress</TableCell>}
-                                        {sup.status == 4  && <TableCell>Closed</TableCell>}
-                                        {sup.status == 5  && <TableCell>Unresolved</TableCell>}
+                                         <TableCell>{getTicketStatus(sup.status)}</TableCell>
                                         <TableCell>
-                                            {calculatePostDate(sup.timestamp)}
+                                            {calculatePostDate(sup.createdAt)}
+                                            {/*{new Date(sup.timestamp.setHours(sup.timestamp.getHours() + 1))}*/}
                                         </TableCell>
                                         <TableCell>
-                                            <Badge color={sup.assigned_to ? 'success' : 'danger'}>{sup.assigned_to ? 'Yes' : 'No'}</Badge>
+                                            <Badge color={sup.assign_to ? 'success' : 'danger'}>{sup.assign_to ? 'Yes' : 'No'}</Badge>
                                         </TableCell>
                                         <TableCell>
-                                            <button type="button" className="rct-link-btn text-primary"><Link to={`/admin/support/${sup.ticket_id}`}><i className="ti-eye"></i></Link></button>
+                                            <button type="button" className="rct-link-btn text-primary"><Link to={`/admin/support/${sup.issue_id}`}><i className="ti-eye"></i></Link></button>
 
                                         </TableCell>
                                     </TableRow>

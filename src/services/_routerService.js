@@ -40,6 +40,7 @@ import ReferralRoutes from "Routes/referral/referralRoutes";
 import FdtRoutes from "Routes/fdt/fdtRoutes";
 import TripRoutes from "Routes/trips/tripsRoutes";
 import RatingsRoutes from "Routes/ratings/ratingsRoutes";
+import WalletsRoutes from "Routes/wallets/walletsRoutes";
 
 
 export default [
@@ -59,26 +60,30 @@ export default [
       path: 'users',
       component: AsyncUsers
    },
-   {
-      path: 'class-types',
-      component: AsyncClassTypes
-   },
-   {
-      path: 'booking-types',
-      component: AsyncBookingTypes
-   },
+   // {
+   //    path: 'class-types',
+   //    component: AsyncClassTypes
+   // },
+   // {
+   //    path: 'booking-types',
+   //    component: AsyncBookingTypes
+   // },
    {
       path: 'fees',
       component: AsyncFees
    },
    {
+      path: 'wallets',
+      component: WalletsRoutes
+   },
+   {
       path: 'cancellation-reasons',
       component: AsyncCancellationReasons
    },
-   {
-      path: 'voucher',
-      component: AsyncVoucher
-   },
+   // {
+   //    path: 'voucher',
+   //    component: AsyncVoucher
+   // },
    {
       path: 'referral',
       component: ReferralRoutes
@@ -87,10 +92,10 @@ export default [
       path: 'revenue',
       component: AsyncRevenueSplit
    },
-   {
-      path: 'promo-discounts',
-      component: AsyncPromoDiscount
-   },
+   // {
+   //    path: 'promo-discounts',
+   //    component: AsyncPromoDiscount
+   // },
    {
       path: 'cancellations',
       component: AsyncCancellations
@@ -140,10 +145,10 @@ export default [
       path: 'support',
       component: SupportRoutes
    },
-   {
-      path: 'analytics',
-      component: AsyncAnalytics
-   },
+   // {
+   //    path: 'analytics',
+   //    component: AsyncAnalytics
+   // },
    {
       path: 'emergency',
       component: EmergencyRoutes

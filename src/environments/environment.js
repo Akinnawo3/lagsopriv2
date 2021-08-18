@@ -17,7 +17,9 @@
      revenueSplit: 'http://taxirevenuesplitbackend-microservices.api.lagosride.com',
      cancellationReasons: 'http://tripcancel-reasons-microservices.api.lagosride.com',
      referral: 'http://referral-service-microservices.api.lagosride.com',
-     messageWorker: 'http://message-sender-microservices.api.lagosride.com'
+     messageWorker: 'http://message-service-microservices.api.lagosride.com',
+     wallet: 'http://wallet-service-microservices.api.lagosride.com',
+     contactUs: 'http://contact-us-microservices.api.lagosride.com'
 };
 
 export default api

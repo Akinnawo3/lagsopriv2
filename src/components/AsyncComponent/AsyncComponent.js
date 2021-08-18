@@ -253,6 +253,16 @@ const AsyncSupportInProgress = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+const AsyncSupportContactUs = Loadable({
+	loader: () => import("Routes/support/contactUs"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncSupportContactUsDetails = Loadable({
+	loader: () => import("Routes/support/contactUsDetails"),
+	loading: () => <RctPageLoader />,
+});
+
 const AsyncAnalytics = Loadable({
 	loader: () => import("Routes/analytics/analytics"),
 	loading: () => <RctPageLoader />,
@@ -297,6 +307,28 @@ const AsyncAdmins = Loadable({
 
 const AsyncUsers = Loadable({
 	loader: () => import("Routes/users/users"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncWallets = Loadable({
+	loader: () => import("Routes/wallets/wallets"),
+	loading: () => <RctPageLoader />,
+});
+const AsyncWalletsPending = Loadable({
+	loader: () => import("Routes/wallets/walletsPending"),
+	loading: () => <RctPageLoader />,
+});
+const AsyncWalletsCompleted = Loadable({
+	loader: () => import("Routes/wallets/walletsCompleted"),
+	loading: () => <RctPageLoader />,
+});
+const AsyncWalletsCancelled = Loadable({
+	loader: () => import("Routes/wallets/walletsCancelled"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncWallet = Loadable({
+	loader: () => import("Routes/wallets/walletDetails"),
 	loading: () => <RctPageLoader />,
 });
 
@@ -433,5 +465,12 @@ export {
 	AsyncCancellationReasons,
 	AsyncVehicleDetails,
 	AsyncRatingsDetails,
-	AsyncEmergencyNumber
+	AsyncEmergencyNumber,
+	AsyncWallet,
+	AsyncWallets,
+	AsyncWalletsCancelled,
+	AsyncWalletsCompleted,
+	AsyncWalletsPending,
+	AsyncSupportContactUs,
+	AsyncSupportContactUsDetails
 };

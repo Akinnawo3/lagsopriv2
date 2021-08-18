@@ -19,6 +19,14 @@ import {
     getDriverTrips
 } from "Actions/tripAction";
 import {getVehicles} from "Actions/vehicleAction";
+import {getWalletBalance, getWallets, getWalletsCount} from "Actions/walletAction";
+import Wallets from "Components/Wallets/wallets";
+import {
+    getPaymentsService,
+    getPaymentsServiceBalance,
+    getPaymentsServiceCount
+} from "Actions/paymentAction";
+import PaymentsServiceComponent from "Components/PaymentsComponent/paymentsServiceComponent";
 
 // For Tab Content
 function TabContainer(props) {
@@ -29,10 +37,36 @@ function TabContainer(props) {
     );
 }
 
- const Driver  = ({location, match, getDriver, getDriverTrips, loading, getDriverTripCount, driverDetails, getUserRating, getVehicles,
-                      getDriverTripCountDisplayAll, getDriverTripCountDisplayCompleted,
-                      getDriverTripCountDisplayCancelled, getUserRatingCount, getUserRatingAverage}) => {
-    const [activeTab, setActiveTab] = useState(location.state ? location.state.activeTab : 0);
+ const Driver  = (props) => {
+  const   {
+      location,
+      match,
+      getDriver,
+      getDriverTrips,
+      loading,
+      getDriverTripCount,
+      driverDetails,
+      getUserRating, getVehicles,
+      getDriverTripCountDisplayAll,
+      getDriverTripCountDisplayCompleted,
+      getDriverTripCountDisplayCancelled,
+      getUserRatingCount,
+      getUserRatingAverage,
+      getWallets,
+      getWalletsCount,
+      getWalletsBalance,
+      wallets,
+      wallet,
+      walletsCount,
+      paymentsCount,
+      payments,
+      getPaymentsService,
+      getPaymentsServiceCount,
+      paymentsServiceBalance,
+      getPaymentsServiceBalance
+  } = props
+
+     const [activeTab, setActiveTab] = useState(location.state ? location.state.activeTab : 0);
 
   const  handleChange = (event, value) => {
         setActiveTab(value)
@@ -50,15 +84,14 @@ function TabContainer(props) {
              getUserRatingCount('driver', match.params.id)
              getUserRatingAverage('driver', match.params.id)
              getVehicles(1, 0)
+             getWallets(1, '', match.params.id)
+             getWalletsCount('', match.params.id)
+             getWalletsBalance(match.params.id)
+             getPaymentsService(1, '', match.params.id)
+             getPaymentsServiceCount('', match.params.id)
+             getPaymentsServiceBalance(match.params.id)
          }
      },[match.params.id])
-
-
-     // useEffect(() => {
-     //     if(driverDetails?.driver_data?.vehicle_id) {
-     //         getVehicle(driverDetails?.driver_data?.vehicle_id)
-     //     }
-     // },[driverDetails?.driver_data?.vehicle_id])
 
 
         return (
@@ -109,6 +142,14 @@ function TabContainer(props) {
                                     icon={<i className="icon-star"></i>}
                                     label={"Ratings"}
                                 />
+                                <Tab
+                                    icon={<i className="icon-credit-card"></i>}
+                                    label={"Wallets History"}
+                                />
+                                <Tab
+                                    icon={<i className="icon-credit-card"></i>}
+                                    label={"Debt Service History"}
+                                />
                             </Tabs>
                         </AppBar>
                         {activeTab === 0 &&
@@ -123,14 +164,14 @@ function TabContainer(props) {
                         <TabContainer>
                             <DriverRatings auth_id={match.params.id} />
                         </TabContainer>}
-                        {/*{activeTab === 2 &&*/}
-                        {/*<TabContainer>*/}
-                        {/*    <Messages />*/}
-                        {/*</TabContainer>}*/}
-                        {/*{activeTab === 3 &&*/}
-                        {/*<TabContainer>*/}
-                        {/*    <Address />*/}
-                        {/*</TabContainer>}*/}
+                        {activeTab === 3 &&
+                        <TabContainer>
+                            <Wallets auth_id={match.params.id} wallets={wallets} wallet={wallet} walletsCount={walletsCount} />
+                        </TabContainer>}
+                        {activeTab === 4 &&
+                        <TabContainer>
+                            <PaymentsServiceComponent auth_id={match.params.id} payments={payments}  paymentsCount={paymentsCount} paymentsServiceBalance={paymentsServiceBalance} />
+                        </TabContainer>}
                     </div>
                 </RctCard>}
             </div>
@@ -150,6 +191,12 @@ function mapDispatchToProps(dispatch) {
         getUserRating: (page_no, user_type, auth_id) => dispatch(getUserRating(page_no,user_type, auth_id)),
         getUserRatingCount: (user_type, auth_id) => dispatch(getUserRatingsCount(user_type, auth_id)),
         getUserRatingAverage: (user_type, auth_id) => dispatch(getUserRatingAverage(user_type, auth_id)),
+        getWallets: (pageNo, transaction_status, auth_id) => dispatch(getWallets(pageNo, transaction_status, auth_id)),
+        getWalletsCount: (transaction_status, auth_id) => dispatch(getWalletsCount(transaction_status, auth_id)),
+        getWalletsBalance: (auth_id) => dispatch(getWalletBalance(auth_id)),
+        getPaymentsService: (pageNo, transaction_status, auth_id) => dispatch(getPaymentsService(pageNo, transaction_status, auth_id)),
+        getPaymentsServiceCount: (transaction_status, auth_id) => dispatch(getPaymentsServiceCount(transaction_status, auth_id)),
+        getPaymentsServiceBalance: (auth_id) => dispatch(getPaymentsServiceBalance(auth_id)),
 
 
     };
@@ -161,6 +208,12 @@ const mapStateToProps = state => ({
     loadingStatus: state.loading.loadingStatus,
     loading: state.loading.loading,
     vehicle: state.vehicle.vehicle,
+    wallets: state.wallets.wallets,
+    wallet: state.wallets.wallet,
+    walletsCount: state.wallets.walletsCount,
+    payments: state.payments.paymentsService,
+    paymentsCount: state.payments.paymentsServiceCount,
+    paymentsServiceBalance: state.payments.paymentsServiceBalance,
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(Driver)

@@ -24,6 +24,8 @@ import emergencyReducer from "./emergencyReducer";
 import usersReducer from "./userReducer";
 import cancellationReasonReducer from "./cancellationReasonReducer";
 import referralReducer from "./referralReducer";
+import walletReducer from "./walletReducer";
+import paymentReducer from "./paymentReducer";
 
 const reducers = combineReducers({
    settings,
@@ -47,7 +49,9 @@ const reducers = combineReducers({
    sos: emergencyReducer,
    users: usersReducer,
    cancellationReasons: cancellationReasonReducer,
-   referrals: referralReducer
+   referrals: referralReducer,
+   wallets: walletReducer,
+   payments: paymentReducer,
 });
 
 export default reducers;

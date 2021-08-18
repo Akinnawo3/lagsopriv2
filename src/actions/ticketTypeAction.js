@@ -4,11 +4,11 @@ import {TICKET_TYPE, TICKET_TYPE_COUNT, TICKET} from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 
-export const createTicketType = (name, type_user, issues) => async dispatch => {
-  const body = {name, type_user, issues}
+export const createTicketType = (title, user_type, issues, description) => async dispatch => {
+  const body = {title, user_type, issues, description}
   try {
     await dispatch(startStatusLoading());
-    const res = await axios.post(`${api.support}/api/v1.1/admin/support/`, body)
+    const res = await axios.post(`${api.support}/v1.1/supports/issues`, body)
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -26,7 +26,7 @@ export const getTicketTypes = (page_no=1, spinner) => async dispatch => {
   try {
     spinner && dispatch(startLoading());
     !spinner && dispatch(startStatusLoading())
-    const res = await axios.get(`${api.support}/api/v1.1/admin/support/?page_no=${page_no}&no_per_page=20`)
+    const res = await axios.get(`${api.support}/v1.1/supports/issues/?page_no=${page_no}&no_per_page=20`)
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -72,11 +72,11 @@ export const getTicketType = (support_id, spinner) => async dispatch => {
 
 
 
-export const updateTicketType = (support_id, name, typeUser, issues) => async dispatch => {
-  const body = {name, typeUser, issues}
+export const updateTicketType = (support_id, title, user_type, issues, description) => async dispatch => {
+  const body = {title, user_type, issues, description}
   try {
     await dispatch(startStatusLoading())
-  const res = await axios.put(`${api.support}/api/v1.1/admin/supports/${support_id}/`, body)
+  const res = await axios.put(`${api.support}/supports/issues/${support_id}`, body)
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -94,7 +94,7 @@ export const updateTicketType = (support_id, name, typeUser, issues) => async di
 export const deleteTicketType = (support_id) => async dispatch => {
   try {
     dispatch(startStatusLoading())
-   const res = await axios.delete(`${api.support}/api/v1.1/admin/supports/${support_id}/`)
+   const res = await axios.delete(`${api.support}/supports/issues/${support_id}`)
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -110,10 +110,10 @@ export const deleteTicketType = (support_id) => async dispatch => {
 
 export const getTicketTypeCount = () => async dispatch => {
   try {
-    const res = await axios.get(`${api.support}/api/v1.1/admin/support/count/`)
+    const res = await axios.get(`${api.support}/v1.1/supports/issues?component=count`)
     dispatch({
       type: TICKET_TYPE_COUNT,
-      payload: res.data.data
+      payload: res.data.data?.total
     });
 
   } catch (err) {

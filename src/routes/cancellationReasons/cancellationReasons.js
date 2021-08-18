@@ -132,7 +132,7 @@ const  CancellationReasons = (props) => {
                                         <TableCell className="text-capitalize">{reason.type}</TableCell>
                                         <TableCell>
                                             <button type="button" className="rct-link-btn" onClick={(e) => opnAddNewCREditModal(reason._id)}><i className="ti-pencil"></i></button>
-                                            <button type="button" className="rct-link-btn ml-lg-3 text-danger" onClick={() => onDelete(reason._id)}><i className="ti-close"></i></button>
+                                            <button type="button" className="rct-link-btn ml-lg-3 text-danger" onClick={() => onDelete(reason._id)}><i className="ti-trash"></i></button>
                                         </TableCell>
                                     </TableRow>
                                 ))}

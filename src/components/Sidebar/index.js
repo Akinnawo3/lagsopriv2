@@ -60,8 +60,8 @@ class Sidebar extends Component {
 				>
 					<div className={classNames("rct-sidebar-content", { "sidebar-overlay-dark": isDarkSidenav, 'sidebar-overlay-light': !isDarkSidenav })}>
 						<div className="site-logo">
-							<Link to="/" className="logo-mini bg-white border-rad-md">
-								<img src={require('Assets/img/1024-1024.png')} className="mr-15" alt="site logo" width="100" height="40" />
+							<Link to="/" className="logo-mini bg-white border-rad-md p-2">
+								<img src={require('Assets/img/unnamed (1).png')} className="mr-15" alt="site logo" width="100" height="40" />
 							</Link>
 							{/*<Link to="/" className="logo-normal">*/}
 							{/*	Lagos Ride*/}

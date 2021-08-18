@@ -66,7 +66,7 @@ const  GoogleMapComponentUser  = ({match})=> {
         mapTypeControl: false,
     }
 
- const  _onClick = ({x, y, lat, lng, event}) => console.log(event)
+ const  _onClick = ({x, y, lat, lng, event}) => console.log(lat, lng)
 
 
     return (
@@ -80,6 +80,10 @@ const  GoogleMapComponentUser  = ({match})=> {
             options={MAP_OPTIONS}
             hoverDistance={40 / 2}
             onClick={_onClick}
+            // onDragEnd = {(map) => console.log(map)}
+            // onTilesLoaded={() => console.log('cccccc')}
+            onBoundsChange={center => console.log(center, 'aaaaaaa')}
+              // googleMapLoader={() => console.log('dddddd')}
           >
             {data.map((m, index)=> (
                 <AnyReactComponent

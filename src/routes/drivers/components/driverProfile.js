@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 import {assignVehicleOnProfile} from "Actions/vehicleAction";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import {Link} from "react-router-dom";
+import emailMessages from "Assets/data/email-messages/emailMessages";
 
 
 const DriverProfile = ({driver, changeDriverStatus, loadingStatus, vehicles, assignVehicle, vehicleDetails})=> {
@@ -97,6 +98,19 @@ const DriverProfile = ({driver, changeDriverStatus, loadingStatus, vehicles, ass
                                 className="pull-left"><strong>Disability</strong></span>{driver?.driver_data?.disability === 0 ? 'No' : 'Yes'}
                             </li>
                             <li className="list-group-item text-right"><span
+                                className="pull-left"><strong>Bank Name</strong></span>{driver?.bank_name ? driver?.bank_name : 'NA'}
+                            </li>
+                            <li className="list-group-item text-right"><span
+                                className="pull-left"><strong>Bank Account</strong></span>{driver?.driver_data?.bank_account? driver?.driver_data?.bank_account : 'NA'}
+                            </li>
+                            <li className="list-group-item text-right"><span
+                                className="pull-left"><strong>Payment Plan Amount</strong></span>{driver?.driver_data?.payment_plan?.plan ? '₦' + driver?.driver_data?.payment_plan?.plan : 'NA'}
+                            </li>
+                            <li className="list-group-item text-right"><span
+                                className="pull-left"><strong>Made First Payment</strong></span>
+                                <Badge color={driver?.driver_data?.made_first_payment ? 'success': 'danger'}>{driver?.driver_data?.made_first_payment ? 'Yes': 'No'}</Badge>
+                            </li>
+                            <li className="list-group-item text-right"><span
                                 className="pull-left"><strong>Driving License</strong></span>{driver?.driver_data?.license_id}
                             </li>
                             <li className="list-group-item text-right"><span
@@ -130,11 +144,11 @@ const DriverProfile = ({driver, changeDriverStatus, loadingStatus, vehicles, ass
                                 <span  className="pull-left d-flex">
                                     {driver?.driver_data?.driver_status ===  0 &&
                                     <div className='text-center'>
-                                        <Button disabled={loadingStatus} onClick={()=> {changeDriverStatus(driver?.auth_id, '1', driver, '3M', 'Driver Accepted')}} className="bg-primary mt-3 text-white">Accept Driver</Button>
+                                        <Button disabled={loadingStatus} onClick={()=> {changeDriverStatus(driver?.auth_id, '1', driver, emailMessages.acceptMsg, 'Driver Accepted')}} className="bg-primary mt-3 text-white">Accept Driver</Button>
                                     </div>}
                                      {driver?.driver_data?.driver_status ===  1 &&
                                      <div className='text-center'>
-                                         <Button disabled={loadingStatus} onClick={()=> {changeDriverStatus(driver?.auth_id, '2', driver, '4M', 'Driver Approved')}} className="bg-success mt-3 text-white">Approve Driver</Button>
+                                         <Button disabled={loadingStatus} onClick={()=> {changeDriverStatus(driver?.auth_id, '2', driver, emailMessages.approveMsg, 'Driver Approved')}} className="bg-success mt-3 text-white">Approve Driver</Button>
                                      </div>}
                                      {driver?.driver_data?.driver_status ===  2 &&
                                      <div className='text-center'>
@@ -142,9 +156,9 @@ const DriverProfile = ({driver, changeDriverStatus, loadingStatus, vehicles, ass
                                      </div>}
                                      {driver?.driver_data?.driver_status ===  3 &&
                                      <div className='text-center'>
-                                         <Button disabled={loadingStatus} onClick={()=> {changeDriverStatus(driver?.auth_id, '1')}} className="bg-warning mt-3 text-white">Reactivate Driver</Button>
+                                         <Button disabled={loadingStatus} onClick={()=> {changeDriverStatus(driver?.auth_id, '1', driver, emailMessages.reactivateMsg, 'Driver Reactivated')}} className="bg-warning mt-3 text-white">Reactivate Driver</Button>
                                      </div>}
-                                     {driver?.driver_data?.driver_status === 2 && !driver.driver_data?.vehicle_id &&
+                                     {driver?.driver_data?.driver_status === 2 && !driver.driver_data?.vehicle_id && (driver?.driver_data?.receipt_url || driver?.driver_data?.made_first_payment)  &&
                                      <div className='text-center ml-2'>
                                          <Button disabled={loadingStatus} onClick={()=> {opnAddVehicleModal()}} className="bg-warning mt-3 text-white">Assign Vehicle</Button>
                                      </div>}
@@ -168,29 +182,6 @@ const DriverProfile = ({driver, changeDriverStatus, loadingStatus, vehicles, ass
                         style={{width: '100%', height: '100%', objectFit: 'cover', cursor: 'pointer'}}
                     />
                 </div>
-
-                {/*<div className='d-flex justify-content-end align-items-end'>*/}
-                {/*    {driver?.driver_data?.driver_status ===  0 &&*/}
-                {/*    <div className='text-center ml-2'>*/}
-                {/*        <Button disabled={loadingStatus} onClick={()=> {changeDriverStatus(driver?.auth_id, '1')}} className="bg-primary mt-3 text-white">Accept Driver</Button>*/}
-                {/*    </div>}*/}
-                {/*    {driver?.driver_data?.driver_status ===  1 &&*/}
-                {/*    <div className='text-center ml-2'>*/}
-                {/*        <Button disabled={loadingStatus} onClick={()=> {changeDriverStatus(driver?.auth_id, '2')}} className="bg-success mt-3 text-white">Approve Driver</Button>*/}
-                {/*    </div>}*/}
-                {/*    {driver?.driver_data?.driver_status ===  2 &&*/}
-                {/*    <div className='text-center ml-2'>*/}
-                {/*        <Button disabled={loadingStatus} onClick={() => onSuspend()} className="bg-danger mt-3 text-white">Suspend Driver</Button>*/}
-                {/*    </div>}*/}
-                {/*    {driver?.driver_data?.driver_status ===  3 &&*/}
-                {/*    <div className='text-center ml-2'>*/}
-                {/*        <Button disabled={loadingStatus} onClick={()=> {changeDriverStatus(driver?.auth_id, '1')}} className="bg-warning mt-3 text-white">Reactivate Driver</Button>*/}
-                {/*    </div>}*/}
-                {/*    {driver?.driver_data?.driver_status === 2 && !driver.driver_data?.vehicle_id &&*/}
-                {/*    <div className='text-center ml-2'>*/}
-                {/*        <Button disabled={loadingStatus} onClick={()=> {opnAddVehicleModal()}} className="bg-warning mt-3 text-white">Assign Vehicle</Button>*/}
-                {/*    </div>}*/}
-                {/*</div>*/}
             </div>
             <Modal size='lg' isOpen={isViewerOpen} toggle={() => setIsViewerOpen(!isViewerOpen)}>
                 <ModalHeader toggle={() => setIsViewerOpen(!isViewerOpen)}>
@@ -259,7 +250,7 @@ const DriverProfile = ({driver, changeDriverStatus, loadingStatus, vehicles, ass
                 title="Are You Sure Want To Suspend Driver?"
                 message="This driver will be inactive."
                 onConfirm={() => {
-                    changeDriverStatus(driver?.auth_id, '3');
+                    changeDriverStatus(driver?.auth_id, '3', driver, emailMessages.suspendMsg);
                     inputEl.current.close();
                 }}
             />

@@ -107,7 +107,7 @@ const ScheduleDetails = ({getScheduleDetails, match, loading, scheduleDetails})=
                                     className="pull-left"><strong>Start Address</strong></span>{scheduleDetails?.start_address}
                                 </li>
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>End Address</strong></span>{scheduleDetails?.start_address}
+                                    className="pull-left"><strong>End Address</strong></span>{scheduleDetails?.end_address}
                                 </li>
                                 <li className="list-group-item text-right"><span
                                     className="pull-left"><strong>Start Latitude</strong></span>{scheduleDetails?.start_lat}
@@ -136,7 +136,7 @@ const ScheduleDetails = ({getScheduleDetails, match, loading, scheduleDetails})=
                                 <li className="list-group-item text-right"><span
                                     className="pull-left"><strong>Trip Status</strong></span>
                                     <Badge color={scheduleDetails?.trip_status === 1 ? "success" : scheduleDetails?.trip_status === 2 ? 'danger' : 'warning'}>
-                                        {scheduleDetails?.trip_status === 1 ? 'Completed' : scheduleDetails?.trip_status === 2 ? 'Cancelled' : 'Pending'}
+                                        {scheduleDetails?.trip_status === 1 ? 'Accepted' : scheduleDetails?.trip_status === 2 ? 'Declined' : 'Pending'}
                                     </Badge>
                                 </li>
                             </ul>

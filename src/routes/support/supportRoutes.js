@@ -1,5 +1,5 @@
 /**
- * Users DriverRoutes
+ * SupportRoutes
  */
 /* eslint-disable */
 import React from 'react';
@@ -9,7 +9,7 @@ import { Route, Switch } from 'react-router-dom';
 import {
     AsyncEmergency,
     AsyncEmergencyDetails,
-    AsyncSupport, AsyncSupportClosed,
+    AsyncSupport, AsyncSupportClosed, AsyncSupportContactUs, AsyncSupportContactUsDetails,
     AsyncSupportDetails, AsyncSupportInProgress,
     AsyncSupportNew,
     AsyncSupportOpened,
@@ -26,9 +26,9 @@ const SupportRoutes = ({ match }) => (
             <Route path={`/admin/support/unresolved`} component={AsyncSupportUnresolved} />
             <Route path={`/admin/support/create`} component={AsyncSupportSetup} />
             <Route path={`/admin/support/in-progress`} component={AsyncSupportInProgress} />
-
+            <Route path={`/admin/support/contact-us/:id`} component={AsyncSupportContactUsDetails} />
+            <Route path={`/admin/support/contact-us`} component={AsyncSupportContactUs} />
             <Route path={`/admin/support/:id`} component={AsyncSupportDetails} />
-
             <Route path={`/admin/support`} component={AsyncSupport} />
         </Switch>
     </div>

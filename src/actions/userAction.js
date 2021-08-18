@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
-import {USERS, USER_COUNT} from "./types";
+import {USERS, USER_COUNT, USERS_LOCATION} from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 
@@ -84,6 +84,22 @@ export const searchUsers = (searchData) => async dispatch => {
     } catch (err) {
         dispatch(endStatusLoading())
 
+
+    }
+};
+
+export const getUsersLocation = (latitude, longitude) => async dispatch => {
+    try {
+        const res = await axios.get(`${api.user}/v1.1/admin/user-location/?latitude=${latitude}&longitude=${longitude}&user_type=rider`)
+        if(res.data.status === 'error') {
+            NotificationManager.error(res.data.msg);
+        }else {
+            dispatch({
+                type: USERS_LOCATION,
+                payload: res.data.data
+            });
+        }
+    } catch (err) {
 
     }
 };

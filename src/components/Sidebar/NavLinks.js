@@ -199,6 +199,34 @@ export default {
          ]
       },
       // {
+      //    "menu_title": "sidebar.wallets",
+      //    "menu_icon": "icon-credit-card",
+      //    "type_multi": null,
+      //    "new_item": false,
+      //    "child_routes": [
+      //       {
+      //          "path": "/admin/wallets",
+      //          "new_item": false,
+      //          "menu_title": "sidebar.all"
+      //       },
+      //       {
+      //          "path": "/admin/wallets/completed",
+      //          "new_item": false,
+      //          "menu_title": "sidebar.completed"
+      //       },
+      //       {
+      //          "path": "/admin/wallets/pending",
+      //          "new_item": false,
+      //          "menu_title": "sidebar.pending"
+      //       },
+      //       {
+      //          "path": "/admin/wallets/cancelled",
+      //          "new_item": false,
+      //          "menu_title": "sidebar.cancelled"
+      //       },
+      //    ]
+      // },
+      // {
       //    "menu_title": "sidebar.refunds",
       //    "menu_icon": "zmdi zmdi-money",
       //    "type_multi": null,
@@ -221,20 +249,20 @@ export default {
       //       },
       //    ]
       // },
-      {
-         "menu_title": "sidebar.promodiscounts",
-         "menu_icon": "zmdi zmdi-time-interval",
-         "type_multi": null,
-         "new_item": false,
-         "path": "/admin/promo-discounts"
-      },
-      {
-         "menu_title": "sidebar.revenue",
-         "menu_icon": "icon-credit-card",
-         "type_multi": null,
-         "new_item": false,
-         "path": "/admin/revenue"
-      },
+      // {
+      //    "menu_title": "sidebar.promodiscounts",
+      //    "menu_icon": "zmdi zmdi-time-interval",
+      //    "type_multi": null,
+      //    "new_item": false,
+      //    "path": "/admin/promo-discounts"
+      // },
+      // {
+      //    "menu_title": "sidebar.revenue",
+      //    "menu_icon": "icon-credit-card",
+      //    "type_multi": null,
+      //    "new_item": false,
+      //    "path": "/admin/revenue"
+      // },
       // {
       //    "menu_title": "sidebar.voucher",
       //    "menu_icon": "zmdi zmdi-time-interval",
@@ -318,7 +346,7 @@ export default {
 
 
       {
-         "menu_title": "sidebar.ticket",
+         "menu_title": "sidebar.support",
          "menu_icon": " mdi zmdi-hospital",
          "type_multi": null,
          "new_item": false,
@@ -362,6 +390,11 @@ export default {
                "path": "/admin/support/unresolved",
                "new_item": false,
                "menu_title": "sidebar.ticket unresolved"
+            },
+            {
+               "path": "/admin/support/contact-us",
+               "new_item": false,
+               "menu_title": "sidebar.contactUs"
             },
          ]
       },

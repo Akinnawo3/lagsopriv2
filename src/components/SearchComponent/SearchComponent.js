@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {Input} from "reactstrap";
 
 
-const SearchComponent = ({getSearchedData, getPreviousData, setCurrentPage, getCount}) => {
+const SearchComponent = ({getSearchedData, getPreviousData, setCurrentPage, getCount, placeHolder}) => {
     const [searchData, setSearchData] = useState('')
     const [isSearch, setIsSearch] = useState(false)
     const [focused, setFocused] = useState(false)
@@ -31,7 +31,7 @@ const SearchComponent = ({getSearchedData, getPreviousData, setCurrentPage, getC
     };
     return (
         <div className="search-wrapper">
-            <Input onFocus={onFocus} onBlur={onBlur} type="search" className="search-input-lg" name="searchData" value={searchData} onChange={onChangeSearch} placeholder="name, email, phone no" autoComplete='off' />
+            <Input onFocus={onFocus} onBlur={onBlur} type="search" className="search-input-lg" name="searchData" value={searchData} onChange={onChangeSearch} placeholder={placeHolder ? placeHolder : "name, email, phone no"} autoComplete='off' />
         </div>
     )
 }

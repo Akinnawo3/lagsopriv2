@@ -10,6 +10,7 @@ import api from "../../environments/environment";
 import {Link} from "react-router-dom";
 import {getTicketType} from "Actions/ticketTypeAction";
 import {getAdmins} from "Actions/adminAction";
+import {getTicketStatus} from "Helpers/helpers";
 
 
 
@@ -30,37 +31,59 @@ const SupportDetails = ({getSupportTicket, match, updateSupportTicket, supportDe
         }
     },[match.params.id])
 
-    useEffect(()=> {
-        if(supportDetails?.assigned_to) {
-            assignedTo(supportDetails?.assigned_to)
-        }
+    // useEffect(()=> {
+    //     if(supportDetails?.assigned_to) {
+    //         assignedTo(supportDetails?.assigned_to)
+    //     }
+    //
+    // },[supportDetails?.assigned_to])
+    //
+    // useEffect(()=> {
+    //     if(supportDetails?.created_by) {
+    //         getCreatedBy(supportDetails?.created_by)
+    //         setFormData({
+    //             status: supportDetails?.status
+    //         })
+    //     }
+    //
+    // },[supportDetails?.created_by])
+    //
+    // useEffect(()=> {
+    //     if(supportDetails?.for_id) {
+    //         getCreatedFor(supportDetails?.for_id)
+    //     }
+    //
+    // },[supportDetails?.for_id])
+    //
+    // useEffect(()=> {
+    //     if(supportDetails?.support_id) {
+    //         getTicketType(supportDetails?.support_id)
+    //     }
+    //
+    // },[supportDetails?.support_id])
 
-    },[supportDetails?.assigned_to])
 
-    useEffect(()=> {
-        if(supportDetails?.created_by) {
-            getCreatedBy(supportDetails?.created_by)
-            setFormData({
-                status: supportDetails?.status
-            })
-        }
-
-    },[supportDetails?.created_by])
-
-    useEffect(()=> {
-        if(supportDetails?.for_id) {
-            getCreatedFor(supportDetails?.for_id)
-        }
-
-    },[supportDetails?.for_id])
-
-    useEffect(()=> {
-        if(supportDetails?.support_id) {
-            getTicketType(supportDetails?.support_id)
-        }
-
-    },[supportDetails?.support_id])
-
+    // admin_data: {first_name: "Mike", first_last: "Dean", email: "tajibuwa@gmail.com", phone_number: "07032838025",…}
+    // email: "tajibuwa@gmail.com"
+    // first_last: "Dean"
+    // first_name: "Mike"
+    // phone_number: "07032838025"
+    // user_type: "admin"
+    // assign_to: "611b6c839f0781cec3ebb5aa"
+    // auth_id: "611a827d9f07814794ebb48a"
+    // comment: "A description"
+    // createdAt: "2021-08-17T08:01:13.993Z"
+    // issue_id: "611b6cc9b1e95940281cd76e"
+    // status: 1
+    // updatedAt: "2021-08-17T08:01:13.993Z"
+    // user_data: {first_name: "Ayorinde", first_last: "Kudoro", email: "kudoroayorinde@gmail.com",…}
+    // email: "kudoroayorinde@gmail.com"
+    // first_last: "Kudoro"
+    // first_name: "Ayorinde"
+    // phone_number: "08034895313"
+    // user_type: "rider"
+    // status: "ok"
+    //
 
     const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -91,13 +114,13 @@ const SupportDetails = ({getSupportTicket, match, updateSupportTicket, supportDe
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        updateSupportTicket(supportDetails?.id, status)
+        updateSupportTicket(supportDetails?.issue_id, status)
         onAddUpdateUserModalClose()
     };
 
     const onSubmit2 = async (e) => {
         e.preventDefault();
-        assignSupportTicket(supportDetails?.id, adminId)
+        assignSupportTicket(supportDetails?.ticket_id, adminId)
         onAddUpdateUserModalClose2()
     };
 
@@ -144,58 +167,26 @@ const SupportDetails = ({getSupportTicket, match, updateSupportTicket, supportDe
                         <div className="tab-pane active" id="home">
                             <ul className="list-group">
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Ticket Id</strong></span>{supportDetails?.ticket_id}
-                                </li>
-                                <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Created By</strong></span>
-                                    {createdBy?.auth_id === supportDetails?.created_by &&
-                                    <>
-                                        {createdBy?.first_name} {createdBy?.last_name}
-                                    </>
-                                    }
+                                    className="pull-left"><strong>Issue Id</strong></span>{supportDetails?.issue_id}
                                 </li>
                                 <li className="list-group-item text-right"><span
                                     className="pull-left"><strong>Created For</strong></span>
                                     {createdFor?.auth_id === supportDetails?.for_id &&
                                     <Link
-                                        to={createdFor?.user_type === 'driver' ? `/admin/drivers/${createdFor.auth_id}` : `/admin/passengers/${createdFor.auth_id}`}>{createdFor?.first_name} {createdFor?.last_name}</Link>
+                                        to={supportDetails?.user_data?.user_type === 'driver' ? `/admin/drivers/${supportDetails.auth_id}` : `/admin/passengers/${supportDetails.auth_id}`}>{supportDetails?.user_data?.first_name} {supportDetails?.user_data?.first_last}</Link>
                                     }
                                 </li>
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>User type</strong></span>{supportDetails?.for_type}
+                                    className="pull-left"><strong>User type</strong></span>{supportDetails?.user_data?.user_type}
                                 </li>
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Assigned To</strong></span>
-                                    {assignedToData?.auth_id === supportDetails?.assigned_to &&
-                                        <>
-                                            {assignedToData?.first_name} {assignedToData?.last_name}
-                                        </>
-                                    }
+                                    className="pull-left"><strong>Assigned To</strong></span>{supportDetails?.admin_data?.first_name} {supportDetails?.admin_data?.first_last}
+                                </li>
+                                 <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Status</strong></span><Badge color="primary">{getTicketStatus(supportDetails?.status)}</Badge>
                                 </li>
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Channel</strong></span>{supportDetails?.channel}
-                                </li>
-
-                                {supportDetails?.status == 1 && <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Status</strong></span><Badge color="danger">New</Badge>
-                                </li>}
-                                {supportDetails?.status == 2 && <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Status</strong></span><Badge color="secondary">Open</Badge>
-                                </li>}
-                                {supportDetails?.status == 3 && <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Status</strong></span><Badge color="warning">In-progress</Badge>
-                                </li>}
-                                {supportDetails?.status == 4 && <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Status</strong></span><Badge color="success">Closed</Badge>
-                                </li>}
-                                {supportDetails?.status == 5 && <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Status</strong></span><Badge color="primary">Unresolved</Badge>
-                                </li>}
-                                <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Ticket Type</strong></span>{ticket?.name}
-                                </li>
-                                <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Description</strong></span>{supportDetails?.desc}
+                                    className="pull-left"><strong>Comment</strong></span>{supportDetails?.comment}
                                 </li>
                                 <li className="list-group-item text-right"><span
                                     className="pull-left">
@@ -216,11 +207,11 @@ const SupportDetails = ({getSupportTicket, match, updateSupportTicket, supportDe
                                     <FormGroup>
                                         <Label for="phoneNumber">status </Label>
                                         <Input type="select"  name="status" value={status} onChange={onChange}  required>
-                                            <option value="1">New</option>
-                                            <option value="2">Opened</option>
-                                            <option value="3">In-progress</option>
-                                            <option value="4">Closed</option>
-                                            <option value="5">Unresolved</option>
+                                            <option value="0">New</option>
+                                            <option value="1">Opened</option>
+                                            <option value="2">In-progress</option>
+                                            <option value="3">Closed</option>
+                                            <option value="4">Unresolved</option>
                                         </Input>
                                     </FormGroup>
                                     <Button type="submit" variant="contained" className="text-white btn-success">Submit</Button>

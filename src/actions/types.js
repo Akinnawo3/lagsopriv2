@@ -27,10 +27,10 @@ export const LOGIN_USER = 'LOGIN_USER';
 export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
 export const LOGIN_USER_FAILURE = 'LOGIN_USER_FAILURE';
 export const LOGOUT_USER = 'LOGOUT_USER';
-export const SIGNUP_USER = 'SIGNUP_USER';
-export const SIGNUP_USER_SUCCESS = 'SIGNUP_USER_SUCCESS';
-export const SIGNUP_USER_FAILURE = 'SIGNUP_USER_FAILURE';
-
+// export const SIGNUP_USER = 'SIGNUP_USER';
+// export const SIGNUP_USER_SUCCESS = 'SIGNUP_USER_SUCCESS';
+// export const SIGNUP_USER_FAILURE = 'SIGNUP_USER_FAILURE';
+//
 
 
 //driver
@@ -126,4 +126,20 @@ export const SOS_NUMBERS = 'SOS_NUMBERS'
 //users
 export const USERS = 'USERS'
 export const USER_COUNT = 'USER_COUNT'
+export const USERS_LOCATION = 'USERS_LOCATION'
+
+//wallets
+export const WALLETS = 'WALLETS'
+export const WALLETS_COUNT = 'WALLETS_COUNT'
+export const WALLET = 'WALLET'
+export const PAYMENTS = 'PAYMENTS'
+export const PAYMENTS_COUNT = 'PAYMENTS_COUNT'
+export const PAYMENT = 'PAYMENT'
+export const PAYMENTS_SERVICE = 'PAYMENTS_SERVICE'
+export const PAYMENTS_SERVICE_COUNT = 'PAYMENTS_SERVICE_COUNT'
+export const PAYMENTS_SERVICE_BALANCE = 'PAYMENTS_SERVICE_BALANCE'
+
+export const CONTACT_US = 'CONTACT_US'
+export const CONTACT_US_COUNT = 'CONTACT_US_COUNT'
+export const CONTACT_US_DETAILS = 'CONTACT_US_DETAILS'
 

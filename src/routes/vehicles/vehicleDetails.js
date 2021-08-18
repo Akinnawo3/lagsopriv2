@@ -41,7 +41,7 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
                                     className="pull-left"><strong>Vehicle Plate No</strong></span>{vehicleDetails?.car_number_plate}
                                 </li>
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Vehicle Modal</strong></span>{vehicleDetails?.car_make}
+                                    className="pull-left"><strong>Vehicle Model</strong></span>{vehicleDetails?.car_make}
                                 </li>
                                 <li className="list-group-item text-right"><span
                                     className="pull-left"><strong>Vehicle Year</strong></span>{vehicleDetails?.car_model}
@@ -84,7 +84,7 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
                 title="Are You Sure Want To revoke vehicle assignment?"
                 message="This will unassigned vehicle from driver."
                 onConfirm={() => {
-                    revokeVehicle(vehicleDetails?.vehicle_id);
+                    revokeVehicle(vehicleDetails?.vehicle_id, vehicleDetails, driverDetails);
                     inputEl.current.close();
                 }}
             />
@@ -96,7 +96,7 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
 function mapDispatchToProps(dispatch) {
     return {
         getVehicle: (vehicle_id, spinner) => dispatch(getVehicle(vehicle_id, spinner)),
-        revokeVehicle: (vehicle_id) => dispatch(revokeVehicle(vehicle_id)),
+        revokeVehicle: (vehicle_id, vehicleDetails, driverDetails) => dispatch(revokeVehicle(vehicle_id, vehicleDetails, driverDetails)),
     };
 }
 

@@ -12,7 +12,7 @@ import SupportTable from "Routes/support/components/supportTable";
 const  UnresolvedSupport = ({match, getSupportTickets, getSupportTicketsCount}) => {
 
     useEffect(()=> {
-        getSupportTickets(1, 5, true);
+        getSupportTickets(1, 4, true);
         getSupportTicketsCount(5)
     },[])
 

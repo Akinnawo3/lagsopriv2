@@ -189,7 +189,7 @@ const  Areas = ({match, getAreas, areas, createArea, updateArea, loading, delete
                                         <TableCell>{area.area_name}</TableCell>
                                         <TableCell>
                                             <button type="button" className="rct-link-btn" onClick={(e) => opnAddNewAreaEditModal(area.id)}><i className="ti-pencil"></i></button>
-                                            <button type="button" className="rct-link-btn ml-lg-3 text-danger" onClick={() => onDelete(area.id)}><i className="ti-close"></i></button>
+                                            <button type="button" className="rct-link-btn ml-lg-3 text-danger" onClick={() => onDelete(area.id)}><i className="ti-trash"></i></button>
                                         </TableCell>
                                     </TableRow>
                                 ))}

@@ -16,10 +16,11 @@ import EmptyData from "Components/EmptyData/EmptyData";
 import {getVehiclesCount} from "Actions/vehicleAction";
 import {Link} from "react-router-dom";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
+import SearchComponent from "Components/SearchComponent/SearchComponent";
 
 
 
-const  VehicleTable = ({ getVehicles, vehicles, loading, createVehicles, updateVehicle,  vehiclesCount, assign, header, deleteVehicle}) => {
+const  VehicleTable = ({ getVehicles, vehicles, loading, createVehicles, updateVehicle,  vehiclesCount, assign, header, deleteVehicle, getVehiclesCount}) => {
     const [addNewUserModal, setAddNewUserModal] = useState(false)
     const [editUser, setEditUser] = useState(false)
     const [updateId, setUpdateId] = useState(null)
@@ -60,6 +61,20 @@ const  VehicleTable = ({ getVehicles, vehicles, loading, createVehicles, updateV
         setCurrentPage(pageNumber);
         getVehicles(pageNumber, assign)
     };
+
+    const getPreviousData = () => {
+        getVehicles(1, assign)
+    }
+
+    // page_no, assign, spinner, car_number_plate
+
+    const getSearchData = (searchData) => {
+        getVehicles(1, assign, '', searchData)
+    }
+
+    const handleCount = () => {
+        getVehiclesCount(assign)
+    }
 
 
     const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -133,9 +148,8 @@ const  VehicleTable = ({ getVehicles, vehicles, loading, createVehicles, updateV
             {!loading &&
             <RctCollapsibleCard heading={header} fullBlock>
                 <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-                    <div className="search-wrapper">
-                        <Input type="search" className="search-input-lg" name="searchData" value={searchData} onChange={onChangeSearch} placeholder="Search.." />
-                    </div>
+                    <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={'Plate No'} />
+
                 </li>
                 <div className="float-right">
                     {vehicles.length > 0 &&
@@ -168,8 +182,8 @@ const  VehicleTable = ({ getVehicles, vehicles, loading, createVehicles, updateV
                         <TableHead>
                             <TableRow hover>
                                 <TableCell>Plate No</TableCell>
-                                <TableCell>Make</TableCell>
                                 <TableCell>Model</TableCell>
+                                <TableCell>Year</TableCell>
                                 <TableCell>status</TableCell>
                                 <TableCell>Action</TableCell>
                             </TableRow>
@@ -184,8 +198,8 @@ const  VehicleTable = ({ getVehicles, vehicles, loading, createVehicles, updateV
                                         <TableCell><Badge color={vehicle.assigned ? 'success': 'danger'}>{vehicle.assigned ? 'Assigned' : 'Unassigned'}</Badge></TableCell>
                                         <TableCell>
                                             <button type="button" className="rct-link-btn" onClick={(e) => opnAddNewUserEditModal(vehicle.vehicle_id)}><i className="ti-pencil"></i></button>
-                                            <button type="button" className="rct-link-btn ml-lg-3 text-danger ml-2" onClick={() => onDelete(vehicle.vehicle_id)}><i className="ti-close"></i></button>
-                                            <button type="button" className="rct-link-btn text-primary ml-2" title="view details"><Link to={`/admin/vehicles/${vehicle.vehicle_id}`}><i className="ti-eye"/></Link></button>
+                                            <button type="button" className="rct-link-btn ml-lg-3 text-danger ml-2" onClick={() => onDelete(vehicle.vehicle_id)}><i className="ti-trash"></i></button>
+                                            <button type="button" className="rct-link-btn text-primary ml-3" title="view details"><Link to={`/admin/vehicles/${vehicle.vehicle_id}`}><i className="ti-eye"/></Link></button>
 
                                         </TableCell>
                                     </TableRow>
@@ -267,8 +281,8 @@ const  VehicleTable = ({ getVehicles, vehicles, loading, createVehicles, updateV
 
 function mapDispatchToProps(dispatch) {
     return {
-        getVehicles: (page_no, assign, spinner) => dispatch(getVehicles(page_no, assign, spinner)),
-        getVehiclesCount: () => dispatch(getVehiclesCount()),
+        getVehicles: (page_no, assign, spinner, car_number_plate) => dispatch(getVehicles(page_no, assign, spinner, car_number_plate)),
+        getVehiclesCount: (assign, car_number_plate) => dispatch(getVehiclesCount(assign, car_number_plate)),
         deleteVehicle: (vehicle_id, vehicles) => dispatch(deleteVehicle(vehicle_id, vehicles)),
         createVehicles: (car_number_plate, car_make, car_model, car_desc, car_color) => dispatch(createVehicles(car_number_plate, car_make, car_model, car_desc, car_color)),
         updateVehicle: (vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign) => dispatch(updateVehicle(vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign)),
