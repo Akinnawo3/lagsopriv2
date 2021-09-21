@@ -1,153 +1,76 @@
+
 /**
  * Google Map
  */
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import GoogleMap from 'google-map-react';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import {NotificationManager} from "react-notifications";
+import {m} from "Helpers/helpers";
 
 
-const  GoogleMapComponent  = ({match})=> {
+const  GoogleMapComponent  = ({match, userLocation, getUsersLocation, waiting, moving})=> {
     const [center, setCenter] = useState([6.459970538, 3.301247232])
-    const [search, setSearch] = useState('')
     const [zoom, setZoom] = useState(14)
-    const [options, setOptions] = useState([])
-    const AnyReactComponent = ({text, cord}) =>
-        <div>
-            <div className="tooltipo">
-                <img
-                    src={require('Assets/img/car.png')}
-                    // alt="user profile"
-                    className="img-fluid rounded-circle"
-                    width="46"
-                    height="46"
-                />
-                {/*<i className="zmdi zmdi-car text-secondary zoom" style={{fontSize: '30px'}}><span className="ml-1 font-weight-bold text-secondary" style={{fontSize: '10px'}}>{text}</span></i>*/}
-                <div className="tooltiptexto">
-                    <div>
-                        Driver name: {cord.name}
-                    </div>
-                    <div>
-                        Plate No: {cord.plate_no}
-                    </div>
-                </div>
-            </div>
-            {/*<div className="d-flex align-items-center justify-content-center myDIV zoom" style={{zIndex: '2'}}>*/}
-            {/*    <i className="zmdi zmdi-car text-secondary" style={{fontSize: '30px'}}/>*/}
-            {/*    <span className="ml-2 font-weight-bold text-secondary">{text}</span>*/}
-            {/*</div>*/}
-            {/*<div className= "hide bg-secondary text-white" style={{ position: 'absolute', marginTop: '-70px', marginLeft: "-65px"}}>*/}
-            {/*   <div className="text-center" style={{minWidth: '150px'}}>*/}
-            {/*     Driver name: {cord.name}*/}
-            {/*   </div>*/}
-            {/*</div>*/}
-        </div>
-    const data = [
-        {
-            lat:6.45878949,
-            lng: 3.278338958,
-            name: 'Tope Chi',
-            plate_no: 'ASCFR890'
-        },
-        {
-            lat:6.459554831,
-            lng: 3.284814647,
-            name: 'Sunday Jim',
-            plate_no: 'ANMCFR894'
-        },
-        {
-            lat:6.459970538,
-            lng: 3.301247232,
-            name: 'Jaye Mark',
-            plate_no: 'APMCFR838'
-        },
-        {
-            lat:6.460063551,
-            lng: 3.312027333,
-            name: 'Tim Deo',
-            plate_no: 'AMKFR892'
-        },
-    ]
 
-    // const options = [
-    //     {name: 'Swedish', value: 'sv'},
-    //     {name: 'English', value: 'en'},
-    // ];
 
-    // const options = data.map(dat=> {
-    //     const dataarr = []
-    //     dataarr.push({name:dat.plate_no, value: dat.plate_no})
-    //     return dataarr
-    // })
-
-    useEffect(()=> {
-        const dataArr = []
-        data.map(dat => {
-            dataArr.push({name:dat.plate_no, value: dat.plate_no})
+    const getUsersNewLocations = (centerValue) => {
+        const geoCode = m({
+            latitude: centerValue[0],
+            longitude: centerValue[1]
+        }, {
+            latitude: center[0],
+            longitude: center[1]
         })
-        setOptions(dataArr)
-    },[])
 
-    const MAP_OPTIONS = {
-        // scrollwheel: false,
-        panControl: false,
-        mapTypeControl: false,
-        // styles: [{ stylers: [{ 'saturation': -100 }, { 'gamma': 0.8 }, { 'lightness': 4 }, { 'visibility': 'on' }] }]
-    }
-
- const  _onClick = ({x, y, lat, lng, event}) => console.log(event)
-
-   const handleChange = (value)=> {
-        setSearch(value)
-    }
-
-    const getVehicleCord = ()=> {
-        if(search) {
-            data.map(dat=> {
-                if(dat.plate_no.toLowerCase() === search.toLocaleLowerCase()) {
-                    setCenter([dat.lat, dat.lng])
-                    // setZoom(17)
-                }
-            })
-        } else {
-            NotificationManager.error('Enter plate No');
+        if(geoCode >= 3.5) {
+            setCenter(centerValue);
+            getUsersLocation(centerValue[1], centerValue[0])
         }
     }
 
+    const MAP_OPTIONS = {
+        panControl: false,
+        mapTypeControl: false,
+    }
+
+    const  _onClick = ({x, y, lat, lng, event}) => {
+        setCenter([lat, lng])
+        getUsersLocation(lng, lat)
+    }
+
+
+
+    const AnyReactComponent = () =>
+        <div>
+            <i className="zmdi zmdi-car text-danger zoom" style={{fontSize: '30px'}} />
+        </div>
+
+
     return (
-      <div className="map-wrapper">
-        {/*<PageTitleBar title={<IntlMessages id="sidebar.googleMaps" />} match={this.props.match} />*/}
-        <RctCollapsibleCard heading="Drivers Map">
-            {/*<div className="mb-3 d-flex align-items-center">*/}
-            {/*    <SelectSearch autoComplete="on" search={true} options={options} placeholder="Search Vehicle" onChange={handleChange} />*/}
-            {/*    /!*<Input type="search"  placeholder="Search vehicle via plate no" onChange={handleChange} />*!/*/}
-            {/*    <Button onClick={()=> getVehicleCord()} className="ml-2">Search</Button>*/}
-            {/*</div>*/}
-          <GoogleMap
-            bootstrapURLKeys={{ key: "AIzaSyCw_5YoOp78lvq1Dgfri-TnDjRSf1cguf0" }}
-            yesIWantToUseGoogleMapApiInternals={true}
-            center={center}
-            zoom={zoom} style={{ position: 'relative', width: '100%', height: 400 }}
-            options={MAP_OPTIONS}
-            hoverDistance={40 / 2}
-            onClick={_onClick}
-              // onGoogleApiLoaded={({ map, maps }) => this.renderMarkers(map, maps)}
-          >
-            {data.map((m, index)=> (
-                <AnyReactComponent
-                    lat={m.lat}
-                    lng={m.lng}
-                    key={index}
-                    text={m.plate_no}
-                    cord={m}
-                />
-            ))}
-          </GoogleMap>
-            <div>Static Vehicles: 10</div>
-            <div>Moving Vehicles: 10</div>
-            {/*<div>Stationary Vehicles: 10</div>*/}
-        </RctCollapsibleCard>
-      </div>
+        <div className="map-wrapper">
+            <RctCollapsibleCard heading="Drivers Map">
+                <GoogleMap
+                    bootstrapURLKeys={{ key: "AIzaSyCw_5YoOp78lvq1Dgfri-TnDjRSf1cguf0" }}
+                    yesIWantToUseGoogleMapApiInternals={true}
+                    center={center}
+                    zoom={zoom} style={{ position: 'relative', width: '100%', height: 400 }}
+                    options={MAP_OPTIONS}
+                    hoverDistance={40 / 2}
+                    onClick={_onClick}
+                    onBoundsChange={center => getUsersNewLocations(center)}
+                >
+                    {userLocation.map((m, index)=> (
+                        <AnyReactComponent
+                            lat={m.location?.coordinates[1]}
+                            lng={m.location?.coordinates[0]}
+                            key={index}
+                        />
+                    ))}
+                </GoogleMap>
+                <div>Waiting Drivers: {waiting}</div>
+                <div>Moving Drivers: {moving}</div>
+            </RctCollapsibleCard>
+        </div>
     );
 
 }

@@ -52,8 +52,11 @@ const SupportSetup = ({getTicketTypes, ticketTypes, createSupport, admins, getAd
 
 
     useEffect(() => {
-        if((searchData.length > 2) && focused) {
-            searchUser()
+        if(focused && searchData.length > 2) {
+            const delayDebounceFn = setTimeout(() => {
+                searchUser()
+            }, 2000)
+            return () => clearTimeout(delayDebounceFn)
         }else {
             setIsShow(false)
         }

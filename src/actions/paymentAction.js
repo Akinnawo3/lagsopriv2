@@ -1,16 +1,16 @@
 import  axios from 'axios'
-import {PAYMENTS_COUNT, PAYMENTS, PAYMENT, SOS_USER_DETAILS, PAYMENTS_SERVICE, PAYMENTS_SERVICE_COUNT, PAYMENTS_SERVICE_BALANCE} from "./types";
+import {PAYMENTS_COUNT, PAYMENTS, PAYMENT, SOS_USER_DETAILS, PAYMENTS_SERVICE, PAYMENTS_SERVICE_COUNT, PAYMENTS_SERVICE_BALANCE, PAYMENT_SERVICE_DETAILS} from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "Actions/loadingAction";
 
 
 
-  export const getPayments = (page_no, transaction_status='', auth_id='', loading) => async dispatch => {
+  export const getPayments = (page_no, status='', auth_id='', loading) => async dispatch => {
   try {
     loading && dispatch(startLoading())
     !loading && dispatch(startStatusLoading())
-    const res = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?item_per_page=20&page=${page_no}&transaction_status=${transaction_status}&rider_id=${auth_id}`);
+    const res = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?item_per_page=20&page=${page_no}&status=${status}&rider_id=${auth_id}`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -27,9 +27,9 @@ import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "Ac
   }
 };
 
-  export const getPaymentsCount = (transaction_status='', auth_id='') => async dispatch => {
+  export const getPaymentsCount = (status='', auth_id='') => async dispatch => {
   try {
-    const res = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?component=count&transaction_status=${transaction_status}&rider_id=${auth_id}`);
+    const res = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?component=count&status=${status}&rider_id=${auth_id}`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -68,11 +68,11 @@ export const getPaymentDetails = (payment_id) => async dispatch => {
   }
 };
 
-export const getPaymentsService = (page_no, transaction_status='', auth_id='', loading) => async dispatch => {
+export const getPaymentsService = (page_no, status='', auth_id='', loading) => async dispatch => {
   try {
     loading && dispatch(startLoading())
     !loading && dispatch(startStatusLoading())
-    const res = await axios.get(`${api.wallet}/v1.1/admin/service-transactions?item_per_page=20&page=${page_no}&transaction_status=${transaction_status}&auth_id=${auth_id}`);
+    const res = await axios.get(`${api.wallet}/v1.1/admin/service-transactions?item_per_page=20&page=${page_no}&status=${status}&auth_id=${auth_id}`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -89,9 +89,9 @@ export const getPaymentsService = (page_no, transaction_status='', auth_id='', l
   }
 };
 
-export const getPaymentsServiceCount = (transaction_status='', auth_id='') => async dispatch => {
+export const getPaymentsServiceCount = (status='', auth_id='') => async dispatch => {
   try {
-    const res = await axios.get(`${api.wallet}/v1.1/admin/service-transactions?transaction_status=${transaction_status}&auth_id=${auth_id}&component=count`);
+    const res = await axios.get(`${api.wallet}/v1.1/admin/service-transactions?status=${status}&auth_id=${auth_id}&component=count`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -104,15 +104,34 @@ export const getPaymentsServiceCount = (transaction_status='', auth_id='') => as
   }
 };
 
+
+export const getPaymentServiceDetails = (payment_id) => async dispatch => {
+  try {
+    dispatch(startLoading())
+    const res = await axios.get(`${api.wallet}/v1.1/admin/service-transactions/${payment_id}`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      dispatch({
+        type: PAYMENT_SERVICE_DETAILS,
+        payload: res.data.data
+      });
+    }
+    dispatch(endLoading())
+  } catch (err) {
+    dispatch(endLoading())
+  }
+};
+
 export const getPaymentsServiceBalance = ( auth_id='') => async dispatch => {
   try {
-    const res = await axios.get(`${api.wallet}/v1.1/admin/service-transactions?auth_id=${auth_id}&component=balance`);
+    const res = await axios.get(`${api.wallet}/v1.1/admin/service-transactions?auth_id=${auth_id}&component=balance&status=1`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
       dispatch({
         type: PAYMENTS_SERVICE_BALANCE,
-        payload: res.data.data?.total
+        payload: res.data.data?.total ? res.data.data?.total : 0
       });
     }
   } catch (err) {

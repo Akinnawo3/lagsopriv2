@@ -68,7 +68,7 @@ const FdtDetails = ({getFdtDetails, match, loading, fdtDetails})=> {
                     Fdt Trip details
                 </ModalHeader>
                 <ModalBody>
-                    {fdtDetails?.trip_data?.length > 0 && fdtDetails.trip_data.map((data, index) => (
+                    {fdtDetails?.ride_data?.length > 0 && fdtDetails.ride_data.map((data, index) => (
                         <div key={index}  className='px-4'>
                             <div className='row'>
                                 <div className='col-6'>
@@ -76,7 +76,7 @@ const FdtDetails = ({getFdtDetails, match, loading, fdtDetails})=> {
                                         Date
                                     </div>
                                     <div className="scheduleHeader mt-1">
-                                        {data.trip_date}
+                                        {data.ride_date}
                                     </div>
                                 </div>
                                 <div className='col-6'>
@@ -84,7 +84,7 @@ const FdtDetails = ({getFdtDetails, match, loading, fdtDetails})=> {
                                         Time
                                     </div>
                                     <div className="scheduleHeader mt-1">
-                                        {data.trip_time}
+                                        {data.ride_time}
                                     </div>
                                 </div>
                             </div>
@@ -145,20 +145,40 @@ const FdtDetails = ({getFdtDetails, match, loading, fdtDetails})=> {
                             <div className='row mt-3'>
                                 <div className='col-6'>
                                     <div className="schedulePickup">
-                                        Status
+                                        Ride Type
                                     </div>
                                     <div className="scheduleHeader mt-1">
-                                        <Badge color={data?.trip_status === 1 ? "success" : data?.trip_status === 2 ? 'danger' : 'warning'}>
-                                                   {data?.trip_status === 1 ? 'Accepted' : data?.trip_status === 2 ? 'Declined' : 'Pending'}
-                                                  </Badge>
+                                        {data?.setup_type}
                                     </div>
                                 </div>
                                 <div className='col-6'>
                                     <div className="schedulePickup mt-1">
-                                        Trip Fare
+                                        Payment Method
                                     </div>
                                     <div className="scheduleHeader mt-1">
-                                        {data.trip_fare}
+                                        {data.payment_method}
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div className='row mt-3'>
+                                <div className='col-6'>
+                                    <div className="schedulePickup">
+                                        Status
+                                    </div>
+                                    <div className="scheduleHeader mt-1">
+                                        <Badge color={data?.ride_status === 1 ? "success" : data?.ride_status === 2 ? 'danger' : 'warning'}>
+                                            {data?.ride_status === 1 ? 'Accepted' : data?.ride_status === 2 ? 'Declined' : 'Pending'}
+                                        </Badge>
+                                    </div>
+                                </div>
+                                <div className='col-6'>
+                                    <div className="schedulePickup mt-1">
+                                        Ride Class
+                                    </div>
+                                    <div className="scheduleHeader mt-1">
+                                        {data.ride_class}
                                     </div>
                                 </div>
                             </div>

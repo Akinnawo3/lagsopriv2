@@ -63,7 +63,8 @@ function TabContainer(props) {
       getPaymentsService,
       getPaymentsServiceCount,
       paymentsServiceBalance,
-      getPaymentsServiceBalance
+      getPaymentsServiceBalance,
+      driverLocation
   } = props
 
      const [activeTab, setActiveTab] = useState(location.state ? location.state.activeTab : 0);
@@ -92,6 +93,7 @@ function TabContainer(props) {
              getPaymentsServiceBalance(match.params.id)
          }
      },[match.params.id])
+
 
 
         return (
@@ -144,7 +146,7 @@ function TabContainer(props) {
                                 />
                                 <Tab
                                     icon={<i className="icon-credit-card"></i>}
-                                    label={"Wallets History"}
+                                    label={"Wallet History"}
                                 />
                                 <Tab
                                     icon={<i className="icon-credit-card"></i>}
@@ -214,6 +216,7 @@ const mapStateToProps = state => ({
     payments: state.payments.paymentsService,
     paymentsCount: state.payments.paymentsServiceCount,
     paymentsServiceBalance: state.payments.paymentsServiceBalance,
+    driverLocation: state.driver.driverLocation,
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(Driver)

@@ -16,24 +16,24 @@ import {
     ModalFooter,
 } from 'reactstrap';
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
-import {createAdmin, deleteAdmin, getAdminCount, getAdmins, updateAdmin} from "Actions/adminAction";
+import {createAdmin, deleteAdmin, getAdminCount, getAdmins, searchAdmins, updateAdmin} from "Actions/adminAction";
 import {connect} from "react-redux";
 import IconButton from "@material-ui/core/IconButton";
 import MobileSearchForm from "Components/Header/MobileSearchForm";
 import {CSVLink} from "react-csv";
 import Upload from "./components/upload";
 import EmptyData from "Components/EmptyData/EmptyData";
+import SearchComponent from "Components/SearchComponent/SearchComponent";
 export let onAddUpdateUserModalClose;
 export let changeCurrentPage;
 
-const  Admins = ({match, getAdmins, admins, updateAdmin, loading, deleteAdmin, adminCount, getAdminCount, createAdmin, loadingStatus
+const  Admins = ({match, getAdmins, admins, updateAdmin, loading, deleteAdmin, adminCount, getAdminCount, createAdmin, loadingStatus, searchAdmins
 }) => {
     const [addNewUserModal, setAddNewUserModal] = useState(false)
     const [editUser, setEditUser] = useState(false)
     const [updateId, setUpdateId] = useState(null)
     const [deleteId, setDeleteId] = useState(null)
     const [formData, setFormData] = useState({first_name: '', last_name: '', email: '', phone_number: ''})
-    const [searchData, setSearchData] = useState('')
     const inputEl = useRef(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [excelExport, setExcelExport] = useState([])
@@ -106,12 +106,6 @@ const  Admins = ({match, getAdmins, admins, updateAdmin, loading, deleteAdmin, a
 
     };
 
-    const onChangeSearch = (e) =>{
-        e.preventDefault();
-        setSearchData(e.target.value );
-    };
-
-
     useEffect(()=> {
         if(admins) {
             let result = admins.map(admin=> {
@@ -126,14 +120,6 @@ const  Admins = ({match, getAdmins, admins, updateAdmin, loading, deleteAdmin, a
         }
     },[admins])
 
-    // const sampleData = [
-    //     {
-    //         first: 'John',
-    //         last: 'Deo',
-    //         email: 'johndeo@gmail.com',
-    //         phone: "12345678989"
-    //     }
-    // ]
 
 
 
@@ -148,9 +134,9 @@ const  Admins = ({match, getAdmins, admins, updateAdmin, loading, deleteAdmin, a
             <RctCollapsibleCard heading="Admins" fullBlock>
                 <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
                     {!loading && admins.length > 0 &&
-                    <div className="search-wrapper">
-                        <Input type="search" className="search-input-lg" name="searchData" value={searchData} onChange={onChangeSearch} placeholder="Search.." />
-                    </div>}
+
+                            <SearchComponent getPreviousData={getAdmins} getSearchedData={searchAdmins} setCurrentPage={setCurrentPage} getCount={getAdminCount} />
+                       }
                     <IconButton mini="true" className="search-icon-btn">
                         <i className="zmdi zmdi-search"></i>
                     </IconButton>
@@ -265,7 +251,7 @@ const  Admins = ({match, getAdmins, admins, updateAdmin, loading, deleteAdmin, a
             </Modal>
             <DeleteConfirmationDialog
                 ref={inputEl}
-                title="Are You Sure Want To Delete?"
+                title="Are You Sure You Want To Delete?'"
                 message="This will delete user permanently."
                 onConfirm={() => {
                     deleteAdmin(deleteId, admins);
@@ -285,6 +271,7 @@ function mapDispatchToProps(dispatch) {
 
         getAdminCount: () => dispatch(getAdminCount()),
         deleteAdmin: (id, adminsData) => dispatch( deleteAdmin(id, adminsData)),
+        searchAdmins: (searchData) => dispatch(searchAdmins(searchData)),
     };
 }
 

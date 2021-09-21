@@ -39,7 +39,7 @@ const PaymentWidget = () =>  {
 
     const getPaymentCountSuccessful = async () => {
         try {
-            const res = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?component=count&start_date=${getTodayDate()}&end_date=${getTodayDate()}&transaction_status=2`);
+            const res = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?component=count&start_date=${getTodayDate()}&end_date=${getTodayDate()}&status=1`);
             if (res.data.status === 'error') {
                 NotificationManager.error(res.data.msg);
             } else {
@@ -51,7 +51,7 @@ const PaymentWidget = () =>  {
 
     const getPaymentCountUnsuccessful = async () => {
         try {
-            const res = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?component=count&start_date=${getTodayDate()}&end_date=${getTodayDate()}&transaction_status=3`);
+            const res = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?component=count&start_date=${getTodayDate()}&end_date=${getTodayDate()}&status=2`);
             if (res.data.status === 'error') {
                 NotificationManager.error(res.data.msg);
             } else {

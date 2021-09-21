@@ -36,7 +36,6 @@ const  Fees = (props) => {
     const [updateId, setUpdateId] = useState(null)
     const [deleteId, setDeleteId] = useState(null)
     const [formData, setFormData] = useState({name: '', desc: '', amount: ''})
-    const [searchData, setSearchData] = useState('')
     const inputEl = useRef(null);
     const [excelExport, setExcelExport] = useState([])
 
@@ -78,10 +77,6 @@ const  Fees = (props) => {
         setEditFee(false);
     }
 
-    const onDelete = (id) => {
-        inputEl.current.open();
-        setDeleteId(id)
-    }
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -91,10 +86,7 @@ const  Fees = (props) => {
 
     };
 
-    const onChangeSearch = (e) =>{
-        e.preventDefault();
-        setSearchData(e.target.value );
-    };
+
 
     useEffect(()=> {
         if(fees) {
@@ -117,15 +109,10 @@ const  Fees = (props) => {
             {!loading && fees.length > 0 &&
             <RctCollapsibleCard heading="Fees" fullBlock>
                 <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-                    {/*<div className="search-wrapper">*/}
-                    {/*    <Input type="search" className="search-input-lg" name="searchData" value={searchData} onChange={onChangeSearch} placeholder="Search.." />*/}
-                    {/*</div>*/}
                     <IconButton mini="true" className="search-icon-btn">
                         <i className="zmdi zmdi-search"></i>
                     </IconButton>
                     <MobileSearchForm
-                        // isOpen={isMobileSearchFormVisible}
-                        // onClose={() => this.setState({ isMobileSearchFormVisible: false })}
                     />
                 </li>
                 <div className="float-right">
@@ -139,14 +126,13 @@ const  Fees = (props) => {
                         <i className="zmdi zmdi-download mr-2"></i>
                         Export to Excel
                     </CSVLink>
-                    <a href="#" onClick={(e) => opnAddNewFeeModal(e)} color="primary" className="caret btn-sm mr-10">Create New Fee <i className="zmdi zmdi-plus"></i></a>
+                    {/*<a href="#" onClick={(e) => opnAddNewFeeModal(e)} color="primary" className="caret btn-sm mr-10">Create New Fee <i className="zmdi zmdi-plus"></i></a>*/}
                 </div>
                 <div className="table-responsive" style={{minHeight: "50vh"}}>
                     <Table>
                         <TableHead>
                             <TableRow hover>
                                 <TableCell>Name</TableCell>
-                                {/*<TableCell>Type</TableCell>*/}
                                 <TableCell>Description</TableCell>
                                 <TableCell>Amount</TableCell>
                                 <TableCell>Actions</TableCell>
@@ -157,12 +143,10 @@ const  Fees = (props) => {
                                 {fees.map((fee, key) => (
                                     <TableRow hover key={key}>
                                         <TableCell className='text-capitalize'>{fee.name}</TableCell>
-                                        {/*<TableCell>{fee.tag}</TableCell>*/}
                                         <TableCell>{fee.desc}</TableCell>
                                         <TableCell>{fee.amount}</TableCell>
                                         <TableCell>
                                             <button type="button" className="rct-link-btn" onClick={(e) => opnAddNewFeeEditModal(fee.fee_id)}><i className="ti-pencil"></i></button>
-                                            {/*<button type="button" className="rct-link-btn ml-lg-3 text-danger" onClick={() => onDelete(fee.fee_id)}><i className="ti-close"></i></button>*/}
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -200,7 +184,7 @@ const  Fees = (props) => {
             </Modal>
             <DeleteConfirmationDialog
                 ref={inputEl}
-                title="Are You Sure Want To Delete?"
+                title="Are You Sure You Want To Delete?"
                 message="This will delete fee permanently."
                 onConfirm={() => {
                     deleteFee(deleteId);

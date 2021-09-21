@@ -1,8 +1,9 @@
-import {USER_COUNT, USERS} from "Actions/types";
+import {USER_COUNT, USERS, USERS_LOCATION} from "Actions/types";
 
 const initialState = {
   users: [],
   userCount: 0,
+  userLocation: [],
 };
 
 function usersReducer(state = initialState, action) {
@@ -18,6 +19,12 @@ function usersReducer(state = initialState, action) {
       return {
         ...state,
         userCount: payload,
+      };
+    }
+    case USERS_LOCATION: {
+      return {
+        ...state,
+        userLocation: payload,
       };
     }
     default:

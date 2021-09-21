@@ -247,7 +247,7 @@ const  ClassTypes = (props) => {
             </Modal>
             <DeleteConfirmationDialog
                 ref={inputEl}
-                title="Are You Sure Want To Delete?"
+                title="Are You Sure You Want To Delete?"
                 message="This will delete user permanently."
                 onConfirm={() => {
                     deleteClassType(deleteId);

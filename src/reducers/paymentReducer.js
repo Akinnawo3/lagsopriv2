@@ -4,13 +4,14 @@ import {
   PAYMENT,
   PAYMENTS_SERVICE,
   PAYMENTS_SERVICE_COUNT,
-  PAYMENTS_SERVICE_BALANCE
+  PAYMENTS_SERVICE_BALANCE, PAYMENT_SERVICE_DETAILS
 } from "Actions/types";
 
 
 const initialState = {
   payments: [],
   payment: {},
+  paymentServiceDetails: {},
   paymentsCount: 0,
   paymentsService: [],
   paymentsServiceCount: 0,
@@ -54,6 +55,12 @@ function paymentReducer(state = initialState, action) {
       return {
         ...state,
         paymentsServiceBalance: payload,
+      };
+    }
+    case PAYMENT_SERVICE_DETAILS: {
+      return {
+        ...state,
+        paymentServiceDetails: payload,
       };
     }
     default:

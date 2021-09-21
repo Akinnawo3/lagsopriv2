@@ -1,7 +1,22 @@
 import  axios from 'axios'
-import {TRIPS, TRIP_COUNT, DRIVER_TRIPS, TRIP_COUNT_DRIVER, TRIP,
-  TRIP_COUNT_DRIVER_COMPLETED, TRIP_COUNT_DRIVER_ALL, TRIP_COUNT_DRIVER_CANCELLED,
-  TRIP_COUNT_PASSENGER_COMPLETED, TRIP_COUNT_PASSENGER_ALL, TRIP_COUNT_PASSENGER_CANCELLED, TRIP_COUNT_PASSENGER, PASSENGER_TRIPS
+import {
+  TRIPS,
+  TRIP_COUNT,
+  DRIVER_TRIPS,
+  TRIP_COUNT_DRIVER,
+  TRIP,
+  TRIP_COUNT_DRIVER_COMPLETED,
+  TRIP_COUNT_DRIVER_ALL,
+  TRIP_COUNT_DRIVER_CANCELLED,
+  TRIP_COUNT_PASSENGER_COMPLETED,
+  TRIP_COUNT_PASSENGER_ALL,
+  TRIP_COUNT_PASSENGER_CANCELLED,
+  TRIP_COUNT_PASSENGER,
+  PASSENGER_TRIPS,
+  TRIP_COUNT_WAITING_USERS,
+  TRIP_COUNT_MOVING_USERS,
+  TRIP_COUNT_WAITING_DRIVERS,
+  TRIP_COUNT_MOVING_DRIVERS
 
 } from "./types";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
@@ -301,6 +316,68 @@ export const getPassengerTripCountDisplayCancelled = (authId) => async dispatch 
     // dispatch(endLoading());
   } catch (err) {
     // dispatch(endLoading());
+  }
+};
+
+
+export const getTripCountWaitingUsers = () => async dispatch => {
+  try {
+    const res = await axios.get(`${api.trip}/v1.1/trips/?component=waiting_rider&trip_status=waiting`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      dispatch({
+        type: TRIP_COUNT_WAITING_USERS,
+        payload: res.data?.data?.total
+      });
+    }
+  } catch (err) {
+  }
+};
+
+export const getTripCountMovingUsers = () => async dispatch => {
+  try {
+    const res = await axios.get(`${api.trip}/v1.1/trips/?component=moving_rider&trip_status=on_ride`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      dispatch({
+        type: TRIP_COUNT_MOVING_USERS,
+        payload: res.data?.data?.total
+      });
+    }
+  } catch (err) {
+  }
+};
+
+
+export const getTripCountWaitingDrivers = () => async dispatch => {
+  try {
+    const res = await axios.get(`${api.trip}/v1.1/trips/?component=waiting_driver&trip_status=waiting`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      dispatch({
+        type: TRIP_COUNT_WAITING_DRIVERS,
+        payload: res.data?.data?.total
+      });
+    }
+  } catch (err) {
+  }
+};
+
+export const getTripCountMovingDrivers = () => async dispatch => {
+  try {
+    const res = await axios.get(`${api.trip}/v1.1/trips/?component=moving_driver&trip_status=on_ride`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      dispatch({
+        type: TRIP_COUNT_MOVING_DRIVERS,
+        payload: res.data?.data?.total
+      });
+    }
+  } catch (err) {
   }
 };
 

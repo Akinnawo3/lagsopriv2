@@ -133,6 +133,26 @@ const AsyncPaymentsUnsuccessful = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
+
+const AsyncPaymentsService = Loadable({
+	loader: () => import("Routes/payments-service/paymentsService"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncPaymentsServiceSuccessful = Loadable({
+	loader: () => import("Routes/payments-service/successfulPaymentsService"),
+	loading: () => <RctPageLoader />,
+});
+const AsyncPaymentsServiceDetails = Loadable({
+	loader: () => import("Routes/payments-service/paymentServiceDetails"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncPaymentsServiceUnsuccessful = Loadable({
+	loader: () => import("Routes/payments-service/unsuccessfulPaymentsService"),
+	loading: () => <RctPageLoader />,
+});
+
 const AsyncBookingTypes = Loadable({
 	loader: () => import("Routes/booking-types/booking-types"),
 	loading: () => <RctPageLoader />,
@@ -472,5 +492,9 @@ export {
 	AsyncWalletsCompleted,
 	AsyncWalletsPending,
 	AsyncSupportContactUs,
-	AsyncSupportContactUsDetails
+	AsyncSupportContactUsDetails,
+	AsyncPaymentsServiceSuccessful,
+	AsyncPaymentsServiceUnsuccessful,
+	AsyncPaymentsService,
+	AsyncPaymentsServiceDetails,
 };

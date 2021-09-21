@@ -1,10 +1,12 @@
-import {DRIVER, DRIVERS, DRIVERS_COUNT} from "Actions/types";
+import {DRIVER, DRIVER_LOCATION, DRIVERS, DRIVERS_COUNT, DRIVERS_LOCATION} from "Actions/types";
 
 
 const initialState = {
   drivers: [],
   driver: {},
-  driversCount: 0
+  driversCount: 0,
+  driversLocation: [],
+  driverLocation: []
 };
 
 function driverReducer(state = initialState, action) {
@@ -26,6 +28,18 @@ function driverReducer(state = initialState, action) {
       return {
         ...state,
         driversCount: payload,
+      };
+    }
+    case DRIVERS_LOCATION: {
+      return {
+        ...state,
+        driversLocation: payload,
+      };
+    }
+    case DRIVER_LOCATION: {
+      return {
+        ...state,
+        driverLocation: payload,
       };
     }
     default:

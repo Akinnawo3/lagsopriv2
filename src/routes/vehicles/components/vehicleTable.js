@@ -39,11 +39,13 @@ const  VehicleTable = ({ getVehicles, vehicles, loading, createVehicles, updateV
         if(vehicles) {
             let result = vehicles.map(vehicle=> {
                 return {
-                    plateNo: vehicle['plateNo'],
-                    type: vehicle['type'],
-                    make: vehicle['make'],
-                    model: vehicle['model'],
-                    desc: vehicle['desc'],
+                    plateNo: vehicle.car_number_plate,
+                    model: vehicle.car_model,
+                    make: vehicle.car_make,
+                    color: vehicle.car_color,
+                    vehicleId: vehicle.vehicle_id,
+                    assigned: vehicle.assigned ? 'Yes' : 'No',
+                    driverAuthId: vehicle.driver_auth_id
                 }
             })
             setExcelExport(result)
@@ -235,12 +237,12 @@ const  VehicleTable = ({ getVehicles, vehicles, loading, createVehicles, updateV
                             <Input type="text"  name="plateNo" value={plateNo} onChange={onChange}   required/>
                         </FormGroup>
                         <FormGroup>
-                            <Label for="phoneNumber">Modal</Label>
+                            <Label for="phoneNumber">Model</Label>
                             <Input type="text"  name="make" value={make} onChange={onChange}  required />
                         </FormGroup>
                         <FormGroup>
                             <Label for="text">Year</Label>
-                            <Input type="text" name="model" value={model} onChange={onChange} required />
+                            <Input type="number" name="model" value={model} onChange={onChange} required />
                         </FormGroup>
                         <FormGroup>
                             <Label for="text">Colour</Label>
@@ -266,7 +268,7 @@ const  VehicleTable = ({ getVehicles, vehicles, loading, createVehicles, updateV
             </Modal>
             <DeleteConfirmationDialog
                 ref={inputEl}
-                title="Are You Sure Want To Delete?"
+                title="Are You Sure You Want To Delete?'"
                 message="This will delete Vehicle permanently."
                 onConfirm={() => {
                     deleteVehicle(deleteId, vehicles);

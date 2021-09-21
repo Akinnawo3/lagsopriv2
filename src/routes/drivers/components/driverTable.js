@@ -10,7 +10,7 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 import {getDrivers, getDriversCount, searchDrivers} from "Actions/driverAction";
 import { CSVLink } from "react-csv";
 import Pagination from "react-js-pagination";
-import {getStatus, getStatusColor} from "Helpers/helpers";
+import {calculatePostDate, getStatus, getStatusColor} from "Helpers/helpers";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {Link} from "react-router-dom";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
@@ -85,6 +85,7 @@ const  DriverTable = ({ drivers, isLoading, driversCount, getDrivers, status,  s
                             <TableRow hover>
                                 <TableCell>First Name</TableCell>
                                 <TableCell>Last Name</TableCell>
+                                <TableCell>Date / Time of Registration</TableCell>
                                 <TableCell>Status</TableCell>
                                 <TableCell>App Status</TableCell>
                                 <TableCell>Action</TableCell>
@@ -96,6 +97,7 @@ const  DriverTable = ({ drivers, isLoading, driversCount, getDrivers, status,  s
                                     <TableRow hover key={key}>
                                         <TableCell>{driver.first_name}</TableCell>
                                         <TableCell>{driver.last_name}</TableCell>
+                                        <TableCell>{calculatePostDate(driver.createdAt)}</TableCell>
                                         <TableCell><Badge color={getStatusColor(driver.driver_data?.driver_status)}>{getStatus(driver.driver_data?.driver_status)}</Badge></TableCell>
                                         <TableCell><Badge color={driver.driver_data.online ? 'success': 'danger'}>{driver.driver_data.online ? 'Online': 'Offline'}</Badge></TableCell>
 

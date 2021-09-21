@@ -34,7 +34,7 @@ const  Wallets = ({wallets, walletsCount, auth_id, getWallets, loading, wallet})
                             <div className="text-value">Balance</div>
                         </CardBody>
                         <div className="chart-wrapper mx-3 d-flex align-items-center justify-content-center" style={{ height: '70px' }}>
-                            <span className="pr-2 font-xl" style={{fontSize: '1.5rem'}}>₦{wallet}</span>
+                            <span className="pr-2 font-xl" style={{fontSize: '1.5rem'}}>₦{wallet.toLocaleString()}</span>
                         </div>
                     </Card>
                 </Col>
@@ -64,7 +64,7 @@ const  Wallets = ({wallets, walletsCount, auth_id, getWallets, loading, wallet})
                                             {user.transaction_id}
                                         </TableCell>
                                         <TableCell>
-                                            ₦{user.amount}
+                                            ₦{user.amount.toLocaleString()}
                                         </TableCell>
                                         <TableCell>{calculatePostDate(user.createdAt)}</TableCell>
                                         <TableCell>
@@ -76,7 +76,7 @@ const  Wallets = ({wallets, walletsCount, auth_id, getWallets, loading, wallet})
                                         <TableCell>
                                             {user.description}
                                         </TableCell>
-                                        <TableCell><Badge color={getStatusColor2(user.transaction_status)}>{getStatus2(user.transaction_status)}</Badge></TableCell>
+                                        <TableCell><Badge color={getStatusColor2(user.status)}>{getStatus2(user.status)}</Badge></TableCell>
 
                                         {/*<TableCell>*/}
                                         {/*    <button type="button" className="rct-link-btn text-primary" title="view details"><Link to={`/admin/ratings/${user.rating_id}`}><i className="ti-eye"/></Link></button>*/}

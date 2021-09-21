@@ -1,72 +1,48 @@
 /**
  * Google Map
  */
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import GoogleMap from 'google-map-react';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import {NotificationManager} from "react-notifications";
+import {m} from "Helpers/helpers";
 
 
-const  GoogleMapComponentUser  = ({match})=> {
+const  GoogleMapComponentUser  = ({match, userLocation, getUsersLocation, waiting, moving})=> {
     const [center, setCenter] = useState([6.459970538, 3.301247232])
-    const [search, setSearch] = useState('')
     const [zoom, setZoom] = useState(14)
-    const [options, setOptions] = useState([])
-    const AnyReactComponent = ({text, cord}) =>
-        <div>
-            <div className="tooltipo"> <i className="zmdi zmdi-pin text-primary zoom" style={{fontSize: '30px'}}><span className="ml-1 font-weight-bold text-primary" style={{fontSize: '10px'}}>{text}</span></i>
-                <div className="tooltiptexto">
-                    <div>
-                        Driver name: {cord.name}
-                    </div>
-                    <div>
-                        Plate No: {cord.plate_no}
-                    </div>
-                </div>
-            </div>
-        </div>
-    const data = [
-        {
-            lat:6.45878949,
-            lng: 3.278338958,
-            name: 'Tope Chi',
-            plate_no: 'ASCFR890'
-        },
-        {
-            lat:6.459554831,
-            lng: 3.284814647,
-            name: 'Sunday Jim',
-            plate_no: 'ANMCFR894'
-        },
-        {
-            lat:6.459970538,
-            lng: 3.301247232,
-            name: 'Jaye Mark',
-            plate_no: 'APMCFR838'
-        },
-        {
-            lat:6.460063551,
-            lng: 3.312027333,
-            name: 'Tim Deo',
-            plate_no: 'AMKFR892'
-        },
-    ]
 
-    useEffect(()=> {
-        const dataArr = []
-        data.map(dat => {
-            dataArr.push({name:dat.plate_no, value: dat.plate_no})
-        })
-        setOptions(dataArr)
-    },[])
+
+    const getUsersNewLocations = (centerValue) => {
+       const geoCode = m({
+           latitude: centerValue[0],
+           longitude: centerValue[1]
+       }, {
+           latitude: center[0],
+           longitude: center[1]
+       })
+
+        if(geoCode >= 3.5) {
+            setCenter(centerValue);
+            getUsersLocation(centerValue[1], centerValue[0])
+        }
+    }
 
     const MAP_OPTIONS = {
-        // scrollwheel: false,
         panControl: false,
         mapTypeControl: false,
     }
 
- const  _onClick = ({x, y, lat, lng, event}) => console.log(lat, lng)
+    const  _onClick = ({x, y, lat, lng, event}) => {
+        setCenter([lat, lng])
+        getUsersLocation(lng, lat)
+    }
+
+
+
+    const AnyReactComponent = () =>
+        <div>
+            <i className="zmdi zmdi-pin text-danger zoom" style={{fontSize: '30px'}} />
+        </div>
 
 
     return (
@@ -80,23 +56,18 @@ const  GoogleMapComponentUser  = ({match})=> {
             options={MAP_OPTIONS}
             hoverDistance={40 / 2}
             onClick={_onClick}
-            // onDragEnd = {(map) => console.log(map)}
-            // onTilesLoaded={() => console.log('cccccc')}
-            onBoundsChange={center => console.log(center, 'aaaaaaa')}
-              // googleMapLoader={() => console.log('dddddd')}
+            onBoundsChange={center => getUsersNewLocations(center)}
           >
-            {data.map((m, index)=> (
+            {userLocation.map((m, index)=> (
                 <AnyReactComponent
-                    lat={m.lat}
-                    lng={m.lng}
+                    lat={m.location?.coordinates[1]}
+                    lng={m.location?.coordinates[0]}
                     key={index}
-                    text={m.plate_no}
-                    cord={m}
                 />
             ))}
           </GoogleMap>
-            <div>Transit: 10</div>
-            <div>Booking: 10</div>
+            <div>Waiting Riders: {waiting}</div>
+            <div>Moving Riders: {moving}</div>
         </RctCollapsibleCard>
       </div>
     );

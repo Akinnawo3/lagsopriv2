@@ -8,7 +8,6 @@ export default {
         'LagosRide.',
     suspendMsg: 'You have been suspended from LagosRide for the following reasons;\n' +
         '\n' +
-        '‘Lorem Ipsum donor, lorem Ipsom’ \n' +
         '\n' +
         'You will be required to report to the office for further actions, a date will be communicated with you shortly. \n' +
         '\n' +

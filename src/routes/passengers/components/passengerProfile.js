@@ -23,13 +23,13 @@ const PassengerProfile = ({passenger})=> {
                                 className="pull-left"><strong>Email</strong></span>{passenger?.email}
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>home Location</strong></span>{passenger?.home_address}
+                                className="pull-left"><strong>Home Location</strong></span>{passenger?.home_address}
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>home Area</strong></span>{passenger?.home_area}
+                                className="pull-left"><strong>Home Area</strong></span>{passenger?.home_area}
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>work Location</strong></span>{passenger?.work_address}
+                                className="pull-left"><strong>Work Location</strong></span>{passenger?.work_address}
                             </li>
                             <li className="list-group-item text-right"><span
                                 className="pull-left"><strong>Work Area</strong></span>{passenger?.work_area}

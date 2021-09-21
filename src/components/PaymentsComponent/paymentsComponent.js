@@ -8,7 +8,14 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 import {connect} from "react-redux";
 import Pagination from "react-js-pagination";
 import EmptyData from "Components/EmptyData/EmptyData";
-import {calculatePostDate, getStatus2, getStatus3, getStatusColor, getStatusColor2} from "Helpers/helpers";
+import {
+    calculatePostDate,
+    getStatus2,
+    getStatus3, getStatus4,
+    getStatusColor,
+    getStatusColor2,
+    getStatusColor4
+} from "Helpers/helpers";
 import {Badge} from "reactstrap";
 import {getPayments} from "Actions/paymentAction";
 import {Link} from "react-router-dom";
@@ -50,14 +57,14 @@ const  PaymentsComponent = ({payments, paymentsCount, auth_id, getPayments}) => 
                                             {user.payment_id}
                                         </TableCell>
                                         <TableCell>
-                                            ₦{user.amount}
+                                            ₦{user.amount.toLocaleString()}
                                         </TableCell>
                                         <TableCell>{calculatePostDate(user.createdAt)}</TableCell>
                                         <TableCell>
                                             {user.method}
                                         </TableCell>
                                         <TableCell><Badge
-                                            color={getStatusColor(user.status)}>{getStatus3(user.status)}</Badge></TableCell>
+                                            color={getStatusColor4(user.status)}>{getStatus4(user.status)}</Badge></TableCell>
 
                                         <TableCell>
                                             <button type="button" className="rct-link-btn text-primary" title="view details"><Link to={`/admin/payments/${user.payment_id}`}><i className="ti-eye"/></Link></button>

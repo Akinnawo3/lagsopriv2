@@ -88,7 +88,7 @@ export const searchUsers = (searchData) => async dispatch => {
     }
 };
 
-export const getUsersLocation = (latitude, longitude) => async dispatch => {
+export const getUsersLocation = (longitude, latitude) => async dispatch => {
     try {
         const res = await axios.get(`${api.user}/v1.1/admin/user-location/?latitude=${latitude}&longitude=${longitude}&user_type=rider`)
         if(res.data.status === 'error') {

@@ -8,6 +8,7 @@ import {assignVehicleOnProfile} from "Actions/vehicleAction";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import {Link} from "react-router-dom";
 import emailMessages from "Assets/data/email-messages/emailMessages";
+import TableCell from "@material-ui/core/TableCell";
 
 
 const DriverProfile = ({driver, changeDriverStatus, loadingStatus, vehicles, assignVehicle, vehicleDetails})=> {
@@ -53,6 +54,10 @@ const DriverProfile = ({driver, changeDriverStatus, loadingStatus, vehicles, ass
            setVehicleData(vehicleValue)
        }
     },[vehicle])
+
+
+    // location: {type: "Point", coordinates: [3.50929, 6.4431033]}
+    // coordinates
 
 
     return (
@@ -140,6 +145,10 @@ const DriverProfile = ({driver, changeDriverStatus, loadingStatus, vehicles, ass
                                 className="pull-left"><strong>App Status</strong></span><Badge color={driver?.driver_data?.online ? 'success': 'danger'}>{driver?.driver_data?.online ? 'Online': 'Offline'}</Badge>
 
                             </li>
+                            <li className="list-group-item text-right"><span
+                                className="pull-left"><strong>Driver's Location on Map</strong></span><button type="button" className="rct-link-btn text-primary" title="view details"><Link to={`/admin/map`}><i className="ti-eye"/></Link></button>
+
+                            </li>
                             <li className="list-group-item">
                                 <span  className="pull-left d-flex">
                                     {driver?.driver_data?.driver_status ===  0 &&
@@ -169,20 +178,20 @@ const DriverProfile = ({driver, changeDriverStatus, loadingStatus, vehicles, ass
                     </div>
                 </div>
             </div>
-            <div className="col-sm-6 px-4">
-                <div className='text-center px-3 h-50'>
-                   <div className="font-weight-bold">Payment Receipt</div>
-                    <img
-                        onClick={ () => openImageViewer(0) }
-                        src={driver?.driver_data?.receipt_url}
-                        alt="receipt"
-                        className="img-fluid mt-2"
-                        // width="100%"
-                        // height="10%"
-                        style={{width: '100%', height: '100%', objectFit: 'cover', cursor: 'pointer'}}
-                    />
-                </div>
-            </div>
+            {/*<div className="col-sm-6 px-4">*/}
+            {/*    <div className='text-center px-3 h-50'>*/}
+            {/*       <div className="font-weight-bold">Payment Receipt</div>*/}
+            {/*        <img*/}
+            {/*            onClick={ () => openImageViewer(0) }*/}
+            {/*            src={driver?.driver_data?.receipt_url}*/}
+            {/*            alt="receipt"*/}
+            {/*            className="img-fluid mt-2"*/}
+            {/*            // width="100%"*/}
+            {/*            // height="10%"*/}
+            {/*            style={{width: '100%', height: '100%', objectFit: 'cover', cursor: 'pointer'}}*/}
+            {/*        />*/}
+            {/*    </div>*/}
+            {/*</div>*/}
             <Modal size='lg' isOpen={isViewerOpen} toggle={() => setIsViewerOpen(!isViewerOpen)}>
                 <ModalHeader toggle={() => setIsViewerOpen(!isViewerOpen)}>
                     Receipt Preview
@@ -247,7 +256,7 @@ const DriverProfile = ({driver, changeDriverStatus, loadingStatus, vehicles, ass
             </Modal>
             <DeleteConfirmationDialog
                 ref={inputEl}
-                title="Are You Sure Want To Suspend Driver?"
+                title="Are you sure YOU want to suspend driver"
                 message="This driver will be inactive."
                 onConfirm={() => {
                     changeDriverStatus(driver?.auth_id, '3', driver, emailMessages.suspendMsg);

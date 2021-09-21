@@ -96,7 +96,7 @@ export const updateVehicle = (vehicle_id, car_number_plate, car_make, car_model,
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
-      await NotificationManager.success('Vehicle Created Successfully!');
+      await NotificationManager.success('Vehicle Updated Successfully');
       await dispatch(getVehicles(page_no, assign));
     }
     dispatch(endStatusLoading())

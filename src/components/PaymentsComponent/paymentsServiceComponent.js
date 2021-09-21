@@ -43,7 +43,7 @@ const  PaymentsServiceComponent = ({payments, paymentsCount, auth_id, getPayment
                             <div className="text-value">Total Amount Paid</div>
                         </CardBody>
                         <div className="chart-wrapper mx-3 d-flex align-items-center justify-content-center" style={{ height: '70px' }}>
-                            <span className="pr-2 font-xl" style={{fontSize: '1.5rem'}}>₦{paymentsServiceBalance}</span>
+                            <span className="pr-2 font-xl" style={{fontSize: '1.5rem'}}>₦{paymentsServiceBalance.toLocaleString()}</span>
                         </div>
                     </Card>
                 </Col>
@@ -61,7 +61,7 @@ const  PaymentsServiceComponent = ({payments, paymentsCount, auth_id, getPayment
                                 <TableCell>Payment Method</TableCell>
                                 <TableCell>Description</TableCell>
                                 <TableCell>Status</TableCell>
-                                {/*<TableCell>Action</TableCell>*/}
+                                <TableCell>Action</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -72,7 +72,7 @@ const  PaymentsServiceComponent = ({payments, paymentsCount, auth_id, getPayment
                                         {/*    {user.method}*/}
                                         {/*</TableCell>*/}
                                         <TableCell>
-                                            ₦{user.amount}
+                                            ₦{user.amount.toLocaleString()}
                                         </TableCell>
                                         <TableCell>{calculatePostDate(user.createdAt)}</TableCell>
                                         <TableCell>
@@ -84,9 +84,9 @@ const  PaymentsServiceComponent = ({payments, paymentsCount, auth_id, getPayment
                                         <TableCell><Badge
                                             color={getStatusColor4(user.status)}>{getStatus4(user.status)}</Badge></TableCell>
 
-                                        {/*<TableCell>*/}
-                                        {/*    <button type="button" className="rct-link-btn text-primary" title="view details"><Link to={`/admin/payments/${user.payment_id}`}><i className="ti-eye"/></Link></button>*/}
-                                        {/*</TableCell>*/}
+                                        <TableCell>
+                                            <button type="button" className="rct-link-btn text-primary" title="view details"><Link to={`/admin/payments-service/${user.payment_id}`}><i className="ti-eye"/></Link></button>
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </Fragment>

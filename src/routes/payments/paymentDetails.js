@@ -3,7 +3,7 @@ import {Helmet} from "react-helmet";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {connect} from "react-redux";
 import {getPaymentDetails} from "Actions/paymentAction";
-import {calculatePostDate, getStatus3, getStatusColor} from "Helpers/helpers";
+import {calculatePostDate, getStatus3, getStatus4, getStatusColor, getStatusColor4} from "Helpers/helpers";
 import {Badge} from "reactstrap";
 import {Link} from "react-router-dom";
 
@@ -33,7 +33,7 @@ const PaymentDetails = ({match, payment, getPaymentDetails, sosUserDetails})=> {
                                 className="pull-left"><strong>Payment Id</strong></span>{payment?.payment_id}
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>Amount</strong></span>{payment?.amount}
+                                className="pull-left"><strong>Amount</strong></span>₦{payment?.amount}
                             </li>
                             <li className="list-group-item text-right"><span
                                 className="pull-left"><strong>Method</strong></span>{payment?.method}
@@ -61,7 +61,7 @@ const PaymentDetails = ({match, payment, getPaymentDetails, sosUserDetails})=> {
                             </li>
                             <li className="list-group-item text-right"><span
                                 className="pull-left"><strong>Status</strong></span><Badge
-                                color={getStatusColor(payment?.status)}>{getStatus3(payment?.status)}</Badge>
+                                color={getStatusColor4(payment?.status)}>{getStatus4(payment?.status)}</Badge>
                             </li>
                         </ul>
                     </div>

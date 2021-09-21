@@ -21,7 +21,7 @@ const  Payments = ({match, getPayments, getPaymentsCount, payments, paymentsCoun
 
     return (
         <div className="table-wrapper">
-            <PageTitleBar title={"Payments"} match={match} />
+            <PageTitleBar title={"Trip Payments"} match={match} />
             <PaymentTable status={''} header={'All Payments'} />
         </div>
     );

@@ -1,5 +1,5 @@
 /**
- * Unsuccessful Payments
+ * successful Payments
  */
 import React, { useEffect} from 'react';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
@@ -10,17 +10,17 @@ import {getPayments, getPaymentsCount} from "Actions/paymentAction";
 import PaymentTable from "Routes/payments/component/paymentTable";
 
 
-const  SuccessfulPaymentPayments = ({match, getPayments, getPaymentsCount, payments, paymentsCount}) => {
+const  SuccessfulPayments = ({match, getPayments, getPaymentsCount, payments, paymentsCount}) => {
 
     useEffect(()=> {
-        getPayments(1, 2, '', true);
+        getPayments(1, 1, '', true);
         getPaymentsCount()
     },[])
 
 
     return (
         <div className="table-wrapper">
-            <PageTitleBar title={"Payments"} match={match} />
+            <PageTitleBar title={"Trip Payments"} match={match} />
             <PaymentTable status={''} header={'Successful Payments'} />
         </div>
     );
@@ -41,4 +41,4 @@ const mapStateToProps = state => ({
     isLoading: state.loading.loading,
 });
 
-export default connect( mapStateToProps, mapDispatchToProps) (SuccessfulPaymentPayments);
+export default connect( mapStateToProps, mapDispatchToProps) (SuccessfulPayments);

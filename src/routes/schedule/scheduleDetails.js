@@ -16,71 +16,6 @@ const ScheduleDetails = ({getScheduleDetails, match, loading, scheduleDetails})=
         getScheduleDetails(match.params.id)
     },[match.params.id])
 
-
-
-
-
-    // auth_id: "60d31ac644159dc5dd1dad1b"
-    // trip_scheduleDetails: Array(3)
-    // 0:
-    // end_address: "40 Oladipo Bateye Road, Ikeja, Nigeria"
-    // end_lat: 6.5744221
-    // end_lon: 3.3458747
-    // start_address: "Bridgegate Estate, Iberekodo Street, Lekki, Nigeria"
-    // start_lat: 6.446528
-    // start_lon: 3.5177175
-    // trip_date: "2021-07-05"
-    // trip_status: 0
-    // trip_time: "06:00"
-    // __proto__: Object
-    // 1: {trip_date: "2021-07-03", trip_status: 0, start_address: "Ejim Apartments, Prince Ibrahim Eletu Avenue, Lagos, Nigeria", start_lon: 3.5092497, start_lat: 6.442997099999999, …}
-    // 2: {trip_date: "2021-07-04", trip_status: 0, start_address: "Bridgegate Estate, Iberekodo Street, Lekki, Nigeria", start_lon: 3.5177175, start_lat: 6.446528, …}
-    // length: 3
-    // __proto__: Array(0)
-    // users:
-    //     avatar: ""
-    // blood_group: ""
-    // dob: ""
-    // education: ""
-    // email: "fike.odulaja@gmail.com"
-    // email_status: 0
-    // first_name: "Fike"
-    // gender: "female"
-    // home_address: "Bridgegate Estate, Iberekodo Street, Lekki, Nigeria"
-    // home_area: "a"
-    // home_coordinate:
-    //     latitude: 6.446528
-    // longitude: 3.5177175
-    // __proto__: Object
-    // last_name: "Odulaja"
-    // phone_number: "09029427239"
-    // phone_status: 0
-    // referer: ""
-    // ride_partner: "all"
-    // state: ""
-    // trip_notification: 1
-    // update_count: 1
-    // user_type: "rider"
-    // work_address: "40 Oladipo Bateye Road, Ikeja, Nigeria"
-    // work_area: "i"
-    // work_coordinate: {}
-    //
-
-    // end_address: "Ijanikin Boarding School, Lagos, Nigeria"
-    // end_lat: 6.447809299999999
-    // end_lon: 3.4723495
-    // fdt_id: "60e4302d194049159fe0cff6"
-    // start_address: "Lekki Phase 1, Lekki, Nigeria"
-    // start_lat: 6.488620999999999
-    // start_lon: 3.1428341
-    // trip_alert: 0
-    // trip_class: "B"
-    // trip_date: "2021-07-07"
-    // trip_schedule: "2021-07-07T01:30:00.000Z"
-    // trip_status: 0
-    // trip_time: "01:30"
-    // trip_type: "schedule"
-
     return (
         <div className='mb-5' style={{minHeight: '90vh'}}>
             <Helmet>
@@ -122,21 +57,27 @@ const ScheduleDetails = ({getScheduleDetails, match, loading, scheduleDetails})=
                                     className="pull-left"><strong>End Longitude</strong></span>{scheduleDetails?.end_lon}
                                 </li>
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Trip Class</strong></span>{scheduleDetails?.trip_class}
+                                    className="pull-left"><strong>Ride Class</strong></span>{scheduleDetails?.ride_class}
                                 </li>
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Trip Date</strong></span>{scheduleDetails?.trip_date}
+                                    className="pull-left"><strong>Ride Date</strong></span>{scheduleDetails?.ride_date}
                                 </li>
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Trip Time</strong></span>{scheduleDetails?.trip_time}
+                                    className="pull-left"><strong>Ride Time</strong></span>{scheduleDetails?.ride_time}
                                 </li>
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Trip Type</strong></span>{scheduleDetails?.trip_type}
+                                    className="pull-left"><strong>Ride Type</strong></span>{scheduleDetails?.ride_type}
                                 </li>
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>Trip Status</strong></span>
-                                    <Badge color={scheduleDetails?.trip_status === 1 ? "success" : scheduleDetails?.trip_status === 2 ? 'danger' : 'warning'}>
-                                        {scheduleDetails?.trip_status === 1 ? 'Accepted' : scheduleDetails?.trip_status === 2 ? 'Declined' : 'Pending'}
+                                    className="pull-left"><strong>Setup Type</strong></span>{scheduleDetails?.setup_type}
+                                </li>
+                                <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Payment Method</strong></span>{scheduleDetails?.payment_method}
+                                </li>
+                                <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Ride Status</strong></span>
+                                    <Badge color={scheduleDetails?.ride_status === 1 ? "success" : scheduleDetails?.ride_status === 2 ? 'danger' : 'warning'}>
+                                        {scheduleDetails?.ride_status === 1 ? 'Accepted' : scheduleDetails?.ride_status === 2 ? 'Declined' : 'Pending'}
                                     </Badge>
                                 </li>
                             </ul>

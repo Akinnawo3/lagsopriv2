@@ -136,7 +136,7 @@ function TabContainer(props) {
                                 />
                                 <Tab
                                     icon={<i className="icon-credit-card"></i>}
-                                    label={"Wallets History"}
+                                    label={"Wallet History"}
                                 />
                                 <Tab
                                     icon={<i className="icon-credit-card"></i>}

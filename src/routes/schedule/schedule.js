@@ -59,12 +59,12 @@ const  Schedule = ({match, getSchedule, schedule, loading, getScheduleCount, sch
                                                 <TableCell>{record.users?.first_name}</TableCell>
                                                 <TableCell>{record.users?.last_name}</TableCell>
                                                 <TableCell>
-                                                    {new Date(record.trip_data[0]?.trip_date).toDateString()} {record.trip_data[0]?.trip_time}
+                                                    {new Date(record.ride_data[0]?.ride_date).toDateString()} {record.ride_data[0]?.ride_time}
 
                                                 </TableCell>
                                                 <TableCell>
-                                                    <Badge color={record?.trip_status === 1 ? "success" : record?.trip_status === 2 ? 'danger' : 'warning'}>
-                                                        {record?.trip_status === 1 ? 'Accepted' : record?.trip_status === 2 ? 'Declined' : 'Pending'}
+                                                    <Badge color={record?.ride_status === 1 ? "success" : record?.ride_status === 2 ? 'danger' : 'warning'}>
+                                                        {record?.ride_status === 1 ? 'Accepted' : record?.ride_status === 2 ? 'Declined' : 'Pending'}
                                                     </Badge>
                                                 </TableCell>
                                                 <TableCell>

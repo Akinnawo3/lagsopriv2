@@ -92,10 +92,10 @@ export const getSupportTicketsCount = (status) => async dispatch => {
 };
 
 export const updateSupportTickets = (issue_id, status) => async dispatch => {
-  const body = {status}
+  const body = {status, issue_id}
   try {
     await dispatch(startStatusLoading())
-  const res =  await axios.put(`${api.support}/v1.1/supports/issue-log/${issue_id}`, body)
+  const res =  await axios.put(`${api.support}/v1.1/supports/issue-status`, body)
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -109,16 +109,16 @@ export const updateSupportTickets = (issue_id, status) => async dispatch => {
   }
 };
 
-export const assignSupportTickets = (ticket_id, assigned_to) => async dispatch => {
-    const body = {assigned_to}
+export const assignSupportTickets = (issue_id, auth_id) => async dispatch => {
+    const body = {auth_id, issue_id}
     try {
         await dispatch(startStatusLoading())
-        const res =  await axios.put(`${api.support}/api/v1.1/admin/tickets/${ticket_id}/`, body)
+        const res =  await axios.put(`${api.support}/v1.1/supports/assign-issue`, body)
         if(res.data.status === 'error') {
             NotificationManager.error(res.data.msg);
         }else {
             await NotificationManager.success('Ticket Updated Successfully!');
-            dispatch(getSupportTicket(ticket_id, true))
+            dispatch(getSupportTicket(issue_id, true))
         }
         await dispatch(endStatusLoading())
     } catch (err) {

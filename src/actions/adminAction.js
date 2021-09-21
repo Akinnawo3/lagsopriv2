@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
-import {ADMINS, ADMIN_COUNT} from "./types";
+import {ADMINS, ADMIN_COUNT, USER_COUNT, USERS} from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 import {configureStore} from "../store";
@@ -104,5 +104,32 @@ export const deleteAdmin = (auth_id, adminsData) => async dispatch => {
     dispatch(endStatusLoading())
   }
 };
+
+
+export const searchAdmins = (searchData) => async dispatch => {
+  try {
+    dispatch(startStatusLoading())
+    const res = await axios.get(`${api.user}/v1.1/admin/users?q=${searchData}`)
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      const res2 = await axios.get(`${api.user}/v1.1/admin/users?q=${searchData}&component=count`);
+      dispatch({
+        type: ADMIN_COUNT,
+        payload: res2.data.data.total ? res2.data.data.total : 0
+      });
+      dispatch({
+        type: ADMINS,
+        payload: res.data.data
+      });
+    }
+    dispatch(endStatusLoading())
+  } catch (err) {
+    dispatch(endStatusLoading())
+
+
+  }
+};
+
 
 

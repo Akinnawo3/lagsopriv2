@@ -81,7 +81,7 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
             }
             <DeleteConfirmationDialog
                 ref={inputEl}
-                title="Are You Sure Want To revoke vehicle assignment?"
+                title="Are You Sure you Want To revoke vehicle assignment?"
                 message="This will unassigned vehicle from driver."
                 onConfirm={() => {
                     revokeVehicle(vehicleDetails?.vehicle_id, vehicleDetails, driverDetails);

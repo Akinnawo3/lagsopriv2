@@ -269,6 +269,30 @@ export const getTicketStatus = (status) => {
     }else {
         return ''
     }
+
 }
+
+function deg2rad(deg) {
+    return deg * (Math.PI / 180)
+}
+
+export const m = (geo1, geo2) => {
+    var R = 6371; // Radius of the earth in km
+    var dLat = deg2rad(geo2.latitude - geo1.latitude);  // deg2rad below
+    var dLon = deg2rad(geo2.longitude - geo1.longitude);
+    var a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(deg2rad(geo1.latitude)) * Math.cos(deg2rad(geo2.latitude)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2)
+    ;
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c; // Distance in km
+    return !isNaN(d) ? d.toFixed(2) : d;
+}
+
+
+
+
+
 
 

@@ -6,11 +6,11 @@ import {
   TRIP_COUNT_DRIVER,
   TRIP_COUNT_DRIVER_ALL,
   TRIP_COUNT_DRIVER_CANCELLED,
-  TRIP_COUNT_DRIVER_COMPLETED,
+  TRIP_COUNT_DRIVER_COMPLETED, TRIP_COUNT_MOVING_DRIVERS, TRIP_COUNT_MOVING_USERS,
   TRIP_COUNT_PASSENGER,
   TRIP_COUNT_PASSENGER_ALL,
   TRIP_COUNT_PASSENGER_CANCELLED,
-  TRIP_COUNT_PASSENGER_COMPLETED,
+  TRIP_COUNT_PASSENGER_COMPLETED, TRIP_COUNT_WAITING_DRIVERS, TRIP_COUNT_WAITING_USERS,
   TRIPS
 } from "Actions/types";
 
@@ -29,6 +29,10 @@ const initialState = {
   tripCountPassengerAll: 0,
   tripCountPassengerCompleted: 0,
   tripCountPassengerCancelled: 0,
+  tripCountMovingUsers: 0,
+  tripCountWaitingUsers: 0,
+  tripCountMovingDrivers: 0,
+  tripCountWaitingDrivers: 0,
 };
 
 function tripReducer(state = initialState, action) {
@@ -110,6 +114,30 @@ function tripReducer(state = initialState, action) {
       return {
         ...state,
         tripCountPassengerCancelled: payload,
+      };
+    }
+    case TRIP_COUNT_MOVING_USERS: {
+      return {
+        ...state,
+        tripCountMovingUsers: payload,
+      };
+    }
+    case TRIP_COUNT_WAITING_USERS: {
+      return {
+        ...state,
+        tripCountWaitingUsers: payload,
+      };
+    }
+    case TRIP_COUNT_MOVING_DRIVERS: {
+      return {
+        ...state,
+        tripCountMovingDrivers: payload,
+      };
+    }
+    case TRIP_COUNT_WAITING_DRIVERS: {
+      return {
+        ...state,
+        tripCountWaitingDrivers: payload,
       };
     }
     default:

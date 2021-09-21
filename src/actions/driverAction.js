@@ -1,5 +1,5 @@
 import  axios from 'axios'
-import {DRIVERS, DRIVER, DRIVERS_COUNT, VEHICLE} from "./types";
+import {DRIVERS, DRIVER, DRIVERS_COUNT, VEHICLE, DRIVERS_LOCATION, DRIVER_LOCATION} from "./types";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
@@ -57,13 +57,15 @@ export const getDriver = (auth_id, linerLoader) => async dispatch => {
         type: DRIVER,
         payload: res.data.data
       });
+      let res2;
       if(res.data.data.driver_data?.vehicle_id) {
-        const res2 = await axios.get(`${api.vehicles}/v1.1/vehicles/${res.data.data.driver_data?.vehicle_id}`);
+       res2 = await axios.get(`${api.vehicles}/v1.1/vehicles/${res.data.data.driver_data?.vehicle_id}`);
           await   dispatch({
           type: VEHICLE,
           payload: res2.data.data
         });
       }
+      dispatch(getDriverLocation(res.data.data, res2))
       dispatch(endLoading())
       dispatch(endStatusLoading())
     }
@@ -96,24 +98,6 @@ export const changeDriverStatus = (auth_id, driver_status, driverData, message_t
     NotificationManager.error(err.response.data.message);
   }
 };
-
-// export const changeDriverStatusOnProfile = (auth_id, driver_status) => async dispatch => {
-//   const body = {auth_id, driver_status}
-//   try {
-//     dispatch(startStatusLoading())
-//     const res =  await axios.put(`${api.user}/v1.1/admin/driver-status`, body)
-//     if(res.data.status === 'error') {
-//       NotificationManager.error(res.data.msg);
-//     }else {
-//       await NotificationManager.success('Driver Updated Successfully!');
-//       await dispatch(getDriver(auth_id, true));
-//     }
-//     dispatch(endStatusLoading())
-//   } catch (err) {
-//     dispatch(endStatusLoading())
-//     NotificationManager.error(err.response.data.message);
-//   }
-// };
 
 
 export const searchDrivers = (searchData, status) => async dispatch => {
@@ -152,6 +136,44 @@ export const sendDriverMessage = (driverData, message_type, subject) => async di
   try {
     await axios.post(`${api.messageWorker}/v1.1/messages/send`, body);
   } catch (err) {
+  }
+};
+
+export const getDriversLocation = (longitude, latitude) => async dispatch => {
+  try {
+    const res = await axios.get(`${api.user}/v1.1/admin/user-location/?latitude=${latitude}&longitude=${longitude}&user_type=driver`)
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      dispatch({
+        type: DRIVERS_LOCATION,
+        payload: res.data.data
+      });
+    }
+  } catch (err) {
+
+  }
+};
+
+
+export const getDriverLocation = (driverData, vehicleData) => async dispatch => {
+  try {
+    dispatch(startStatusLoading())
+    let res = vehicleData ? vehicleData : {};
+    if(!vehicleData && driverData.driver_data.vehicle_id) {
+      res = await axios.get(`${api.vehicles}/v1.1/vehicles/${driverData.driver_data.vehicle_id}`);
+    }
+      dispatch({
+        type: DRIVER_LOCATION,
+        payload: [{ lat:driverData.driver_data?.location?.coordinates[1],
+                    lng: driverData.driver_data?.location?.coordinates[0],
+                    name: driverData.first_name + ' ' + driverData.last_name,
+                    plate_no:  res.data.data.car_number_plate ? res.data.data.car_number_plate : 'NA'
+                 }]
+      });
+    dispatch(endStatusLoading())
+  } catch (err) {
+    dispatch(endStatusLoading())
   }
 };
 

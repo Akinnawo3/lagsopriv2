@@ -10,7 +10,7 @@ import api from "../environments/environment";
   try {
   spinner &&  dispatch(startLoading());
   !spinner && dispatch(startStatusLoading())
-    const res = await axios.get(`${api.fdt}/v1.1/fdts?trip_type=fdt&component=group&item_per_page=20&page=${page_no}`);
+    const res = await axios.get(`${api.fdt}/v1.1/fdts?ride_type=fdt&component=group&item_per_page=20&page=${page_no}`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -31,7 +31,7 @@ import api from "../environments/environment";
 export const getFdtDetails = (auth_id) => async dispatch => {
   try {
     dispatch(startLoading());
-    const res = await axios.get(`${api.fdt}/v1.1/fdts?trip_type=fdt&component=group&auth_id=${auth_id}`);
+    const res = await axios.get(`${api.fdt}/v1.1/fdts?ride_type=fdt&component=group&auth_id=${auth_id}`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -49,7 +49,7 @@ export const getFdtDetails = (auth_id) => async dispatch => {
 
 export const getFdtCount = () => async dispatch => {
   try {
-    const res = await axios.get(`${api.fdt}/v1.1/fdts?trip_type=fdt&component=group-count`);
+    const res = await axios.get(`${api.fdt}/v1.1/fdts?ride_type=fdt&component=group-count`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -67,7 +67,7 @@ export const getSchedule = (page_no=1, spinner) => async dispatch => {
   try {
     spinner &&  dispatch(startLoading());
     !spinner && dispatch(startStatusLoading())
-    const res = await axios.get(`${api.fdt}/v1.1/fdts?trip_type=schedule&component=group&item_per_page=20&page=${page_no}`);
+    const res = await axios.get(`${api.fdt}/v1.1/fdts?ride_type=schedule&component=group&item_per_page=20&page=${page_no}`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -88,7 +88,7 @@ export const getSchedule = (page_no=1, spinner) => async dispatch => {
 export const getScheduleDetails = (auth_id) => async dispatch => {
   try {
     dispatch(startLoading());
-    const res = await axios.get(`${api.fdt}/v1.1/fdts?trip_type=schedule&auth_id=${auth_id}`);
+    const res = await axios.get(`${api.fdt}/v1.1/fdts?ride_type=schedule&auth_id=${auth_id}`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -106,7 +106,7 @@ export const getScheduleDetails = (auth_id) => async dispatch => {
 
 export const getScheduleCount = () => async dispatch => {
   try {
-    const res = await axios.get(`${api.fdt}/v1.1/fdts?trip_type=schedule&component=count`);
+    const res = await axios.get(`${api.fdt}/v1.1/fdts?ride_type=schedule&component=count`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {

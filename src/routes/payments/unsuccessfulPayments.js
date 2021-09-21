@@ -10,17 +10,17 @@ import {getPayments, getPaymentsCount} from "Actions/paymentAction";
 import PaymentTable from "Routes/payments/component/paymentTable";
 
 
-const  UnsuccessfulPaymentPayments = ({match, getPayments, getPaymentsCount, payments, paymentsCount}) => {
+const  UnsuccessfulPayments = ({match, getPayments, getPaymentsCount, payments, paymentsCount}) => {
 
     useEffect(()=> {
-        getPayments(1, 3, '', true);
+        getPayments(1, 2, '', true);
         getPaymentsCount()
     },[])
 
 
     return (
         <div className="table-wrapper">
-            <PageTitleBar title={"Payments"} match={match} />
+            <PageTitleBar title={"Trip Payments"} match={match} />
             <PaymentTable status={''} header={'Unsuccessful Payments'} />
         </div>
     );
@@ -41,4 +41,4 @@ const mapStateToProps = state => ({
     isLoading: state.loading.loading,
 });
 
-export default connect( mapStateToProps, mapDispatchToProps) (UnsuccessfulPaymentPayments);
+export default connect( mapStateToProps, mapDispatchToProps) (UnsuccessfulPayments);

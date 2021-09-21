@@ -41,6 +41,7 @@ import FdtRoutes from "Routes/fdt/fdtRoutes";
 import TripRoutes from "Routes/trips/tripsRoutes";
 import RatingsRoutes from "Routes/ratings/ratingsRoutes";
 import WalletsRoutes from "Routes/wallets/walletsRoutes";
+import PaymentsServiceRoutes from "Routes/payments-service/paymentsServiceRoutes";
 
 
 export default [
@@ -103,6 +104,10 @@ export default [
    {
       path: 'payments',
       component: PaymentsRoutes
+   },
+   {
+      path: 'payments-service',
+      component: PaymentsServiceRoutes
    },
    {
       path: 'refunds',

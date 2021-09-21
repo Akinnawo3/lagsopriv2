@@ -22,10 +22,6 @@ const ContactUsDetails = ({getContactUsDetails, match, updateSupportTicket, cont
         }
     },[match.params.id])
 
-    console.log(contactUsDetails, 'ddddddddd')
-
-
-
     const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const {status} = formData

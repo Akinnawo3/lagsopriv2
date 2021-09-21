@@ -14,13 +14,13 @@ import {
     getStatusColor4
 } from "Helpers/helpers";
 import {Badge} from "reactstrap";
-import {getPayments} from "Actions/paymentAction";
+import {getPaymentsService} from "Actions/paymentAction";
 import {Link} from "react-router-dom";
 
 
 
 
-const  PaymentTable = ({payments, paymentsCount, auth_id, getPayments, header, loading}) => {
+const  PaymentServiceTable = ({payments, paymentsCount, auth_id, getPayments, header, loading}) => {
     const [currentPage, setCurrentPage] = useState(1);
 
 
@@ -39,10 +39,10 @@ const  PaymentTable = ({payments, paymentsCount, auth_id, getPayments, header, l
                         <Table>
                             <TableHead>
                                 <TableRow hover>
-                                    <TableCell>Payment Id</TableCell>
                                     <TableCell>Amount</TableCell>
                                     <TableCell>Date / Time</TableCell>
                                     <TableCell>Payment Method</TableCell>
+                                    <TableCell>Payment Type</TableCell>
                                     <TableCell>Status</TableCell>
                                     <TableCell>Action</TableCell>
                                 </TableRow>
@@ -52,20 +52,20 @@ const  PaymentTable = ({payments, paymentsCount, auth_id, getPayments, header, l
                                     {payments.map((user, key) => (
                                         <TableRow hover key={key}>
                                             <TableCell>
-                                                {user.payment_id}
-                                            </TableCell>
-                                            <TableCell>
                                                 ₦{user.amount.toLocaleString()}
                                             </TableCell>
                                             <TableCell>{calculatePostDate(user.createdAt)}</TableCell>
                                             <TableCell>
                                                 {user.method}
                                             </TableCell>
+                                            <TableCell>
+                                                {user.payment_type}
+                                            </TableCell>
                                             <TableCell><Badge
                                                 color={getStatusColor4(user.status)}>{getStatus4(user.status)}</Badge></TableCell>
 
                                             <TableCell>
-                                                <button type="button" className="rct-link-btn text-primary" title="view details"><Link to={`/admin/payments/${user.payment_id}`}><i className="ti-eye"/></Link></button>
+                                                <button type="button" className="rct-link-btn text-primary" title="view details"><Link to={`/admin/payments-service/${user.payment_id}`}><i className="ti-eye"/></Link></button>
                                             </TableCell>
                                         </TableRow>
                                     ))}
@@ -93,17 +93,17 @@ const  PaymentTable = ({payments, paymentsCount, auth_id, getPayments, header, l
 
 function mapDispatchToProps(dispatch) {
     return {
-        getPayments: (pageNo, transaction_status, auth_id) => dispatch(getPayments(pageNo, transaction_status, auth_id)),
+        getPayments: (pageNo, transaction_status, auth_id) => dispatch(getPaymentsService(pageNo, transaction_status, auth_id)),
     };
 }
 
 const mapStateToProps = state => ({
     loading: state.loading.loading,
-    payments: state.payments.payments,
-    paymentsCount: state.payments.paymentsCount,
+    payments: state.payments.paymentsService,
+    paymentsCount: state.payments.paymentsServiceCount,
 
 
 
 });
 
-export default connect( mapStateToProps, mapDispatchToProps) (PaymentTable);
+export default connect( mapStateToProps, mapDispatchToProps) (PaymentServiceTable);

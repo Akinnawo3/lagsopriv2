@@ -18,7 +18,7 @@ const ScheduleWidget = () => {
 
     const getSchedulesCount = async () => {
         try {
-            const res = await axios.get(`${api.fdt}/v1.1/fdts?trip_type=schedule&component=count&trip_date=${getTodayDate()}`);
+            const res = await axios.get(`${api.fdt}/v1.1/fdts?ride_type=schedule&component=count&trip_date=${getTodayDate()}`);
             if (res.data.status === 'error') {
                 NotificationManager.error(res.data.msg);
             } else {

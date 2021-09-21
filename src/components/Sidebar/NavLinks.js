@@ -181,7 +181,7 @@ export default {
          "type_multi": null,
          "new_item": false,
          "child_routes": [
-            {
+             {
                "path": "/admin/payments",
                "new_item": false,
                "menu_title": "sidebar.all"
@@ -198,78 +198,32 @@ export default {
             },
          ]
       },
-      // {
-      //    "menu_title": "sidebar.wallets",
-      //    "menu_icon": "icon-credit-card",
-      //    "type_multi": null,
-      //    "new_item": false,
-      //    "child_routes": [
-      //       {
-      //          "path": "/admin/wallets",
-      //          "new_item": false,
-      //          "menu_title": "sidebar.all"
-      //       },
-      //       {
-      //          "path": "/admin/wallets/completed",
-      //          "new_item": false,
-      //          "menu_title": "sidebar.completed"
-      //       },
-      //       {
-      //          "path": "/admin/wallets/pending",
-      //          "new_item": false,
-      //          "menu_title": "sidebar.pending"
-      //       },
-      //       {
-      //          "path": "/admin/wallets/cancelled",
-      //          "new_item": false,
-      //          "menu_title": "sidebar.cancelled"
-      //       },
-      //    ]
-      // },
-      // {
-      //    "menu_title": "sidebar.refunds",
-      //    "menu_icon": "zmdi zmdi-money",
-      //    "type_multi": null,
-      //    "new_item": false,
-      //    "child_routes": [
-      //       {
-      //          "path": "/admin/refunds",
-      //          "new_item": false,
-      //          "menu_title": "sidebar.all"
-      //       },
-      //       {
-      //          "path": "/admin/refunds/pending",
-      //          "new_item": false,
-      //          "menu_title": "sidebar.pending"
-      //       },
-      //       {
-      //          "path": "/admin/refunds/completed",
-      //          "new_item": false,
-      //          "menu_title": "sidebar.completed"
-      //       },
-      //    ]
-      // },
-      // {
-      //    "menu_title": "sidebar.promodiscounts",
-      //    "menu_icon": "zmdi zmdi-time-interval",
-      //    "type_multi": null,
-      //    "new_item": false,
-      //    "path": "/admin/promo-discounts"
-      // },
-      // {
-      //    "menu_title": "sidebar.revenue",
-      //    "menu_icon": "icon-credit-card",
-      //    "type_multi": null,
-      //    "new_item": false,
-      //    "path": "/admin/revenue"
-      // },
-      // {
-      //    "menu_title": "sidebar.voucher",
-      //    "menu_icon": "zmdi zmdi-time-interval",
-      //    "type_multi": null,
-      //    "new_item": false,
-      //    "path": "/admin/voucher"
-      // },
+
+      {
+         "menu_title": "sidebar.service-payments",
+         "menu_icon": "icon-credit-card",
+         "type_multi": null,
+         "new_item": false,
+         "child_routes": [
+            {
+               "path": "/admin/payments-service",
+               "new_item": false,
+               "menu_title": "sidebar.all"
+            },
+            {
+               "path": "/admin/payments-service/successful",
+               "new_item": false,
+               "menu_title": "sidebar.successful"
+            },
+            {
+               "path": "/admin/payments-service/unsuccessful",
+               "new_item": false,
+               "menu_title": "sidebar.unsuccessful"
+            },
+         ]
+      },
+
+
       {
          "menu_title": "sidebar.referral",
          "menu_icon": "zmdi zmdi-time-interval",
