@@ -25,7 +25,7 @@ const WalletDetails = ({getTrip, match, loading, trip})=> {
     return (
         <div className='mb-5' style={{minHeight: '90vh'}}>
             <Helmet>
-                <title>User Profile</title>
+                <title>Trip Details</title>
                 <meta name="description" content="Trip Details" />
             </Helmet>
             <PageTitleBar title={`Trip details`} match={match}  />

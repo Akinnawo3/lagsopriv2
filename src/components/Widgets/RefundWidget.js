@@ -34,9 +34,9 @@ export default class RefundsWidget extends Component {
                </ListItem>
             </List>
             <div className="px-20 py-10 d-flex justify-content-end">
-               <Button className="btn-xs" variant="contained" size="small" className="text-white" color="primary">
-                  <IntlMessages id="button.seeInsights" />
-               </Button>
+               {/*<Button className="btn-xs" variant="contained" size="small" className="text-white" color="primary">*/}
+               {/*   <IntlMessages id="button.seeInsights" />*/}
+               {/*</Button>*/}
             </div>
          </Card>
       );

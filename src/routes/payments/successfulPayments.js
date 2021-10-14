@@ -14,7 +14,7 @@ const  SuccessfulPayments = ({match, getPayments, getPaymentsCount, payments, pa
 
     useEffect(()=> {
         getPayments(1, 1, '', true);
-        getPaymentsCount()
+        getPaymentsCount(1)
     },[])
 
 

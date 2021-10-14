@@ -37,7 +37,7 @@ const PaymentServiceDetails = ({match, payment, getPaymentDetails})=> {
                                 className="pull-left"><strong>Amount</strong></span>₦{payment?.amount?.toLocaleString()}
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>Method</strong></span>{payment?.method}
+                                className="pull-left"><strong>Method</strong></span>{payment?.payment_method}
                             </li>
                             <li className="list-group-item text-right"><span
                                 className="pull-left"><strong>Payment Type</strong></span>{payment?.payment_type}

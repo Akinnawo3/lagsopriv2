@@ -63,7 +63,7 @@ const SupportDetails = ({getSupportTicket, match, updateSupportTicket, supportDe
     return (
         <div style={{minHeight: '90vh'}}>
             <Helmet>
-                <title>User Profile</title>
+                <title>Ticket details</title>
                 <meta name="description" content="Ticket Details" />
             </Helmet>
             <PageTitleBar title={`Ticket details`} match={match}  />

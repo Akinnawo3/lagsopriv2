@@ -19,7 +19,7 @@ const ScheduleDetails = ({getScheduleDetails, match, loading, scheduleDetails})=
     return (
         <div className='mb-5' style={{minHeight: '90vh'}}>
             <Helmet>
-                <title>User Profile</title>
+                <title>Schedule Details</title>
                 <meta name="description" content="Schedule Details" />
             </Helmet>
             <PageTitleBar title={`Schedule details`} match={match}  />

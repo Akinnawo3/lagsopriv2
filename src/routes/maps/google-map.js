@@ -1,173 +1,3 @@
-// /**
-//  * Google Map
-//  */
-// import React, {useEffect, useState} from 'react';
-// import GoogleMap from 'google-map-react';
-// import {Input, Button, Label, FormGroup} from 'reactstrap';
-// import SelectSearch from 'react-select-search';
-// // import PropTypes from 'prop-types';
-//
-// // intl messages
-// // import IntlMessages from 'Util/IntlMessages';
-//
-// // page title bar
-// // import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
-//
-// // rct card box
-// import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-// import {NotificationManager} from "react-notifications";
-// import {connect} from "react-redux";
-// import {getDriver, getDriverLocation} from "Actions/driverAction";
-// import {Helmet} from "react-helmet";
-// import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-// import CircularProgress from "@material-ui/core/CircularProgress";
-// import axios from "axios";
-// import api from "../../environments/environment";
-//
-//
-// const  GoogleMapComponent  = ({match, driverLocation})=> {
-//     const lat = driverLocation[0]?.lat ? driverLocation[0]?.lat : 6.459970538
-//     const lng = driverLocation[0]?.lng ? driverLocation[0]?.lng : 3.301247232
-//     const [center, setCenter] = useState([lat, lng])
-//     const [search, setSearch] = useState('')
-//     const [zoom, setZoom] = useState(16)
-//     const [options, setOptions] = useState([])
-//     const [searchData, setSearchData] = useState('')
-//     const [searchedUser, setSearchedUser] = useState([])
-//     const [loading, setLoading] = useState(false)
-//     const [isShow, setIsShow] = useState(false)
-//     const [userAuthId, setUserAuthId] = useState('')
-//     const [focused, setFocused] = useState(false)
-//     const onFocus = () => setFocused(true)
-//     const onBlur = () => setFocused(false)
-//
-//     const MAP_OPTIONS = {
-//         panControl: false,
-//         mapTypeControl: false,
-//     }
-//
-//
-//     const onChangeSearch = (e) =>{
-//         e.preventDefault();
-//         setSearchData(e.target.value );
-//     };
-//
-//
-//     useEffect(() => {
-//         if((searchData.length > 2) && focused) {
-//             searchUser()
-//         }else {
-//             setIsShow(false)
-//         }
-//     },[searchData])
-//
-//     const searchUser = async () => {
-//         try {
-//             if (!forType) {
-//                 NotificationManager.error('select user type');
-//                 return
-//             }
-//             setLoading(true)
-//             const res =  await  axios.get(`${api.user}/v1.1/admin/users?q=${searchData}&user_type=driver`)
-//             setSearchedUser(res.data.data)
-//             setIsShow(true)
-//             setLoading(false)
-//         } catch (e) {
-//
-//         }
-//     }
-//
-//     const handleOption = (user) => {
-//         setSearchData(`${user.first_name} ${user.last_name}`)
-//         setUserAuthId(user.auth_id)
-//         setIsShow(false)
-//     }
-//
-//
-//
-//     const AnyReactComponent = ({text, cord}) =>
-//         <div>
-//             <div className="tooltipo">
-//                 <i className="zmdi zmdi-car text-danger zoom" style={{fontSize: '30px'}} />
-//                 <div className="tooltiptexto">
-//                     <div className='p-1'>
-//                         Driver name: {cord.name}
-//                     </div>
-//                     <div className='p-1'>
-//                         Plate No: {cord.plate_no}
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-//
-//     return (
-//       <div className="map-wrapper">
-//           {/*<Helmet>*/}
-//           {/*    <title>Map</title>*/}
-//           {/*    <meta name="description" content="Driver Location on Map" />*/}
-//           {/*</Helmet>*/}
-//           {/*<PageTitleBar title='Map' match={match}  />*/}
-//         <RctCollapsibleCard heading="Google Maps">
-//             {/*<div className="mb-3 d-flex align-items-center">*/}
-//             {/*    <SelectSearch autoComplete="on" search={true} options={options} placeholder="Search Vehicle" onChange={handleChange} />*/}
-//             {/*    <Button onClick={()=> getVehicleCord()} className="ml-2">Search</Button>*/}
-//             {/*</div>*/}
-//
-//             <FormGroup>
-//                 <Label  htmlFor="browser">Ticket For</Label>
-//                 <Input onFocus={onFocus} onBlur={onBlur} type="search" className="search-input-lg" name="searchData" value={searchData} onChange={onChangeSearch} placeholder="Search.. name, email, phone number" autoComplete='off'  required/>
-//                 {loading && <div className="page-loader d-flex justify-content-center mb-30 mt-30">
-//                     <CircularProgress size={24} />
-//                 </div>}
-//                 {!loading && searchedUser?.length > 0 && isShow &&
-//                 <div className='pr-4 w-100' style={{position: 'absolute'}}>
-//                     <div className="bg-white" style={{border: '1px solid #EBEDF2', maxHeight: '200px', overflow:'auto', zIndex: 10, width: '100%'}}>
-//                         {searchedUser?.length > 0 && searchedUser.map(user => (
-//                             <option onClick={() => handleOption(user)} key={user.auth_id} className='p-2 custom-dropdown'>{user.first_name} {user.last_name}</option>
-//                         ))}
-//                     </div>
-//                 </div>
-//                 }
-//
-//             </FormGroup>
-//           <GoogleMap
-//             bootstrapURLKeys={{ key: "AIzaSyCw_5YoOp78lvq1Dgfri-TnDjRSf1cguf0" }}
-//             yesIWantToUseGoogleMapApiInternals={true}
-//             center={center}
-//             zoom={zoom} style={{ position: 'relative', width: '100%', height: '70vh' }}
-//             options={MAP_OPTIONS}
-//             hoverDistance={40 / 2}
-//             // onClick={_onClick}
-//           >
-//             {driverLocation.map((m, index)=> (
-//                 <AnyReactComponent
-//                     lat={m.lat}
-//                     lng={m.lng}
-//                     key={index}
-//                     text={m.plate_no}
-//                     cord={m}
-//                 />
-//             ))}
-//           </GoogleMap>
-//         </RctCollapsibleCard>
-//       </div>
-//     );
-//
-// }
-//
-// function mapDispatchToProps(dispatch) {
-//     return {
-//         getDriverLocation: (driverData, VehicleData) => dispatch(getDriverLocation(driverData, VehicleData)),
-//     }
-// }
-//
-// const mapStateToProps = state => ({
-//     driverLocation: state.driver.driverLocation,
-// });
-//
-// export default connect(mapStateToProps,mapDispatchToProps) (GoogleMapComponent)
-//
-//
 
 
 /**
@@ -175,21 +5,10 @@
  */
 import React, {useEffect, useState} from 'react';
 import GoogleMap from 'google-map-react';
-import {Input, Button, Label, FormGroup} from 'reactstrap';
-import SelectSearch from 'react-select-search';
-// import PropTypes from 'prop-types';
-
-// intl messages
-// import IntlMessages from 'Util/IntlMessages';
-
-// page title bar
-// import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
-
-// rct card box
+import {Input, FormGroup} from 'reactstrap';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import {NotificationManager} from "react-notifications";
 import {connect} from "react-redux";
-import {getDriver, getDriverLocation} from "Actions/driverAction";
+import {getDriverLocation} from "Actions/driverAction";
 import {Helmet} from "react-helmet";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -239,6 +58,8 @@ const  GoogleMapComponent  = ({match, driverLocation, getDriverLocation})=> {
         }
     },[searchData])
 
+    console.log(driverLocation, 'sssssss')
+
     const searchUser = async () => {
         try {
             setLoading(true)
@@ -263,7 +84,7 @@ const  GoogleMapComponent  = ({match, driverLocation, getDriverLocation})=> {
                 <i className="zmdi zmdi-car text-danger zoom" style={{fontSize: '30px'}} />
                 <div className="tooltiptexto">
                     <div>
-                        Driver name: {cord.name}
+                        Name: {cord.name}
                     </div>
                     <div>
                         Plate No: {cord.plate_no}

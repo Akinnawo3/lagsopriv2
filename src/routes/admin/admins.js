@@ -133,10 +133,7 @@ const  Admins = ({match, getAdmins, admins, updateAdmin, loading, deleteAdmin, a
             {!loading &&
             <RctCollapsibleCard heading="Admins" fullBlock>
                 <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-                    {!loading && admins.length > 0 &&
-
-                            <SearchComponent getPreviousData={getAdmins} getSearchedData={searchAdmins} setCurrentPage={setCurrentPage} getCount={getAdminCount} />
-                       }
+                    <SearchComponent getPreviousData={getAdmins} getSearchedData={searchAdmins} setCurrentPage={setCurrentPage} getCount={getAdminCount} />
                     <IconButton mini="true" className="search-icon-btn">
                         <i className="zmdi zmdi-search"></i>
                     </IconButton>

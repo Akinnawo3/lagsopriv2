@@ -156,17 +156,6 @@ const SupportSetup = ({getTicketTypes, ticketTypes, createSupport, admins, getAd
                                 }
 
                             </FormGroup>
-                            {/*    <FormGroup>*/}
-                            {/*    <label htmlFor="browser">User</label>*/}
-                            {/*    <input list="browsers" name="browser" id="browser">*/}
-
-                            {/*        <datalist id="browsers">*/}
-                            {/*            <option value="">Select</option>*/}
-                            {/*            <option value="driver">Driver</option>*/}
-                            {/*            <option value="rider">Passenger</option>*/}
-                            {/*        </datalist>*/}
-                            {/*    </input>*/}
-                            {/*</FormGroup>*/}
                             <FormGroup>
                                 <Label>Assign To</Label>
                                 <Input type="select"  name="assignedTo"  value={assignedTo} onChange={onChange} required>

@@ -5,32 +5,16 @@ import PaymentsRoutes from "Routes/payments/paymentsRoutes";
 
 // async component
 import {
-   AsyncTrips,
    AsyncAdmins,
-   AsyncClassTypes,
-   AsyncBookingTypes,
    AsyncFees,
-   AsyncCancellations,
-   AsyncPromoDiscount,
-   AsyncDriverRatings,
-   AsyncUserRatings,
-   AsyncTaxiRatings,
    AsyncGooleMapsComponent,
-   AsyncSupport,
-   AsyncAnalytics,
-   AsyncEmergency,
    AsyncUsers,
    AsyncAreas,
-   AsyncSchedule,
-   AsyncVoucher,
-   AsyncReferral,
    AsyncRevenueSplit,
-   AsyncCancellationReasons
+   AsyncCancellationReasons, AsyncCustomerCare
 } from 'Components/AsyncComponent/AsyncComponent';
 import DriverRoutes from "Routes/drivers/driverRoutes";
 import VehicleRoutes from "Routes/vehicles/vehicleRoutes";
-import RefundsRoutes from "Routes/refunds/refundsRoutes";
-import Maps from "Routes/maps";
 import Login from  "Routes/session/login"
 import PassengerRoutes from "Routes/passengers/passengerRoutes";
 import EmergencyRoutes from "Routes/emergency/emergencyRoutes";
@@ -97,10 +81,10 @@ export default [
    //    path: 'promo-discounts',
    //    component: AsyncPromoDiscount
    // },
-   {
-      path: 'cancellations',
-      component: AsyncCancellations
-   },
+   // {
+   //    path: 'cancellations',
+   //    component: AsyncCancellations
+   // },
    {
       path: 'payments',
       component: PaymentsRoutes
@@ -109,10 +93,10 @@ export default [
       path: 'payments-service',
       component: PaymentsServiceRoutes
    },
-   {
-      path: 'refunds',
-      component: RefundsRoutes
-   },
+   // {
+   //    path: 'refunds',
+   //    component: RefundsRoutes
+   // },
    {
       path: 'trips',
       component: TripRoutes
@@ -149,6 +133,10 @@ export default [
    {
       path: 'support',
       component: SupportRoutes
+   },
+   {
+      path: 'settings',
+      component: AsyncCustomerCare
    },
    // {
    //    path: 'analytics',

@@ -39,9 +39,17 @@ const  GoogleMapComponentUser  = ({match, userLocation, getUsersLocation, waitin
 
 
 
-    const AnyReactComponent = () =>
+    const AnyReactComponent = ({cord}) =>
         <div>
             <i className="zmdi zmdi-pin text-danger zoom" style={{fontSize: '30px'}} />
+            <div className="tooltiptexto">
+                <div>
+                    Name: {cord?.first_name} {cord?.last_name}
+                </div>
+                <div>
+                    Phone No: {cord?.phone_number}
+                </div>
+            </div>
         </div>
 
 
@@ -63,6 +71,7 @@ const  GoogleMapComponentUser  = ({match, userLocation, getUsersLocation, waitin
                     lat={m.location?.coordinates[1]}
                     lng={m.location?.coordinates[0]}
                     key={index}
+                    cord={m}
                 />
             ))}
           </GoogleMap>

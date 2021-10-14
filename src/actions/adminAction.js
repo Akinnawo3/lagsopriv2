@@ -56,6 +56,7 @@ export const getAdminCount = () => async dispatch => {
       await changeCurrentPage()
       await NotificationManager.success('Admin Created Successfully!');
       await dispatch(getAdmins())
+      await dispatch(getAdminCount())
     }
     dispatch(endStatusLoading())
   }catch (e) {
@@ -109,11 +110,11 @@ export const deleteAdmin = (auth_id, adminsData) => async dispatch => {
 export const searchAdmins = (searchData) => async dispatch => {
   try {
     dispatch(startStatusLoading())
-    const res = await axios.get(`${api.user}/v1.1/admin/users?q=${searchData}`)
+    const res = await axios.get(`${api.user}/v1.1/admin/users?q=${searchData}&user_type=admin`)
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
-      const res2 = await axios.get(`${api.user}/v1.1/admin/users?q=${searchData}&component=count`);
+      const res2 = await axios.get(`${api.user}/v1.1/admin/users?q=${searchData}&component=count&user_type=admin`);
       dispatch({
         type: ADMIN_COUNT,
         payload: res2.data.data.total ? res2.data.data.total : 0

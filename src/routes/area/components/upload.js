@@ -24,7 +24,7 @@ const Upload = ({getAreas, oncloseModal, getAreaCount}) => {
         try {
             setLoading(true)
           await  Promise.all(result.map(area =>
-              axios.post(`${api.area}/api/v1.1/areas/`, area)
+              axios.post(`${api.area}/v1.1/areas`, area)
             ))
             setLoading(false)
             await oncloseModal()
@@ -36,6 +36,7 @@ const Upload = ({getAreas, oncloseModal, getAreaCount}) => {
         }
     };
 
+    console.log(currentSheet, 'ssssss')
 
 
     return (

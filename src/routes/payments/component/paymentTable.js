@@ -30,6 +30,8 @@ const  PaymentTable = ({payments, paymentsCount, auth_id, getPayments, header, l
         window.scrollTo(0, 0);
     };
 
+    console.log(payments, 'sssss')
+
     return (
         <div>
             <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}}>
@@ -59,7 +61,7 @@ const  PaymentTable = ({payments, paymentsCount, auth_id, getPayments, header, l
                                             </TableCell>
                                             <TableCell>{calculatePostDate(user.createdAt)}</TableCell>
                                             <TableCell>
-                                                {user.method}
+                                                {user.payment_method}
                                             </TableCell>
                                             <TableCell><Badge
                                                 color={getStatusColor4(user.status)}>{getStatus4(user.status)}</Badge></TableCell>

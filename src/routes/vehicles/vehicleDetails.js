@@ -24,7 +24,7 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
     return (
         <div className='mb-5' style={{minHeight: '90vh'}}>
             <Helmet>
-                <title>User Profile</title>
+                <title>Vehicle details</title>
                 <meta name="description" content="Vehicle Details" />
             </Helmet>
             <PageTitleBar title={`Vehicle details`} match={match}  />

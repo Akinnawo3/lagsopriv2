@@ -128,16 +128,6 @@ const  SupportType = (props) => {
                     </IconButton>
                 </li>
                 <div className="float-right">
-                    {/*<CSVLink*/}
-                    {/*    // headers={headers}*/}
-                    {/*    data={excelExport}*/}
-                    {/*    filename={"classTypes.csv"}*/}
-                    {/*    className="btn-sm btn-outline-default mr-10 bg-primary text-white"*/}
-                    {/*    target="_blank"*/}
-                    {/*>*/}
-                    {/*    <i className="zmdi zmdi-download mr-2"></i>*/}
-                    {/*    Export to Excel*/}
-                    {/*</CSVLink>*/}
                     <a href="#" onClick={(e) => opnAddNewUserModal(e)} color="primary" className="caret btn-sm mr-10">Create New TicketType <i className="zmdi zmdi-plus"></i></a>
                 </div>
                 {ticketTypes.length > 0 &&
@@ -222,7 +212,7 @@ const  SupportType = (props) => {
             <DeleteConfirmationDialog
                 ref={inputEl}
                 title="Are You Sure You Want To Delete?"
-                message="This will delete user permanently."
+                message="This will delete ticket permanently."
                 onConfirm={() => {
                     deleteTicketType(deleteId);
                     inputEl.current.close();

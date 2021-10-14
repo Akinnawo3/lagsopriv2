@@ -31,16 +31,6 @@ const AsyncCancellationReasons = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
-
-const AsyncRefunds = Loadable({
-	loader: () => import("Routes/refunds/refunds"),
-	loading: () => <RctPageLoader />,
-});
-
-const AsyncPromoDiscount = Loadable({
-	loader: () => import("Routes/promo-discounts/promoDiscount"),
-	loading: () => <RctPageLoader />,
-});
 const AsyncDriverRatings = Loadable({
 	loader: () => import("Routes/ratings/driver-ratings"),
 	loading: () => <RctPageLoader />,
@@ -51,24 +41,6 @@ const AsyncUserRatings = Loadable({
 });
 const AsyncRatingsDetails = Loadable({
 	loader: () => import("Routes/ratings/ratingDetails"),
-	loading: () => <RctPageLoader />,
-});
-const AsyncRefundsPending = Loadable({
-	loader: () => import("Routes/refunds/pendingRefunds"),
-	loading: () => <RctPageLoader />,
-});
-
-const AsyncRefundsDetails = Loadable({
-	loader: () => import("Routes/refunds/refundDetails"),
-	loading: () => <RctPageLoader />,
-});
-const AsyncRefundsCompleted = Loadable({
-	loader: () => import("Routes/refunds/completedRefunds"),
-	loading: () => <RctPageLoader />,
-});
-
-const AsyncVoucher = Loadable({
-	loader: () => import("Routes/voucher/voucher"),
 	loading: () => <RctPageLoader />,
 });
 
@@ -89,13 +61,14 @@ const AsyncReferral = Loadable({
 // 	loading: () => <RctPageLoader />,
 // });
 
-const AsyncCancellations = Loadable({
-	loader: () => import("Routes/cancellations/cancellations"),
-	loading: () => <RctPageLoader />,
-});
 
 const AsyncSchedule = Loadable({
 	loader: () => import("Routes/schedule/schedule"),
+	loading: () => <RctPageLoader />,
+});
+
+const AsyncCustomerCare = Loadable({
+	loader: () => import("Routes/customerCare/customerCare"),
 	loading: () => <RctPageLoader />,
 });
 
@@ -283,10 +256,6 @@ const AsyncSupportContactUsDetails = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
-const AsyncAnalytics = Loadable({
-	loader: () => import("Routes/analytics/analytics"),
-	loading: () => <RctPageLoader />,
-});
 
 // home dashboard
 const AsyncHomeDashboardComponent = Loadable({
@@ -416,14 +385,9 @@ const AsyncSessionPage500Component = Loadable({
 
 
 export {
-	AsyncPromoDiscount,
-	AsyncRefunds,
-	AsyncRefundsPending,
-	AsyncRefundsCompleted,
 	AsyncPaymentsSuccessful,
 	AsyncPaymentsUnsuccessful,
 	AsyncPayments,
-	AsyncCancellations,
 	AsyncAdmins,
 	AsyncBookingTypes,
 	AsyncFees,
@@ -454,7 +418,6 @@ export {
 	AsyncDriverRatings,
 	AsyncUserRatings,
 	AsyncSupport,
-	AsyncAnalytics,
 	AsyncEmergency,
 	AsyncEmergencyDetails,
 	AsyncUsers,
@@ -467,13 +430,10 @@ export {
 	AsyncSupportInProgress,
 	AsyncAreas,
 	AsyncSupportType,
-	AsyncRefundsDetails,
 	AsyncPaymentsDetails,
 	AsyncSchedule,
 	AsyncScheduleDetails,
-	AsyncVoucher,
 	AsyncReferral,
-	// AsyncReferralDetails,
 	AsyncRevenueSplit,
 	AsyncFdt,
 	AsyncFdtDetails,
@@ -497,4 +457,5 @@ export {
 	AsyncPaymentsServiceUnsuccessful,
 	AsyncPaymentsService,
 	AsyncPaymentsServiceDetails,
+	AsyncCustomerCare
 };

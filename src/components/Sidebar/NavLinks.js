@@ -359,5 +359,12 @@ export default {
          "new_item": false,
          "path": "/admin/map"
       },
+      {
+         "menu_title": "sidebar.settings",
+         "menu_icon": "zmdi zmdi-map",
+         "type_multi": null,
+         "new_item": false,
+         "path": "/admin/settings"
+      },
    ],
 }

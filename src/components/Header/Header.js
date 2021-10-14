@@ -13,13 +13,9 @@ import Tooltip from '@material-ui/core/Tooltip';
 import MenuIcon from '@material-ui/icons/Menu';
 import { withRouter } from 'react-router-dom';
 import { collapsedSidebarAction } from 'Actions';
-import Notifications from './Notifications';
 import ChatSidebar from './ChatSidebar';
 import DashboardOverlay from '../DashboardOverlay/DashboardOverlay';
-// import SearchForm from './SearchForm';
-// import QuickLinks from './QuickLinks';
-// import MobileSearchForm from './MobileSearchForm';
-import {logoutUser} from "../../actions/authAction";
+import {logoutUser} from "Actions/authAction";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
 class Header extends Component {
@@ -68,8 +64,6 @@ class Header extends Component {
 	}
 
 	render() {
-
-		const { isMobileSearchFormVisible } = this.state;
 		const { horizontalMenu, agencyMenu, location, isLoadingStatus } = this.props;
 		return (
 			<div>
@@ -107,36 +101,13 @@ class Header extends Component {
 										</Tooltip>
 									</li>
 								}
-								{/*{!horizontalMenu && <QuickLinks />}*/}
-								{/*<li className="list-inline-item search-icon d-inline-block">*/}
-								{/*	<SearchForm />*/}
-								{/*	<IconButton mini="true" className="search-icon-btn" onClick={() => this.openMobileSearchForm()}>*/}
-								{/*		<i className="zmdi zmdi-search"></i>*/}
-								{/*	</IconButton>*/}
-								{/*	<MobileSearchForm*/}
-								{/*		isOpen={isMobileSearchFormVisible}*/}
-								{/*		onClose={() => this.setState({ isMobileSearchFormVisible: false })}*/}
-								{/*	/>*/}
-								{/*</li>*/}
 							</ul>
 							}
 						</div>
 						<ul className="navbar-right list-inline mb-0">
-							<Notifications />
-							{/*<Cart />*/}
-							{/*<li className="list-inline-item setting-icon mr-2">*/}
-							{/*	<div className=	'text-dark'>*/}
-							{/*		bruce*/}
-							{/*	</div>*/}
-							{/*	/!*<Tooltip title="Chat" placement="bottom">*!/*/}
-							{/*	/!*	<IconButton aria-label="settings" onClick={() => this.setState({ customizer: true })}>*!/*/}
-							{/*	/!*		/!*<i className="zmdi zmdi-comment"></i>*!/Tope*!/*/}
-							{/*	/!*	</IconButton>*!/*/}
-							{/*	/!*</Tooltip>*!/*/}
-							{/*</li>*/}
 							<li className="list-inline-item setting-icon ml-2">
 								<a onClick={()=> {this.props.logoutUser()}} href="#" className="text-primary">
-									<i className="zmdi zmdi-power text-danger mr-1" style={{fontSize: '20px'}}></i>
+									<i className="zmdi zmdi-power text-danger mr-1" title='Logout' style={{fontSize: '20px'}}></i>
 									{/*<span>Log Out</span>*/}
 								</a>
 							</li>
@@ -172,11 +143,6 @@ const mapStateToProps = ({ settings, loading }) => {
 	const navCollapsed = settings.navCollapsed
 	return {settings, isLoadingStatus, navCollapsed};
 };
-
-// const mapStateToProps = state => ({
-// 	settings: state.settings,
-// 	loadingStatus: state.loading.loadingStatus
-// });
 
 export default withRouter(connect(mapStateToProps, {
 	collapsedSidebarAction,logoutUser

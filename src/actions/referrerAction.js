@@ -10,7 +10,7 @@ import api from "../environments/environment";
   try {
    spinner && dispatch(startLoading());
    !spinner && dispatch(startStatusLoading())
-    const res = await axios.get(`${api.referral}/api/v1.1/referral/?page_no=${page_no}&no_per_page=20`);
+    const res = await axios.get(`${api.referral}/v1.1/referrals/?page=${page_no}&item_per_page=20`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -30,13 +30,13 @@ import api from "../environments/environment";
 
 export const getReferralCount = () => async dispatch => {
   try {
-    const res = await axios.get(`${api.referral}/api/v1.1/referral/count/`);
+    const res = await axios.get(`${api.referral}/v1.1/referrals?component=count`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
       dispatch({
         type: REFERRAL_COUNT,
-        payload: res.data.data
+        payload: res.data?.data?.total
       });
     }
   } catch (err) {

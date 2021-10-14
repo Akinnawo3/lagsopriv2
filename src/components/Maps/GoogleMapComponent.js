@@ -23,8 +23,8 @@ const  GoogleMapComponent  = ({match, userLocation, getUsersLocation, waiting, m
         })
 
         if(geoCode >= 3.5) {
-            setCenter(centerValue);
             getUsersLocation(centerValue[1], centerValue[0])
+            setCenter(centerValue);
         }
     }
 
@@ -33,17 +33,26 @@ const  GoogleMapComponent  = ({match, userLocation, getUsersLocation, waiting, m
         mapTypeControl: false,
     }
 
-    const  _onClick = ({x, y, lat, lng, event}) => {
-        setCenter([lat, lng])
-        getUsersLocation(lng, lat)
-    }
+    // const  _onClick = ({x, y, lat, lng, event}) => {
+    //     setCenter([lat, lng])
+    //     getUsersLocation(lng, lat)
+    // }
 
 
-
-    const AnyReactComponent = () =>
+    const AnyReactComponent = ({text, cord}) =>
         <div>
-            <i className="zmdi zmdi-car text-danger zoom" style={{fontSize: '30px'}} />
-        </div>
+            <div className="tooltipo">
+                <i className="zmdi zmdi-car text-danger zoom" style={{fontSize: '30px'}} />
+                <div className="tooltiptexto">
+                    <div>
+                        Name: {cord?.first_name} {cord?.last_name}
+                    </div>
+                    <div>
+                        Plate No: {cord?.vehicle_data[0]?.car_number_plate}
+                    </div>
+                </div>
+            </div>
+         </div>
 
 
     return (
@@ -56,14 +65,16 @@ const  GoogleMapComponent  = ({match, userLocation, getUsersLocation, waiting, m
                     zoom={zoom} style={{ position: 'relative', width: '100%', height: 400 }}
                     options={MAP_OPTIONS}
                     hoverDistance={40 / 2}
-                    onClick={_onClick}
+                    // onClick={_onClick}
                     onBoundsChange={center => getUsersNewLocations(center)}
                 >
                     {userLocation.map((m, index)=> (
                         <AnyReactComponent
+                            draggable={false}
                             lat={m.location?.coordinates[1]}
                             lng={m.location?.coordinates[0]}
                             key={index}
+                            cord={m}
                         />
                     ))}
                 </GoogleMap>

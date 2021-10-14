@@ -17,7 +17,7 @@ const RatingDetails = ({getRating, rating,  loading, match})=> {
     return (
         <div className='mb-5' style={{minHeight: '90vh'}}>
             <Helmet>
-                <title>User Profile</title>
+                <title>Rating details</title>
                 <meta name="description" content="Rating Details" />
             </Helmet>
             <PageTitleBar title={`Rating details`} match={match}  />

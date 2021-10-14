@@ -159,6 +159,7 @@ module.exports = {
    "sidebar.ticket in-progress": "In-progress Tickets",
    "sidebar.ticket new": "New Tickets",
    "sidebar.ticket setup": "setup",
+   "sidebar.settings": "Settings",
    "sidebar.contactUs": "Contact Us",
    "sidebar.googleMaps": "Google Maps",
    "sidebar.leafletMaps": "Leaflet Maps",

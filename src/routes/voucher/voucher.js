@@ -6,7 +6,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import {Badge, Input, Label, Modal, ModalBody, ModalHeader} from 'reactstrap';
-import api from 'Api';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import Button from "@material-ui/core/Button";
@@ -33,15 +32,6 @@ const  Voucher = ({match}) => {
 
 
     // get employee payrols
-    const getEmployeePayrolls = () => {
-        api.get('employeePayrols.js')
-            .then((response) => {
-                setEmployeePayroll(response.data)
-            })
-            .catch(error => {
-                // error handling
-            })
-    }
 
 
     return (

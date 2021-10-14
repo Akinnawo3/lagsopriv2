@@ -26,6 +26,7 @@ import cancellationReasonReducer from "./cancellationReasonReducer";
 import referralReducer from "./referralReducer";
 import walletReducer from "./walletReducer";
 import paymentReducer from "./paymentReducer";
+import customerCareReducer from "./customerCareReducer";
 
 const reducers = combineReducers({
    settings,
@@ -52,6 +53,7 @@ const reducers = combineReducers({
    referrals: referralReducer,
    wallets: walletReducer,
    payments: paymentReducer,
+   customerCare: customerCareReducer,
 });
 
 export default reducers;

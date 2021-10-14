@@ -50,7 +50,7 @@ export const getTicketType = (support_id, spinner) => async dispatch => {
   try {
     spinner && dispatch(startLoading());
     !spinner && dispatch(startStatusLoading())
-    const res = await axios.get(`${api.support}/api/v1.1/user/support/${support_id}/`)
+    const res = await axios.get(`${api.support}/v1.1/user/support/${support_id}/`)
     if(res.data.status === 'error') {
       // NotificationManager.error(res.data.msg);
     }else {
@@ -76,7 +76,7 @@ export const updateTicketType = (support_id, title, user_type, issues, descripti
   const body = {title, user_type, issues, description}
   try {
     await dispatch(startStatusLoading())
-  const res = await axios.put(`${api.support}/supports/issues/${support_id}`, body)
+  const res = await axios.put(`${api.support}/v1.1/supports/issues/${support_id}`, body)
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -94,7 +94,7 @@ export const updateTicketType = (support_id, title, user_type, issues, descripti
 export const deleteTicketType = (support_id) => async dispatch => {
   try {
     dispatch(startStatusLoading())
-   const res = await axios.delete(`${api.support}/supports/issues/${support_id}`)
+   const res = await axios.delete(`${api.support}/v1.1/supports/issues/${support_id}`)
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {

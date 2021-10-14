@@ -14,7 +14,7 @@ const  UnsuccessfulPayments = ({match, getPayments, getPaymentsCount, payments, 
 
     useEffect(()=> {
         getPayments(1, 2, '', true);
-        getPaymentsCount()
+        getPaymentsCount(2)
     },[])
 
 

@@ -15,6 +15,9 @@ const DriverProfile = ({driver, changeDriverStatus, loadingStatus, vehicles, ass
     const [isViewerOpen, setIsViewerOpen] = useState(false);
     const [addVehicleModal, setAddVehicleModal] = useState(false)
     const [vehicleData, setVehicleData] = useState({})
+    const [argument, setArgument] = useState(null)
+    const [title, setTitle] = useState('')
+    const [message, setMessage] = useState('')
     const inputEl = useRef(null);
     const [formData, setFormData] = useState({
         firstname: driver?.first_name, lastname: driver?.last_name,  email: driver?.email, vehicle: ""
@@ -23,9 +26,12 @@ const DriverProfile = ({driver, changeDriverStatus, loadingStatus, vehicles, ass
 
     const {vehicle} = formData;
 
-    const openImageViewer = useCallback(index => {
-        setIsViewerOpen(true);
-    }, []);
+    useEffect(() => {
+        if(vehicle && vehicles.length > 0)  {
+            const vehicleValue =  vehicles.find(element => element.vehicle_id === vehicle)
+            setVehicleData(vehicleValue)
+        }
+    },[vehicle])
 
     const opnAddVehicleModal = () => {
         setAddVehicleModal(true)
@@ -45,19 +51,48 @@ const DriverProfile = ({driver, changeDriverStatus, loadingStatus, vehicles, ass
     };
 
     const onSuspend = () => {
+        setTitle("Are you sure you want to suspend driver")
+        setMessage("This driver will be inactive.")
+        setArgument(3)
         inputEl.current.open();
     }
 
-    useEffect(() => {
-       if(vehicle && vehicles.length > 0)  {
-         const vehicleValue =  vehicles.find(element => element.vehicle_id === vehicle)
-           setVehicleData(vehicleValue)
-       }
-    },[vehicle])
+    const onReactivate = () => {
+        setTitle("Are you sure you want to reactivate driver")
+        setMessage("This driver will be active again.")
+        setArgument(1)
+        inputEl.current.open();
+    }
 
+    const onApproved = () => {
+        setTitle("Are you sure you want to approve driver")
+        setMessage("This driver will be approved on the platform.")
+        setArgument(2)
+        inputEl.current.open();
+    }
+    const onAccept = () => {
+        setTitle("Are you sure you want to accept driver")
+        setMessage("This driver will be accepted on the platform.")
+        setArgument(4)
+        inputEl.current.open();
+    }
 
-    // location: {type: "Point", coordinates: [3.50929, 6.4431033]}
-    // coordinates
+  const   onConfirm = () => {
+        if(argument === 3) {
+            changeDriverStatus(driver?.auth_id, '3', driver, emailMessages.suspendMsg);
+        }
+        if(argument === 1) {
+            changeDriverStatus(driver?.auth_id, '1', driver, emailMessages.reactivateMsg, 'Driver Reactivated')
+        }
+        if(argument === 2) {
+            changeDriverStatus(driver?.auth_id, '2', driver, emailMessages.approveMsg, 'Driver Approved')
+        }
+        if(argument === 4) {
+            changeDriverStatus(driver?.auth_id, '1', driver, emailMessages.acceptMsg, 'Driver Accepted')
+        }
+        inputEl.current.close();
+    }
+
 
 
     return (
@@ -153,11 +188,11 @@ const DriverProfile = ({driver, changeDriverStatus, loadingStatus, vehicles, ass
                                 <span  className="pull-left d-flex">
                                     {driver?.driver_data?.driver_status ===  0 &&
                                     <div className='text-center'>
-                                        <Button disabled={loadingStatus} onClick={()=> {changeDriverStatus(driver?.auth_id, '1', driver, emailMessages.acceptMsg, 'Driver Accepted')}} className="bg-primary mt-3 text-white">Accept Driver</Button>
+                                        <Button disabled={loadingStatus} onClick={()=> onAccept()} className="bg-primary mt-3 text-white">Accept Driver</Button>
                                     </div>}
                                      {driver?.driver_data?.driver_status ===  1 &&
                                      <div className='text-center'>
-                                         <Button disabled={loadingStatus} onClick={()=> {changeDriverStatus(driver?.auth_id, '2', driver, emailMessages.approveMsg, 'Driver Approved')}} className="bg-success mt-3 text-white">Approve Driver</Button>
+                                         <Button disabled={loadingStatus} onClick={()=> onApproved()} className="bg-success mt-3 text-white">Approve Driver</Button>
                                      </div>}
                                      {driver?.driver_data?.driver_status ===  2 &&
                                      <div className='text-center'>
@@ -165,7 +200,7 @@ const DriverProfile = ({driver, changeDriverStatus, loadingStatus, vehicles, ass
                                      </div>}
                                      {driver?.driver_data?.driver_status ===  3 &&
                                      <div className='text-center'>
-                                         <Button disabled={loadingStatus} onClick={()=> {changeDriverStatus(driver?.auth_id, '1', driver, emailMessages.reactivateMsg, 'Driver Reactivated')}} className="bg-warning mt-3 text-white">Reactivate Driver</Button>
+                                         <Button disabled={loadingStatus} onClick={()=> onReactivate()} className="bg-warning mt-3 text-white">Reactivate Driver</Button>
                                      </div>}
                                      {driver?.driver_data?.driver_status === 2 && !driver.driver_data?.vehicle_id && (driver?.driver_data?.receipt_url || driver?.driver_data?.made_first_payment)  &&
                                      <div className='text-center ml-2'>
@@ -256,12 +291,9 @@ const DriverProfile = ({driver, changeDriverStatus, loadingStatus, vehicles, ass
             </Modal>
             <DeleteConfirmationDialog
                 ref={inputEl}
-                title="Are you sure YOU want to suspend driver"
-                message="This driver will be inactive."
-                onConfirm={() => {
-                    changeDriverStatus(driver?.auth_id, '3', driver, emailMessages.suspendMsg);
-                    inputEl.current.close();
-                }}
+                title={title}
+                message={message}
+                onConfirm={onConfirm}
             />
         </div>
     );

@@ -54,7 +54,7 @@ const  Referral = ({match, referrals, referralCount, getReferral, getReferralCou
                                     <TableRow hover key={item.id}>
                                         <TableCell>{item.referrer_number}</TableCell>
                                         <TableCell>{item.referee_number}</TableCell>
-                                        <TableCell><Badge color={item.status === 0 ? 'warning': 'success'}>{item.status === 0 ? 'Pending': 'Fulfilled'}</Badge></TableCell>
+                                        <TableCell><Badge color={item.status === 0 ? 'warning': 'success'}>{item.status === 0 ? 'Pending': 'Confirmed'}</Badge></TableCell>
                                     </TableRow>
                                 ))}
                             </Fragment>

@@ -61,7 +61,7 @@ export const getVehiclesCount = (assign= '', car_number_plate='') => async dispa
     }else {
       dispatch({
         type: VEHICLES_COUNT,
-        payload: res.data.data.total ? res.data.data.total : 0
+        payload: res.data?.data?.total ? res.data?.data?.total : 0
       });
     }
   } catch (err) {
@@ -151,23 +151,6 @@ export const revokeVehicle = (vehicle_id, vehicleDetails, driverDetails) => asyn
   }
 };
 
-// export const assignVehicle = (vehicle_id, driver_auth_id, page_no, driver_status) => async dispatch => {
-//   const body = {vehicle_id, driver_auth_id, page_no, driver_status}
-//   try {
-//     dispatch(startStatusLoading())
-//     const res =  await axios.post(`${api.vehicles}/v1.1/vehicles/assign`, body)
-//     if(res.data.status === 'error') {
-//       NotificationManager.error(res.data.msg);
-//     }else {
-//       await NotificationManager.success('Vehicle assigned Successfully!');
-//       await dispatch(getDrivers(driver_status, page_no));
-//     }
-//     dispatch(endStatusLoading())
-//   } catch (err) {
-//     dispatch(endStatusLoading())
-//     NotificationManager.error(err.response.data.error);
-//   }
-// };
 
 export const assignVehicleOnProfile = (vehicle_id, driver_auth_id, driverData, vehicleData, message_type, subject) => async dispatch => {
   const body = {vehicle_id, driver_auth_id}
@@ -188,27 +171,24 @@ export const assignVehicleOnProfile = (vehicle_id, driver_auth_id, driverData, v
   }
 };
 
-// export const searchVehicles = (car_number_plate, assign) => async dispatch => {
-//   try {
-//     spinner && dispatch(startLoading());
-//     !spinner && dispatch(startStatusLoading())
-//     const res = await axios.get(`${api.vehicles}/v1.1/vehicles?assign=${assign}&car_number_plate=${car_number_plate}`);
-//     if(res.data.status === 'error') {
-//       NotificationManager.error(res.data.msg);
-//     }else {
-//       dispatch({
-//         type: VEHICLES,
-//         payload: res.data.data
-//       });
-//     }
-//     dispatch(endLoading());
-//     dispatch(endStatusLoading())
-//   } catch (err) {
-//     dispatch(endStatusLoading())
-//     dispatch(endLoading());
-//     NotificationManager.error(err.response.data.message)
-//   }
-// };
+export const searchVehicles = (data, assign) => async dispatch => {
+  try {
+    dispatch(startStatusLoading())
+    const res = await axios.get(`${api.vehicles}/v1.1/vehicles?q=${data}&assign=${assign}`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      dispatch({
+        type: VEHICLES,
+        payload: res.data.data
+      });
+    }
+    dispatch(endStatusLoading())
+  } catch (err) {
+    dispatch(endStatusLoading())
+    NotificationManager.error(err.response.data.message)
+  }
+};
 
 
 

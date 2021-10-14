@@ -19,19 +19,17 @@ import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/Delete
 import {connect} from "react-redux";
 import MobileSearchForm from "Components/Header/MobileSearchForm";
 import Upload from "./components/upload";
-import {createArea, deleteArea, getAreas, getAreasCount, updateArea} from "Actions/areaAction";
-import localGovt from "Assets/data/localGovt/localGovt";
+import {createArea, deleteArea, getAreas, getAreasCount, searchAreas, updateArea} from "Actions/areaAction";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {CSVLink} from "react-csv";
-// import CSVLink from "react-csv/src/components/Link";
+import SearchComponent from "Components/SearchComponent/SearchComponent";
 
-const  Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteArea, getAreaCount, areaCount}) => {
+const  Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteArea, getAreaCount, areaCount, searchArea}) => {
     const [addNewAreaModal, setAddNewAreaModal] = useState(false)
     const [editArea, setEditArea] = useState(false)
     const [updateId, setUpdateId] = useState(null)
     const [deleteId, setDeleteId] = useState(null)
-    const [formData, setFormData] = useState({localGovtName: '', areaName: ''})
-    const [searchData, setSearchData] = useState('')
+    const [formData, setFormData] = useState({lga: '', areaName: ''})
     const inputEl = useRef(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [excelExport, setExcelExport] = useState([])
@@ -49,7 +47,7 @@ const  Areas = ({match, getAreas, areas, createArea, updateArea, loading, delete
     };
 
     const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
-    const {localGovtName, areaName} = formData
+    const {lga, areaName} = formData
 
     const opnAddNewAreaModal = (e) => {
         e.preventDefault();
@@ -66,15 +64,15 @@ const  Areas = ({match, getAreas, areas, createArea, updateArea, loading, delete
         setAddNewAreaModal1(false);
     }
 
-    const opnAddNewAreaEditModal = (id) => {
+    const opnAddNewAreaEditModal = (area_id) => {
         areas.map(area => {
-            if(area.id === id){
+            if(area.area_id === area_id){
                 setFormData(
                     {
-                        // localGovtName: area.local_govt_name,
+                        lga: area.lga,
                         areaName: area.area_name,
                     })
-                setUpdateId(area.id)
+                setUpdateId(area.area_id)
             }
         })
         setAddNewAreaModal(true)
@@ -84,29 +82,24 @@ const  Areas = ({match, getAreas, areas, createArea, updateArea, loading, delete
     const onAddUpdateAreaModalClose = () => {
         setFormData(
             {
-                localGovtName: '', areaName: ''
+                lga: '', areaName: ''
             })
         setUpdateId(null)
         setAddNewAreaModal(false);
         setEditArea(false);
     }
 
-    const onDelete = (id) => {
+    const onDelete = (area_id) => {
         inputEl.current.open();
-        setDeleteId(id)
+        setDeleteId(area_id)
     }
 
     const onSubmit = async (e) => {
         e.preventDefault();
         onAddUpdateAreaModalClose()
-        !editArea?  await createArea( areaName) : await updateArea(updateId, areaName)
+        !editArea?  await createArea( areaName, lga) : await updateArea(updateId, areaName, lga)
 
 
-    };
-
-    const onChangeSearch = (e) =>{
-        e.preventDefault();
-        setSearchData(e.target.value );
     };
 
 
@@ -114,7 +107,8 @@ const  Areas = ({match, getAreas, areas, createArea, updateArea, loading, delete
         if(areas) {
             let result = areas.map(area=> {
                 return {
-                    areaName: area['area_name'],
+                    areaName: area?.area_name,
+                    lga: area?.lga
                 }
             })
             setExcelExport(result)
@@ -123,9 +117,35 @@ const  Areas = ({match, getAreas, areas, createArea, updateArea, loading, delete
 
     const sampleData = [
         {
-            area_name: 'Lekki Phase 1'
-        }
+            area_name: 'Lekki Phase 1',
+            lga: 'oti-osa'
+        },
+        {
+            area_name: 'Lekki Phase 5',
+            lga: 'oti-osa'
+        },
+        {
+            area_name: 'Lekki Phase 3',
+            lga: 'oti-osa'
+        },
+        {
+            area_name: 'Lekki Phase 4',
+            lga: 'oti-osa'
+        },
     ]
+
+
+    const getPreviousData = () => {
+        getAreas(currentPage)
+    }
+
+    const getSearchData = (searchData) => {
+        searchArea(searchData)
+    }
+
+    const handleCount = () => {
+        getAreaCount()
+    }
 
 
     return (
@@ -134,17 +154,9 @@ const  Areas = ({match, getAreas, areas, createArea, updateArea, loading, delete
             {!loading &&
             <RctCollapsibleCard heading="Areas" fullBlock>
                 <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-                    {!loading && areas.length > 0 &&
                     <div className="search-wrapper">
-                        <Input type="search" className="search-input-lg" name="searchData" value={searchData} onChange={onChangeSearch} placeholder="Search.." />
-                    </div>}
-                    {/*<IconButton mini="true" className="search-icon-btn" onClick={() => this.openMobileSearchForm()}>*/}
-                    {/*    <i className="zmdi zmdi-search"></i>*/}
-                    {/*</IconButton>*/}
-                    <MobileSearchForm
-                        // isOpen={isMobileSearchFormVisible}
-                        // onClose={() => this.setState({ isMobileSearchFormVisible: false })}
-                    />
+                        <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={'Area name'} />
+                    </div>
                 </li>
                 <div className="float-right">
                     <CSVLink
@@ -176,8 +188,8 @@ const  Areas = ({match, getAreas, areas, createArea, updateArea, loading, delete
                     <Table>
                         <TableHead>
                             <TableRow hover>
-                                {/*<TableCell>Local Govt Name</TableCell>*/}
                                 <TableCell>Area Name</TableCell>
+                                <TableCell>LGA</TableCell>
                                 <TableCell>Actions</TableCell>
                             </TableRow>
                         </TableHead>
@@ -185,11 +197,11 @@ const  Areas = ({match, getAreas, areas, createArea, updateArea, loading, delete
                             <Fragment>
                                 {areas.map((area, key) => (
                                     <TableRow hover key={key}>
-                                        {/*<TableCell>{area.local_govt_name}</TableCell>*/}
                                         <TableCell>{area.area_name}</TableCell>
+                                        <TableCell>{area.lga}</TableCell>
                                         <TableCell>
-                                            <button type="button" className="rct-link-btn" onClick={(e) => opnAddNewAreaEditModal(area.id)}><i className="ti-pencil"></i></button>
-                                            <button type="button" className="rct-link-btn ml-lg-3 text-danger" onClick={() => onDelete(area.id)}><i className="ti-trash"></i></button>
+                                            <button type="button" className="rct-link-btn" onClick={(e) => opnAddNewAreaEditModal(area.area_id)}><i className="ti-pencil"></i></button>
+                                            <button type="button" className="rct-link-btn ml-lg-3 text-danger" onClick={() => onDelete(area.area_id)}><i className="ti-trash"></i></button>
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -218,19 +230,14 @@ const  Areas = ({match, getAreas, areas, createArea, updateArea, loading, delete
                 </ModalHeader>
                 <Form onSubmit={onSubmit}>
                     <ModalBody>
-                                {/*<FormGroup>*/}
-                                {/*    <Label>Local Govt Name</Label>*/}
-                                {/*    <Input type="select" name="localGovtName" onChange={onChange} value={localGovtName} required>*/}
-                                {/*        <option value="">select</option>*/}
-                                {/*        {localGovt.map(local=> (*/}
-                                {/*            <option key={local} value={local}>{local}</option>*/}
-                                {/*        ))}*/}
-                                {/*    </Input>*/}
-                                {/*</FormGroup>*/}
                                 <FormGroup>
                                     <Label>Area Name</Label>
                                     <Input type="text"  name="areaName" value={areaName} onChange={onChange}  required />
                                 </FormGroup>
+                        <FormGroup>
+                            <Label>LGA</Label>
+                            <Input type="text"  name="lga" value={lga} onChange={onChange}  required />
+                        </FormGroup>
                     </ModalBody>
                     <ModalFooter>
                         <Button type="submit" variant="contained" className="text-white btn-success">Submit</Button>
@@ -263,9 +270,10 @@ function mapDispatchToProps(dispatch) {
     return {
         getAreas: (page_no, spinner) => dispatch(getAreas(page_no, spinner)),
         getAreaCount: () => dispatch(getAreasCount()),
-        createArea: (area_name) => dispatch(createArea( area_name)),
-        updateArea: (id, area_name) => dispatch(updateArea(id, area_name)),
-        deleteArea: (id, areas) => dispatch( deleteArea(id, areas)),
+        createArea: (area_name, lga) => dispatch(createArea( area_name, lga)),
+        searchArea: (data) => dispatch(searchAreas(data)),
+        updateArea: (area_id, area_name, lga) => dispatch(updateArea(area_id, area_name, lga)),
+        deleteArea: (area_id, areas) => dispatch( deleteArea(area_id, areas)),
     };
 }
 

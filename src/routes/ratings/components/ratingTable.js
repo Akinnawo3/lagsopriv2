@@ -31,9 +31,9 @@ const  RatingTable = ({getRatings, ratings,  loading, ratingCount, user_type, he
         <div>
             {!loading && ratings?.length > 0 &&
             <RctCollapsibleCard heading={header} fullBlock>
-                <div className="float-right">
-                    <a href="#" onClick={e => e.preventDefault()} className="btn-sm btn-outline-default mr-10">Export to Excel</a>
-                </div>
+                {/*<div className="float-right">*/}
+                {/*    <a href="#" onClick={e => e.preventDefault()} className="btn-sm btn-outline-default mr-10">Export to Excel</a>*/}
+                {/*</div>*/}
                 <div className="table-responsive" style={{minHeight: "50vh"}}>
                     <Table>
                         <TableHead>

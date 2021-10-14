@@ -13,6 +13,7 @@ import {loginUser} from "Actions/authAction";
 
 const Signin = ({loginUser,  loading}) => {
    const [formData, setFormData] = useState({phone_number: '', password: ''});
+   const [peek, setPeek] = useState(false);
 
    const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
    const { phone_number, password } = formData;
@@ -50,8 +51,16 @@ const Signin = ({loginUser,  loading}) => {
                                   <span className="has-icon"><i className="ti-mobile"></i></span>
                                </FormGroup>
                                <FormGroup className="has-wrapper">
-                                  <Input value={password} type="Password" name="password"  className="has-input input-lg" placeholder="Password" onChange={onChange} required/>
-                                  <span className="has-icon"><i className="ti-lock"></i></span>
+                                  <Input value={password} type={peek ? 'text' : 'password'} name="password"  className="has-input input-lg" placeholder="Password" onChange={onChange} required/>
+                                  <span className="has-icon">
+                                     {!peek ?
+                                     <img onClick={() => setPeek(!peek)} src={require('../../../assets/img/eye-png-icon-28.jpg')} style={{width: '20px', height: '20px'}} /> :
+
+                                      <img onClick={() => setPeek(!peek)} src={require('../../../assets/img/eye_slash_icon.png')} style={{width: '20px', height: '20px'}} />
+                                     }
+
+
+                                  </span>
                                </FormGroup>
                                <FormGroup className="mb-15">
                                   <Button
@@ -66,7 +75,7 @@ const Signin = ({loginUser,  loading}) => {
                                </FormGroup>
                             </Form>
                             <p className="text-muted">By signing up you agree to {AppConfig.brandName}</p>
-                            <p><a target="_blank" href="#/terms-condition" className="text-muted">Terms of Service</a></p>
+                            <p><a className="text-muted">Terms of Service</a></p>
                          </div>
                       </div>
                    </div>

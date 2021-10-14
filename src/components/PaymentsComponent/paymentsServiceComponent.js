@@ -76,7 +76,7 @@ const  PaymentsServiceComponent = ({payments, paymentsCount, auth_id, getPayment
                                         </TableCell>
                                         <TableCell>{calculatePostDate(user.createdAt)}</TableCell>
                                         <TableCell>
-                                            {user.method}
+                                            {user.payment_method}
                                         </TableCell>
                                         <TableCell>
                                             {user.description}

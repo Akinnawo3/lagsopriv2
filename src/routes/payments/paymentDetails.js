@@ -20,7 +20,7 @@ const PaymentDetails = ({match, payment, getPaymentDetails, sosUserDetails})=> {
     return (
         <div className='mb-5' style={{minHeight: '90vh'}}>
             <Helmet>
-                <title>User Profile</title>
+                <title>Payment Details</title>
                 <meta name="description" content="Payment Details" />
             </Helmet>
             <PageTitleBar title={`Payment details`} match={match}  />
@@ -36,7 +36,7 @@ const PaymentDetails = ({match, payment, getPaymentDetails, sosUserDetails})=> {
                                 className="pull-left"><strong>Amount</strong></span>₦{payment?.amount}
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>Method</strong></span>{payment?.method}
+                                className="pull-left"><strong>Method</strong></span>{payment?.payment_method}
                             </li>
                             <li className="list-group-item text-right"><span
                                 className="pull-left"><strong>Rider</strong></span><Link to={`/admin/passengers/${payment?.rider_id}`}>{sosUserDetails?.first_name} {sosUserDetails?.last_name}</Link>

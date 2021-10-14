@@ -8,11 +8,6 @@ import Button from '@material-ui/core/Button';
 import { Badge } from 'reactstrap';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-
-// api
-import api from 'Api';
-
-// intl messages
 import IntlMessages from 'Util/IntlMessages';
 
 class Notifications extends Component {
@@ -21,20 +16,6 @@ class Notifications extends Component {
       notifications: null
    }
 
-   // componentDidMount() {
-   //    this.getNotifications();
-   // }
-
-   // get notifications
-   getNotifications() {
-      api.get('notifications.js')
-         .then((response) => {
-            this.setState({ notifications: response.data });
-         })
-         .catch(error => {
-            console.log(error);
-         })
-   }
 
    render() {
       const { notifications } = this.state;

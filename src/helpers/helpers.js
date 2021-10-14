@@ -232,7 +232,7 @@ export const formatTime = (timestamp) => {
 export const getFirstDayOfMonth = () => {
     const date = new Date()
     let firstDay = new Date(date.getFullYear(), date.getMonth() + 1, 1);
-    const month = firstDay.getMonth().toString().length === 1 ? '0' + firstDay.getMonth() : firstDay.getMonth()
+    const month = firstDay.getMonth().toString().length === 1 && firstDay.getMonth().toString() !== '9'  ? '0' + firstDay.getMonth() : firstDay.getMonth()
     const day = firstDay.getDate().toString().length === 1 ? '0' + firstDay.getDate() : firstDay.getDate()
     const year = firstDay.getFullYear()
     return `${year}-${month}-${day}`
@@ -241,7 +241,7 @@ export const getFirstDayOfMonth = () => {
 export const getLastDayOfMonth = () => {
     const date = new Date()
     let lastDay = new Date(date.getFullYear(), date.getMonth() + 2, 0);
-    const month = lastDay.getMonth().toString().length === 1 ? '0' + lastDay.getMonth() : lastDay.getMonth()
+    const month = lastDay.getMonth().toString().length === 1 && lastDay.getMonth().toString() !== '9' ? '0' + lastDay.getMonth() : lastDay.getMonth()
     const day = lastDay.getDate().toString().length === 1 ? '0' + lastDay.getDate() : lastDay.getDate()
     const year = lastDay.getFullYear()
     return `${year}-${month}-${day}`
@@ -249,7 +249,7 @@ export const getLastDayOfMonth = () => {
 
 export const getTodayDate = () => {
     const date = new Date()
-    const month = date.getMonth().toString().length === 1 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)
+    const month = date.getMonth().toString().length === 1 && date.getMonth().toString() !== '9' ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)
     const day = date.getDate().toString().length === 1 ? '0' + date.getDate() : date.getDate()
     const year = date.getFullYear()
     return `${year}-${month}-${day}`

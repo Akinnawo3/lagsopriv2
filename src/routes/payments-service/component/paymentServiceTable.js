@@ -30,6 +30,8 @@ const  PaymentServiceTable = ({payments, paymentsCount, auth_id, getPayments, he
         window.scrollTo(0, 0);
     };
 
+    console.log(payments, 'sssss')
+
     return (
         <div>
             <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}}>
@@ -56,7 +58,7 @@ const  PaymentServiceTable = ({payments, paymentsCount, auth_id, getPayments, he
                                             </TableCell>
                                             <TableCell>{calculatePostDate(user.createdAt)}</TableCell>
                                             <TableCell>
-                                                {user.method}
+                                                {user.payment_method}
                                             </TableCell>
                                             <TableCell>
                                                 {user.payment_type}

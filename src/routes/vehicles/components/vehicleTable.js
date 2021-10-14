@@ -8,7 +8,7 @@ import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard
 import {connect} from "react-redux";
 import {CSVLink} from "react-csv";
 import Pagination from "react-js-pagination";
-import {createVehicles, deleteVehicle, getVehicles, updateVehicle} from "Actions/vehicleAction";
+import {createVehicles, deleteVehicle, getVehicles, searchVehicles, updateVehicle} from "Actions/vehicleAction";
 import Button from "@material-ui/core/Button";
 import Upload from "./upload";
 import { Form, FormGroup, Label, Input, Badge,  Modal, ModalHeader, ModalBody, ModalFooter, } from 'reactstrap';
@@ -20,7 +20,7 @@ import SearchComponent from "Components/SearchComponent/SearchComponent";
 
 
 
-const  VehicleTable = ({ getVehicles, vehicles, loading, createVehicles, updateVehicle,  vehiclesCount, assign, header, deleteVehicle, getVehiclesCount}) => {
+const  VehicleTable = ({ getVehicles, vehicles, loading, createVehicles, updateVehicle,  vehiclesCount, assign, header, deleteVehicle, getVehiclesCount, searchVehicles}) => {
     const [addNewUserModal, setAddNewUserModal] = useState(false)
     const [editUser, setEditUser] = useState(false)
     const [updateId, setUpdateId] = useState(null)
@@ -53,12 +53,6 @@ const  VehicleTable = ({ getVehicles, vehicles, loading, createVehicles, updateV
     },[vehicles])
 
 
-
-    const onChangeSearch = (e) =>{
-        e.preventDefault();
-        setSearchData(e.target.value );
-    };
-
     const paginate = pageNumber => {
         setCurrentPage(pageNumber);
         getVehicles(pageNumber, assign)
@@ -68,10 +62,8 @@ const  VehicleTable = ({ getVehicles, vehicles, loading, createVehicles, updateV
         getVehicles(1, assign)
     }
 
-    // page_no, assign, spinner, car_number_plate
-
     const getSearchData = (searchData) => {
-        getVehicles(1, assign, '', searchData)
+        searchVehicles(searchData, assign)
     }
 
     const handleCount = () => {
@@ -151,7 +143,6 @@ const  VehicleTable = ({ getVehicles, vehicles, loading, createVehicles, updateV
             <RctCollapsibleCard heading={header} fullBlock>
                 <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
                     <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={'Plate No'} />
-
                 </li>
                 <div className="float-right">
                     {vehicles.length > 0 &&
@@ -285,6 +276,7 @@ function mapDispatchToProps(dispatch) {
     return {
         getVehicles: (page_no, assign, spinner, car_number_plate) => dispatch(getVehicles(page_no, assign, spinner, car_number_plate)),
         getVehiclesCount: (assign, car_number_plate) => dispatch(getVehiclesCount(assign, car_number_plate)),
+        searchVehicles: (data, assign) => dispatch(searchVehicles(data, assign)),
         deleteVehicle: (vehicle_id, vehicles) => dispatch(deleteVehicle(vehicle_id, vehicles)),
         createVehicles: (car_number_plate, car_make, car_model, car_desc, car_color) => dispatch(createVehicles(car_number_plate, car_make, car_model, car_desc, car_color)),
         updateVehicle: (vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign) => dispatch(updateVehicle(vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign)),

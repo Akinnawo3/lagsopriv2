@@ -61,7 +61,7 @@ const  PaymentsComponent = ({payments, paymentsCount, auth_id, getPayments}) => 
                                         </TableCell>
                                         <TableCell>{calculatePostDate(user.createdAt)}</TableCell>
                                         <TableCell>
-                                            {user.method}
+                                            {user.payment_method}
                                         </TableCell>
                                         <TableCell><Badge
                                             color={getStatusColor4(user.status)}>{getStatus4(user.status)}</Badge></TableCell>

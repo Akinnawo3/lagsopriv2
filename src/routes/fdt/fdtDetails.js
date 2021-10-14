@@ -26,7 +26,7 @@ const FdtDetails = ({getFdtDetails, match, loading, fdtDetails})=> {
     return (
         <div className='mb-5' style={{minHeight: '90vh'}}>
             <Helmet>
-                <title>User Profile</title>
+                <title>Fdt details</title>
                 <meta name="description" content="Fdt Details" />
             </Helmet>
             <PageTitleBar title={`Fdt details`} match={match}  />
