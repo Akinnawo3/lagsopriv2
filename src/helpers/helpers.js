@@ -68,71 +68,78 @@ export function getAppLayout(url) {
 // 0=pending, 1=processing, 2=successful, 3=failed
 
 export function getStatus(status) {
-    if(status === 0) {
-        return  'Pending'
-    }else if(status === 1) {
+    if (status === 0) {
+        return 'Pending'
+    } else if (status === 1) {
         return 'Accepted'
-    } else if (status === 2){
+    } else if (status === 2) {
+        return 'Verified'
+    } else if (status === 3) {
         return 'Approved'
-    }else {
+    } else if (status === 4) {
+        return 'Trained'
+    } 
+    else {
         return 'Inactive'
     }
 }
 
 export function getStatus3(status) {
-    if(status === 0) {
-        return  'Pending'
-    }else if(status === 1) {
+    if (status === 0) {
+        return 'Pending'
+    } else if (status === 1) {
         return 'Processing'
-    } else if (status === 2){
+    } else if (status === 2) {
         return 'Successful'
-    }else {
+    } else {
         return 'Unsuccessful'
     }
 }
 
 export function getStatus4(status) {
-    if(status === 0) {
-        return  'Pending'
-    }else if(status === 1) {
+    if (status === 0) {
+        return 'Pending'
+    } else if (status === 1) {
         return 'Successful'
-    }else {
+    } else {
         return 'Unsuccessful'
     }
 }
 
 export function getStatusColor4(status) {
-    if(status === 0) {
-        return  'warning'
-    }else if(status === 1) {
-        return 'success'
-    }else {
+    if (status === 0) {
+        return 'warning'
+    } else if (status === 1) {
+        return 'Success'
+    } else {
         return 'danger'
     }
 }
 
 
 export function getStatusColor(status) {
-    if(status === 0) {
-        return  'warning'
-    }else if(status === 1) {
+    if (status === 0) {
+        return 'secondary'
+    } else if (status === 1) {
         return 'primary'
-    } else if (status === 2){
+    } else if (status === 2) {
         return 'success'
-    }else {
+    } else if (status === 3 || status === 4) {
+        return 'success'
+    } else {
         return 'danger'
     }
 }
 
 
 export function getStatus2(status) {
-    if(status === 0) {
-        return  'Pending'
-    }else if(status === 1) {
+    if (status === 0) {
+        return 'Pending'
+    } else if (status === 1) {
         return 'Completed'
-    } else if (status === 2){
+    } else if (status === 2) {
         return 'Failed'
-    }else if (status === -1){
+    } else if (status === -1) {
         return 'Debited'
     }
     else {
@@ -144,13 +151,13 @@ export function getStatus2(status) {
 
 
 export function getStatusColor2(status) {
-    if(status === 0) {
-        return  'warning'
-    }else if(status === 1 || status === -1) {
+    if (status === 0) {
+        return 'warning'
+    } else if (status === 1 || status === -1) {
         return 'success'
-    } else if (status === 2){
+    } else if (status === 2) {
         return 'danger'
-    }else {
+    } else {
         return 'danger'
     }
 }
@@ -218,7 +225,7 @@ export const calculatePostDate = (date) => {
 };
 
 export const formatTime = (timestamp) => {
-    if(!timestamp && timestamp !== 0) {
+    if (!timestamp && timestamp !== 0) {
         return
     }
     var hours = Math.floor(timestamp / 60 / 60);
@@ -232,7 +239,7 @@ export const formatTime = (timestamp) => {
 export const getFirstDayOfMonth = () => {
     const date = new Date()
     let firstDay = new Date(date.getFullYear(), date.getMonth() + 1, 1);
-    const month = firstDay.getMonth().toString().length === 1 && firstDay.getMonth().toString() !== '9'  ? '0' + firstDay.getMonth() : firstDay.getMonth()
+    const month = firstDay.getMonth().toString().length === 1 && firstDay.getMonth().toString() !== '9' ? '0' + firstDay.getMonth() : firstDay.getMonth()
     const day = firstDay.getDate().toString().length === 1 ? '0' + firstDay.getDate() : firstDay.getDate()
     const year = firstDay.getFullYear()
     return `${year}-${month}-${day}`
@@ -256,17 +263,17 @@ export const getTodayDate = () => {
 }
 
 export const getTicketStatus = (status) => {
-    if(status == 0) {
+    if (status == 0) {
         return 'New'
-    } else if(status == 1) {
+    } else if (status == 1) {
         return 'Opened'
-    }else if(status == 2) {
+    } else if (status == 2) {
         return 'In-progress'
-    } else if(status == 3) {
+    } else if (status == 3) {
         return 'Closed'
-    }else if(status == 4) {
+    } else if (status == 4) {
         return 'Unresolved'
-    }else {
+    } else {
         return ''
     }
 
@@ -284,7 +291,7 @@ export const m = (geo1, geo2) => {
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
         Math.cos(deg2rad(geo1.latitude)) * Math.cos(deg2rad(geo2.latitude)) *
         Math.sin(dLon / 2) * Math.sin(dLon / 2)
-    ;
+        ;
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     var d = R * c; // Distance in km
     return !isNaN(d) ? d.toFixed(2) : d;

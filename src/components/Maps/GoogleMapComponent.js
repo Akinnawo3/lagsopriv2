@@ -2,13 +2,12 @@
 /**
  * Google Map
  */
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import GoogleMap from 'google-map-react';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import {m} from "Helpers/helpers";
+import { m } from "Helpers/helpers";
 
-
-const  GoogleMapComponent  = ({match, userLocation, getUsersLocation, waiting, moving})=> {
+const GoogleMapComponent = ({ match, userLocation, getUsersLocation, waiting, moving }) => {
     const [center, setCenter] = useState([6.459970538, 3.301247232])
     const [zoom, setZoom] = useState(14)
 
@@ -22,7 +21,7 @@ const  GoogleMapComponent  = ({match, userLocation, getUsersLocation, waiting, m
             longitude: center[1]
         })
 
-        if(geoCode >= 3.5) {
+        if (geoCode >= 3.5) {
             getUsersLocation(centerValue[1], centerValue[0])
             setCenter(centerValue);
         }
@@ -39,10 +38,10 @@ const  GoogleMapComponent  = ({match, userLocation, getUsersLocation, waiting, m
     // }
 
 
-    const AnyReactComponent = ({text, cord}) =>
+    const AnyReactComponent = ({ text, cord }) =>
         <div>
             <div className="tooltipo">
-                <i className="zmdi zmdi-car text-danger zoom" style={{fontSize: '30px'}} />
+                <i className="zmdi zmdi-car text-danger zoom" style={{ fontSize: '30px' }} />
                 <div className="tooltiptexto">
                     <div>
                         Name: {cord?.first_name} {cord?.last_name}
@@ -52,7 +51,7 @@ const  GoogleMapComponent  = ({match, userLocation, getUsersLocation, waiting, m
                     </div>
                 </div>
             </div>
-         </div>
+        </div>
 
 
     return (
@@ -68,7 +67,7 @@ const  GoogleMapComponent  = ({match, userLocation, getUsersLocation, waiting, m
                     // onClick={_onClick}
                     onBoundsChange={center => getUsersNewLocations(center)}
                 >
-                    {userLocation.map((m, index)=> (
+                    {userLocation.map((m, index) => (
                         <AnyReactComponent
                             draggable={false}
                             lat={m.location?.coordinates[1]}
@@ -83,9 +82,7 @@ const  GoogleMapComponent  = ({match, userLocation, getUsersLocation, waiting, m
             </RctCollapsibleCard>
         </div>
     );
-
 }
-
 export default GoogleMapComponent
 
 

@@ -9,6 +9,7 @@ import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/Delete
 import { Link } from "react-router-dom";
 import emailMessages from "Assets/data/email-messages/emailMessages";
 import TableCell from "@material-ui/core/TableCell";
+import moment from 'moment';
 
 
 const DriverProfile = ({ driver, changeDriverStatus, loadingStatus, vehicles, assignVehicle, vehicleDetails }) => {
@@ -32,6 +33,8 @@ const DriverProfile = ({ driver, changeDriverStatus, loadingStatus, vehicles, as
             setVehicleData(vehicleValue)
         }
     }, [vehicle])
+
+    console.log(driver)
 
     const opnAddVehicleModal = () => {
         setAddVehicleModal(true)
@@ -136,6 +139,9 @@ const DriverProfile = ({ driver, changeDriverStatus, loadingStatus, vehicles, as
                                 className="pull-left"><strong>Residential Address</strong></span>{driver?.home_address}
                             </li>
                             <li className="list-group-item text-right"><span
+                                className="pull-left"><strong>Education</strong></span>{driver?.education}
+                            </li>
+                            <li className="list-group-item text-right"><span
                                 className="pull-left"><strong>Email</strong></span>{driver.email}
                             </li>
                             <li className="list-group-item text-right"><span
@@ -143,6 +149,12 @@ const DriverProfile = ({ driver, changeDriverStatus, loadingStatus, vehicles, as
                             </li>
                             <li className="list-group-item text-right"><span
                                 className="pull-left"><strong>Date of Birth</strong></span>{driver?.dob}
+                            </li>
+                            <li className="list-group-item text-right"><span
+                                className="pull-left"><strong>Next of Kin (Name)</strong></span>{driver?.driver_data?.next_kin?.name}
+                            </li>
+                            <li className="list-group-item text-right"><span
+                                className="pull-left"><strong>Next of Kin (Relationship)</strong></span>{driver?.driver_data?.next_kin?.relationship}
                             </li>
                             <li className="list-group-item text-right"><span
                                 className="pull-left"><strong>Blood Group</strong></span>{driver?.blood_group}
@@ -174,6 +186,31 @@ const DriverProfile = ({ driver, changeDriverStatus, loadingStatus, vehicles, as
                             </li>
                             <li className="list-group-item text-right"><span
                                 className="pull-left"><strong>LASDRI ID</strong></span>{driver?.driver_data?.lasdri_id?.value}
+                            </li>
+                            <li className="list-group-item text-right"><span
+                                className="pull-left"><strong>LASSRA ID</strong></span>{driver?.driver_data?.lassra_id?.value}
+                            </li>
+                            <li className="list-group-item text-right"><span
+                                className="pull-left"><strong>NIN ID</strong></span>{driver?.driver_data?.nin_id?.value}
+                            </li>
+                            <li className="list-group-item text-right"><span
+                                className="pull-left"><strong>Verification Payment Status</strong></span>{driver?.driver_data?.verification_payment?.status ? "Paid" : "Not Paid"}
+                            </li>
+                            {driver?.driver_data?.verification_payment?.status &&
+                                <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>Verification Payment ID</strong></span>{driver?.driver_data?.verification_payment?.payment_id}
+                                </li>
+                            }
+                            <li className="list-group-item text-right"><span
+                                className="pull-left"><strong>ASSET Payment Status</strong></span>{driver?.driver_data?.asset_payment?.status ? "Paid" : "Not Paid"}
+                            </li>
+                            {driver?.driver_data?.asset_payment?.status &&
+                                <li className="list-group-item text-right"><span
+                                    className="pull-left"><strong>ASSET Payment ID</strong></span>{driver?.driver_data?.asset_payment?.payment_id}
+                                </li>
+                            }
+                            <li className="list-group-item text-right"><span
+                                className="pull-left"><strong> Expiration Year</strong></span>{parseInt(moment().format('YYYY'), 10) + driver?.driver_data?.year_exp}
                             </li>
                             {(driver?.driver_data?.vehicle_id === vehicleDetails?.vehicle_id) &&
                                 <>
@@ -230,7 +267,7 @@ const DriverProfile = ({ driver, changeDriverStatus, loadingStatus, vehicles, as
                                         <div className='text-center'>
                                             <Button disabled={loadingStatus} onClick={() => onReactivate()} className="bg-success mt-3 text-white">Reactivate Driver</Button>
                                         </div>}
-                                    {driver?.driver_data?.driver_status === 2 && !driver.driver_data?.vehicle_id && (driver?.driver_data?.receipt_url || driver?.driver_data?.made_first_payment) &&
+                                    {driver?.driver_data?.driver_status === 3 && !driver.driver_data?.vehicle_id && (driver?.driver_data?.receipt_url || driver?.driver_data?.made_first_payment) &&
                                         <div className='text-center ml-2'>
                                             <Button disabled={loadingStatus} onClick={() => { opnAddVehicleModal() }} className="bg-warning mt-3 text-white">Assign Vehicle</Button>
                                         </div>}
