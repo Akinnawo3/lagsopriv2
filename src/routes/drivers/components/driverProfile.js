@@ -114,8 +114,6 @@ const DriverProfile = ({ driver, changeDriverStatus, loadingStatus, vehicles, as
         inputEl.current.close();
     }
 
-
-
     return (
         <div className="row" style={{ fontSize: '0.8rem' }}>
             <div className="col-sm-6">
@@ -172,10 +170,10 @@ const DriverProfile = ({ driver, changeDriverStatus, loadingStatus, vehicles, as
                                 <Badge color={driver?.driver_data?.made_first_payment ? 'success' : 'danger'}>{driver?.driver_data?.made_first_payment ? 'Yes' : 'No'}</Badge>
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>Driving License</strong></span>{driver?.driver_data?.license_id}
+                                className="pull-left"><strong>Driving License</strong></span>{driver?.driver_data?.license_id?.value}
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>LASDRI ID</strong></span>{driver?.driver_data?.lasdri_id}
+                                className="pull-left"><strong>LASDRI ID</strong></span>{driver?.driver_data?.lasdri_id?.value}
                             </li>
                             {(driver?.driver_data?.vehicle_id === vehicleDetails?.vehicle_id) &&
                                 <>
