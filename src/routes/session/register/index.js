@@ -91,7 +91,7 @@ class SignupFirebase extends Component {
                                        size="large"
                                        onClick={() => this.onUserSignUp()}>
                                        Sign Up
-                            </Button>
+                                    </Button>
                                  </FormGroup>
                               </Form>
                               <p className="mb-20">or sign in with</p>

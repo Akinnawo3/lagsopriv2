@@ -21,6 +21,18 @@ import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 
 
+axios.interceptors.response.use(response => {
+   return response;
+}, error => {
+
+   if (error.response.status === 401) {
+      cookies.remove('user_id');
+      location.replace("/login");
+   }
+   return Promise.reject(error);
+});
+
+
 
 /**
  * Initial Path To Check Whether User Is Logged In Or Not
@@ -41,23 +53,13 @@ const InitialPath = ({ component: Component, authUser, isAdmin, ...rest }) =>
 
 
 
-axios.interceptors.response.use(response => {
-    return response;
-}, error => {
-
-    if (error.response.status === 401) {
-        cookies.remove('user_id');
-        location.replace("/login");
-    }
-    return Promise.reject(error);
-});
-
-
-
 
 class App extends Component {
    render() {
-       const { location, match, user, userProfile} = this.props;
+      const { location, match, user, userProfile } = this.props;
+
+      console.log(location.pathname)
+
       if (location.pathname === '/') {
          if (user === null) {
             return (<Redirect to={'/login'} />);
@@ -65,6 +67,13 @@ class App extends Component {
             return (<Redirect to={'/admin/dashboard'} />);
          }
       }
+
+      if (location.pathname === '/login') {
+         if (user) {
+            return (<Redirect to={'/'} />);
+         }
+      }
+
       return (
          <RctThemeProvider>
             <NotificationContainer />
@@ -74,24 +83,16 @@ class App extends Component {
                isAdmin={userProfile?.user_type}
                component={RctDefaultLayout}
             />
-            <Route path="/login" component={AsyncSessionLoginComponent} />
-            <Route path="/register" component={AsyncSessionRegisterComponent} />
-            <Route path="/session/lock-screen" component={AsyncSessionLockScreenComponent} />
-            <Route
-               path="/session/forgot-password"
-               component={AsyncSessionForgotPasswordComponent}
-            />
-            <Route path="/session/404" component={AsyncSessionPage404Component} />
-            <Route path="/session/500" component={AsyncSessionPage500Component} />
+            <Route path="/" component={AsyncSessionLoginComponent} />
          </RctThemeProvider>
       );
    }
 }
 
 // map state to props
-const mapStateToProps = ({ authUser}) => {
+const mapStateToProps = ({ authUser }) => {
    const { user, userProfile } = authUser;
-   return { user, userProfile};
+   return { user, userProfile };
 };
 
 export default connect(mapStateToProps)(App);

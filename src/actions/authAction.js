@@ -1,6 +1,6 @@
 import { NotificationManager } from 'react-notifications';
-import {LOGIN_USER} from './types';
-import {endLoading, startLoading} from "./loadingAction";
+import { LOGIN_USER } from './types';
+import { endLoading, startLoading } from "./loadingAction";
 import axios from 'axios'
 import cookies from "Util/cookies";
 import api from "../environments/environment";
@@ -8,24 +8,24 @@ import api from "../environments/environment";
 
 
 export const loginUser = (phone_number, password) => async dispatch => {
-    const body = {phone_number, password, user_type: 'admin'}
+    const body = { phone_number, password, user_type: 'admin' }
     try {
         dispatch(startLoading());
         const res = await axios.post(`${api.user}/v1.1/auth/login`, body)
-        if(res.data.status === 'error') {
+        if (res.data.status === 'error') {
             NotificationManager.error(res.data.msg);
-        }else {
+        } else {
             const userType = res.data.data.user_type
-            if((userType === 'superadmin') || (userType === 'admin')) {
-                const token  = res.data.data.token
+            if ((userType === 'superadmin') || (userType === 'admin')) {
+                const token = res.data.data.token
                 await cookies.set('user_id', token);
                 await cookies.set('userProfile', JSON.stringify(res.data.data))
-                await  dispatch({
+                await dispatch({
                     type: LOGIN_USER,
                     payload: res.data.data
                 })
                 location.replace("/");
-            }else {
+            } else {
                 NotificationManager.error('Invalid phone or password')
             }
         }

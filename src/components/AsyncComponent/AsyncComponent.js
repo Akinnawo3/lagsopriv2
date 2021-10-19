@@ -188,7 +188,7 @@ const AsyncPassenger = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
-const AsyncEmergency= Loadable({
+const AsyncEmergency = Loadable({
 	loader: () => import("Routes/emergency/emergency"),
 	loading: () => <RctPageLoader />,
 });
@@ -198,7 +198,7 @@ const AsyncEmergencyNumber = Loadable({
 	loading: () => <RctPageLoader />,
 });
 
-const AsyncEmergencyDetails= Loadable({
+const AsyncEmergencyDetails = Loadable({
 	loader: () => import("Routes/emergency/emergencyDetails"),
 	loading: () => <RctPageLoader />,
 });

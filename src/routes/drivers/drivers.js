@@ -1,16 +1,16 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { connect } from "react-redux";
-import {getDrivers, getDriversCount} from "Actions/driverAction";
+import { getDrivers, getDriversCount } from "Actions/driverAction";
 import DriverTable from "Routes/drivers/components/driverTable";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
 
-const  Drivers = ({getDrivers, match, getDriversCount}) => {
+const Drivers = ({ getDrivers, match, getDriversCount }) => {
 
-	useEffect(()=> {
-	getDrivers('', 1, true);
+	useEffect(() => {
+		getDrivers('', 1, true);
 		getDriversCount()
-	},[])
+	}, [])
 
 
 	return (
@@ -18,7 +18,7 @@ const  Drivers = ({getDrivers, match, getDriversCount}) => {
 			<PageTitleBar title={"Drivers"} match={match} />
 			<DriverTable status={''} header='All Drivers' />
 		</div>
-		);
+	);
 
 }
 
@@ -35,4 +35,4 @@ const mapStateToProps = state => ({
 	driversCount: state.driver.driversCount,
 });
 
-export default connect( mapStateToProps, mapDispatchToProps) (Drivers);
+export default connect(mapStateToProps, mapDispatchToProps)(Drivers);

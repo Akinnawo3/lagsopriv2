@@ -16,12 +16,13 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 
 class DefaultLayout extends Component {
 	render() {
-		const { match, isLoading} = this.props;
+		const { match, isLoading } = this.props;
+		console.log(match.url)
 		return (
 			<RctAppLayout>
 				{isLoading && <Spinner />}
 
-				{routerService && routerService.map((route,key)=>
+				{routerService && routerService.map((route, key) =>
 					<Route key={key} path={`${match.url}/${route.path}`} component={route.component} />
 				)}
 			</RctAppLayout>
@@ -29,10 +30,10 @@ class DefaultLayout extends Component {
 	}
 }
 
-const mapStateToProps = ({ loading}) => {
+const mapStateToProps = ({ loading }) => {
 	const isLoading = loading.loading
 	const isLoadingStatus = loading.loadingStatus
-	return {isLoading, isLoadingStatus};
+	return { isLoading, isLoadingStatus };
 };
 
 
