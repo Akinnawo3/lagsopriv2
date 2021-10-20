@@ -50,7 +50,6 @@ const DriverProfile = ({ driver, changeDriverStatus, loadingStatus, vehicles, as
         e.preventDefault();
         onAddVehicleModalClose()
         await assignVehicle(vehicle, driver?.auth_id, driver, vehicleData, '5M',)
-
     };
 
 
@@ -177,10 +176,10 @@ const DriverProfile = ({ driver, changeDriverStatus, loadingStatus, vehicles, as
                             <li className="list-group-item text-right"><span
                                 className="pull-left"><strong>Payment Plan Amount</strong></span>{driver?.driver_data?.payment_plan?.plan ? '₦' + driver?.driver_data?.payment_plan?.plan : 'NA'}
                             </li>
-                            <li className="list-group-item text-right"><span
+                            {/* <li className="list-group-item text-right"><span
                                 className="pull-left"><strong>Made First Payment</strong></span>
                                 <Badge color={driver?.driver_data?.made_first_payment ? 'success' : 'danger'}>{driver?.driver_data?.made_first_payment ? 'Yes' : 'No'}</Badge>
-                            </li>
+                            </li> */}
                             <li className="list-group-item text-right"><span
                                 className="pull-left"><strong>Driving License</strong></span>{driver?.driver_data?.license_id?.value}
                             </li>

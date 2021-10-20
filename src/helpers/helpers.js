@@ -110,7 +110,7 @@ export function getStatusColor4(status) {
     if (status === 0) {
         return 'warning'
     } else if (status === 1) {
-        return 'Success'
+        return 'success'
     } else {
         return 'danger'
     }

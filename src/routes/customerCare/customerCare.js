@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Fragment, useRef} from 'react';
+import React, { useState, useEffect, Fragment, useRef } from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -14,42 +14,47 @@ import {
     ModalBody,
     ModalFooter,
 } from 'reactstrap';
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {
     createCustomerCare,
     createWaitingTime,
+    createVerificationFee,
     deleteCustomerCare,
     getCustomerCare,
     updateCustomerCare
 } from "Actions/customerCareAction";
 
-const  CustomerCare = (props) => {
+const CustomerCare = (props) => {
     const {
         match,
         getCustomerCare,
         customerCareNumbers,
         createCustomerCare,
         createWaitingTime,
-        loading} = props
+        createVerificationFee,
+        loading } = props
     const [customerLineModalState, setCustomerLineModalState] = useState(false)
     const [waitingTimeModalSate, setWaitingTimeModalSate] = useState(false)
-    const [formData, setFormData] = useState({customerCare: '', waitingTime: ''})
+    const [verificationFeeModalState, setVerificationFeeModalState] = useState(false)
+    const [formData, setFormData] = useState({ customerCare: '', waitingTime: '', verificationFee: "" })
     const [screen, setScreen] = useState(1)
 
-    useEffect(()=> {
+    useEffect(() => {
         getCustomerCare(true);
-    },[])
+    }, [])
 
 
     const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
-    const {customerCare, waitingTime} = formData
+    const { customerCare, waitingTime, verificationFee } = formData
+
+    console.log(formData)
 
     const opnAddNewCustomerCareModal = (e) => {
         e.preventDefault();
         const cusNumArr = customerCareNumbers?.customer_care_line
-        if(cusNumArr.length > 0) {
-            setFormData({...formData, customerCare: cusNumArr.join(', ')})
+        if (cusNumArr.length > 0) {
+            setFormData({ ...formData, customerCare: cusNumArr.join(', ') })
         }
         setCustomerLineModalState(true)
     }
@@ -61,8 +66,8 @@ const  CustomerCare = (props) => {
 
     const opnAddNewWaitingTimeModal = (e) => {
         e.preventDefault();
-        setFormData({...formData, waitingTime: customerCareNumbers?.waiting_time})
-       setWaitingTimeModalSate(true)
+        setFormData({ ...formData, waitingTime: customerCareNumbers?.waiting_time })
+        setWaitingTimeModalSate(true)
     }
 
 
@@ -72,29 +77,42 @@ const  CustomerCare = (props) => {
 
 
 
+    const opnVerificationFeeModal = (e) => {
+        e.preventDefault();
+        setFormData({ ...formData, verificationFee: customerCareNumbers?.verification_fee })
+        setVerificationFeeModalState(true)
+    }
+
+    const verificationFeeModalClose = () => {
+        setVerificationFeeModalState(false);
+    }
+
 
     const onSubmit = async (e) => {
         e.preventDefault();
         customerCareLineModalClose()
         await createCustomerCare(customerCare)
-
-
     };
 
     const onSubmit2 = async (e) => {
         e.preventDefault();
         waitingTimeModalClose()
         await createWaitingTime(waitingTime)
-        setFormData({...formData, waitingTime: ''})
+        setFormData({ ...formData, waitingTime: '' })
+    };
 
-
+    const onSubmit3 = async (e) => {
+        e.preventDefault();
+        verificationFeeModalClose()
+        await createVerificationFee(verificationFee)
+        setFormData({ ...formData, verificationFee: '' })
     };
 
     return (
         <div className="table-wrapper">
             <PageTitleBar title={"Settings"} match={match} />
 
-                {!loading && customerCareNumbers?.customer_care_line.length > 0 &&
+            {!loading && customerCareNumbers?.customer_care_line.length > 0 &&
                 <section id="page-account-settings" className='p-3'>
                     <div className="row">
                         <div className="col-12">
@@ -103,16 +121,23 @@ const  CustomerCare = (props) => {
                                     <ul className="nav nav-pills flex-column">
                                         <li className="nav-item" onClick={() => setScreen(1)}>
                                             <a className={`nav-link d-flex align-items-center ${screen === 1 && 'active'}`} id="account-pill-general"
-                                               data-toggle="pill" aria-expanded="true">
+                                                data-toggle="pill" aria-expanded="true">
                                                 <i className="bx bx-cog"></i>
                                                 <span>Customer Care Lines</span>
                                             </a>
                                         </li>
                                         <li className="nav-item" onClick={() => setScreen(2)}>
                                             <a className={`nav-link d-flex align-items-center ${screen === 2 && 'active'}`} id="account-pill-password"
-                                               data-toggle="pill" aria-expanded="false">
+                                                data-toggle="pill" aria-expanded="false">
                                                 <i className="bx bx-lock"></i>
                                                 <span>Total waiting time allowed</span>
+                                            </a>
+                                        </li>
+                                        <li className="nav-item" onClick={() => setScreen(3)}>
+                                            <a className={`nav-link d-flex align-items-center ${screen === 3 && 'active'}`} id="account-pill-password"
+                                                data-toggle="pill" aria-expanded="false">
+                                                <i className="bx bx-lock"></i>
+                                                <span>Verification Fee  </span>
                                             </a>
                                         </li>
                                     </ul>
@@ -121,66 +146,88 @@ const  CustomerCare = (props) => {
                                 <div className="col-md-6">
                                     {screen === 1 &&
 
-                                    <RctCollapsibleCard heading="" fullBlock>
-                                        <div className="float-right p-3">
-                                            <a href="#" onClick={(e) => opnAddNewCustomerCareModal(e)} color="primary" className="caret btn-sm mr-10">Add Numbers <i className="zmdi zmdi-plus"></i></a>
-                                        </div>
+                                        <RctCollapsibleCard heading="" fullBlock>
+                                            <div className="float-right p-3">
+                                                <a href="#" onClick={(e) => opnAddNewCustomerCareModal(e)} color="primary" className="caret btn-sm mr-10">Add Numbers <i className="zmdi zmdi-plus"></i></a>
+                                            </div>
 
 
-                                        <div className="table-responsive" style={{minHeight: "50vh"}}>
-                                            <Table>
-                                                <TableHead>
-                                                    <TableRow hover>
-                                                        <TableCell>Number</TableCell>
-                                                    </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-                                                    <Fragment>
-                                                        {customerCareNumbers?.customer_care_line.length > 0 && customerCareNumbers?.customer_care_line.map((numbers, key) => (
-                                                            <TableRow hover key={key}>
-                                                                <TableCell>{numbers}</TableCell>
-                                                            </TableRow>
-                                                        ))}
-                                                    </Fragment>
-                                                </TableBody>
-                                            </Table>
-                                        </div>
-                                        {!loading && customerCareNumbers.length < 1 && <EmptyData />}
-                                    </RctCollapsibleCard>
+                                            <div className="table-responsive" style={{ minHeight: "50vh" }}>
+                                                <Table>
+                                                    <TableHead>
+                                                        <TableRow hover>
+                                                            <TableCell>Number</TableCell>
+                                                        </TableRow>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                        <Fragment>
+                                                            {customerCareNumbers?.customer_care_line.length > 0 && customerCareNumbers?.customer_care_line.map((numbers, key) => (
+                                                                <TableRow hover key={key}>
+                                                                    <TableCell>{numbers}</TableCell>
+                                                                </TableRow>
+                                                            ))}
+                                                        </Fragment>
+                                                    </TableBody>
+                                                </Table>
+                                            </div>
+                                            {!loading && customerCareNumbers.length < 1 && <EmptyData />}
+                                        </RctCollapsibleCard>
                                     }
 
                                     {screen === 2 &&
 
-                                    <RctCollapsibleCard heading="" fullBlock>
-                                        <div className="float-right p-3">
-                                            <a href="#" onClick={(e) => opnAddNewWaitingTimeModal(e)} color="primary" className="caret btn-sm mr-10">Add Time<i className="zmdi zmdi-plus"></i></a>
-                                        </div>
-
-
-                                        <div className="table-responsive" style={{minHeight: "50vh"}}>
-                                            <Table>
-                                                <TableHead>
-                                                    <TableRow hover>
-                                                        <TableCell>Time</TableCell>
-                                                    </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-                                                    <Fragment>
+                                        <RctCollapsibleCard heading="" fullBlock>
+                                            <div className="float-right p-3">
+                                                <a href="#" onClick={(e) => opnAddNewWaitingTimeModal(e)} color="primary" className="caret btn-sm mr-10">Add Time<i className="zmdi zmdi-plus"></i></a>
+                                            </div>
+                                            <div className="table-responsive" style={{ minHeight: "50vh" }}>
+                                                <Table>
+                                                    <TableHead>
+                                                        <TableRow hover>
+                                                            <TableCell>Time</TableCell>
+                                                        </TableRow>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                        <Fragment>
                                                             <TableRow hover>
                                                                 <TableCell>{customerCareNumbers?.waiting_time} Minutes</TableCell>
                                                             </TableRow>
-                                                    </Fragment>
-                                                </TableBody>
-                                            </Table>
-                                        </div>
-                                    </RctCollapsibleCard>
+                                                        </Fragment>
+                                                    </TableBody>
+                                                </Table>
+                                            </div>
+                                        </RctCollapsibleCard>
+                                    }
+                                    {screen === 3 &&
+
+                                        <RctCollapsibleCard heading="" fullBlock>
+                                            <div className="float-right p-3">
+                                                <a href="#" onClick={(e) => opnVerificationFeeModal(e)} color="primary" className="caret btn-sm mr-10">Add Fee<i className="zmdi zmdi-plus"></i></a>
+                                            </div>
+                                            <div className="table-responsive" style={{ minHeight: "50vh" }}>
+                                                <Table>
+                                                    <TableHead>
+                                                        <TableRow hover>
+                                                            <TableCell>fee</TableCell>
+                                                        </TableRow>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                        <Fragment>
+                                                            <TableRow hover>
+                                                                <TableCell># {customerCareNumbers?.verification_fee}</TableCell>
+                                                            </TableRow>
+                                                        </Fragment>
+                                                    </TableBody>
+                                                </Table>
+                                            </div>
+                                        </RctCollapsibleCard>
                                     }
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
-                }
+            }
 
 
             <Modal isOpen={customerLineModalState} toggle={() => customerCareLineModalClose()}>
@@ -191,7 +238,7 @@ const  CustomerCare = (props) => {
                     <ModalBody>
                         <FormGroup>
                             <Label for="lastName">Customer Care Number(s)</Label>
-                            <Input type="textarea"  name="customerCare" value={customerCare} onChange={onChange}  required />
+                            <Input type="textarea" name="customerCare" value={customerCare} onChange={onChange} required />
                         </FormGroup>
                     </ModalBody>
                     <ModalFooter>
@@ -208,7 +255,24 @@ const  CustomerCare = (props) => {
                     <ModalBody>
                         <FormGroup>
                             <Label for="lastName">Time in Minutes</Label>
-                            <Input type="number"  name="waitingTime" value={waitingTime} onChange={onChange}  required />
+                            <Input type="number" name="waitingTime" value={waitingTime} onChange={onChange} required />
+                        </FormGroup>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button type="submit" variant="contained" className="text-white btn-success">Submit</Button>
+                    </ModalFooter>
+                </Form>
+            </Modal>
+
+            <Modal isOpen={verificationFeeModalState} toggle={() => verificationFeeModalClose()}>
+                <ModalHeader toggle={() => verificationFeeModalClose()}>
+                    Create Fee
+                </ModalHeader>
+                <Form onSubmit={onSubmit3}>
+                    <ModalBody>
+                        <FormGroup>
+                            <Label for="lastName">Fee (#)</Label>
+                            <Input type="number" name="verificationFee" value={verificationFee} onChange={onChange} required />
                         </FormGroup>
                     </ModalBody>
                     <ModalFooter>
@@ -226,6 +290,7 @@ function mapDispatchToProps(dispatch) {
         getCustomerCare: (spinner) => dispatch(getCustomerCare(spinner)),
         createCustomerCare: (customer_care) => dispatch(createCustomerCare(customer_care)),
         createWaitingTime: (waiting_time) => dispatch(createWaitingTime(waiting_time)),
+        createVerificationFee: (verification_fee) => dispatch(createVerificationFee(verification_fee)),
 
     };
 }
@@ -239,9 +304,4 @@ const mapStateToProps = state => ({
 
 });
 
-export default connect( mapStateToProps, mapDispatchToProps) (CustomerCare);
-
-
-
-
-
+export default connect(mapStateToProps, mapDispatchToProps)(CustomerCare);
