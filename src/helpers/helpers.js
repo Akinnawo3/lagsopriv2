@@ -5,6 +5,7 @@ import moment from 'moment';
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import React from "react";
+import { startOfWeek } from 'date-fns';
 
 /**
  * Function to convert hex to rgba
@@ -78,7 +79,7 @@ export function getStatus(status) {
         return 'Approved'
     } else if (status === 4) {
         return 'Trained'
-    } 
+    }
     else {
         return 'Inactive'
     }
@@ -298,8 +299,22 @@ export const m = (geo1, geo2) => {
 }
 
 
+export const idVerificationType = (idType) => {
+    switch (idType) {
+        case "drivers_license":
+            return "Driving Licence"
+            break;
+        case "nin":
+            return "NIN ID"
+            break;
+        case "lassra":
+            return "LASSRA ID"
+            break;
+        case "lasdri":
+            return "LASDRI ID"
+            break;
+        default:
+            break;
+    }
 
-
-
-
-
+}

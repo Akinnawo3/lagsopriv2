@@ -120,6 +120,23 @@ export const changeDriverCategory = (auth_id, category, driverData, message_type
     NotificationManager.error(err.response.data.message);
   }
 };
+export const verifyID = (auth_id, verification_status, verification_name) => async dispatch => {
+  const body = { component: "driver_verification", auth_id, verification_status, verification_name }
+  try {
+    dispatch(startStatusLoading())
+    const res = await axios.put(`${api.user}/v1.1/admin/users`, body)
+    if (res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success('ID verified  Successfully!');
+      await dispatch(getDriver(auth_id, true));
+    }
+    dispatch(endStatusLoading())
+  } catch (err) {
+    dispatch(endStatusLoading())
+    NotificationManager.error(err.response.data.message);
+  }
+};
 
 
 export const searchDrivers = (searchData, status) => async dispatch => {
