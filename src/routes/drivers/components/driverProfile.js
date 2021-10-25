@@ -62,19 +62,19 @@ const DriverProfile = ({ driver, changeDriverStatus, changeDriverCategory, loadi
     }
 
     const onVerified = () => {
-        if (driver?.driver_data?.license_id?.status ||
-            !driver?.driver_data?.lasdri_id?.status ||
-            driver?.driver_data?.lassra_id?.status ||
-            driver?.driver_data?.nin_id?.status
-        ) {
-            NotificationManager.error("All IDs are not yet verified !");
-        }
-        else {
-            setTitle("Are you sure you want to verify driver")
-            setMessage("This driver will be verified on the platform.")
-            setArgument(2)
-            inputEl.current.open();
-        }
+        // if (driver?.driver_data?.license_id?.status ||
+        //     !driver?.driver_data?.lasdri_id?.status ||
+        //     driver?.driver_data?.lassra_id?.status ||
+        //     driver?.driver_data?.nin_id?.status
+        // ) {
+        //     NotificationManager.error("All IDs are not yet verified !");
+        // }
+        // else {
+        setTitle("Are you sure you want to verify driver")
+        setMessage("This driver will be verified on the platform.")
+        setArgument(2)
+        inputEl.current.open();
+        // }
     }
 
     const onApproved = () => {
