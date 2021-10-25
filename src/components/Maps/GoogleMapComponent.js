@@ -21,7 +21,7 @@ const GoogleMapComponent = ({ match, userLocation, getUsersLocation, waiting, mo
             longitude: center[1]
         })
 
-        if (geoCode >= 3.5) {
+        if (geoCode >= 3.0) {
             getUsersLocation(centerValue[1], centerValue[0])
             setCenter(centerValue);
         }

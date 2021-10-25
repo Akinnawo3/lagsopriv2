@@ -18,7 +18,7 @@ class NavMenuItem extends Component {
    state = {
       subMenuOpen: ''
    }
-	/**
+   /**
    * On Toggle Collapse Menu
    */
    onToggleCollapseMenu(index) {
@@ -44,7 +44,7 @@ class NavMenuItem extends Component {
          return (
             <Fragment>
                <ListItem button component="li" onClick={onToggleMenu} className={`list-item ${classNames({ 'item-active': menu.open })}`}>
-                  <ListItemIcon className="menu-icon" style={{fontSize: '18px'}}>
+                  <ListItemIcon className="menu-icon" style={{ fontSize: '18px' }}>
                      <i className={menu.menu_icon}></i>
                   </ListItemIcon>
                   <span className="menu text-capitalize">
@@ -64,8 +64,8 @@ class NavMenuItem extends Component {
                            {menu.child_routes.map((subMenu, index) => {
                               return (
                                  <ListItem button component="li" key={index}>
-                                    <NavLink to={subMenu.path} activeClassName="item-active" >
-                                       <span className="menu" style={{fontSize: '12px'}}>
+                                    <NavLink exact to={subMenu.path} activeClassName="item-active" >
+                                       <span className="menu" style={{ fontSize: '12px' }}>
                                           <IntlMessages id={subMenu.menu_title} />
 
                                        </span>
@@ -88,7 +88,7 @@ class NavMenuItem extends Component {
                                        onClick={() => this.onToggleCollapseMenu(index)}
                                        className={`list-item ${classNames({ 'item-active': subMenuOpen === index })}`}
                                     >
-                                       <span className="menu" style={{fontSize: '12px'}}>
+                                       <span className="menu" style={{ fontSize: '12px' }}>
                                           <IntlMessages id={subMenu.menu_title} />
                                           {menu.new_item && menu.new_item === true ?
                                              <Chip label="new" className="new-item" color="secondary" />
@@ -101,8 +101,8 @@ class NavMenuItem extends Component {
                                        <List className="list-unstyled py-0">
                                           {subMenu.child_routes.map((nestedMenu, nestedKey) => (
                                              <ListItem button component="li" key={nestedKey}>
-                                                <NavLink activeClassName="item-active" to={nestedMenu.path}>
-                                                   <span className="menu pl-10 d-inline-block" style={{fontSize: '12px'}}>
+                                                <NavLink exact activeClassName="item-active" to={nestedMenu.path}>
+                                                   <span className="menu pl-10 d-inline-block" style={{ fontSize: '12px' }}>
                                                       <IntlMessages id={nestedMenu.menu_title} />
                                                       {menu.new_item && menu.new_item === true ?
                                                          <Chip label="new" className="new-item" color="secondary" />
@@ -127,8 +127,8 @@ class NavMenuItem extends Component {
       }
       return (
          <ListItem button component="li">
-            <NavLink activeClassName="item-active" to={menu.path}>
-               <ListItemIcon className="menu-icon" style={{fontSize: '18px'}}>
+            <NavLink exact activeClassName="item-active" to={menu.path}>
+               <ListItemIcon className="menu-icon" style={{ fontSize: '18px' }}>
                   <i className={menu.menu_icon}></i>
                </ListItemIcon>
                <span className="menu">

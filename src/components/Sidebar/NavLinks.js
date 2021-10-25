@@ -78,9 +78,9 @@ export default {
                "menu_title": "sidebar.all"
             },
             {
-               "path": "/admin/drivers/approved",
+               "path": "/admin/drivers/pending",
                "new_item": false,
-               "menu_title": "sidebar.approved"
+               "menu_title": "sidebar.pending"
             },
             {
                "path": "/admin/drivers/accepted",
@@ -88,10 +88,11 @@ export default {
                "menu_title": "sidebar.accepted"
             },
             {
-               "path": "/admin/drivers/pending",
+               "path": "/admin/drivers/approved",
                "new_item": false,
-               "menu_title": "sidebar.pending"
+               "menu_title": "sidebar.approved"
             },
+
             {
                "path": "/admin/drivers/inactive",
                "new_item": false,
@@ -181,7 +182,7 @@ export default {
          "type_multi": null,
          "new_item": false,
          "child_routes": [
-             {
+            {
                "path": "/admin/payments",
                "new_item": false,
                "menu_title": "sidebar.all"

@@ -28,7 +28,7 @@ class SidebarContent extends Component {
 		const { sidebarMenus } = this.props.sidebar;
 		return (
 			<div className="rct-sidebar-nav pb-4">
-					<nav className="navigation">
+				<nav className="navigation">
 					<List
 						className="rct-mainMenu p-0 m-0 list-unstyled"
 						subheader={
@@ -56,5 +56,5 @@ const mapStateToProps = ({ sidebar, settings }) => {
 };
 
 export default withRouter(connect(mapStateToProps, {
-    onToggleMenu
+	onToggleMenu
 })(SidebarContent));

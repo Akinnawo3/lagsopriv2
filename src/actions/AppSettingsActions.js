@@ -17,7 +17,7 @@ import {
     STOP_USER_TOUR,
     TOGGLE_DARK_SIDENAV,
     AGENCY_TOGGLE_MENU,
-	 CHANGE_AGENCY_LAYOUT_BG,
+    CHANGE_AGENCY_LAYOUT_BG,
 } from './types';
 
 /**
@@ -73,7 +73,7 @@ export const rtlLayoutAction = (isRtlLayout) => ({
 /**
  * Redux Action To Toggle Sidebar Menus
  */
-export const onToggleMenu = (selectedMenu) => ({
+export const onToggleMenu = (selectedMenu) => ({ 
     type: TOGGLE_MENU,
     payload: selectedMenu
 });

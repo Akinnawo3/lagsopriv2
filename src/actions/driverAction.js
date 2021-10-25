@@ -79,10 +79,10 @@ export const getDriver = (auth_id, linerLoader) => async dispatch => {
 
 
 export const changeDriverStatus = (auth_id, driver_status, driverData, message_type, subject) => async dispatch => {
-  const body = { auth_id, driver_status }
+  const body = { component: "driver_status", auth_id, driver_status }
   try {
     dispatch(startStatusLoading())
-    const res = await axios.put(`${api.user}/v1.1/admin/driver-status`, body)
+    const res = await axios.put(`${api.user}/v1.1/admin/users`, body)
     if (res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     } else {
@@ -90,6 +90,28 @@ export const changeDriverStatus = (auth_id, driver_status, driverData, message_t
         await dispatch(sendDriverMessage(driverData, message_type, subject))
       }
       await NotificationManager.success('Driver Updated Successfully!');
+      await dispatch(getDriver(auth_id, true));
+    }
+    dispatch(endStatusLoading())
+  } catch (err) {
+    dispatch(endStatusLoading())
+    NotificationManager.error(err.response.data.message);
+  }
+};
+
+export const changeDriverCategory = (auth_id, category, driverData, message_type, subject) => async dispatch => {
+  const body = { component: "driver_category", auth_id, category }
+  console.log(message_type)
+  try {
+    dispatch(startStatusLoading())
+    const res = await axios.put(`${api.user}/v1.1/admin/users`, body)
+    if (res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    } else {
+      if (driverData && message_type) {
+        await dispatch(sendDriverMessage(driverData, message_type, subject))
+      }
+      await NotificationManager.success('Driver Category Updated Successfully!');
       await dispatch(getDriver(auth_id, true));
     }
     dispatch(endStatusLoading())

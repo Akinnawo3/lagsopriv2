@@ -16,7 +16,7 @@ const  VerifiedDrivers = ({getDrivers, match, getDriversCount}) => {
 	return (
 		<div className="table-wrapper">
 			<PageTitleBar title={"Accepted Drivers"} match={match} />
-			<DriverTable status={1} header='Accepted Drivers' />
+			<DriverTable status={2} header='Accepted Drivers' />
 		</div>
 	);
 
