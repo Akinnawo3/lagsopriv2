@@ -88,6 +88,11 @@ export default {
                "menu_title": "sidebar.accepted"
             },
             {
+               "path": "/admin/drivers/verified",
+               "new_item": false,
+               "menu_title": "sidebar.verified"
+            },
+            {
                "path": "/admin/drivers/approved",
                "new_item": false,
                "menu_title": "sidebar.approved"

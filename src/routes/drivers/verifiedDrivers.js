@@ -1,22 +1,22 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { connect } from "react-redux";
-import {getDrivers, getDriversCount} from "Actions/driverAction";
+import { getDrivers, getDriversCount } from "Actions/driverAction";
 import DriverTable from "Routes/drivers/components/driverTable";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
 
-const  VerifiedDrivers = ({getDrivers, match, getDriversCount}) => {
+const VerifiedDrivers = ({ getDrivers, match, getDriversCount }) => {
 
-	useEffect(()=> {
+	useEffect(() => {
 		getDrivers(1, 1, true);
 		getDriversCount(1)
-	},[])
+	}, [])
 
 
 	return (
 		<div className="table-wrapper">
-			<PageTitleBar title={"Accepted Drivers"} match={match} />
-			<DriverTable status={2} header='Accepted Drivers' />
+			<PageTitleBar title={"Verified Drivers"} match={match} />
+			<DriverTable status={2} header='Verified Drivers' />
 		</div>
 	);
 
@@ -35,4 +35,4 @@ const mapStateToProps = state => ({
 	driversCount: state.driver.driversCount,
 });
 
-export default connect( mapStateToProps, mapDispatchToProps) (VerifiedDrivers);
+export default connect(mapStateToProps, mapDispatchToProps)(VerifiedDrivers);
