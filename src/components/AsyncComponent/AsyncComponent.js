@@ -149,6 +149,10 @@ const AsyncVerifiedDrivers = Loadable({
 	loader: () => import("Routes/drivers/verifiedDrivers"),
 	loading: () => <RctPageLoader />,
 });
+const AsyncTrainedDrivers = Loadable({
+	loader: () => import("Routes/drivers/trainedDrivers"),
+	loading: () => <RctPageLoader />,
+});
 
 const AsyncActiveDrivers = Loadable({
 	loader: () => import("Routes/drivers/activeDrivers"),
@@ -402,6 +406,7 @@ export {
 	AsyncVerifiedDrivers,
 	AsyncPendingDrivers,
 	AsyncAcceptedDrivers,
+	AsyncTrainedDrivers,
 	AsyncInactiveDrivers,
 	AsyncActiveDrivers,
 	AsyncTrips,

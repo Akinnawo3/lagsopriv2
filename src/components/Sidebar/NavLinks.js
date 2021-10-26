@@ -93,6 +93,11 @@ export default {
                "menu_title": "sidebar.verified"
             },
             {
+               "path": "/admin/drivers/trained",
+               "new_item": false,
+               "menu_title": "sidebar.trained"
+            },
+            {
                "path": "/admin/drivers/approved",
                "new_item": false,
                "menu_title": "sidebar.approved"

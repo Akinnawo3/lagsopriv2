@@ -75,22 +75,24 @@ const DriverProfile = ({ driver, changeDriverStatus, changeDriverCategory, verif
         inputEl.current.open();
         // }
     }
+    const onTrained = () => {
+        setTitle("Are you sure you want to confirm this driver trained")
+        setMessage("This driver will be confirmed as trained on the platform.")
+        setArgument(3)
+        inputEl.current.open();
+    }
+
     const onApproved = () => {
         if (!driver.driver_data?.vehicle_id) {
             NotificationManager.error("A vehicle must be assigned to the driver before approval")
         } else {
             setTitle("Are you sure you want to approve driver")
             setMessage("This driver will be approved on the platform.")
-            setArgument(3)
+            setArgument(4)
             inputEl.current.open();
         }
     }
-    const onTrained = () => {
-        setTitle("Are you sure you want to confirm this driver trained")
-        setMessage("This driver will be confirmed as trained on the platform.")
-        setArgument(4)
-        inputEl.current.open();
-    }
+
     const onSuspend = () => {
         setTitle("Are you sure you want to suspend driver")
         setMessage("This driver will be inactive.")
@@ -131,14 +133,14 @@ const DriverProfile = ({ driver, changeDriverStatus, changeDriverCategory, verif
             changeDriverStatus(driver?.auth_id, '2', driver, emailMessages.verifiedMessage, 'Driver Verified')
         }
         if (argument === 3) {
-            changeDriverStatus(driver?.auth_id, '3', driver, emailMessages.approveMsg, "Driver Approved");
+            changeDriverStatus(driver?.auth_id, '3', driver, emailMessages.trainedMessage, "Driver Traning Confirmed");
         }
-        // if (argument === 4) {
-        //     changeDriverStatus(driver?.auth_id, '4', driver, emailMessages.trainedMessage, 'Driver Training Confirmed')
-        // }
-        // if (argument === 5) {
-        //     changeDriverStatus(driver?.auth_id, '5', driver, emailMessages.suspendMsg, 'Driver Suspended')
-        // }
+        if (argument === 4) {
+            changeDriverStatus(driver?.auth_id, '4', driver, emailMessages.approveMsg, 'Driver Approved')
+        }
+        if (argument === 5) {
+            changeDriverStatus(driver?.auth_id, '5', driver, emailMessages.suspendMsg, 'Driver Suspended')
+        }
         if (argument === 6) {
             changeDriverCategory(driver?.auth_id, driverCategory, driver, emailMessages.categoryMsg[driverCategory], 'Category Changed')
         }
@@ -199,7 +201,12 @@ const DriverProfile = ({ driver, changeDriverStatus, changeDriverCategory, verif
                             <li className="list-group-item text-right"><span
                                 className="pull-left"><strong>Disability</strong></span>{driver?.driver_data?.disability === 0 ? 'No' : 'Yes'}
                             </li>
-
+                            <li className="list-group-item text-right"><span
+                                className="pull-left"><strong>Bank Name</strong></span>{driver?.bank_name ? driver?.bank_name : 'NA'}
+                            </li>
+                            <li className="list-group-item text-right"><span
+                                className="pull-left"><strong>Bank Account</strong></span>{driver?.driver_data?.bank_account ? driver?.driver_data?.bank_account : 'NA'}
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -208,19 +215,13 @@ const DriverProfile = ({ driver, changeDriverStatus, changeDriverCategory, verif
                 <div className="tab-content">
                     <div className="tab-pane active" id="home">
                         <ul className="list-group">
-                            <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>Bank Name</strong></span>{driver?.bank_name ? driver?.bank_name : 'NA'}
-                            </li>
-                            <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>Bank Account</strong></span>{driver?.driver_data?.bank_account ? driver?.driver_data?.bank_account : 'NA'}
-                            </li>
+
                             {
                                 // driver?.driver_data?.driver_status >= 1 &&
                                 <li className="list-group-item text-right"><span
                                     className="pull-left"><strong>Driver Category</strong></span>{driver?.driver_data?.driver_category} <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => setCategoryModalOpen(true)} > Change </span>
                                 </li>
                             }
-
                             <li className="list-group-item text-right"><span
                                 className="pull-left"><strong>Daily debt service Amt</strong></span>{driver?.driver_data?.payment_plan?.plan ? '₦' + driver?.driver_data?.payment_plan?.plan : 'NA'}
                             </li>
@@ -264,11 +265,11 @@ const DriverProfile = ({ driver, changeDriverStatus, changeDriverCategory, verif
                                 </li>
                             }
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>ASSET Payment Status</strong></span>{driver?.driver_data?.asset_payment?.status ? "Paid" : "Not Paid"}
+                                className="pull-left"><strong>One-off Payment</strong></span>{driver?.driver_data?.asset_payment?.status ? "Paid" : "Not Paid"}
                             </li>
                             {driver?.driver_data?.asset_payment?.status &&
                                 <li className="list-group-item text-right"><span
-                                    className="pull-left"><strong>ASSET Payment ID</strong></span>{driver?.driver_data?.asset_payment?.payment_id}
+                                    className="pull-left"><strong>One-off Payment ID</strong></span>{driver?.driver_data?.asset_payment?.payment_id}
                                 </li>
                             }
                             <li className="list-group-item text-right"><span
@@ -314,22 +315,22 @@ const DriverProfile = ({ driver, changeDriverStatus, changeDriverCategory, verif
                                         </div>}
                                     {driver?.driver_data?.driver_status === 2 &&
                                         <div className='text-center'>
-                                            <Button disabled={loadingStatus} onClick={() => onApproved()} className="bg-success mt-3 text-white">Approve Driver</Button>
+                                            <Button disabled={loadingStatus} onClick={() => onTrained()} className="bg-success mt-3 text-white">Mark as Trained</Button>
                                         </div>}
                                     {driver?.driver_data?.driver_status === 3 &&
                                         <div className='text-center d-flex'>
                                             {/* <Button disabled={loadingStatus} onClick={() => onTrained()} className="bg-warning mt-3 text-white mr-2">Confirm Driver Training</Button> */}
-                                            <Button disabled={loadingStatus} onClick={() => onSuspend()} className="bg-danger mt-3 text-white ">Suspend Driver</Button>
+                                            <Button disabled={loadingStatus} onClick={() => onApproved()} className="bg-danger mt-3 text-white ">Approve Driver</Button>
                                         </div>}
-                                    {/* {driver?.driver_data?.driver_status === 4 &&
+                                    {driver?.driver_data?.driver_status === 4 &&
                                         <div className='text-center'>
                                             <Button disabled={loadingStatus} onClick={() => onSuspend()} className="bg-danger mt-3 text-white">Suspend Driver</Button>
                                         </div>}
                                     {driver?.driver_data?.driver_status === 5 &&
                                         <div className='text-center'>
                                             <Button disabled={loadingStatus} onClick={() => onReactivate()} className="bg-success mt-3 text-white">Reactivate Driver</Button>
-                                        </div>} */}
-                                    {driver?.driver_data?.driver_status === 2 && !driver.driver_data?.vehicle_id && driver?.driver_data?.asset_payment.status && driver?.driver_data?.verification_payment.status &&
+                                        </div>}
+                                    {driver?.driver_data?.driver_status === 3 && !driver.driver_data?.vehicle_id && driver?.driver_data?.asset_payment.status && driver?.driver_data?.verification_payment.status &&
                                         <div className='text-center ml-2'>
                                             <Button disabled={loadingStatus} onClick={() => { opnAddVehicleModal() }} className="bg-warning mt-3 text-white">Assign Vehicle</Button>
                                         </div>

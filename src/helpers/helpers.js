@@ -76,9 +76,9 @@ export function getStatus(status) {
     } else if (status === 2) {
         return 'Verified'
     } else if (status === 3) {
-        return 'Approved'
-    } else if (status === 4) {
         return 'Trained'
+    } else if (status === 4) {
+        return 'Approved'
     }
     else {
         return 'Inactive'
@@ -124,7 +124,7 @@ export function getStatusColor(status) {
     } else if (status === 1) {
         return 'primary'
     } else if (status === 2) {
-        return 'success'
+        return 'info'
     } else if (status === 3 || status === 4) {
         return 'success'
     } else {

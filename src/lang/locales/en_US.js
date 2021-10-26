@@ -79,6 +79,7 @@ module.exports = {
    "sidebar.applications": "Applications",
    "sidebar.accepted": "Accepted",
    "sidebar.verified": "Verified",
+   "sidebar.trained": "Trained",
    "sidebar.dashboard1": "Dashboard 1",
    "sidebar.dashboard2": "Dashboard 2",
    "sidebar.dashboard3": "Dashboard 3",
