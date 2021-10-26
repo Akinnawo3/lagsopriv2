@@ -199,8 +199,6 @@ function mapDispatchToProps(dispatch) {
         getPaymentsService: (pageNo, transaction_status, auth_id) => dispatch(getPaymentsService(pageNo, transaction_status, auth_id)),
         getPaymentsServiceCount: (transaction_status, auth_id) => dispatch(getPaymentsServiceCount(transaction_status, auth_id)),
         getPaymentsServiceBalance: (auth_id) => dispatch(getPaymentsServiceBalance(auth_id)),
-
-
     };
 }
 

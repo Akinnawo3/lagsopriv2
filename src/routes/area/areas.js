@@ -159,7 +159,7 @@ const Areas = ({ match, getAreas, areas, createArea, updateArea, loading, delete
                         </div>
                     </li>
                     <div className="float-right">
-                        <CSVLink
+                        {/* <CSVLink
                             // headers={headers}
                             data={excelExport}
                             filename={"areas.csv"}
@@ -168,7 +168,7 @@ const Areas = ({ match, getAreas, areas, createArea, updateArea, loading, delete
                         >
                             <i className="zmdi zmdi-download mr-2"></i>
                             Export to Excel
-                        </CSVLink>
+                        </CSVLink> */}
                         <CSVLink
                             // headers={headers}
                             data={sampleData}

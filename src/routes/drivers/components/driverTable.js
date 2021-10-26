@@ -20,7 +20,7 @@ const DriverTable = ({ drivers, isLoading, driversCount, getDrivers, status, sea
     const [currentPage, setCurrentPage] = useState(1);
     const [excelExport, setExcelExport] = useState([])
 
-
+console.log(status)
     const paginate = pageNumber => {
         setCurrentPage(pageNumber);
         getDrivers(status, pageNumber)
@@ -39,6 +39,7 @@ const DriverTable = ({ drivers, isLoading, driversCount, getDrivers, status, sea
         getDriversCount(status)
     }
 
+    console.log(drivers)
 
     useEffect(() => {
         if (drivers.length > 0) {

@@ -8,6 +8,7 @@ import { getVehicle } from "Actions/vehicleAction";
 
 
 export const getDrivers = (status = '', page_no = 1, spinner) => async dispatch => {
+  console.log(status)
   try {
     spinner && dispatch(startLoading());
     !spinner && dispatch(startStatusLoading())

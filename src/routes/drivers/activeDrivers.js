@@ -8,7 +8,7 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 const  ActiveDrivers = ({getDrivers, match, getDriversCount}) => {
 
 	useEffect(()=> {
-		getDrivers(2, 1, true);
+		getDrivers(3, 1, true);
 		getDriversCount(2)
 	},[])
 

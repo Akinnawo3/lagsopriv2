@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 import { getStatus, getStatusColor, idVerificationType } from "Helpers/helpers";
 import { changeDriverStatus, changeDriverCategory, verifyID } from "Actions/driverAction";
 import { connect } from "react-redux";
-import { assignVehicleOnProfile } from "Actions/vehicleAction";
+import { assignVehicleOnProfile, getVehicle } from "Actions/vehicleAction";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import { Link } from "react-router-dom";
 import { NotificationManager } from "react-notifications";
@@ -13,7 +13,7 @@ import TableCell from "@material-ui/core/TableCell";
 import moment from 'moment';
 
 
-const DriverProfile = ({ driver, changeDriverStatus, changeDriverCategory, verifyID, loadingStatus, vehicles, assignVehicle, vehicleDetails }) => {
+const DriverProfile = ({ driver, changeDriverStatus, changeDriverCategory, verifyID, loadingStatus, vehicles, assignVehicle, vehicleDetails, getVehicle }) => {
     const [isViewerOpen, setIsViewerOpen] = useState(false);
     const [addVehicleModal, setAddVehicleModal] = useState(false)
     const [idVerificationModalOpen, setIdVerificationModalOpen] = useState(false)
@@ -39,7 +39,7 @@ const DriverProfile = ({ driver, changeDriverStatus, changeDriverCategory, verif
         }
     }, [vehicle])
 
-    // console.log(driver)
+    console.log(driver)
 
     const opnAddVehicleModal = () => {
         setAddVehicleModal(true)
@@ -76,10 +76,14 @@ const DriverProfile = ({ driver, changeDriverStatus, changeDriverCategory, verif
         // }
     }
     const onApproved = () => {
-        setTitle("Are you sure you want to approve driver")
-        setMessage("This driver will be approved on the platform.")
-        setArgument(3)
-        inputEl.current.open();
+        if (!driver.driver_data?.vehicle_id) {
+            NotificationManager.error("A vehicle must be assigned to the driver before approval")
+        } else {
+            setTitle("Are you sure you want to approve driver")
+            setMessage("This driver will be approved on the platform.")
+            setArgument(3)
+            inputEl.current.open();
+        }
     }
     const onTrained = () => {
         setTitle("Are you sure you want to confirm this driver trained")
@@ -146,7 +150,7 @@ const DriverProfile = ({ driver, changeDriverStatus, changeDriverCategory, verif
     }
     return (
         <div className="row" style={{ fontSize: '0.8rem' }}>
-            <div className="col-sm-6">
+            <div className="col-sm-10 col-lg-5">
                 <div className="tab-content">
                     <div className="tab-pane active" id="home">
                         <ul className="list-group">
@@ -195,6 +199,15 @@ const DriverProfile = ({ driver, changeDriverStatus, changeDriverCategory, verif
                             <li className="list-group-item text-right"><span
                                 className="pull-left"><strong>Disability</strong></span>{driver?.driver_data?.disability === 0 ? 'No' : 'Yes'}
                             </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div className="col-sm-10 col-lg-5 offset-lg-1">
+                <div className="tab-content">
+                    <div className="tab-pane active" id="home">
+                        <ul className="list-group">
                             <li className="list-group-item text-right"><span
                                 className="pull-left"><strong>Bank Name</strong></span>{driver?.bank_name ? driver?.bank_name : 'NA'}
                             </li>
@@ -221,25 +234,25 @@ const DriverProfile = ({ driver, changeDriverStatus, changeDriverCategory, verif
                                 </span>
                                 {driver?.driver_data?.license_id?.value}
                                 {
-                                    driver?.driver_data?.license_id?.status ? <i className="ti-check ml-3" /> : <span className={`bg-warning rounded fw-bold p-2 ml-3 ${driver?.driver_data?.driver_status > 1 && "d-none"}`} onClick={() => triggerIdVerifcation("drivers_license")} > Run Check </span>
+                                    driver?.driver_data?.license_id?.status ? <i className="ti-check ml-3" /> : <Button className={`btn-warning rounded fw-bold p-2 ml-3 ${driver?.driver_data?.driver_status > 1 && "d-none"}`} onClick={() => triggerIdVerifcation("drivers_license")} > Run Check </Button>
                                 }
                             </li>
                             <li className="list-group-item text-right"><span
                                 className="pull-left"><strong>LASDRI ID</strong></span>{driver?.driver_data?.lasdri_id?.value}
                                 {
-                                    driver?.driver_data?.lasdri_id?.status ? <i className="ti-check ml-3" /> : <span className={`bg-warning rounded fw-bold p-2 ml-3 ${driver?.driver_data?.driver_status > 1 && "d-none"}`} onClick={() => triggerIdVerifcation("lasdri")}> Run Check </span>
+                                    driver?.driver_data?.lasdri_id?.status ? <i className="ti-check ml-3" /> : <Button className={`btn-warning rounded fw-bold p-2 ml-3 ${driver?.driver_data?.driver_status > 1 && "d-none"}`} onClick={() => triggerIdVerifcation("lasdri")}> Run Check </Button>
                                 }
                             </li>
                             <li className="list-group-item text-right"><span
                                 className="pull-left"><strong>LASSRA ID</strong></span>{driver?.driver_data?.lassra_id?.value}
                                 {
-                                    driver?.driver_data?.lassra_id?.status ? <i className="ti-check ml-3" /> : <span className={`bg-warning rounded fw-bold p-2 ml-3 ${driver?.driver_data?.driver_status > 1 && "d-none"}`} onClick={() => triggerIdVerifcation("lassra")}> Run Check </span>
+                                    driver?.driver_data?.lassra_id?.status ? <i className="ti-check ml-3" /> : <Button className={`btn-warning rounded fw-bold p-2 ml-3 ${driver?.driver_data?.driver_status > 1 && "d-none"}`} onClick={() => triggerIdVerifcation("lassra")}> Run Check </Button>
                                 }
                             </li>
                             <li className="list-group-item text-right"><span
                                 className="pull-left"><strong>NIN ID</strong></span>{driver?.driver_data?.nin_id?.value}
                                 {
-                                    driver?.driver_data?.nin_id?.status ? <i className="ti-check ml-3" /> : <span className={`bg-warning rounded fw-bold p-2 ml-3 ${driver?.driver_data?.driver_status > 1 && "d-none"}`} onClick={() => triggerIdVerifcation("nin")}> Run Check </span>
+                                    driver?.driver_data?.nin_id?.status ? <i className="ti-check ml-3" /> : <Button className={`btn-warning rounded fw-bold p-2 ml-3 ${driver?.driver_data?.driver_status > 1 && "d-none"}`} onClick={() => triggerIdVerifcation("nin")}> Run Check </Button>
                                 }
                             </li>
                             <li className="list-group-item text-right"><span
@@ -316,10 +329,11 @@ const DriverProfile = ({ driver, changeDriverStatus, changeDriverCategory, verif
                                         <div className='text-center'>
                                             <Button disabled={loadingStatus} onClick={() => onReactivate()} className="bg-success mt-3 text-white">Reactivate Driver</Button>
                                         </div>} */}
-                                    {driver?.driver_data?.driver_status === 3 && !driver.driver_data?.vehicle_id && (driver?.driver_data?.receipt_url || driver?.driver_data?.made_first_payment) &&
+                                    {driver?.driver_data?.driver_status === 2 && !driver.driver_data?.vehicle_id && driver?.driver_data?.asset_payment.status && driver?.driver_data?.verification_payment.status &&
                                         <div className='text-center ml-2'>
                                             <Button disabled={loadingStatus} onClick={() => { opnAddVehicleModal() }} className="bg-warning mt-3 text-white">Assign Vehicle</Button>
-                                        </div>}
+                                        </div>
+                                    }
                                 </span>
                             </li>
                         </ul>
@@ -440,6 +454,7 @@ function mapDispatchToProps(dispatch) {
         changeDriverCategory: (auth_id, category, driverData, message_type, subject) => dispatch(changeDriverCategory(auth_id, category, driverData, message_type, subject)),
         verifyID: (auth_id, verification_status, verification_name) => dispatch(verifyID(auth_id, verification_status, verification_name)),
         assignVehicle: (vehicle_id, driver_auth_id, driverData, vehicleData, message_type) => dispatch(assignVehicleOnProfile(vehicle_id, driver_auth_id, driverData, vehicleData, message_type)),
+        getVehicle: (vehicle_id, spinner) => dispatch(getVehicle(vehicle_id, spinner)),
     };
 }
 const mapStateToProps = state => ({
