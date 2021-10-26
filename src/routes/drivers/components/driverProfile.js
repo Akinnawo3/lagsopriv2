@@ -53,6 +53,7 @@ const DriverProfile = ({ driver, changeDriverStatus, changeDriverCategory, verif
         e.preventDefault();
         onAddVehicleModalClose()
         await assignVehicle(vehicle, driver?.auth_id, driver, vehicleData, '5M')
+        await changeDriverStatus(driver?.auth_id, '4', driver, emailMessages.approveMsg, 'Driver Approved')
     };
     const onAccept = () => {
         setTitle("Are you sure you want to accept driver")
@@ -135,9 +136,9 @@ const DriverProfile = ({ driver, changeDriverStatus, changeDriverCategory, verif
         if (argument === 3) {
             changeDriverStatus(driver?.auth_id, '3', driver, emailMessages.trainedMessage, "Driver Traning Confirmed");
         }
-        if (argument === 4) {
-            changeDriverStatus(driver?.auth_id, '4', driver, emailMessages.approveMsg, 'Driver Approved')
-        }
+        // if (argument === 4) {
+        //     changeDriverStatus(driver?.auth_id, '4', driver, emailMessages.approveMsg, 'Driver Approved')
+        // }
         if (argument === 5) {
             changeDriverStatus(driver?.auth_id, '5', driver, emailMessages.suspendMsg, 'Driver Suspended')
         }
@@ -313,15 +314,16 @@ const DriverProfile = ({ driver, changeDriverStatus, changeDriverCategory, verif
                                         <div className='text-center'>
                                             <Button disabled={loadingStatus} onClick={() => onVerified()} className="bg-success mt-3 text-white">Verify Driver</Button>
                                         </div>}
-                                    {driver?.driver_data?.driver_status === 2 &&
+                                    {driver?.driver_data?.driver_status === 2 && driver?.driver_data?.asset_payment?.status &&
                                         <div className='text-center'>
+
                                             <Button disabled={loadingStatus} onClick={() => onTrained()} className="bg-success mt-3 text-white">Mark as Trained</Button>
                                         </div>}
-                                    {driver?.driver_data?.driver_status === 3 &&
+                                    {/* {driver?.driver_data?.driver_status === 3 &&
                                         <div className='text-center d-flex'>
                                             {/* <Button disabled={loadingStatus} onClick={() => onTrained()} className="bg-warning mt-3 text-white mr-2">Confirm Driver Training</Button> */}
-                                            <Button disabled={loadingStatus} onClick={() => onApproved()} className="bg-danger mt-3 text-white ">Approve Driver</Button>
-                                        </div>}
+                                    {/* <Button disabled={loadingStatus} onClick={() => onApproved()} className="bg-danger mt-3 text-white ">Approve Driver</Button> */}
+                                    {/* </div>}  */}
                                     {driver?.driver_data?.driver_status === 4 &&
                                         <div className='text-center'>
                                             <Button disabled={loadingStatus} onClick={() => onSuspend()} className="bg-danger mt-3 text-white">Suspend Driver</Button>

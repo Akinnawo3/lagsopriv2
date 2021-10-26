@@ -98,7 +98,7 @@ export default {
                "menu_title": "sidebar.trained"
             },
             {
-               "path": "/admin/drivers/approved",
+               "path": "/admin/drivers/active",
                "new_item": false,
                "menu_title": "sidebar.approved"
             },

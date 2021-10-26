@@ -24,7 +24,7 @@ const DriverRoutes = ({ match }) => (
             <Route path={`/admin/drivers/verified`} component={AsyncVerifiedDrivers} />
             <Route path={`/admin/drivers/accepted`} component={AsyncAcceptedDrivers} />
             <Route path={`/admin/drivers/trained`} component={AsyncTrainedDrivers} />
-            <Route path={`/admin/drivers/approved`} component={AsyncActiveDrivers} />
+            <Route path={`/admin/drivers/active`} component={AsyncActiveDrivers} />
             <Route path={`/admin/drivers/inactive`} component={AsyncInactiveDrivers} />
             <Route path={`/admin/drivers/:id`} component={AsyncDriver} />
             <Route path={`/admin/drivers`} component={AsyncDrivers} />

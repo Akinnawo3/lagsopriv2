@@ -93,9 +93,6 @@ const Driver = (props) => {
             getPaymentsServiceBalance(match.params.id)
         }
     }, [match.params.id])
-
-
-
     return (
         <div className="userProfile-wrapper">
             <Helmet>
