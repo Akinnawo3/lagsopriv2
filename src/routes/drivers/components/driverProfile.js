@@ -239,13 +239,13 @@ const DriverProfile = ({ driver, changeDriverStatus, changeDriverCategory, verif
                                 }
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>LASDRI ID</strong></span>{driver?.driver_data?.lasdri_id?.value}
+                                className="pull-left"><strong>LASDRI ID</strong></span>{driver?.driver_data?.lasdri_id?.value === driver?.phone_number ? "" : driver?.driver_data?.lasdri_id?.value}
                                 {
                                     driver?.driver_data?.lasdri_id?.status ? <i className="ti-check ml-3" /> : <Button className={`btn-warning rounded fw-bold p-2 ml-3 ${driver?.driver_data?.driver_status > 1 && "d-none"}`} onClick={() => triggerIdVerifcation("lasdri")}> Run Check </Button>
                                 }
                             </li>
                             <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>LASSRA ID</strong></span>{driver?.driver_data?.lassra_id?.value}
+                                className="pull-left"><strong>LASSRA ID</strong></span>{driver?.driver_data?.lassra_id?.value === driver?.phone_number ? "" : driver?.driver_data?.lassra_id?.value}
                                 {
                                     driver?.driver_data?.lassra_id?.status ? <i className="ti-check ml-3" /> : <Button className={`btn-warning rounded fw-bold p-2 ml-3 ${driver?.driver_data?.driver_status > 1 && "d-none"}`} onClick={() => triggerIdVerifcation("lassra")}> Run Check </Button>
                                 }
