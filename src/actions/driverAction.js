@@ -18,14 +18,19 @@ import api from "../environments/environment";
 import { getVehicle } from "Actions/vehicleAction";
 
 export const getDrivers =
-  (status = "", page_no = 1, spinner, driver_online_status="") =>
+  (
+    status = "",
+    page_no = 1,
+    spinner,
+    driver_online_status = "",
+    asset_payment = ""
+  ) =>
   async (dispatch) => {
-    console.log(status);
     try {
       spinner && dispatch(startLoading());
       !spinner && dispatch(startStatusLoading());
       const res = await axios.get(
-        `${api.user}/v1.1/admin/users?user_type=driver&item_per_page=20&page=${page_no}&driver_account_status=${status}&driver_online_status=${driver_online_status}`
+        `${api.user}/v1.1/admin/users?user_type=driver&item_per_page=20&page=${page_no}&driver_account_status=${status}&driver_online_status=${driver_online_status}&asset_payment=${asset_payment}`
       );
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);

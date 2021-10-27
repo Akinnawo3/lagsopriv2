@@ -18,6 +18,7 @@ import { calculatePostDate, getStatus, getStatusColor } from "Helpers/helpers";
 import EmptyData from "Components/EmptyData/EmptyData";
 import { Link } from "react-router-dom";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
+import StatusFilterComponent from "../../../components/StatusFilterComponent/StatusFilterComponent";
 
 const DriverTable = ({
   drivers,
@@ -31,29 +32,42 @@ const DriverTable = ({
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [excelExport, setExcelExport] = useState([]);
-
+  const [appStatus, setAppStatus] = useState("");
+  const [paymentStatus, setPaymentStatus] = useState("");
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
-    getDrivers(status, pageNumber);
+    getDrivers(status, pageNumber, 1, appStatus);
     window.scrollTo(0, 0);
   };
-
   const getPreviousData = () => {
     getDrivers(status, 1);
   };
-
   const getSearchData = (searchData) => {
     searchDrivers(searchData, status);
   };
-
   const handleCount = () => {
     getDriversCount(status);
   };
-
-  const onChange = (e) => {
-    getDrivers(status, 1, 0, e.target.value);
+  const handleChange = (e) => {
+    setCurrentPage(1);
+    setAppStatus(e.target.value);
+    getDrivers(status, currentPage, 1, e.target.value);
   };
-
+  const handlePaymentChange = (e) => {
+    setCurrentPage(1);
+    setPaymentStatus(e.target.value);
+    getDrivers(status, currentPage, 1, e.target.value);
+  };
+  const paymentFilterOptions = [
+    { value: "", label: "- - Filter by One-off Payment Status - -" },
+    { value: 1, label: "Paid" },
+    { value: 0, label: "Not Paid" },
+  ];
+  const appStatusOptions = [
+    { value: "", label: "- - Filter by App Status - -" },
+    { value: 1, label: "Online" },
+    { value: 0, label: "Offline" },
+  ];
   useEffect(() => {
     if (drivers.length > 0) {
       let result = drivers.map((driver) => {
@@ -72,6 +86,8 @@ const DriverTable = ({
     }
   }, [drivers]);
 
+  console.log(drivers);
+
   return (
     <div>
       <RctCollapsibleCard
@@ -89,10 +105,29 @@ const DriverTable = ({
         </li>
         {status === 4 && (
           <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
-            <select id="online-status" name="online-status" onChange={onChange} className="p-1 px-4">
-              <option value="" style={{color:"grey"}}>- - Filter by App Status - -</option>
-              <option value={1}>Online</option>
-              <option value={0}>Offline</option>
+            <select
+              id="filter-dropdown"
+              name="fiter-dropdown"
+              onChange={handleChange}
+              className="p-1 px-4"
+            >
+              {appStatusOptions.map((item) => (
+                <option value={item.value}>{item.label}</option>
+              ))}
+            </select>
+          </li>
+        )}
+        {status === 2 && (
+          <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
+            <select
+              id="filter-dropdown"
+              name="fiter-dropdown"
+              onChange={handlePaymentChange}
+              className="p-1 px-4"
+            >
+              {paymentFilterOptions.map((item) => (
+                <option value={item.value}>{item.label}</option>
+              ))}
             </select>
           </li>
         )}
@@ -119,6 +154,9 @@ const DriverTable = ({
                     <TableCell>Last Name</TableCell>
                     <TableCell>Date / Time of Registration</TableCell>
                     {status != 4 && <TableCell>Status</TableCell>}
+                    {status === 2 && (
+                      <TableCell>One-off Payment Status</TableCell>
+                    )}
                     <TableCell>App Status</TableCell>
                     <TableCell>Action</TableCell>
                   </TableRow>
@@ -140,6 +178,21 @@ const DriverTable = ({
                               )}
                             >
                               {getStatus(driver.driver_data?.driver_status)}
+                            </Badge>
+                          </TableCell>
+                        )}
+                        {status === 2 && (
+                          <TableCell>
+                            <Badge
+                              color={
+                                driver?.driver_data?.asset_payment?.status
+                                  ? "success"
+                                  : "danger"
+                              }
+                            >
+                              {driver?.driver_data?.asset_payment?.status
+                                ? "Paid"
+                                : "Not Paid"}{" "}
                             </Badge>
                           </TableCell>
                         )}
@@ -190,8 +243,22 @@ const DriverTable = ({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getDrivers: (status, page_no, spinner, driver_online_status) =>
-      dispatch(getDrivers(status, page_no, spinner, driver_online_status)),
+    getDrivers: (
+      status,
+      page_no,
+      spinner,
+      driver_online_status,
+      asset_payment
+    ) =>
+      dispatch(
+        getDrivers(
+          status,
+          page_no,
+          spinner,
+          driver_online_status,
+          asset_payment
+        )
+      ),
     searchDrivers: (searchData, status) =>
       dispatch(searchDrivers(searchData, status)),
     getDriversCount: (status) => dispatch(getDriversCount(status)),
