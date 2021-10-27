@@ -4,12 +4,11 @@ import { getDrivers, getDriversCount } from "Actions/driverAction";
 import DriverTable from "Routes/drivers/components/driverTable";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
-
 const ActiveDrivers = ({ getDrivers, match, getDriversCount }) => {
 
 	useEffect(() => {
 		getDrivers(4, 1, true);
-		getDriversCount(2)
+		getDriversCount(4)
 	}, [])
 
 

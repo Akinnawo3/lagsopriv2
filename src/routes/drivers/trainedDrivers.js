@@ -7,7 +7,7 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 const TraninedDrivers = ({ getDrivers, match, getDriversCount }) => {
   useEffect(() => {
     getDrivers(3, 1, true );
-    getDriversCount(0);
+    getDriversCount(3);
   }, []);
 
   return (
