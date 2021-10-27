@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Input} from "reactstrap";
 
-
 const SearchComponent = ({getSearchedData, getPreviousData, setCurrentPage, getCount, placeHolder}) => {
     const [searchData, setSearchData] = useState('')
     const [isSearch, setIsSearch] = useState(false)

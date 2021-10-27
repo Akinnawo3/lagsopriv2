@@ -78,7 +78,7 @@ export function getStatus(status) {
     } else if (status === 3) {
         return 'Trained'
     } else if (status === 4) {
-        return 'Approved'
+        return 'Active'
     }
     else {
         return 'Inactive'
