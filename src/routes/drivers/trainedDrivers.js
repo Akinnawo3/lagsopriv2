@@ -13,7 +13,7 @@ const TraninedDrivers = ({ getDrivers, match, getDriversCount }) => {
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Trained Drivers"} match={match} />
-      <DriverTable status={0} header="Trained Drivers" />
+      <DriverTable status={3} header="Trained Drivers" />
     </div>
   );
 };

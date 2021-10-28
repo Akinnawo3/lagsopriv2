@@ -56,12 +56,12 @@ const DriverTable = ({
   const handlePaymentChange = (e) => {
     setCurrentPage(1);
     setPaymentStatus(e.target.value);
-    getDrivers(status, currentPage, 1, e.target.value);
+    getDrivers(status, currentPage, 1, "", e.target.value);
   };
   const paymentFilterOptions = [
     { value: "", label: "- - Filter by One-off Payment Status - -" },
-    { value: 1, label: "Paid" },
-    { value: 0, label: "Not Paid" },
+    { value: "1", label: "Paid" },
+    { value: "0", label: "Not Paid" },
   ];
   const appStatusOptions = [
     { value: "", label: "- - Filter by App Status - -" },
@@ -154,6 +154,7 @@ const DriverTable = ({
                     <TableCell>Last Name</TableCell>
                     <TableCell>Date / Time of Registration</TableCell>
                     {status != 4 && <TableCell>Status</TableCell>}
+                    {status === 3 && <TableCell>Vehicle Assigned</TableCell>}
                     {status === 2 && (
                       <TableCell>One-off Payment Status</TableCell>
                     )}
@@ -181,6 +182,12 @@ const DriverTable = ({
                             </Badge>
                           </TableCell>
                         )}
+                        {status === 3 && (
+                          <TableCell>
+                            {driver.vehicle_id ? "Yes" : "No"}
+                          </TableCell>
+                        )}
+
                         {status === 2 && (
                           <TableCell>
                             <Badge
@@ -205,7 +212,6 @@ const DriverTable = ({
                             {driver.driver_data.online ? "Online" : "Offline"}
                           </Badge>
                         </TableCell>
-
                         <TableCell>
                           <button
                             type="button"

@@ -112,7 +112,7 @@ export const changeDriverStatus =
         if (driverData && message_type) {
           await dispatch(sendDriverMessage(driverData, message_type, subject));
         }
-        if (!driver_status === 4) {
+        if (driver_status !== "4") {
           await NotificationManager.success("Driver Updated Successfully!");
         } else {
           await NotificationManager.success("Driver is now active!");
