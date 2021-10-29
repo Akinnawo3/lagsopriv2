@@ -17,6 +17,7 @@ import {
   changeDriverCategory,
   verifyID,
 } from "Actions/driverAction";
+import { getCustomerCare } from "Actions/customerCareAction";
 import { connect } from "react-redux";
 import { assignVehicleOnProfile, getVehicle } from "Actions/vehicleAction";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
@@ -36,6 +37,7 @@ const DriverProfile = ({
   assignVehicle,
   vehicleDetails,
   getVehicle,
+  getCustomerCare,
   customerCareNumbers,
 }) => {
   const [isViewerOpen, setIsViewerOpen] = useState(false);
@@ -63,6 +65,7 @@ const DriverProfile = ({
   const { vehicle } = formData;
 
   useEffect(() => {
+    getCustomerCare();
     if (vehicle && vehicles.length > 0) {
       const vehicleValue = vehicles.find(
         (element) => element.vehicle_id === vehicle
@@ -71,7 +74,7 @@ const DriverProfile = ({
     }
   }, [vehicle]);
 
-  console.log(driver);
+  console.log(customerCareNumbers);
 
   const opnAddVehicleModal = () => {
     setAddVehicleModal(true);
@@ -696,7 +699,7 @@ const DriverProfile = ({
                 value="commercial"
                 checked={driverCategory === "commercial"}
                 onChange={() => setDriverCategory("commercial")}
-              />{" "}
+              />
               Commercial Driver
             </div>
             <div className="mt-2 text-right">
@@ -810,6 +813,7 @@ const DriverProfile = ({
 };
 function mapDispatchToProps(dispatch) {
   return {
+    getCustomerCare: (spinner) => dispatch(getCustomerCare(spinner)),
     changeDriverStatus: (
       auth_id,
       driver_status,
