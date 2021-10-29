@@ -18,7 +18,6 @@ import { calculatePostDate, getStatus, getStatusColor } from "Helpers/helpers";
 import EmptyData from "Components/EmptyData/EmptyData";
 import { Link } from "react-router-dom";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
-import StatusFilterComponent from "../../../components/StatusFilterComponent/StatusFilterComponent";
 
 const DriverTable = ({
   drivers,

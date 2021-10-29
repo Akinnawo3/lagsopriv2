@@ -36,6 +36,7 @@ const DriverProfile = ({
   assignVehicle,
   vehicleDetails,
   getVehicle,
+  customerCareNumbers,
 }) => {
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const [addVehicleModal, setAddVehicleModal] = useState(false);
@@ -355,7 +356,7 @@ const DriverProfile = ({
                   <span className="pull-left">
                     <strong>Driver Category</strong>
                   </span>
-                  {driver?.driver_data?.driver_category}{" "}
+                  {driver?.driver_data?.driver_category}
                   <span
                     className="bg-primary rounded fw-bold p-2 ml-3 text-white"
                     onClick={() => setCategoryModalOpen(true)}
@@ -472,6 +473,14 @@ const DriverProfile = ({
                   {driver?.driver_data?.verification_payment?.payment_id}
                 </li>
               )}
+              <li className="list-group-item text-right">
+                <span className="pull-left">
+                  <strong>One-off Payment Amount</strong>
+                </span>
+                {driver?.driver_data?.driver_category === "social"
+                  ? `# ${customerCareNumbers.soc_driver_fee}`
+                  : `# ${customerCareNumbers.com_driver_fee}`}
+              </li>
               <li className="list-group-item text-right">
                 <span className="pull-left">
                   <strong>One-off Payment</strong>
@@ -859,5 +868,6 @@ const mapStateToProps = (state) => ({
   loadingStatus: state.loading.loadingStatus,
   vehicles: state.vehicle.vehicles,
   vehicleDetails: state.vehicle.vehicleDetails,
+  customerCareNumbers: state.customerCare.customerCareNumbers,
 });
 export default connect(mapStateToProps, mapDispatchToProps)(DriverProfile);
