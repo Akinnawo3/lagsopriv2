@@ -22,10 +22,4 @@ export default {
     "Sincerely, \n" +
     "\n" +
     "LagosRide .",
-  categoryMsg: {
-    social:
-      "This is to notify you that your have been categorised as a SOCIAL driver on LagosRide. ",
-    commercial:
-      "This is to notify you that your have been categorised as a COMMERCIAL driver on LagosRide. ",
-  },
 };

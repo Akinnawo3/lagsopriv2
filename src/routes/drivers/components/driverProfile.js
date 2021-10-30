@@ -227,7 +227,6 @@ const DriverProfile = ({
         driver?.auth_id,
         driverCategory,
         driver,
-        emailMessages.categoryMsg[driverCategory],
         "Category Changed"
       );
     }
@@ -682,14 +681,13 @@ const DriverProfile = ({
         <ModalBody>
           <Form onSubmit={handleCategorySubmit}>
             <div className="px-3">
-              {" "}
               <Input
                 type="radio"
                 name="driver_category"
                 value="social"
                 checked={driverCategory === "social"}
                 onChange={() => setDriverCategory("social")}
-              />{" "}
+              />
               Social Driver
             </div>
             <div className="px-3">
