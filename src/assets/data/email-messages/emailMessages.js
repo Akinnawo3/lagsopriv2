@@ -13,13 +13,19 @@ export default {
     "Sincerely,\n" +
     "\n" +
     "LagosRide.",
-  suspendMsg:
-    "You have been suspended from LagosRide for the following reasons;\n" +
-    "\n" +
-    "\n" +
-    "You will be required to report to the office for further actions, a date will be communicated with you shortly. \n" +
-    "\n" +
-    "Sincerely, \n" +
-    "\n" +
-    "LagosRide .",
+  suspendMsg: (reasons) => {
+    return `You have been suspended from LagosRide for the following reasons;${reasons.map(
+      (item, index) => {
+        return`\n${index + 1}. ${item}`;
+      }
+    )} \nYou will be required to report to the office for further actions, a date will be communicated with you shortly. \n Sincerely, \n \n LagosRide .`;
+  },
+  // "You have been suspended from LagosRide for the following reasons;\n" +
+  // "\n" +
+  // "\n" +
+  // "You will be required to report to the office for further actions, a date will be communicated with you shortly. \n" +
+  // "\n" +
+  // "Sincerely, \n" +
+  // "\n" +
+  // "LagosRide .",
 };

@@ -26,6 +26,7 @@ import { NotificationManager } from "react-notifications";
 import emailMessages from "Assets/data/email-messages/emailMessages";
 import TableCell from "@material-ui/core/TableCell";
 import moment from "moment";
+import suspensionReasonsList from "../../../assets/data/suspension-reasons/suspensionReasonsList";
 
 const DriverProfile = ({
   driver,
@@ -48,10 +49,13 @@ const DriverProfile = ({
     driver?.driver_data?.driver_category
   );
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+  const [suspensionReasonsModalOpen, setSuspensionReasonsModalOpen] =
+    useState(false);
   const [vehicleData, setVehicleData] = useState({});
   const [argument, setArgument] = useState(null);
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
+  const [suspensionReasons, setSuspensionReasons] = useState([]);
   const inputEl = useRef(null);
   const [formData, setFormData] = useState({
     firstname: driver?.first_name,
@@ -139,12 +143,17 @@ const DriverProfile = ({
       inputEl.current.open();
     }
   };
-
-  const onSuspend = () => {
-    setTitle("Are you sure you want to suspend driver");
-    setMessage("This driver will be inactive.");
-    setArgument(5);
-    inputEl.current.open();
+  const onSuspend = (e) => {
+    e.preventDefault();
+    if (!suspensionReasons.length) {
+      NotificationManager.error("State reasons for suspension");
+    } else {
+      setSuspensionReasonsModalOpen(false);
+      setTitle("Are you sure you want to suspend driver");
+      setMessage("This driver will be inactive.");
+      setArgument(5);
+      inputEl.current.open();
+    }
   };
   const onReactivate = () => {
     setTitle("Are you sure you want to reactivate driver");
@@ -175,7 +184,16 @@ const DriverProfile = ({
     setArgument(7);
     inputEl.current.open();
   };
-
+  const handleReasonClick = (e) => {
+    if (e.target.checked) {
+      setSuspensionReasons([...suspensionReasons, e.target.value]);
+    } else {
+      const removeReason = suspensionReasons.filter(
+        (item) => item === e.target.value
+      );
+      setSuspensionReasons(removeReason);
+    }
+  };
   const onConfirm = () => {
     if (argument === 1) {
       changeDriverStatus(
@@ -214,13 +232,14 @@ const DriverProfile = ({
       );
     }
     if (argument === 5) {
-      changeDriverStatus(
-        driver?.auth_id,
-        "5",
-        driver,
-        emailMessages.suspendMsg,
-        "Driver Suspended"
-      );
+      console.log(emailMessages.suspendMsg(suspensionReasons));
+      // changeDriverStatus(
+      //   driver?.auth_id,
+      //   "5",
+      //   driver,
+      //   emailMessages.suspendMsg(suspensionReasons),
+      //   "Driver Suspended"
+      // );
     }
     if (argument === 6) {
       changeDriverCategory(
@@ -605,7 +624,7 @@ const DriverProfile = ({
                     <div className="text-center">
                       <Button
                         disabled={loadingStatus}
-                        onClick={() => onSuspend()}
+                        onClick={() => setSuspensionReasonsModalOpen(true)}
                         className="bg-danger mt-3 text-white"
                       >
                         Suspend Driver
@@ -800,6 +819,44 @@ const DriverProfile = ({
           </div>
         </ModalBody>
       </Modal>
+
+      {/* modal to select reason for suspension */}
+      <Modal
+        isOpen={suspensionReasonsModalOpen}
+        toggle={() => setSuspensionReasonsModalOpen(false)}
+      >
+        <ModalHeader toggle={() => setSuspensionReasonsModalOpen(false)}>
+          Select Reasons for Suspension
+        </ModalHeader>
+        <ModalBody>
+          <div className="ml-4">
+            <Form onSubmit={onSuspend}>
+              {suspensionReasonsList.map((item) => (
+                <FormGroup>
+                  <Input
+                    onChange={handleReasonClick}
+                    readOnly={true}
+                    type="checkbox"
+                    value={item}
+                  />
+                  {item}
+                </FormGroup>
+              ))}
+
+              <ModalFooter>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  className="text-white btn-danger"
+                >
+                  Proceed
+                </Button>
+              </ModalFooter>
+            </Form>
+          </div>
+        </ModalBody>
+      </Modal>
+
       <DeleteConfirmationDialog
         ref={inputEl}
         title={title}
