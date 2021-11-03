@@ -551,7 +551,7 @@ const DriverProfile = ({
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
-                      <strong>Vehicle Modal</strong>
+                      <strong>Vehicle Model</strong>
                     </span>
                     {vehicleDetails?.car_make}
                   </li>
