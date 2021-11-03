@@ -232,14 +232,13 @@ const DriverProfile = ({
       );
     }
     if (argument === 5) {
-      console.log(emailMessages.suspendMsg(suspensionReasons));
-      // changeDriverStatus(
-      //   driver?.auth_id,
-      //   "5",
-      //   driver,
-      //   emailMessages.suspendMsg(suspensionReasons),
-      //   "Driver Suspended"
-      // );
+      changeDriverStatus(
+        driver?.auth_id,
+        "5",
+        driver,
+        emailMessages.suspendMsg(suspensionReasons),
+        "Driver Suspended"
+      );
     }
     if (argument === 6) {
       changeDriverCategory(
@@ -372,20 +371,21 @@ const DriverProfile = ({
         <div className="tab-content">
           <div className="tab-pane active" id="home">
             <ul className="list-group">
-              {driver?.driver_data?.driver_status < 2 && (
-                <li className="list-group-item text-right">
-                  <span className="pull-left">
-                    <strong>Driver Category</strong>
-                  </span>
-                  {driver?.driver_data?.driver_category}
+              <li className="list-group-item text-right">
+                <span className="pull-left">
+                  <strong>Driver Category</strong>
+                </span>
+                {driver?.driver_data?.driver_category}
+                {driver?.driver_data?.driver_status < 2 && (
                   <span
                     className="bg-primary rounded fw-bold p-2 ml-3 text-white"
                     onClick={() => setCategoryModalOpen(true)}
                   >
                     Change
                   </span>
-                </li>
-              )}
+                )}
+              </li>
+
               <li className="list-group-item text-right">
                 <span className="pull-left">
                   <strong>Daily debt service Amt</strong>
