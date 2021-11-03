@@ -6,14 +6,18 @@ import {
   TRIP_COUNT_DRIVER,
   TRIP_COUNT_DRIVER_ALL,
   TRIP_COUNT_DRIVER_CANCELLED,
-  TRIP_COUNT_DRIVER_COMPLETED, TRIP_COUNT_MOVING_DRIVERS, TRIP_COUNT_MOVING_USERS,
+  TRIP_COUNT_DRIVER_COMPLETED,
+  TRIP_COUNT_MOVING_DRIVERS,
+  TRIP_COUNT_MOVING_USERS,
   TRIP_COUNT_PASSENGER,
   TRIP_COUNT_PASSENGER_ALL,
   TRIP_COUNT_PASSENGER_CANCELLED,
-  TRIP_COUNT_PASSENGER_COMPLETED, TRIP_COUNT_WAITING_DRIVERS, TRIP_COUNT_WAITING_USERS,
-  TRIPS
+  TRIP_COUNT_PASSENGER_COMPLETED,
+  TRIP_COUNT_WAITING_DRIVERS,
+  TRIP_COUNT_WAITING_USERS,
+  TRIPS,
+  ACTUAL_LOCATION,
 } from "Actions/types";
-
 
 const initialState = {
   trips: [],
@@ -140,8 +144,14 @@ function tripReducer(state = initialState, action) {
         tripCountWaitingDrivers: payload,
       };
     }
+    case ACTUAL_LOCATION: {
+      return {
+        ...state,
+        actualAddress: payload,
+      };
+    }
     default:
-      return state
+      return state;
   }
 }
 

@@ -339,3 +339,20 @@ export const idVerificationType = (idType) => {
       break;
   }
 };
+
+export const getActualAddress = async (lat, lng) => {
+  const res = await fetch(
+    "https://maps.googleapis.com/maps/api/geocode/json?address=" +
+      lat +
+      "," +
+      lng +
+      "&key=" +
+      "AIzaSyCw_5YoOp78lvq1Dgfri-TnDjRSf1cguf0"
+  )
+    .then((response) => response.json())
+    .then((responseJson) => {
+      return responseJson.results[0].formatted_address;
+    });
+
+  return res;
+};
