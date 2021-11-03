@@ -1,4 +1,4 @@
-import {USER_COUNT, USERS, USERS_LOCATION} from "Actions/types";
+import { USER_COUNT, USERS, USERS_LOCATION,ACTIVITY_LOGS } from "Actions/types";
 
 const initialState = {
   users: [],
@@ -27,10 +27,15 @@ function usersReducer(state = initialState, action) {
         userLocation: payload,
       };
     }
+    case ACTIVITY_LOGS: {
+      return {
+        ...state,
+        userActivityLog: payload,
+      };
+    }
     default:
-      return state
+      return state;
   }
-
 }
 
 export default usersReducer;

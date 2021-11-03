@@ -53,6 +53,7 @@ const CustomerCare = (props) => {
     getCustomerCare(true);
   }, []);
 
+  console.log(customerCareNumbers);
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
   const {
@@ -66,7 +67,7 @@ const CustomerCare = (props) => {
   const opnAddNewCustomerCareModal = (e) => {
     e.preventDefault();
     const cusNumArr = customerCareNumbers?.customer_care_line;
-    if (cusNumArr.length > 0) {
+    if (cusNumArr?.length > 0) {
       setFormData({ ...formData, customerCare: cusNumArr.join(", ") });
     }
     setCustomerLineModalState(true);
@@ -156,7 +157,7 @@ const CustomerCare = (props) => {
     <div className="table-wrapper">
       <PageTitleBar title={"Settings"} match={match} />
 
-      {!loading && customerCareNumbers?.customer_care_line.length > 0 && (
+      {!loading &&  (
         <section id="page-account-settings" className="p-3">
           <div className="row">
             <div className="col-12">
@@ -257,7 +258,7 @@ const CustomerCare = (props) => {
                           </TableHead>
                           <TableBody>
                             <Fragment>
-                              {customerCareNumbers?.customer_care_line.length >
+                              {customerCareNumbers?.customer_care_line?.length >
                                 0 &&
                                 customerCareNumbers?.customer_care_line.map(
                                   (numbers, key) => (
@@ -270,7 +271,7 @@ const CustomerCare = (props) => {
                           </TableBody>
                         </Table>
                       </div>
-                      {!loading && customerCareNumbers.length < 1 && (
+                      {!loading && customerCareNumbers?.length < 1 && (
                         <EmptyData />
                       )}
                     </RctCollapsibleCard>

@@ -2,58 +2,56 @@
  * AsyncComponent
  * Code Splitting Component / Server Side Rendering
  */
-import React from 'react';
-import Loadable from 'react-loadable';
+import React from "react";
+import Loadable from "react-loadable";
 
 // rct page loader
-import RctPageLoader from 'Components/RctPageLoader/RctPageLoader';
+import RctPageLoader from "Components/RctPageLoader/RctPageLoader";
 
 const AsyncDrivers = Loadable({
-	loader: () => import("Routes/drivers/drivers"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/drivers/drivers"),
+  loading: () => <RctPageLoader />,
 });
 const AsyncTripDetails = Loadable({
-	loader: () => import("Routes/trips/tripDetails"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/trips/tripDetails"),
+  loading: () => <RctPageLoader />,
 });
 const AsyncClassTypes = Loadable({
-	loader: () => import("Routes/class-types/class-types"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/class-types/class-types"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncFees = Loadable({
-	loader: () => import("Routes/fees/fees"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/fees/fees"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncCancellationReasons = Loadable({
-	loader: () => import("Routes/cancellationReasons/cancellationReasons"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/cancellationReasons/cancellationReasons"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncDriverRatings = Loadable({
-	loader: () => import("Routes/ratings/driver-ratings"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/ratings/driver-ratings"),
+  loading: () => <RctPageLoader />,
 });
 const AsyncUserRatings = Loadable({
-	loader: () => import("Routes/ratings/user-ratings"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/ratings/user-ratings"),
+  loading: () => <RctPageLoader />,
 });
 const AsyncRatingsDetails = Loadable({
-	loader: () => import("Routes/ratings/ratingDetails"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/ratings/ratingDetails"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncRevenueSplit = Loadable({
-	loader: () => import("Routes/revenueSplit/revenueSplit"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/revenueSplit/revenueSplit"),
+  loading: () => <RctPageLoader />,
 });
 
-
-
 const AsyncReferral = Loadable({
-	loader: () => import("Routes/referral/referral"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/referral/referral"),
+  loading: () => <RctPageLoader />,
 });
 
 // const AsyncReferralDetails = Loadable({
@@ -61,292 +59,287 @@ const AsyncReferral = Loadable({
 // 	loading: () => <RctPageLoader />,
 // });
 
-
 const AsyncSchedule = Loadable({
-	loader: () => import("Routes/schedule/schedule"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/schedule/schedule"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncCustomerCare = Loadable({
-	loader: () => import("Routes/customerCare/customerCare"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/customerCare/customerCare"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncScheduleDetails = Loadable({
-	loader: () => import("Routes/schedule/scheduleDetails"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/schedule/scheduleDetails"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncFdt = Loadable({
-	loader: () => import("Routes/fdt/fdt"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/fdt/fdt"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncFdtDetails = Loadable({
-	loader: () => import("Routes/fdt/fdtDetails"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/fdt/fdtDetails"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncPayments = Loadable({
-	loader: () => import("Routes/payments/payments"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/payments/payments"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncPaymentsSuccessful = Loadable({
-	loader: () => import("Routes/payments/successfulPayments"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/payments/successfulPayments"),
+  loading: () => <RctPageLoader />,
 });
 const AsyncPaymentsDetails = Loadable({
-	loader: () => import("Routes/payments/paymentDetails"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/payments/paymentDetails"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncPaymentsUnsuccessful = Loadable({
-	loader: () => import("Routes/payments/unsuccessfulPayments"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/payments/unsuccessfulPayments"),
+  loading: () => <RctPageLoader />,
 });
 
-
 const AsyncPaymentsService = Loadable({
-	loader: () => import("Routes/payments-service/paymentsService"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/payments-service/paymentsService"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncPaymentsServiceSuccessful = Loadable({
-	loader: () => import("Routes/payments-service/successfulPaymentsService"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/payments-service/successfulPaymentsService"),
+  loading: () => <RctPageLoader />,
 });
 const AsyncPaymentsServiceDetails = Loadable({
-	loader: () => import("Routes/payments-service/paymentServiceDetails"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/payments-service/paymentServiceDetails"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncPaymentsServiceUnsuccessful = Loadable({
-	loader: () => import("Routes/payments-service/unsuccessfulPaymentsService"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/payments-service/unsuccessfulPaymentsService"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncBookingTypes = Loadable({
-	loader: () => import("Routes/booking-types/booking-types"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/booking-types/booking-types"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncInactiveDrivers = Loadable({
-	loader: () => import("Routes/drivers/inactiveDrivers"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/drivers/inactiveDrivers"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncPendingDrivers = Loadable({
-	loader: () => import("Routes/drivers/pendingDrivers"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/drivers/pendingDrivers"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncAcceptedDrivers = Loadable({
-	loader: () => import("Routes/drivers/acceptedDrivers"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/drivers/acceptedDrivers"),
+  loading: () => <RctPageLoader />,
 });
 const AsyncVerifiedDrivers = Loadable({
-	loader: () => import("Routes/drivers/verifiedDrivers"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/drivers/verifiedDrivers"),
+  loading: () => <RctPageLoader />,
 });
 const AsyncTrainedDrivers = Loadable({
-	loader: () => import("Routes/drivers/trainedDrivers"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/drivers/trainedDrivers"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncActiveDrivers = Loadable({
-	loader: () => import("Routes/drivers/activeDrivers"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/drivers/activeDrivers"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncDriver = Loadable({
-	loader: () => import("Routes/drivers/driver"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/drivers/driver"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncVehicles = Loadable({
-	loader: () => import("Routes/vehicles/vehicles"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/vehicles/vehicles"),
+  loading: () => <RctPageLoader />,
 });
 const AsyncActiveVehicles = Loadable({
-	loader: () => import("Routes/vehicles/activeVehicles"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/vehicles/activeVehicles"),
+  loading: () => <RctPageLoader />,
 });
 const AsyncVehicleDetails = Loadable({
-	loader: () => import("Routes/vehicles/vehicleDetails"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/vehicles/vehicleDetails"),
+  loading: () => <RctPageLoader />,
 });
 const AsyncInactiveVehicles = Loadable({
-	loader: () => import("Routes/vehicles/inactiveVehicles"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/vehicles/inactiveVehicles"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncAreas = Loadable({
-	loader: () => import("Routes/area/areas"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/area/areas"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncPassengers = Loadable({
-	loader: () => import("Routes/passengers/passengers"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/passengers/passengers"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncPassenger = Loadable({
-	loader: () => import("Routes/passengers/passenger"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/passengers/passenger"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncEmergency = Loadable({
-	loader: () => import("Routes/emergency/emergency"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/emergency/emergency"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncEmergencyNumber = Loadable({
-	loader: () => import("Routes/emergency/emergencyNumber"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/emergency/emergencyNumber"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncEmergencyDetails = Loadable({
-	loader: () => import("Routes/emergency/emergencyDetails"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/emergency/emergencyDetails"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncSupport = Loadable({
-	loader: () => import("Routes/support/support"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/support/support"),
+  loading: () => <RctPageLoader />,
 });
 
-
 const AsyncSupportDetails = Loadable({
-	loader: () => import("Routes/support/supportDetails"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/support/supportDetails"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncSupportSetup = Loadable({
-	loader: () => import("Routes/support/supportSetup"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/support/supportSetup"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncSupportNew = Loadable({
-	loader: () => import("Routes/support/newSupport"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/support/newSupport"),
+  loading: () => <RctPageLoader />,
 });
 const AsyncSupportOpened = Loadable({
-	loader: () => import("Routes/support/openedSupport"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/support/openedSupport"),
+  loading: () => <RctPageLoader />,
 });
 const AsyncSupportClosed = Loadable({
-	loader: () => import("Routes/support/closedSupport"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/support/closedSupport"),
+  loading: () => <RctPageLoader />,
 });
 const AsyncSupportUnresolved = Loadable({
-	loader: () => import("Routes/support/unresolvedSupport"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/support/unresolvedSupport"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncSupportType = Loadable({
-	loader: () => import("Routes/support/supportTypes"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/support/supportTypes"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncSupportInProgress = Loadable({
-	loader: () => import("Routes/support/inProgressSupport"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/support/inProgressSupport"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncSupportContactUs = Loadable({
-	loader: () => import("Routes/support/contactUs"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/support/contactUs"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncSupportContactUsDetails = Loadable({
-	loader: () => import("Routes/support/contactUsDetails"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/support/contactUsDetails"),
+  loading: () => <RctPageLoader />,
 });
-
 
 // home dashboard
 const AsyncHomeDashboardComponent = Loadable({
-	loader: () => import("Routes/dashboard/home"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/dashboard/home"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncTrips = Loadable({
-	loader: () => import("Routes/trips/trips"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/trips/trips"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncTripsCompleted = Loadable({
-	loader: () => import("Routes/trips/tripsCompleted"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/trips/tripsCompleted"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncTripsCancelled = Loadable({
-	loader: () => import("Routes/trips/tripsCancelled"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/trips/tripsCancelled"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncTripsWaiting = Loadable({
-	loader: () => import("Routes/trips/tripsWaiting"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/trips/tripsWaiting"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncTripsCurrent = Loadable({
-	loader: () => import("Routes/trips/tripsCurrent"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/trips/tripsCurrent"),
+  loading: () => <RctPageLoader />,
 });
 
-
 const AsyncAdmins = Loadable({
-	loader: () => import("Routes/admin/admins"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/admin/admins"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncUsers = Loadable({
-	loader: () => import("Routes/users/users"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/users/users"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncWallets = Loadable({
-	loader: () => import("Routes/wallets/wallets"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/wallets/wallets"),
+  loading: () => <RctPageLoader />,
 });
 const AsyncWalletsPending = Loadable({
-	loader: () => import("Routes/wallets/walletsPending"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/wallets/walletsPending"),
+  loading: () => <RctPageLoader />,
 });
 const AsyncWalletsCompleted = Loadable({
-	loader: () => import("Routes/wallets/walletsCompleted"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/wallets/walletsCompleted"),
+  loading: () => <RctPageLoader />,
 });
 const AsyncWalletsCancelled = Loadable({
-	loader: () => import("Routes/wallets/walletsCancelled"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/wallets/walletsCancelled"),
+  loading: () => <RctPageLoader />,
 });
 
 const AsyncWallet = Loadable({
-	loader: () => import("Routes/wallets/walletDetails"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/wallets/walletDetails"),
+  loading: () => <RctPageLoader />,
 });
 
-
+const AsyncActivityLog = Loadable({
+  loader: () => import("Routes/activity-log/activityLog"),
+  loading: () => <RctPageLoader />,
+});
 
 // report
 
-
 // google maps
 const AsyncGooleMapsComponent = Loadable({
-	loader: () => import("Routes/maps/google-map"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/maps/google-map"),
+  loading: () => <RctPageLoader />,
 });
 
 // google maps
 const AsyncLeafletMapComponent = Loadable({
-	loader: () => import("Routes/maps/leaflet-map"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/maps/leaflet-map"),
+  loading: () => <RctPageLoader />,
 });
-
-
 
 // Simple Line Icons
 
@@ -354,118 +347,117 @@ const AsyncLeafletMapComponent = Loadable({
 
 // Session Login
 const AsyncSessionLoginComponent = Loadable({
-	loader: () => import("Routes/session/login"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/session/login"),
+  loading: () => <RctPageLoader />,
 });
 
 // Session Register
 const AsyncSessionRegisterComponent = Loadable({
-	loader: () => import("Routes/session/register"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/session/register"),
+  loading: () => <RctPageLoader />,
 });
 
 // Session Lock Screen
 const AsyncSessionLockScreenComponent = Loadable({
-	loader: () => import("Routes/session/lock-screen"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/session/lock-screen"),
+  loading: () => <RctPageLoader />,
 });
 
 // Session Forgot Password
 const AsyncSessionForgotPasswordComponent = Loadable({
-	loader: () => import("Routes/session/forgot-password"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/session/forgot-password"),
+  loading: () => <RctPageLoader />,
 });
 
 // Session Page 404
 const AsyncSessionPage404Component = Loadable({
-	loader: () => import("Routes/session/404"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/session/404"),
+  loading: () => <RctPageLoader />,
 });
 
 // Session Page 404
 const AsyncSessionPage500Component = Loadable({
-	loader: () => import("Routes/session/500"),
-	loading: () => <RctPageLoader />,
+  loader: () => import("Routes/session/500"),
+  loading: () => <RctPageLoader />,
 });
 
 // terms and condition
 
-
-
 export {
-	AsyncPaymentsSuccessful,
-	AsyncPaymentsUnsuccessful,
-	AsyncPayments,
-	AsyncAdmins,
-	AsyncBookingTypes,
-	AsyncFees,
-	AsyncClassTypes,
-	AsyncActiveVehicles,
-	AsyncInactiveVehicles,
-	AsyncVehicles,
-	AsyncVerifiedDrivers,
-	AsyncPendingDrivers,
-	AsyncAcceptedDrivers,
-	AsyncTrainedDrivers,
-	AsyncInactiveDrivers,
-	AsyncActiveDrivers,
-	AsyncTrips,
-	AsyncPassengers,
-	AsyncDrivers,
-	AsyncDriver,
-	AsyncGooleMapsComponent,
-	AsyncLeafletMapComponent,
-	AsyncSessionLoginComponent,
-	AsyncSessionRegisterComponent,
-	AsyncSessionLockScreenComponent,
-	AsyncSessionForgotPasswordComponent,
-	AsyncSessionPage404Component,
-	AsyncSessionPage500Component,
-	AsyncHomeDashboardComponent,
-	AsyncPassenger,
-	// AsyncPassengersActive,
-	// AsyncPassengersInactive,
-	AsyncDriverRatings,
-	AsyncUserRatings,
-	AsyncSupport,
-	AsyncEmergency,
-	AsyncEmergencyDetails,
-	AsyncUsers,
-	AsyncSupportDetails,
-	AsyncSupportSetup,
-	AsyncSupportNew,
-	AsyncSupportOpened,
-	AsyncSupportClosed,
-	AsyncSupportUnresolved,
-	AsyncSupportInProgress,
-	AsyncAreas,
-	AsyncSupportType,
-	AsyncPaymentsDetails,
-	AsyncSchedule,
-	AsyncScheduleDetails,
-	AsyncReferral,
-	AsyncRevenueSplit,
-	AsyncFdt,
-	AsyncFdtDetails,
-	AsyncTripDetails,
-	AsyncTripsCompleted,
-	AsyncTripsCancelled,
-	AsyncTripsWaiting,
-	AsyncTripsCurrent,
-	AsyncCancellationReasons,
-	AsyncVehicleDetails,
-	AsyncRatingsDetails,
-	AsyncEmergencyNumber,
-	AsyncWallet,
-	AsyncWallets,
-	AsyncWalletsCancelled,
-	AsyncWalletsCompleted,
-	AsyncWalletsPending,
-	AsyncSupportContactUs,
-	AsyncSupportContactUsDetails,
-	AsyncPaymentsServiceSuccessful,
-	AsyncPaymentsServiceUnsuccessful,
-	AsyncPaymentsService,
-	AsyncPaymentsServiceDetails,
-	AsyncCustomerCare
+  AsyncPaymentsSuccessful,
+  AsyncPaymentsUnsuccessful,
+  AsyncPayments,
+  AsyncAdmins,
+  AsyncBookingTypes,
+  AsyncFees,
+  AsyncClassTypes,
+  AsyncActiveVehicles,
+  AsyncInactiveVehicles,
+  AsyncVehicles,
+  AsyncVerifiedDrivers,
+  AsyncPendingDrivers,
+  AsyncAcceptedDrivers,
+  AsyncTrainedDrivers,
+  AsyncInactiveDrivers,
+  AsyncActiveDrivers,
+  AsyncTrips,
+  AsyncPassengers,
+  AsyncDrivers,
+  AsyncDriver,
+  AsyncActivityLog,
+  AsyncGooleMapsComponent,
+  AsyncLeafletMapComponent,
+  AsyncSessionLoginComponent,
+  AsyncSessionRegisterComponent,
+  AsyncSessionLockScreenComponent,
+  AsyncSessionForgotPasswordComponent,
+  AsyncSessionPage404Component,
+  AsyncSessionPage500Component,
+  AsyncHomeDashboardComponent,
+  AsyncPassenger,
+  // AsyncPassengersActive,
+  // AsyncPassengersInactive,
+  AsyncDriverRatings,
+  AsyncUserRatings,
+  AsyncSupport,
+  AsyncEmergency,
+  AsyncEmergencyDetails,
+  AsyncUsers,
+  AsyncSupportDetails,
+  AsyncSupportSetup,
+  AsyncSupportNew,
+  AsyncSupportOpened,
+  AsyncSupportClosed,
+  AsyncSupportUnresolved,
+  AsyncSupportInProgress,
+  AsyncAreas,
+  AsyncSupportType,
+  AsyncPaymentsDetails,
+  AsyncSchedule,
+  AsyncScheduleDetails,
+  AsyncReferral,
+  AsyncRevenueSplit,
+  AsyncFdt,
+  AsyncFdtDetails,
+  AsyncTripDetails,
+  AsyncTripsCompleted,
+  AsyncTripsCancelled,
+  AsyncTripsWaiting,
+  AsyncTripsCurrent,
+  AsyncCancellationReasons,
+  AsyncVehicleDetails,
+  AsyncRatingsDetails,
+  AsyncEmergencyNumber,
+  AsyncWallet,
+  AsyncWallets,
+  AsyncWalletsCancelled,
+  AsyncWalletsCompleted,
+  AsyncWalletsPending,
+  AsyncSupportContactUs,
+  AsyncSupportContactUsDetails,
+  AsyncPaymentsServiceSuccessful,
+  AsyncPaymentsServiceUnsuccessful,
+  AsyncPaymentsService,
+  AsyncPaymentsServiceDetails,
+  AsyncCustomerCare,
 };
