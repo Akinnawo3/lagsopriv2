@@ -10,7 +10,7 @@ import api from "../environments/environment";
   try {
   spinner &&  dispatch(startLoading());
   !spinner && dispatch(startStatusLoading())
-    const res = await axios.get(`${api.sos}/api/v1.1/sos/?page_no=${page_no}&no_per_page=20`);
+    const res = await axios.get(`${api.sos}/v1.1/sos/?page=${page_no}&item_per_page=20`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -32,7 +32,7 @@ export const getSOSDetails = (sos_id, spinner) => async dispatch => {
   try {
     spinner &&  dispatch(startLoading());
     !spinner && dispatch(startStatusLoading())
-    const res = await axios.get(`${api.sos}/api/v1.1/sos/${sos_id}/`);
+    const res = await axios.get(`${api.sos}/v1.1/sos/?sos_id=${sos_id}`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -59,7 +59,7 @@ export const getSOSDetails = (sos_id, spinner) => async dispatch => {
 
 export const getSOSCount = () => async dispatch => {
   try {
-    const res = await axios.get(`${api.sos}/api/v1.1/sos/count`);
+    const res = await axios.get(`${api.sos}/v1.1/sos/?component=count`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
