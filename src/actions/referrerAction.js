@@ -1,5 +1,5 @@
 import axios from "axios";
-import { REFERRAL, REFERRAL_COUNT } from "./types";
+import { REFERRAL, REFERRAL_COUNT, REFERRAL_PAYMENT_DETAILS } from "./types";
 import {
   endLoading,
   endStatusLoading,
@@ -34,7 +34,6 @@ export const getReferral =
       NotificationManager.error(err.response.data.result);
     }
   };
-
 export const getReferralCount = () => async (dispatch) => {
   try {
     const res = await axios.get(
@@ -46,6 +45,21 @@ export const getReferralCount = () => async (dispatch) => {
       dispatch({
         type: REFERRAL_COUNT,
         payload: res.data?.data?.total,
+      });
+    }
+  } catch (err) {}
+};
+export const getReferralPaymentDetails = (referralID) => async (dispatch) => {
+  try {
+    const res = await axios.get(
+      `${api.wallet}/v1.1/admin/referral-transactions?payment_id=${referralID}`
+    );
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      dispatch({
+        type: REFERRAL_PAYMENT_DETAILS,
+        payload: res.data.data[0],
       });
     }
   } catch (err) {}

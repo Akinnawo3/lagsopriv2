@@ -69,6 +69,7 @@ export const PROMO_TYPE = "PROMO_TYPE";
 //referral
 export const REFERRAL = "REFERRAL";
 export const REFERRAL_COUNT = "REFERRAL_COUNT";
+export const REFERRAL_PAYMENT_DETAILS = "REFERRAL_PAYMENT_DETAILS";
 
 //Fee type
 
@@ -128,6 +129,7 @@ export const USERS = "USERS";
 export const USER_COUNT = "USER_COUNT";
 export const USERS_LOCATION = "USERS_LOCATION";
 export const ACTIVITY_LOGS = "ACTIVITY_LOGS";
+export const ACTIVITY_LOGS_COUNT = "ACTIVITY_LOGS_COUNT";
 
 //wallets
 export const WALLETS = "WALLETS";

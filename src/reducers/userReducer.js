@@ -1,4 +1,10 @@
-import { USER_COUNT, USERS, USERS_LOCATION,ACTIVITY_LOGS } from "Actions/types";
+import {
+  USER_COUNT,
+  USERS,
+  USERS_LOCATION,
+  ACTIVITY_LOGS,
+  ACTIVITY_LOGS_COUNT,
+} from "Actions/types";
 
 const initialState = {
   users: [],
@@ -31,6 +37,12 @@ function usersReducer(state = initialState, action) {
       return {
         ...state,
         userActivityLog: payload,
+      };
+    }
+    case ACTIVITY_LOGS_COUNT: {
+      return {
+        ...state,
+        AdminActivityLogCount: payload,
       };
     }
     default:

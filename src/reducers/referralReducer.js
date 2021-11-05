@@ -1,5 +1,8 @@
-import {REFERRAL, REFERRAL_COUNT} from "Actions/types";
-
+import {
+  REFERRAL,
+  REFERRAL_COUNT,
+  REFERRAL_PAYMENT_DETAILS,
+} from "Actions/types";
 
 const initialState = {
   referrals: [],
@@ -21,8 +24,14 @@ function referralReducer(state = initialState, action) {
         referralCount: payload,
       };
     }
+    case REFERRAL_PAYMENT_DETAILS: {
+      return {
+        ...state,
+        referralPaymentDetails: payload,
+      };
+    }
     default:
-      return state
+      return state;
   }
 }
 

@@ -1,11 +1,11 @@
-import React, { useState, useEffect, Fragment, useRef } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { getAdminLogs } from "Actions/userAction";
+import { getAdminLogs, getAdminLogsCount } from "Actions/userAction";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import { Form, FormGroup, Label, Input } from "reactstrap";
 import Button from "@material-ui/core/Button";
@@ -13,10 +13,18 @@ import Pagination from "react-js-pagination";
 import { connect } from "react-redux";
 import moment from "moment";
 
-const ActivityLog = ({ loading, getAdminLogs, AdminActivityLog, match }) => {
+const ActivityLog = ({
+  loading,
+  getAdminLogs,
+  AdminActivityLog,
+  getAdminLogsCount,
+  AdminActivityLogCount,
+  match,
+}) => {
   const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
     getAdminLogs(1, true);
+    getAdminLogsCount(true);
   }, []);
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -24,7 +32,6 @@ const ActivityLog = ({ loading, getAdminLogs, AdminActivityLog, match }) => {
     window.scrollTo(0, 0);
   };
 
-  console.log(AdminActivityLog);
 
   return (
     <div className="table-wrapper">
@@ -36,9 +43,8 @@ const ActivityLog = ({ loading, getAdminLogs, AdminActivityLog, match }) => {
               <Table>
                 <TableHead>
                   <TableRow hover>
-                    <TableCell>Log ID</TableCell>
+                    <TableCell> Admin Name</TableCell>
                     <TableCell>Time</TableCell>
-                    <TableCell>Operation Type</TableCell>
                     <TableCell>Description</TableCell>
                   </TableRow>
                 </TableHead>
@@ -46,12 +52,13 @@ const ActivityLog = ({ loading, getAdminLogs, AdminActivityLog, match }) => {
                   <Fragment>
                     {AdminActivityLog.map((item, key) => (
                       <TableRow hover key={key}>
-                        <TableCell>{item.log_id}</TableCell>
                         <TableCell>
-                          { moment(item.createdAt).format('LLLL') }
+                          {item.first_name + "  " + item.last_name}
+                        </TableCell>
+                        <TableCell>
+                          {moment(item.createdAt).format("LLLL")}
                           {/* {item.createdAt} */}
                         </TableCell>
-                        <TableCell>{item.operation}</TableCell>
                         <TableCell>{item.body}</TableCell>
                       </TableRow>
                     ))}
@@ -68,8 +75,9 @@ const ActivityLog = ({ loading, getAdminLogs, AdminActivityLog, match }) => {
                 activePage={currentPage}
                 itemClass="page-item"
                 linkClass="page-link"
-                itemsCountPerPage={20}
-                // totalItemsCount={areaCount}
+                // itemsCountPerPage={20}
+                // totalItemsCount={AdminActivityLogCount.total}
+                totalItemsCount={AdminActivityLogCount?.total}
                 totalItemsCount={200}
                 onChange={paginate}
               />
@@ -85,12 +93,14 @@ function mapDispatchToProps(dispatch) {
   return {
     getAdminLogs: (page_no, loading) =>
       dispatch(getAdminLogs(page_no, loading)),
+    getAdminLogsCount: (loading) => dispatch(getAdminLogsCount(loading)),
   };
 }
 
 const mapStateToProps = (state) => ({
   loading: state.loading.loading,
   AdminActivityLog: state.users.userActivityLog,
+  AdminActivityLogCount: state.users.AdminActivityLogCount,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActivityLog);

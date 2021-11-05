@@ -4,12 +4,18 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import { Badge, Input } from "reactstrap";
+import { Badge, Input, Modal, ModalBody } from "reactstrap";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
-import { getReferral, getReferralCount } from "Actions/referrerAction";
+import Spinner from "Components/spinner/Spinner";
+
+import {
+  getReferral,
+  getReferralCount,
+  getReferralPaymentDetails,
+} from "Actions/referrerAction";
 import EmptyData from "Components/EmptyData/EmptyData";
 import Pagination from "react-js-pagination";
 
@@ -19,21 +25,33 @@ const Referral = ({
   referralCount,
   getReferral,
   getReferralCount,
+  getReferralPaymentDetails,
+  referralPaymentDetails,
   loading,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [isOpen, setIsOpen] = useState(false);
+  const [loadingDetails, setLoadingDetails] = useState(false);
 
   useEffect(() => {
     getReferral(1, true);
     getReferralCount();
   }, []);
 
-  console.log(referrals);
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
     getReferral(pageNumber);
     window.scrollTo(0, 0);
   };
+
+  const showReferralDetails = async (referalID) => {
+    setLoadingDetails(true);
+    setIsOpen(true);
+    await getReferralPaymentDetails(referalID);
+    setLoadingDetails(false);
+  };
+
+  console.log(referralPaymentDetails);
 
   return (
     <div className="table-wrapper">
@@ -51,16 +69,27 @@ const Referral = ({
             <Table>
               <TableHead>
                 <TableRow hover>
+                  <TableCell>Referrer Name</TableCell>
                   <TableCell>Referrer Number</TableCell>
+                  <TableCell>Referee Name</TableCell>
                   <TableCell>Referee Number</TableCell>
                   <TableCell>Status</TableCell>
+                  <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 <Fragment>
                   {referrals.map((item, key) => (
                     <TableRow hover key={item.id}>
+                      <TableCell>
+                        {item.referrer.first_name +
+                          " " +
+                          item.referrer.last_name}
+                      </TableCell>
                       <TableCell>{item.referrer.phone_number}</TableCell>
+                      <TableCell>
+                        {item.referee.first_name + " " + item.referee.last_name}
+                      </TableCell>
                       <TableCell>{item.referee.phone_number}</TableCell>
                       <TableCell>
                         <Badge
@@ -68,6 +97,16 @@ const Referral = ({
                         >
                           {item.status === 0 ? "Pending" : "Confirmed"}
                         </Badge>
+                      </TableCell>
+                      <TableCell>
+                        {item.status === 1 && (
+                          <i
+                            className="ti-eye"
+                            onClick={() =>
+                              showReferralDetails(item.referral_id)
+                            }
+                          />
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -87,18 +126,65 @@ const Referral = ({
           </div>
         </RctCollapsibleCard>
       )}
-      {!loading && referrals.length < 1 && <EmptyData />}
-      {/*<Modal isOpen={isOpen}*/}
-      {/*       toggle={() => setIsOpen(!isOpen)}*/}
-      {/*    >*/}
-      {/*   <ModalBody className="p-4">*/}
-      {/*       <div style={{color: '#2E407B'}}>Reward</div>*/}
-      {/*       <div style={{marginTop: '40px', color: '#898888', fontSize: '12px'}}>Receipient Phone Number</div>*/}
-      {/*       <div className='w-50 mt-1'><Input type="text" value='07032838025'   required /></div>*/}
-      {/*           <Button type="button" variant="contained" className="text-white btn-primary mt-4">Reward</Button>*/}
 
-      {/*   </ModalBody>*/}
-      {/*</Modal>*/}
+      <Modal isOpen={isOpen} toggle={() => setIsOpen(!isOpen)}>
+        <ModalBody className="p-4" style={{ minHeight: "250px" }}>
+          <div style={{ color: "#2E407B" }}>Transaction Details</div>
+          <div
+            style={{ marginTop: "40px", color: "#898888", fontSize: "12px" }}
+          >
+            {loadingDetails && <Spinner />}
+            {!loadingDetails && referralPaymentDetails && (
+              <div>
+                <ul className="list-group">
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Amount</strong>
+                    </span>
+                    {referralPaymentDetails?.amount}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Referee ID</strong>
+                    </span>
+                    {referralPaymentDetails?.referee_id}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Referee Number</strong>
+                    </span>
+                    {referralPaymentDetails?.referee_number}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Referee Trip Amount</strong>
+                    </span>
+                    {referralPaymentDetails?.referee_trip_data.amount}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Referee Trip ID</strong>
+                    </span>
+                    {referralPaymentDetails?.referee_trip_data.trip_id}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Referee Trip Reference</strong>
+                    </span>
+                    {referralPaymentDetails?.referee_trip_data.trip_ref}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Referrer ID</strong>
+                    </span>
+                    {referralPaymentDetails?.referrer_id}
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
+        </ModalBody>
+      </Modal>
     </div>
   );
 };
@@ -107,12 +193,15 @@ function mapDispatchToProps(dispatch) {
   return {
     getReferral: (page_no, spinner) => dispatch(getReferral(page_no, spinner)),
     getReferralCount: () => dispatch(getReferralCount()),
+    getReferralPaymentDetails: (referralID) =>
+      dispatch(getReferralPaymentDetails(referralID)),
   };
 }
 
 const mapStateToProps = (state) => ({
   referrals: state.referrals.referrals,
   referralCount: state.referrals.referralCount,
+  referralPaymentDetails: state.referrals.referralPaymentDetails,
   loading: state.loading.loading,
   loadingStatus: state.loading.loadingStatus,
 });

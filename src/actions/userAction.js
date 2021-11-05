@@ -5,7 +5,13 @@ import {
   startLoading,
   startStatusLoading,
 } from "./loadingAction";
-import { USERS, USER_COUNT, USERS_LOCATION, ACTIVITY_LOGS } from "./types";
+import {
+  USERS,
+  USER_COUNT,
+  USERS_LOCATION,
+  ACTIVITY_LOGS,
+  ACTIVITY_LOGS_COUNT,
+} from "./types";
 import { NotificationManager } from "react-notifications";
 import api from "../environments/environment";
 
@@ -133,3 +139,24 @@ export const getAdminLogs =
       dispatch(endStatusLoading());
     }
   };
+
+export const getAdminLogsCount = (loading) => async (dispatch) => {
+  try {
+    loading && (await dispatch(startLoading()));
+    !loading && dispatch(startStatusLoading());
+    const res = await axios.get(`${api.user}/v1.1/admin/logs/?component=count`);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      dispatch({
+        type: ACTIVITY_LOGS_COUNT,
+        payload: res.data.data,
+      });
+    }
+    dispatch(endLoading());
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endLoading());
+    dispatch(endStatusLoading());
+  }
+};
