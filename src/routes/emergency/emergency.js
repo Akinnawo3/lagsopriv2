@@ -14,6 +14,7 @@ import { connect } from "react-redux";
 import { getSOS, getSOSCount } from "Actions/emergencyAction";
 import EmptyData from "Components/EmptyData/EmptyData";
 import Pagination from "react-js-pagination";
+import { Badge } from "reactstrap";
 
 const Emergency = ({ match, getSOS, sos, loading, getSOSCount, sosCount }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -29,7 +30,7 @@ const Emergency = ({ match, getSOS, sos, loading, getSOSCount, sosCount }) => {
     window.scrollTo(0, 0);
   };
 
-  console.log(sos)
+  console.log(sos);
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Emergency"} match={match} />
@@ -46,6 +47,7 @@ const Emergency = ({ match, getSOS, sos, loading, getSOSCount, sosCount }) => {
                   <TableCell>Address</TableCell>
                   <TableCell>Latitude</TableCell>
                   <TableCell>Longitude</TableCell>
+                  <TableCell>Status</TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -57,6 +59,13 @@ const Emergency = ({ match, getSOS, sos, loading, getSOSCount, sosCount }) => {
                         <TableCell>{data.address}</TableCell>
                         <TableCell>{data.latitude}</TableCell>
                         <TableCell>{data.longitude}</TableCell>
+                        <TableCell>
+                          <Badge
+                            color={data.status === 0 ? "danger" : "success"}
+                          >
+                            {data.status === 0 ? "Unresolved" : "Resolved"}
+                          </Badge>
+                        </TableCell>
                         <TableCell>
                           <button
                             type="button"
