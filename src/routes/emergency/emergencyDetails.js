@@ -1,11 +1,26 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { getSOSDetails, changeSOStatus } from "Actions/emergencyAction";
+import {
+  getSOSDetails,
+  changeSOStatus,
+  assignSOSToAdmin,
+} from "Actions/emergencyAction";
 import { connect } from "react-redux";
 import { calculatePostDate } from "Helpers/helpers";
 import { Link } from "react-router-dom";
-import { Badge } from "reactstrap";
+import {
+  Badge,
+  ModalHeader,
+  Modal,
+  ModalBody,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  ModalFooter,
+  Button,
+} from "reactstrap";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 
 const EmergencyDetails = ({
@@ -15,8 +30,12 @@ const EmergencyDetails = ({
   getSOSDetails,
   sosUserDetails,
   changeSOStatus,
+  assignSOSToAdmin,
 }) => {
   const inputEl = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [adminEmail, setAdminEmail] = useState("");
+
   useEffect(() => {
     if (match.params.id) {
       getSOSDetails(match.params.id, true);
@@ -26,6 +45,12 @@ const EmergencyDetails = ({
   const onConfirm = () => {
     changeSOStatus(sosDetails.sos_id, 1);
     inputEl.current.close();
+  };
+  const assignSOS = (e) => {
+    e.preventDefault();
+    setIsOpen(false);
+    assignSOSToAdmin(adminEmail);
+    setAdminEmail("");
   };
   return (
     <div style={{ minHeight: "90vh" }}>
@@ -110,7 +135,10 @@ const EmergencyDetails = ({
                   </li>
                   {sosDetails.status === 0 && (
                     <div className="mt-3">
-                      <button className="btn btn-info mr-4">
+                      <button
+                        className="btn btn-info mr-4"
+                        onClick={() => setIsOpen(true)}
+                      >
                         Assign to an Admin
                       </button>
                       <button
@@ -127,12 +155,41 @@ const EmergencyDetails = ({
           </div>
           <DeleteConfirmationDialog
             ref={inputEl}
-            title={"Are you sure you want to Mark This SOS as resolved?"}
+            title={"Are you sure you want to mark this SOS as resolved?"}
             message={"Request will be marked as resolved"}
             onConfirm={onConfirm}
           />
         </div>
       )}
+
+      <Modal isOpen={isOpen} toggle={() => setIsOpen(!isOpen)}>
+        <ModalHeader toggle={() => setIsOpen(!isOpen)}>
+          Assign to an Admin
+        </ModalHeader>
+        <Form onSubmit={assignSOS}>
+          <ModalBody>
+            <FormGroup>
+              <Label for="Email">Enter Admin Email</Label>
+              <Input
+                type="email"
+                name="Email"
+                value={adminEmail}
+                onChange={(e) => setAdminEmail(e.target.value)}
+                required
+              />
+            </FormGroup>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              type="submit"
+              variant="contained"
+              className="text-white btn-success"
+            >
+              Submit
+            </Button>
+          </ModalFooter>
+        </Form>
+      </Modal>
     </div>
   );
 };
@@ -143,6 +200,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(getSOSDetails(sos_id, spinner)),
     changeSOStatus: (sos_id, status) =>
       dispatch(changeSOStatus(sos_id, status)),
+    assignSOSToAdmin: (email) => dispatch(assignSOSToAdmin(email)),
   };
 }
 

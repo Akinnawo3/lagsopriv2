@@ -72,7 +72,7 @@ export const getSOSDetails = (sos_id, spinner) => async (dispatch) => {
 export const setSOSNumber = (phone_number) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
-    const res = await axios.post(`${api.sos}/api/v1.1/phone_numbers/`, {
+    const res = await axios.post(`${api.sos}/v1.1/admin/recipient-contact`, {
       phone_number,
     });
     if (res.data.status === "error") {
@@ -80,6 +80,27 @@ export const setSOSNumber = (phone_number) => async (dispatch) => {
     } else {
       await dispatch(getSOSNumber());
       await NotificationManager.success("Number Added Successfully!");
+    }
+
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+    NotificationManager.error(err.response.data.message);
+    console.log(err.response.data);
+  }
+};
+
+export const setSOSEmail = (email) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.post(`${api.sos}/v1.1/admin/recipient-contact`, {
+      email,
+    });
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await dispatch(getSOSNumber());
+      await NotificationManager.success("Email Added Successfully!");
     }
 
     dispatch(endStatusLoading());
@@ -125,11 +146,30 @@ export const changeSOStatus = (sos_id, status) => async (dispatch) => {
   }
 };
 
+export const assignSOSToAdmin = (email) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.put(`${api.sos}/v1.1/sos/assign`, {
+      email,
+    });
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success("SOS Assigned Successfully!");
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+    NotificationManager.error(err.response.data.message);
+    console.log(err.response.data);
+  }
+};
+
 export const getSOSNumber = (spinner) => async (dispatch) => {
   try {
     spinner && dispatch(startLoading());
     !spinner && dispatch(startStatusLoading());
-    const res = await axios.get(`${api.sos}/api/v1.1/phone_numbers/`);
+    const res = await axios.get(`${api.sos}/v1.1/admin/recipient-contact`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
@@ -147,10 +187,30 @@ export const getSOSNumber = (spinner) => async (dispatch) => {
   }
 };
 
-export const deleteSOSNumber = (id) => async (dispatch) => {
+export const deleteSOSNumber = (phone_number) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
-    const res = await axios.delete(`${api.sos}/api/v1.1/phone_numbers/${id}`);
+    const res = await axios.delete(`${api.sos}/v1.1/admin/recipient-contact`, {
+      phone_number,
+    });
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await dispatch(getSOSNumber());
+      await NotificationManager.success("Number Deleted Successfully!");
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+    NotificationManager.error(err.response.data.message);
+  }
+};
+export const deleteSOSEmail = (email) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.delete(`${api.sos}/v1.1/admin/recipient-contact`, {
+      email,
+    });
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {

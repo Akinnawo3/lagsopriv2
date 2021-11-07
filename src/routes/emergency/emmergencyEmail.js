@@ -14,22 +14,22 @@ import Button from "@material-ui/core/Button";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { connect } from "react-redux";
 import {
-  deleteSOSNumber,
+  deleteSOSEmail,
   getSOSNumber,
-  setSOSNumber,
+  setSOSEmail,
 } from "Actions/emergencyAction";
 import EmptyData from "Components/EmptyData/EmptyData";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 
-const EmergencyNumber = ({
+const EmergencyEmail = ({
   match,
-  setSOSNumber,
+  setSOSEmail,
   getSOSNumber,
   sosNumbers,
   loading,
-  deleteSOSNumber,
+  deleteSOSEmail,
 }) => {
-  const [number, setNumber] = useState("");
+  const [email, setEmail] = useState("");
   const [isModal, setIsModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const inputEl = useRef(null);
@@ -43,22 +43,20 @@ const EmergencyNumber = ({
   const onSubmit = async (e) => {
     e.preventDefault();
     setIsModal(false);
-    await setSOSNumber(number);
-    setNumber("");
+    await setSOSEmail(email);
+    setEmail("");
   };
 
-  const onDelete = (number) => {
+  const onDelete = (email) => {
     inputEl.current.open();
-    setDeleteId(deleteId);
+    setDeleteId(email);
   };
 
   return (
     <div className="table-wrapper">
-      <PageTitleBar title={"Emergency Numbers"} match={match} />
+      <PageTitleBar title={"Emergency Emails"} match={match} />
       <RctCollapsibleCard
-        heading={
-          sosNumbers?.phone_numbers?.length > 0 ? "Emergency Numbers" : null
-        }
+        heading={sosNumbers?.emails?.length > 0 ? "Emergency Emails" : null}
         fullBlock
         style={{ minHeight: "70vh" }}
       >
@@ -69,22 +67,22 @@ const EmergencyNumber = ({
             color="primary"
             className="caret btn-sm mr-10"
           >
-            Add New SOS Number <i className="zmdi zmdi-plus"></i>
+            Add New SOS Email <i className="zmdi zmdi-plus"></i>
           </a>
         </div>
-        {!loading && sosNumbers.phone_numbers?.length > 0 && (
+        {!loading && sosNumbers.emails?.length > 0 && (
           <div className="table-responsive" style={{ minHeight: "50vh" }}>
             <Table>
               <TableHead>
                 <TableRow hover>
-                  <TableCell>Phone Number</TableCell>
+                  <TableCell>Email </TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 <Fragment>
-                  {sosNumbers.phone_numbers?.length > 0 &&
-                    sosNumbers.phone_numbers.map((data) => (
+                  {sosNumbers.emails?.length > 0 &&
+                    sosNumbers.emails.map((data) => (
                       <TableRow hover key={data}>
                         <TableCell>{data}</TableCell>
                         <TableCell>
@@ -104,20 +102,20 @@ const EmergencyNumber = ({
           </div>
         )}
       </RctCollapsibleCard>
-      {sosNumbers.phone_numbers?.length < 1 && <EmptyData />}
+      {sosNumbers.emails?.length < 1 && <EmptyData />}
       <Modal isOpen={isModal} toggle={() => setIsModal(false)}>
         <ModalHeader toggle={() => setIsModal(false)}>
-          Add SOS Number
+          Add SOS Email
         </ModalHeader>
         <Form onSubmit={onSubmit}>
           <ModalBody>
             <FormGroup>
-              <Label for="firstName">Number</Label>
+              <Label for="firstName">EMail</Label>
               <Input
-                type="number"
+                type="email"
                 name="tel"
-                value={number}
-                onChange={(e) => setNumber(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </FormGroup>
@@ -138,7 +136,7 @@ const EmergencyNumber = ({
         title="Are You Sure You Want To Delete?"
         message="This will delete Number permanently."
         onConfirm={() => {
-          deleteSOSNumber(deleteId);
+          deleteSOSEmail(deleteId);
           inputEl.current.close();
         }}
       />
@@ -149,8 +147,8 @@ const EmergencyNumber = ({
 function mapDispatchToProps(dispatch) {
   return {
     getSOSNumber: (spinner) => dispatch(getSOSNumber(spinner)),
-    deleteSOSNumber: (number) => dispatch(deleteSOSNumber(number)),
-    setSOSNumber: (number) => dispatch(setSOSNumber(number)),
+    deleteSOSEmail: (email) => dispatch(deleteSOSEmail(email)),
+    setSOSEmail: (email) => dispatch(setSOSEmail(email)),
   };
 }
 
@@ -159,4 +157,4 @@ const mapStateToProps = (state) => ({
   loading: state.loading.loading,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmergencyNumber);
+export default connect(mapStateToProps, mapDispatchToProps)(EmergencyEmail);

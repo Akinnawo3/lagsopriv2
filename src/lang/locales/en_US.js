@@ -63,6 +63,7 @@ module.exports = {
   "sidebar.taxi ratings": "Taxi Ratings",
   "sidebar.emergency": "Emergency",
   "sidebar.emergencyNumber": "Emergency Number",
+  "sidebar.emergencyEmail": "Emergency Email",
   "sidebar.support": "Support",
   "sidebar.analytics": "Analytics",
   "sidebar.summary": "Summary",

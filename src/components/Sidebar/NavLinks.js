@@ -273,6 +273,11 @@ export default {
           new_item: false,
           menu_title: "sidebar.emergencyNumber",
         },
+        {
+          path: "/admin/emergency/emails",
+          new_item: false,
+          menu_title: "sidebar.emergencyEmail",
+        },
       ],
     },
     // {

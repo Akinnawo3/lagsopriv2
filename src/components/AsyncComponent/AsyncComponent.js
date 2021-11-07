@@ -202,6 +202,11 @@ const AsyncEmergencyNumber = Loadable({
   loading: () => <RctPageLoader />,
 });
 
+const AsyncEmergencyEmail = Loadable({
+  loader: () => import("Routes/emergency/emmergencyEmail"),
+  loading: () => <RctPageLoader />,
+});
+
 const AsyncEmergencyDetails = Loadable({
   loader: () => import("Routes/emergency/emergencyDetails"),
   loading: () => <RctPageLoader />,
@@ -421,6 +426,7 @@ export {
   AsyncUserRatings,
   AsyncSupport,
   AsyncEmergency,
+  AsyncEmergencyEmail,
   AsyncEmergencyDetails,
   AsyncUsers,
   AsyncSupportDetails,
