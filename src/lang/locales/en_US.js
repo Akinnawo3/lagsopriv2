@@ -6,10 +6,20 @@ module.exports = {
   "sidebar.class type": "Class Type",
   "sidebar.create": "Create",
   "sidebar.booking type": "Booking Type",
-  "sidebar.fees": "Fees",
+
+  // old setup arrangement
+  "sidebar.oldFees": "Old Fees",
   "sidebar.cancellationReasons": "Cancellation Reasons",
-  "sidebar.schedule": "Schedule",
+  "sidebar.admins": "Admins",
   "sidebar.areas": "Areas",
+
+  //new setup arrangement
+  "sidebar.fees": "Fees",
+  "sidebar.revenueSplit": "Revenue Split",
+  "sidebar.roles": "Roles",
+  "sidebar.others": "Others",
+
+  "sidebar.schedule": "Schedule",
   "sidebar.passengers": "Passengers",
   "sidebar.approved": "Active",
   "sidebar.all": "All",
@@ -22,7 +32,6 @@ module.exports = {
   "sidebar.trips": "Trips",
   "sidebar.inactive": "Inactive",
   "sidebar.drivers": "Drivers",
-  "sidebar.admins": "Admins",
   "sidebar.admin-log": "Activity Log",
   // "sidebar.promodiscounts": "Admins",
   "sidebar.booking-types": "Booking-Types",

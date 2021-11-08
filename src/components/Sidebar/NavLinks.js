@@ -7,23 +7,14 @@ export default {
       type_multi: null,
       // "new_item": true,
       child_routes: [
+        // old child routes to be removed
         {
           menu_title: "sidebar.admins",
           new_item: false,
           path: "/admin/admins",
         },
-        // {
-        //    "menu_title": "sidebar.class-types",
-        //    "new_item": false,
-        //    "path": "/admin/class-types"
-        // },
-        // {
-        //    "menu_title": "sidebar.booking-types",
-        //    "new_item": false,
-        //    "path": "/admin/booking-types"
-        // },
         {
-          menu_title: "sidebar.fees",
+          menu_title: "sidebar.oldFees",
           new_item: false,
           path: "/admin/fees",
         },
@@ -36,6 +27,28 @@ export default {
           menu_title: "sidebar.areas",
           new_item: false,
           path: "/admin/areas",
+        },
+
+        // new/incoming child routes
+        {
+          menu_title: "sidebar.fees",
+          new_item: false,
+          path: "/admin/setup/fees",
+        },
+        {
+          menu_title: "sidebar.revenueSplit",
+          new_item: false,
+          path: "/admin/setup/revenue-split",
+        },
+        {
+          menu_title: "sidebar.roles",
+          new_item: false,
+          path: "/admin/setup/roles",
+        },
+        {
+          menu_title: "sidebar.others",
+          new_item: false,
+          path: "/admin/setup/others",
         },
       ],
     },
