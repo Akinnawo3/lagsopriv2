@@ -61,10 +61,10 @@ const Wallets = ({
               className="chart-wrapper mx-3 d-flex align-items-center justify-content-between"
               style={{ height: "70px" }}
             >
-              <span className="pr-2 font-xl" style={{ fontSize: "3.5rem" }}>
+              <span className="pr-2 font-xl" style={{ fontSize: "2.5rem" }}>
                 ₦{wallet.toLocaleString()}
               </span>
-              <i className="ti-arrow-up font-xl" />
+              <i className="ti-arrow-up font-lg" />
             </div>
           </Card>
         </Col>
@@ -79,28 +79,25 @@ const Wallets = ({
               className="chart-wrapper mx-3 d-flex align-items-center  justify-content-between"
               style={{ height: "70px" }}
             >
-              <span className=" font-xl" style={{ fontSize: "3.5rem" }}>
+              <span className=" font-xl" style={{ fontSize: "2.5rem" }}>
                 ₦{wallet.toLocaleString()}
               </span>
-              <i className="ti-arrow-up font-xl" />
+              <i className="ti-arrow-up font-lg" />
             </div>
           </Card>
         </Col>
       </Row>
       {wallets?.length > 0 && (
-        <RctCollapsibleCard>
+        <RctCollapsibleCard heading="Revenue Split Transaction">
           <div className="table-responsive" style={{ minHeight: "50vh" }}>
             <Table>
               <TableHead>
                 <TableRow hover>
-                  <TableCell>Transaction Id</TableCell>
-                  <TableCell>Amount</TableCell>
-                  <TableCell>Date / Time</TableCell>
-                  <TableCell>Recipient No</TableCell>
-                  <TableCell>Transaction Type</TableCell>
-                  <TableCell>Description</TableCell>
+                  <TableCell>Stakeholders</TableCell>
+                  <TableCell>Percentage</TableCell>
+                  <TableCell>Amount </TableCell>
+                  <TableCell>Date </TableCell>
                   <TableCell>Status</TableCell>
-                  {/*<TableCell>Action</TableCell>*/}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -111,17 +108,12 @@ const Wallets = ({
                       <TableCell>₦{user.amount.toLocaleString()}</TableCell>
                       <TableCell>{calculatePostDate(user.createdAt)}</TableCell>
                       <TableCell>{user.recipient}</TableCell>
-                      <TableCell>{user.transaction_type}</TableCell>
-                      <TableCell>{user.description}</TableCell>
                       <TableCell>
                         <Badge color={getStatusColor2(user.status)}>
                           {getStatus2(user.status)}
                         </Badge>
                       </TableCell>
 
-                      {/*<TableCell>*/}
-                      {/*    <button type="button" className="rct-link-btn text-primary" title="view details"><Link to={`/admin/ratings/${user.rating_id}`}><i className="ti-eye"/></Link></button>*/}
-                      {/*</TableCell>*/}
                     </TableRow>
                   ))}
                 </Fragment>

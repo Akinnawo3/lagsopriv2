@@ -5,11 +5,11 @@ import PaymentsRoutes from "Routes/payments/paymentsRoutes";
 // async component
 import {
   AsyncAdmins,
-  AsyncFees,
+  AsyncFeesOld,
   AsyncGooleMapsComponent,
   AsyncUsers,
   AsyncAreas,
-  AsyncRevenueSplit,
+  AsyncRevenueSplitOld,
   AsyncCancellationReasons,
   AsyncCustomerCare,
   AsyncActivityLog,
@@ -27,6 +27,7 @@ import TripRoutes from "Routes/trips/tripsRoutes";
 import RatingsRoutes from "Routes/ratings/ratingsRoutes";
 import WalletsRoutes from "Routes/wallets/walletsRoutes";
 import PaymentsServiceRoutes from "Routes/payments-service/paymentsServiceRoutes";
+import SetupRoutes from "Routes/setup/SetupRoutes";
 
 export default [
   {
@@ -55,7 +56,7 @@ export default [
   // },
   {
     path: "fees",
-    component: AsyncFees,
+    component: AsyncFeesOld,
   },
   {
     path: "wallets",
@@ -75,7 +76,7 @@ export default [
   },
   {
     path: "revenue",
-    component: AsyncRevenueSplit,
+    component: AsyncRevenueSplitOld,
   },
   // {
   //    path: 'promo-discounts',
@@ -153,5 +154,10 @@ export default [
   {
     path: "activity-log",
     component: AsyncActivityLog,
+  },
+
+  {
+    path: "setup",
+    component: SetupRoutes,
   },
 ];

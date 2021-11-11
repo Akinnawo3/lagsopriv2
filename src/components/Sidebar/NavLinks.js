@@ -7,29 +7,6 @@ export default {
       type_multi: null,
       // "new_item": true,
       child_routes: [
-        // old child routes to be removed
-        {
-          menu_title: "sidebar.admins",
-          new_item: false,
-          path: "/admin/admins",
-        },
-        {
-          menu_title: "sidebar.oldFees",
-          new_item: false,
-          path: "/admin/fees",
-        },
-        {
-          menu_title: "sidebar.cancellationReasons",
-          new_item: false,
-          path: "/admin/cancellation-reasons",
-        },
-        {
-          menu_title: "sidebar.areas",
-          new_item: false,
-          path: "/admin/areas",
-        },
-
-        // new/incoming child routes
         {
           menu_title: "sidebar.fees",
           new_item: false,

@@ -21,7 +21,7 @@ const AsyncClassTypes = Loadable({
   loading: () => <RctPageLoader />,
 });
 
-const AsyncFees = Loadable({
+const AsyncFeesOld = Loadable({
   loader: () => import("Routes/fees/fees"),
   loading: () => <RctPageLoader />,
 });
@@ -44,7 +44,7 @@ const AsyncRatingsDetails = Loadable({
   loading: () => <RctPageLoader />,
 });
 
-const AsyncRevenueSplit = Loadable({
+const AsyncRevenueSplitOld = Loadable({
   loader: () => import("Routes/revenueSplit/revenueSplit"),
   loading: () => <RctPageLoader />,
 });
@@ -332,6 +332,32 @@ const AsyncActivityLog = Loadable({
   loading: () => <RctPageLoader />,
 });
 
+// for setup
+const AsyncFees = Loadable({
+  loader: () => import("Routes/setup/fees"),
+  loading: () => <RctPageLoader />,
+});
+
+const AsyncOthers = Loadable({
+  loader: () => import("Routes/setup/others"),
+  loading: () => <RctPageLoader />,
+});
+
+const AsyncRevenueSplit = Loadable({
+  loader: () => import("Routes/setup/revenueSplit"),
+  loading: () => <RctPageLoader />,
+});
+
+const AsyncRoles = Loadable({
+  loader: () => import("Routes/setup/roles"),
+  loading: () => <RctPageLoader />,
+});
+
+const AsyncAddPersonnel = Loadable({
+  loader: () => import("Routes/setup/component/addPersonnel"),
+  loading: () => <RctPageLoader />,
+});
+
 // report
 
 // google maps
@@ -394,7 +420,7 @@ export {
   AsyncPayments,
   AsyncAdmins,
   AsyncBookingTypes,
-  AsyncFees,
+  AsyncFeesOld,
   AsyncClassTypes,
   AsyncActiveVehicles,
   AsyncInactiveVehicles,
@@ -409,6 +435,11 @@ export {
   AsyncPassengers,
   AsyncDrivers,
   AsyncDriver,
+  AsyncFees,
+  AsyncOthers,
+  AsyncRevenueSplit,
+  AsyncRoles,
+  AsyncAddPersonnel,
   AsyncActivityLog,
   AsyncGooleMapsComponent,
   AsyncLeafletMapComponent,
@@ -442,7 +473,7 @@ export {
   AsyncSchedule,
   AsyncScheduleDetails,
   AsyncReferral,
-  AsyncRevenueSplit,
+  AsyncRevenueSplitOld,
   AsyncFdt,
   AsyncFdtDetails,
   AsyncTripDetails,

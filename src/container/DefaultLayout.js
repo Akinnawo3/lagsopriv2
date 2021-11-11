@@ -17,7 +17,6 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 class DefaultLayout extends Component {
 	render() {
 		const { match, isLoading } = this.props;
-		console.log(match.url)
 		return (
 			<RctAppLayout>
 				{isLoading && <Spinner />}
