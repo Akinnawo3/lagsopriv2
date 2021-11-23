@@ -22,7 +22,7 @@ const RevenueSplit = ({ match, getRevenueSplitData, revenueSplitData }) => {
     getRevenueSplitData(true);
   }, []);
 
-  console.log(revenueSplitData);
+  // console.log(revenueSplitData );
 
   const [parameterModalOpen, setParameterModalOpen] = useState(false);
   const [breakDownModalOpen, setBreakDownModalOpen] = useState(false);
