@@ -14,18 +14,62 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import { getRevenueSplitData } from "Actions/revenueSplitAction";
+import {
+  getRevenueSplitData,
+  updateRevenueSplitData,
+} from "Actions/revenueSplitAction";
 import { connect } from "react-redux";
 
-const RevenueSplit = ({ match, getRevenueSplitData, revenueSplitData }) => {
+const RevenueSplit = ({
+  match,
+  getRevenueSplitData,
+  revenueSplitData,
+  updateRevenueSplitData,
+}) => {
   useEffect(() => {
     getRevenueSplitData(true);
   }, []);
 
-  // console.log(revenueSplitData );
-
   const [parameterModalOpen, setParameterModalOpen] = useState(false);
   const [breakDownModalOpen, setBreakDownModalOpen] = useState(false);
+
+  const [dailyTax, setDailyTax] = useState("");
+  const [refleeting, setRefleeting] = useState("");
+  const [techCo, setTechCo] = useState("");
+  const [assetCo, setAssetCo] = useState("");
+  const [comms, setComms] = useState("");
+  const [maintenance, setMaintenance] = useState("");
+  const [commercialDebtService, setCommercialDebtService] = useState("");
+  const [socialDebtService, setSocialDebtService] = useState("");
+
+  const updateValues = (e) => {
+    e.preventDefault();
+    setBreakDownModalOpen(false);
+    const data = {
+      commercial_debt_service: commercialDebtService,
+      social_debt_service: socialDebtService,
+      daily_tax: dailyTax,
+      refleeting,
+      tech_co: techCo,
+      asset_co: assetCo,
+      comms,
+      maintenance,
+    };
+    updateRevenueSplitData(data);
+  };
+
+  const openBreakDownModal = () => {
+    setBreakDownModalOpen(true);
+    setCommercialDebtService(revenueSplitData.commercial_debt_service);
+    setSocialDebtService(revenueSplitData.social_debt_service);
+    setMaintenance(revenueSplitData.maintenance);
+    setDailyTax(revenueSplitData.daily_tax);
+    setRefleeting(revenueSplitData.refleeting);
+    setTechCo(revenueSplitData.tech_co);
+    setAssetCo(revenueSplitData.asset_co);
+    setComms(revenueSplitData.comms);
+  };
+
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Revenue Split"} match={match} />
@@ -47,13 +91,13 @@ const RevenueSplit = ({ match, getRevenueSplitData, revenueSplitData }) => {
                         <li className="ml-3">
                           <div className="d-flex justify-content-between">
                             <div>Commercial Driver</div>
-                            <strong>8709.23</strong>
+                            <strong>{`#${revenueSplitData?.commercial_debt_service}`}</strong>
                           </div>
                         </li>
                         <li className="ml-3">
                           <div className="d-flex justify-content-between">
                             <div>Social Driver</div>
-                            <strong>959.17.23</strong>
+                            <strong>{`#${revenueSplitData?.social_debt_service}`}</strong>
                           </div>
                         </li>
                       </ol>
@@ -61,37 +105,37 @@ const RevenueSplit = ({ match, getRevenueSplitData, revenueSplitData }) => {
                     <li className="mb-3">
                       <div className="d-flex justify-content-between">
                         <div>Dail LASG Tax</div>
-                        <strong>Cummulative of all Tax</strong>
+                        <strong>{`#${revenueSplitData?.daily_tax}`}</strong>
                       </div>
                     </li>
                     <li className="mb-3">
                       <div className="d-flex justify-content-between">
                         <div>Tec co</div>
-                        <strong>17%</strong>
+                        <strong>{revenueSplitData?.tech_co}</strong>
                       </div>
                     </li>
                     <li className="mb-3">
                       <div className="d-flex justify-content-between">
                         <div>Re-fleeting</div>
-                        <strong>1.5%</strong>
+                        <strong>{revenueSplitData?.refleeting}</strong>
                       </div>
                     </li>
                     <li className="mb-3">
                       <div className="d-flex justify-content-between">
                         <div>Asset co</div>
-                        <strong>1.50%</strong>
+                        <strong>{revenueSplitData?.asset_co}</strong>
                       </div>
                     </li>
                     <li className="mb-3">
                       <div className="d-flex justify-content-between">
                         <div>Communication</div>
-                        <strong>1.0%</strong>
+                        <strong>{revenueSplitData?.comms}</strong>
                       </div>
                     </li>
                     <li className="mb-3">
                       <div className="d-flex justify-content-between">
                         <div>Maintenance and Insurance</div>
-                        <strong>4%</strong>
+                        <strong>{revenueSplitData?.maintenance}</strong>
                       </div>
                     </li>
                   </ol>
@@ -100,16 +144,16 @@ const RevenueSplit = ({ match, getRevenueSplitData, revenueSplitData }) => {
               <div classsName="d-flex">
                 <button
                   className="btn btn-info mr-3"
-                  onClick={() => setBreakDownModalOpen(true)}
+                  onClick={openBreakDownModal}
                 >
                   Edit
                 </button>
-                <button
+                {/* <button
                   className="btn border-info px-3"
                   onClick={() => setParameterModalOpen(true)}
                 >
                   Add Stakeholder
-                </button>
+                </button> */}
               </div>
             </div>
           </RctCollapsibleCard>
@@ -175,17 +219,17 @@ const RevenueSplit = ({ match, getRevenueSplitData, revenueSplitData }) => {
           <ModalHeader toggle={() => setBreakDownModalOpen(false)}>
             Update fee
           </ModalHeader>
-          <Form onSubmit={() => null}>
+          <Form onSubmit={updateValues}>
             <ModalBody>
               <Row>
                 <Col sm="12" md="6">
                   <FormGroup>
                     <Label for="lastName">Commercial Driver</Label>
                     <Input
-                      type="text"
+                      type="number"
                       name="name"
-                      // value={customerCare}
-                      // onChange={onChange}
+                      value={commercialDebtService}
+                      onChange={(e) => setCommercialDebtService(e.target.value)}
                       required
                     />
                   </FormGroup>
@@ -196,8 +240,8 @@ const RevenueSplit = ({ match, getRevenueSplitData, revenueSplitData }) => {
                     <Input
                       type="text"
                       name="number"
-                      // value={customerCare}
-                      // onChange={onChange}
+                      value={socialDebtService}
+                      onChange={(e) => setSocialDebtService(e.target.value)}
                       required
                     />
                   </FormGroup>
@@ -210,8 +254,8 @@ const RevenueSplit = ({ match, getRevenueSplitData, revenueSplitData }) => {
                     <Input
                       type="text"
                       name="number"
-                      // value={customerCare}
-                      // onChange={onChange}
+                      value={dailyTax}
+                      onChange={(e) => setDailyTax(e.target.value)}
                       required
                     />
                   </FormGroup>
@@ -222,8 +266,8 @@ const RevenueSplit = ({ match, getRevenueSplitData, revenueSplitData }) => {
                     <Input
                       type="text"
                       name="number"
-                      // value={customerCare}
-                      // onChange={onChange}
+                      value={techCo}
+                      onChange={(e) => setTechCo(e.target.value)}
                       required
                     />
                   </FormGroup>
@@ -236,8 +280,8 @@ const RevenueSplit = ({ match, getRevenueSplitData, revenueSplitData }) => {
                     <Input
                       type="text"
                       name="number"
-                      // value={customerCare}
-                      // onChange={onChange}
+                      value={refleeting}
+                      onChange={(e) => setRefleeting(e.target.value)}
                       required
                     />
                   </FormGroup>
@@ -248,8 +292,8 @@ const RevenueSplit = ({ match, getRevenueSplitData, revenueSplitData }) => {
                     <Input
                       type="text"
                       name="number"
-                      // value={customerCare}
-                      // onChange={onChange}
+                      value={assetCo}
+                      onChange={(e) => setAssetCo(e.target.value)}
                       required
                     />
                   </FormGroup>
@@ -262,8 +306,8 @@ const RevenueSplit = ({ match, getRevenueSplitData, revenueSplitData }) => {
                     <Input
                       type="text"
                       name="number"
-                      // value={customerCare}
-                      // onChange={onChange}
+                      value={comms}
+                      onChange={(e) => setComms(e.target.value)}
                       required
                     />
                   </FormGroup>
@@ -274,8 +318,8 @@ const RevenueSplit = ({ match, getRevenueSplitData, revenueSplitData }) => {
                     <Input
                       type="text"
                       name="number"
-                      // value={customerCare}
-                      // onChange={onChange}
+                      value={maintenance}
+                      onChange={(e) => setMaintenance(e.target.value)}
                       required
                     />
                   </FormGroup>
@@ -308,6 +352,7 @@ const RevenueSplit = ({ match, getRevenueSplitData, revenueSplitData }) => {
 function mapDispatchToProps(dispatch) {
   return {
     getRevenueSplitData: (spinner) => dispatch(getRevenueSplitData(spinner)),
+    updateRevenueSplitData: (data) => dispatch(updateRevenueSplitData(data)),
   };
 }
 

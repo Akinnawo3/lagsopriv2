@@ -30,3 +30,23 @@ export const getRevenueSplitData = (spinner) => async (dispatch) => {
     NotificationManager.error(err.response.data.result);
   }
 };
+
+export const updateRevenueSplitData = (data) => async (dispatch) => {
+  try {
+    await dispatch(startStatusLoading());
+    const res = await axios.post(
+      `${api.revenueSplit}/v1.1/admin/settings`,
+      data
+    );
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success("Updates Successfully");
+      await dispatch(getRevenueSplitData());
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+    NotificationManager.error(err.response.data.error);
+  }
+};
