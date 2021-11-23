@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import {
@@ -14,7 +14,16 @@ import {
   Row,
   Col,
 } from "reactstrap";
-const RevenueSplit = ({ match }) => {
+import { getRevenueSplitData } from "Actions/revenueSplitAction";
+import { connect } from "react-redux";
+
+const RevenueSplit = ({ match, getRevenueSplitData, revenueSplitData }) => {
+  useEffect(() => {
+    getRevenueSplitData(true);
+  }, []);
+
+  console.log(revenueSplitData);
+
   const [parameterModalOpen, setParameterModalOpen] = useState(false);
   const [breakDownModalOpen, setBreakDownModalOpen] = useState(false);
   return (
@@ -27,14 +36,6 @@ const RevenueSplit = ({ match }) => {
             style={{ minHeight: "70vh" }}
           >
             <div className="px-2">
-              <small>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint
-              </small>
               <div className="row mt-4 ml-2">
                 <div className="cl col-sm-12 col-md-6">
                   <ol>
@@ -304,4 +305,14 @@ const RevenueSplit = ({ match }) => {
   );
 };
 
-export default RevenueSplit;
+function mapDispatchToProps(dispatch) {
+  return {
+    getRevenueSplitData: (spinner) => dispatch(getRevenueSplitData(spinner)),
+  };
+}
+
+const mapStateToProps = (state) => ({
+  revenueSplitData: state.revenueSplit.revenueSplitData,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RevenueSplit);

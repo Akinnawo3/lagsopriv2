@@ -52,6 +52,43 @@ export const getTrips =
       dispatch(endLoading());
     }
   };
+export const getCancelledTrips = (pageNo, spinner) => async (dispatch) => {
+  try {
+    spinner && dispatch(startLoading());
+    !spinner && dispatch(startStatusLoading());
+    const res = await axios.get(
+      `${api.trip}/v1.1/trips/cancelled-trips?item_per_page=20&page=${pageNo}`
+    );
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      dispatch({
+        type: TRIPS,
+        payload: res.data.data,
+      });
+    }
+    dispatch(endLoading());
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+    dispatch(endLoading());
+  }
+};
+export const getCancelledTripCount = () => async (dispatch) => {
+  try {
+    const res = await axios.get(
+      `${api.trip}/v1.1/trips/cancelled-trips?component=count`
+    );
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      dispatch({
+        type: TRIP_COUNT,
+        payload: res.data?.data?.total,
+      });
+    }
+  } catch (err) {}
+};
 
 export const getTrip = (trip_id, spinner) => async (dispatch) => {
   try {

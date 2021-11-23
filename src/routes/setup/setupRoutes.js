@@ -22,7 +22,7 @@ const SetupRoutes = ({ match }) => (
       <Route path={`/admin/setup/roles`} component={AsyncRoles} />
       <Route
         path={`/admin/setup/add-personnel`}
-        component={AsyncAddPersonnel}
+        component={AsyncAddPersonnel }
       />
     </Switch>
   </div>

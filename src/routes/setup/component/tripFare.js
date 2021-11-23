@@ -11,6 +11,7 @@ import {
   Input,
   Button,
 } from "reactstrap";
+import Fees from "Routes/fees/fees";
 
 const TripFare = () => {
   const [parameterModalOpen, setParameterModalOpen] = useState(false);
@@ -19,7 +20,12 @@ const TripFare = () => {
     <div className="row">
       <div className="col col-xs-12 col-md-9">
         <RctCollapsibleCard heading="Trip Fare" style={{ minHeight: "70vh" }}>
-          <div className="px-2">
+          <div className="row mt-4">
+            <div className="cl col-sm-12 col-md-6">
+              <Fees />
+            </div>
+          </div>
+          {/* <div className="px-2">
             <small>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
@@ -90,7 +96,7 @@ const TripFare = () => {
                 Edit Breakdown
               </button>
             </div>
-          </div>
+          </div> */}
         </RctCollapsibleCard>
       </div>
 

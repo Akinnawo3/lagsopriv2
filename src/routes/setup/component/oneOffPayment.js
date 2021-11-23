@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Badge, Card, CardBody, Col, Row } from "reactstrap";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
+import { connect } from "react-redux";
+
 import {
   Form,
   FormGroup,
@@ -13,9 +15,100 @@ import {
   Button,
 } from "reactstrap";
 
-const OneOffPayment = () => {
+import {
+  createCustomerCare,
+  createWaitingTime,
+  createVerificationFee,
+  deleteCustomerCare,
+  getCustomerCare,
+  updateCustomerCare,
+  createSocialDriverFee,
+  createCommercialDriverFee,
+} from "Actions/customerCareAction";
+
+const OneOffPayment = ({
+  match,
+  getCustomerCare,
+  customerCareNumbers,
+  createCustomerCare,
+  createWaitingTime,
+  createVerificationFee,
+  createSocialDriverFee,
+  createCommercialDriverFee,
+  loading,
+}) => {
   const [parameterModalOpen, setParameterModalOpen] = useState(false);
   const [breakDownModalOpen, setBreakDownModalOpen] = useState(false);
+
+  const [costAssetComm, setCostAssetComm] = useState("");
+  const [costAssetSoc, setCostAssetSoc] = useState("");
+  const [insurance, setInsurance] = useState("");
+  const [dashcam, setDashcam] = useState("");
+  const [softSkillsPlusOthers, setSoftSkillsPlusOthers] = useState("");
+  const [lasdri, setLasdri] = useState("");
+  const [dmsSub, setDmsSub] = useState("");
+  const [eTaxi, setEtaxi] = useState("");
+
+  const updateOneOffPayment = async (e) => {
+    e.preventDefault();
+    setBreakDownModalOpen(false);
+    const general_payload = {
+      cost_of_asset: "",
+      insurance,
+      dashcam,
+      soft_skills_plus_others: softSkillsPlusOthers,
+      lasdri,
+      dms_subscription: dmsSub,
+      e_taxi_sub: eTaxi,
+    };
+
+    // to update for socail driver take note of the cost_of_asset (thets were the ajor difference is)
+    await createSocialDriverFee({
+      ...general_payload,
+      cost_of_asset: costAssetSoc,
+      total:
+        parseInt(costAssetSoc, 10) +
+        parseInt(insurance, 10) +
+        parseInt(dashcam, 10) +
+        parseInt(softSkillsPlusOthers, 10) +
+        parseInt(lasdri, 10) +
+        parseInt(dmsSub, 10) +
+        parseInt(eTaxi, 10),
+    });
+    // to update for commercial driver take note of the cost_of_asset (thets were the ajor difference is)
+    await createCommercialDriverFee({
+      ...general_payload,
+      cost_of_asset: costAssetComm,
+      total:
+        parseInt(costAssetComm, 10) +
+        parseInt(insurance, 10) +
+        parseInt(dashcam, 10) +
+        parseInt(softSkillsPlusOthers, 10) +
+        parseInt(lasdri, 10) +
+        parseInt(dmsSub, 10) +
+        parseInt(eTaxi, 10),
+    });
+  };
+
+  const openBreakDownModal = () => {
+    setBreakDownModalOpen(true);
+    setCostAssetComm(customerCareNumbers?.com_driver_fee?.cost_of_asset);
+    setCostAssetSoc(customerCareNumbers?.soc_driver_fee?.cost_of_asset);
+    setInsurance(customerCareNumbers?.com_driver_fee?.insurance);
+    setDashcam(customerCareNumbers?.com_driver_fee?.dashcam);
+    setSoftSkillsPlusOthers(
+      customerCareNumbers?.com_driver_fee?.soft_skills_plus_others
+    );
+    setLasdri(customerCareNumbers?.com_driver_fee?.lasdri);
+    setDmsSub(customerCareNumbers?.com_driver_fee?.dms_subscription);
+    setEtaxi(customerCareNumbers?.com_driver_fee?.e_taxi_sub);
+  };
+  console.log(customerCareNumbers.com_driver_fee);
+
+  useEffect(() => {
+    getCustomerCare(true);
+  }, []);
+
   return (
     <div className="row">
       <div className="col col-xs-12 col-md-10">
@@ -40,7 +133,7 @@ const OneOffPayment = () => {
                       className="pr-2 font-xl"
                       style={{ fontSize: "2.5rem" }}
                     >
-                      ₦ 200
+                      {`₦${customerCareNumbers?.com_driver_fee?.total}`}
                     </span>
                   </div>
                 </Card>
@@ -55,7 +148,7 @@ const OneOffPayment = () => {
                     style={{ height: "70px" }}
                   >
                     <span className=" font-xl" style={{ fontSize: "2.5rem" }}>
-                      ₦ 120
+                      {`₦${customerCareNumbers?.soc_driver_fee?.total}`}
                     </span>
                   </div>
                 </Card>
@@ -71,13 +164,17 @@ const OneOffPayment = () => {
                         <span className="pull-left">
                           <div>Commercial Driver </div>
                         </span>
-                        <strong>1,500,000</strong>
+                        <strong>
+                          {customerCareNumbers?.com_driver_fee?.cost_of_asset}
+                        </strong>
                       </li>
                       <li className="list-group-item text-right">
                         <span className="pull-left">
                           <div>Social Driver </div>
                         </span>
-                        <strong>750,000</strong>
+                        <strong>
+                          {customerCareNumbers?.soc_driver_fee?.cost_of_asset}
+                        </strong>
                       </li>
                     </ul>
                   </div>
@@ -88,13 +185,17 @@ const OneOffPayment = () => {
                         <span className="pull-left">
                           <div>Registration and Insurance </div>
                         </span>
-                        <strong>1,500,000</strong>
+                        <strong>
+                          {customerCareNumbers?.com_driver_fee?.insurance}
+                        </strong>
                       </li>
                       <li className="list-group-item text-right">
                         <span className="pull-left">
                           <div>Dashcam 1st month rent </div>
                         </span>
-                        <strong>750,000</strong>
+                        <strong>
+                          {customerCareNumbers?.com_driver_fee?.dashcam}
+                        </strong>
                       </li>
                       <li className="list-group-item text-right">
                         <span className="pull-left">
@@ -102,37 +203,52 @@ const OneOffPayment = () => {
                             Soft Skill training,medicals,security check..
                           </div>
                         </span>
-                        <strong>750,000</strong>
+                        <strong>
+                          {
+                            customerCareNumbers?.com_driver_fee
+                              ?.soft_skills_plus_others
+                          }
+                        </strong>
                       </li>
                       <li className="list-group-item text-right">
                         <span className="pull-left">
                           <div> LASDRI </div>
                         </span>
-                        <strong>750,000</strong>
+                        <strong>
+                          {customerCareNumbers?.com_driver_fee?.lasdri}
+                        </strong>
                       </li>
                       <li className="list-group-item text-right">
                         <span className="pull-left">
                           <div> DMS Subscription </div>
                         </span>
-                        <strong>750,000</strong>
+                        <strong>
+                          {
+                            customerCareNumbers?.com_driver_fee
+                              ?.dms_subscription
+                          }
+                        </strong>
                       </li>
                       <li className="list-group-item text-right">
                         <span className="pull-left">
                           <div> E-taxi License </div>
                         </span>
-                        <strong>750,000</strong>
+                        <strong>
+                          {customerCareNumbers?.com_driver_fee?.e_taxi_sub}
+                        </strong>
                       </li>
                     </ul>
                     <div classsName="d-flex">
-                      <button
-                        className="btn btn-info mr-3"
+                      {/* <button
+                        className="btn border-info mr-3"
                         onClick={() => setParameterModalOpen(true)}
                       >
                         Add Parameter
-                      </button>
+                      </button> */}
                       <button
                         className="btn border-info"
-                        onClick={() => setBreakDownModalOpen(true)}
+                        className="btn btn-info "
+                        onClick={() => openBreakDownModal(true)}
                       >
                         Edit Breakdown
                       </button>
@@ -205,7 +321,7 @@ const OneOffPayment = () => {
         <ModalHeader toggle={() => setBreakDownModalOpen(false)}>
           One-off fee Breakdown
         </ModalHeader>
-        <Form onSubmit={() => null}>
+        <Form onSubmit={updateOneOffPayment}>
           <ModalBody>
             <small className="fw-bold">Percentage Cost of Asset</small>
             <FormGroup>
@@ -213,8 +329,8 @@ const OneOffPayment = () => {
               <Input
                 type="text"
                 name="name"
-                // value={customerCare}
-                // onChange={onChange}
+                value={costAssetComm}
+                onChange={(e) => setCostAssetComm(e.target.value)}
                 required
               />
             </FormGroup>
@@ -223,8 +339,8 @@ const OneOffPayment = () => {
               <Input
                 type="text"
                 name="number"
-                // value={customerCare}
-                // onChange={onChange}
+                value={costAssetSoc}
+                onChange={(e) => setCostAssetSoc(e.target.value)}
                 required
               />
             </FormGroup>
@@ -234,8 +350,8 @@ const OneOffPayment = () => {
               <Input
                 type="text"
                 name="name"
-                // value={customerCare}
-                // onChange={onChange}
+                value={insurance}
+                onChange={(e) => setInsurance(e.target.value)}
                 required
               />
             </FormGroup>
@@ -244,8 +360,8 @@ const OneOffPayment = () => {
               <Input
                 type="text"
                 name="number"
-                // value={customerCare}
-                // onChange={onChange}
+                value={dashcam}
+                onChange={(e) => setDashcam(e.target.value)}
                 required
               />
             </FormGroup>
@@ -256,8 +372,8 @@ const OneOffPayment = () => {
               <Input
                 type="text"
                 name="number"
-                // value={customerCare}
-                // onChange={onChange}
+                value={softSkillsPlusOthers}
+                onChange={(e) => setSoftSkillsPlusOthers(e.target.value)}
                 required
               />
             </FormGroup>
@@ -266,8 +382,8 @@ const OneOffPayment = () => {
               <Input
                 type="text"
                 name="number"
-                // value={customerCare}
-                // onChange={onChange}
+                value={lasdri}
+                onChange={(e) => setLasdri(e.target.value)}
                 required
               />
             </FormGroup>
@@ -276,8 +392,8 @@ const OneOffPayment = () => {
               <Input
                 type="text"
                 name="number"
-                // value={customerCare}
-                // onChange={onChange}
+                value={dmsSub}
+                onChange={(e) => setDmsSub(e.target.value)}
                 required
               />
             </FormGroup>
@@ -286,8 +402,8 @@ const OneOffPayment = () => {
               <Input
                 type="text"
                 name="number"
-                // value={customerCare}
-                // onChange={onChange}
+                value={eTaxi}
+                onChange={(e) => setEtaxi(e.target.value)}
                 required
               />
             </FormGroup>
@@ -313,4 +429,27 @@ const OneOffPayment = () => {
     </div>
   );
 };
-export default OneOffPayment;
+
+function mapDispatchToProps(dispatch) {
+  return {
+    getCustomerCare: (spinner) => dispatch(getCustomerCare(spinner)),
+    createCustomerCare: (customer_care) =>
+      dispatch(createCustomerCare(customer_care)),
+    createWaitingTime: (waiting_time) =>
+      dispatch(createWaitingTime(waiting_time)),
+    createVerificationFee: (verification_fee) =>
+      dispatch(createVerificationFee(verification_fee)),
+    createSocialDriverFee: (soc_driver_fee) =>
+      dispatch(createSocialDriverFee(soc_driver_fee)),
+    createCommercialDriverFee: (com_driver_fee) =>
+      dispatch(createCommercialDriverFee(com_driver_fee)),
+  };
+}
+
+const mapStateToProps = (state) => ({
+  customerCareNumbers: state.customerCare.customerCareNumbers,
+  loading: state.loading.loading,
+  loadingStatus: state.loading.loadingStatus,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(OneOffPayment);

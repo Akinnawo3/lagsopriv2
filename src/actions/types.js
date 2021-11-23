@@ -148,3 +148,7 @@ export const CONTACT_US_COUNT = "CONTACT_US_COUNT";
 export const CONTACT_US_DETAILS = "CONTACT_US_DETAILS";
 
 export const CUSTOMER_CARE = "CUSTOMER_CARE";
+
+//revenue split
+
+export const REVENUE_SPLIT_DATA = "REVENUE_SPLIT_DATA";

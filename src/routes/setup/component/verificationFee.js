@@ -12,9 +12,67 @@ import {
   Input,
   Button,
 } from "reactstrap";
-const VerificationFee = () => {
+
+import {
+  createCustomerCare,
+  createWaitingTime,
+  createVerificationFee,
+  deleteCustomerCare,
+  getCustomerCare,
+  updateCustomerCare,
+  createSocialDriverFee,
+  createCommercialDriverFee,
+} from "Actions/customerCareAction";
+import { connect } from "react-redux";
+
+const VerificationFee = ({
+  match,
+  getCustomerCare,
+  customerCareNumbers,
+  createCustomerCare,
+  createWaitingTime,
+  createVerificationFee,
+  createSocialDriverFee,
+  createCommercialDriverFee,
+  loading,
+}) => {
   const [parameterModalOpen, setParameterModalOpen] = useState(false);
   const [breakDownModalOpen, setBreakDownModalOpen] = useState(false);
+
+  const [driverLicence, setDriverLicence] = useState("");
+  const [nin, setNin] = useState("");
+  const [lassra, setLassra] = useState("");
+  const [lasdri, setlasdri] = useState("");
+
+  useEffect(() => {
+    getCustomerCare(true);
+  }, []);
+
+  const updateVerificationFee = (e) => {
+    e.preventDefault();
+    setBreakDownModalOpen(false);
+    createVerificationFee({
+      driver_licence: driverLicence,
+      nin,
+      lassra,
+      lasdri,
+      total:
+        parseInt(driverLicence, 10) +
+        parseInt(nin, 10) +
+        parseInt(lassra, 10) +
+        parseInt(lasdri, 10),
+    });
+  };
+
+  const editBreakDdown = () => {
+    setBreakDownModalOpen(true);
+    setDriverLicence(customerCareNumbers?.verification_fee.driver_licence);
+    setNin(customerCareNumbers?.verification_fee.nin);
+    setLassra(customerCareNumbers?.verification_fee.lassra);
+    setlasdri(customerCareNumbers?.verification_fee.lasdri);
+  };
+
+  console.log(customerCareNumbers?.verification_fee);
   return (
     <div className="row">
       <div className="col col-xs-12 col-md-9">
@@ -39,7 +97,7 @@ const VerificationFee = () => {
                       className="pr-2 font-xl"
                       style={{ fontSize: "2.5rem" }}
                     >
-                      ₦ 200
+                      {`#${customerCareNumbers?.verification_fee?.total}`}
                     </span>
                   </div>
                 </Card>
@@ -49,38 +107,43 @@ const VerificationFee = () => {
                     <span className="pull-left">
                       <div>Drivers' License Verification </div>
                     </span>
-                    <strong>220</strong>
+                    <strong>
+                      {`${customerCareNumbers?.verification_fee?.driver_licence}`}
+                    </strong>
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
                       <div>NIN Verification </div>
                     </span>
-                    <strong>50</strong>
+                    <strong>
+                      {`${customerCareNumbers?.verification_fee?.nin}`}
+                    </strong>
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
                       <div>LASSRA Verification </div>
                     </span>
-                    <strong>50</strong>
+                    <strong>
+                      {`${customerCareNumbers?.verification_fee?.lassra}`}
+                    </strong>
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
                       <div>LASDRI Verification </div>
                     </span>
-                    <strong>50</strong>
+                    <strong>
+                      {`${customerCareNumbers?.verification_fee?.lasdri}`}
+                    </strong>
                   </li>
                 </ul>
                 <div classsName="d-flex mt-3">
-                  <button
-                    className="btn btn-info mr-3"
+                  {/* <button
+                    className="btn border-info mr-3"
                     onClick={() => setParameterModalOpen(true)}
                   >
                     Add Parameter
-                  </button>
-                  <button
-                    className="btn border-info"
-                    onClick={() => setBreakDownModalOpen(true)}
-                  >
+                  </button> */}
+                  <button className="btn btn-info " onClick={editBreakDdown}>
                     Edit Breakdown
                   </button>
                 </div>
@@ -141,7 +204,7 @@ const VerificationFee = () => {
         </Form>
       </Modal>
 
-      {/* breakdoen modal     */}
+      {/* breakdown modal     */}
       <Modal
         isOpen={breakDownModalOpen}
         toggle={() => setBreakDownModalOpen(false)}
@@ -151,15 +214,15 @@ const VerificationFee = () => {
         <ModalHeader toggle={() => setBreakDownModalOpen(false)}>
           Edit Verification Fee Breakdown
         </ModalHeader>
-        <Form onSubmit={() => null}>
+        <Form onSubmit={updateVerificationFee}>
           <ModalBody>
             <FormGroup>
               <Label for="lastName">Drivers' License Verification</Label>
               <Input
                 type="text"
                 name="name"
-                // value={customerCare}
-                // onChange={onChange}
+                value={driverLicence}
+                onChange={(e) => setDriverLicence(e.target.value)}
                 required
               />
             </FormGroup>
@@ -168,8 +231,8 @@ const VerificationFee = () => {
               <Input
                 type="text"
                 name="number"
-                // value={customerCare}
-                // onChange={onChange}
+                value={nin}
+                onChange={(e) => setNin(e.target.value)}
                 required
               />
             </FormGroup>
@@ -178,8 +241,8 @@ const VerificationFee = () => {
               <Input
                 type="text"
                 name="number"
-                // value={customerCare}
-                // onChange={onChange}
+                value={lassra}
+                onChange={(e) => setLassra(e.target.value)}
                 required
               />
             </FormGroup>
@@ -188,8 +251,8 @@ const VerificationFee = () => {
               <Input
                 type="text"
                 name="number"
-                // value={customerCare}
-                // onChange={onChange}
+                value={lasdri}
+                onChange={(e) => setlasdri(e.target.value)}
                 required
               />
             </FormGroup>
@@ -216,4 +279,26 @@ const VerificationFee = () => {
   );
 };
 
-export default VerificationFee;
+function mapDispatchToProps(dispatch) {
+  return {
+    getCustomerCare: (spinner) => dispatch(getCustomerCare(spinner)),
+    createCustomerCare: (customer_care) =>
+      dispatch(createCustomerCare(customer_care)),
+    createWaitingTime: (waiting_time) =>
+      dispatch(createWaitingTime(waiting_time)),
+    createVerificationFee: (verification_fee) =>
+      dispatch(createVerificationFee(verification_fee)),
+    createSocialDriverFee: (soc_driver_fee) =>
+      dispatch(createSocialDriverFee(soc_driver_fee)),
+    createCommercialDriverFee: (com_driver_fee) =>
+      dispatch(createCommercialDriverFee(com_driver_fee)),
+  };
+}
+
+const mapStateToProps = (state) => ({
+  customerCareNumbers: state.customerCare.customerCareNumbers,
+  loading: state.loading.loading,
+  loadingStatus: state.loading.loadingStatus,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(VerificationFee);

@@ -162,19 +162,20 @@ const Areas = ({
       <PageTitleBar title={"Areas"} match={match} />
       {!loading && (
         <RctCollapsibleCard heading="Areas" fullBlock>
-          <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-            <div className="search-wrapper">
-              <SearchComponent
-                getPreviousData={getPreviousData}
-                getSearchedData={getSearchData}
-                setCurrentPage={setCurrentPage}
-                getCount={handleCount}
-                placeHolder={"Area name"}
-              />
-            </div>
-          </li>
-          <div className="float-right">
-            {/* <CSVLink
+          <>
+            <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+              <div className="search-wrapper">
+                <SearchComponent
+                  getPreviousData={getPreviousData}
+                  getSearchedData={getSearchData}
+                  setCurrentPage={setCurrentPage}
+                  getCount={handleCount}
+                  placeHolder={"Area name"}
+                />
+              </div>
+            </li>
+            <div className="float-right">
+              {/* <CSVLink
                             // headers={headers}
                             data={excelExport}
                             filename={"areas.csv"}
@@ -184,93 +185,98 @@ const Areas = ({
                             <i className="zmdi zmdi-download mr-2"></i>
                             Export to Excel
                         </CSVLink> */}
-            <CSVLink
-              // headers={headers}
-              data={sampleData}
-              filename={"sampleAreas.csv"}
-              className="btn-sm btn-outline-default mr-10 bg-success text-white"
-              target="_blank"
-            >
-              <i className="zmdi zmdi-download mr-2"></i>
-              Sample excel to upload
-            </CSVLink>
-            <a
-              href="#"
-              onClick={(e) => opnAddUploadAreaModal(e)}
-              color="primary"
-              className="btn-sm btn-outline-default mr-10 bg-danger text-white"
-            >
-              <i className="zmdi zmdi-upload mr-2"></i>Upload
-            </a>
-            <a
-              href="#"
-              onClick={(e) => opnAddNewAreaModal(e)}
-              color="primary"
-              className="caret btn-sm mr-10"
-            >
-              Create New Area <i className="zmdi zmdi-plus"></i>
-            </a>
-          </div>
-          {areas.length > 0 && (
-            <div className="table-responsive" style={{ minHeight: "50vh" }}>
-              <Table>
-                <TableHead>
-                  <TableRow hover>
-                    <TableCell>Area Name</TableCell>
-                    <TableCell>LGA</TableCell>
-                    <TableCell>Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <Fragment>
-                    {areas.map((area, key) => (
-                      <TableRow hover key={key}>
-                        <TableCell>{area.area_name}</TableCell>
-                        <TableCell>{area.lga}</TableCell>
-                        <TableCell>
-                          <button
-                            type="button"
-                            className="rct-link-btn"
-                            onClick={(e) =>
-                              opnAddNewAreaEditModal(area.area_id)
-                            }
-                          >
-                            <i className="ti-pencil"></i>
-                          </button>
-                          <button
-                            type="button"
-                            className="rct-link-btn ml-lg-3 text-danger"
-                            onClick={() => onDelete(area.area_id)}
-                          >
-                            <i className="ti-trash"></i>
-                          </button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </Fragment>
-                </TableBody>
-              </Table>
+              <CSVLink
+                // headers={headers}
+                data={sampleData}
+                filename={"sampleAreas.csv"}
+                className="btn-sm btn-outline-default mr-10 bg-success text-white"
+                target="_blank"
+              >
+                <i className="zmdi zmdi-download mr-2"></i>
+                Sample excel to upload
+              </CSVLink>
+              <a
+                href="#"
+                onClick={(e) => opnAddUploadAreaModal(e)}
+                color="primary"
+                className="btn-sm btn-outline-default mr-10 bg-danger text-white"
+              >
+                <i className="zmdi zmdi-upload mr-2"></i>Upload
+              </a>
+              <a
+                href="#"
+                onClick={(e) => opnAddNewAreaModal(e)}
+                color="primary"
+                className="caret btn-sm mr-10"
+              >
+                <button className="ml-2 btn btn-outline-primary btn-sm rounded">
+                  Add New
+                </button>
+              </a>
             </div>
-          )}
-          {areas.length < 1 && <EmptyData />}
+            {areas.length > 0 && (
+              <div className="table-responsive" style={{ minHeight: "50vh" }}>
+                <Table>
+                  <TableHead>
+                    <TableRow hover>
+                      <TableCell>Area Name</TableCell>
+                      <TableCell>LGA</TableCell>
+                      <TableCell>Actions</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <Fragment>
+                      {areas.map((area, key) => (
+                        <TableRow hover key={key}>
+                          <TableCell>{area.area_name}</TableCell>
+                          <TableCell>{area.lga}</TableCell>
+                          <TableCell>
+                            <button
+                              type="button"
+                              className="rct-link-btn"
+                              onClick={(e) =>
+                                opnAddNewAreaEditModal(area.area_id)
+                              }
+                            >
+                              <i className="ti-pencil"></i>
+                            </button>
+                            <button
+                              type="button"
+                              className="rct-link-btn ml-lg-3 text-danger"
+                              onClick={() => onDelete(area.area_id)}
+                            >
+                              <i className="ti-trash"></i>
+                            </button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </Fragment>
+                  </TableBody>
+                </Table>
+              </div>
+            )}
+            {areas.length < 1 && <EmptyData />}
 
-          {!loading && areas.length > 0 && (
-            <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
-              <Pagination
-                activePage={currentPage}
-                itemClass="page-item"
-                linkClass="page-link"
-                itemsCountPerPage={20}
-                totalItemsCount={areaCount}
-                onChange={paginate}
-              />
-            </div>
-          )}
+            {!loading && areas.length > 0 && (
+              <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
+                <Pagination
+                  activePage={currentPage}
+                  itemClass="page-item"
+                  linkClass="page-link"
+                  itemsCountPerPage={20}
+                  totalItemsCount={areaCount}
+                  onChange={paginate}
+                />
+              </div>
+            )}
+          </>
+          //{" "}
         </RctCollapsibleCard>
       )}
       <Modal
         isOpen={addNewAreaModal}
         toggle={() => onAddUpdateAreaModalClose()}
+        size="sm"
       >
         <ModalHeader toggle={() => onAddUpdateAreaModalClose()}>
           {editArea ? "Update Area" : "Create New Area"}
@@ -302,9 +308,16 @@ const Areas = ({
             <Button
               type="submit"
               variant="contained"
-              className="text-white btn-success"
+              className="text-white btn-info mr-2"
             >
-              Submit
+              Add
+            </Button>
+            <Button
+              variant="contained"
+              className="btn btn-outline-danger"
+              onClick={() => onAddUpdateAreaModalClose()}
+            >
+              Cancel
             </Button>
           </ModalFooter>
         </Form>

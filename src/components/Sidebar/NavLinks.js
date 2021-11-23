@@ -13,6 +13,12 @@ export default {
           path: "/admin/setup/fees",
         },
         {
+          menu_title: "sidebar.areas",
+          new_item: false,
+          path: "/admin/areas",
+        },
+
+        {
           menu_title: "sidebar.revenueSplit",
           new_item: false,
           path: "/admin/setup/revenue-split",

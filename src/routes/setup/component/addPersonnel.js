@@ -1,46 +1,97 @@
 import React, { useState } from "react";
-import { Card, CardBody, Col, Row } from "reactstrap";
+import { Col, Row } from "reactstrap";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-
+import { connect } from "react-redux";
+import { NotificationManager } from "react-notifications";
+import { createAdmin, updateAdmin } from "Actions/adminAction";
 import {
   Form,
-  FormGroup,
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter,
   Label,
   Input,
   Button,
 } from "reactstrap";
-
-const AddPersonnel = ({ match }) => {
+const AddPersonnel = ({ match, history, updateAdmin, createAdmin }) => {
+  const permissionArray = history?.location?.state?.editedAdmin?.access_tab
+    ? history?.location?.state?.editedAdmin?.access_tab
+    : [];
   const [permissionModalOpen, setPermissionModalOpen] = useState(false);
+  const [permissions, setPermissions] = useState(permissionArray);
+
+  const { first_name, last_name, phone_number, email, auth_id } = history
+    ?.location?.state?.editedAdmin
+    ? history?.location?.state?.editedAdmin
+    : {};
+
+  const data = history?.location?.state?.editedAdmin
+    ? {
+        first_name,
+        last_name,
+        phone_number,
+        email,
+      }
+    : {
+        first_name: "",
+        last_name: "",
+        phone_number: "",
+        email: "",
+      };
+
+  const [adminData, setAdminData] = useState(data);
 
   const viewPermissions = [
-    "Passengers",
-    "Drivers",
-    "Vehicles",
-    "Trip Manifest",
-    "FDTs and Schedules",
-    "Emergency",
-    "Ticket",
-    "Partners",
-    "Support",
-    "Ratings and review",
+    { label: "Passengers", value: "passengers" },
+    { label: "Drivers", value: "drivers" },
+    { label: "Vehicles", value: "vehicles" },
+    { label: "Trip Manifest", value: "trip_manifest" },
+    { label: "FDTs and Schedules", value: "FDTs_and_Schedules" },
+    { label: "Emergency", value: "emergency" },
+    { label: "Ticket", value: "tickets" },
+    { label: "Partners", value: "partners" },
+    { label: "Support", value: "support" },
+    { label: "Ratings and review", value: "ratings_and_reviews" },
   ];
   const createPermissions = [
-    "Vehicle",
-    "Passengers",
-    "Drivers",
-    "Partners",
-    "Support",
-    "Map",
-    "Export Date",
-    "Partners",
+    { label: "Vehicle", value: "vehicle" },
+    { label: "Passengers", value: "passengers" },
+    { label: "Drivers", value: "drivers" },
+    { label: "Partners", value: "partners" },
+    { label: "Support", value: "support" },
   ];
-  const deletePermission = ["Trip Payment", "Service Payment"];
+  const deletePermission = [
+    { label: "Trip Payment", value: "trip_payment" },
+    { label: "Service Payment", value: "service_payment" },
+  ];
+
+  const handleCheck = (e) => {
+    if (e.target.checked) {
+      setPermissions([...permissions, e.target.value]);
+    } else {
+      setPermissions(permissions.filter((item) => item !== e.target.value));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!permissions.length) {
+      NotificationManager.error("Select Admin Permissions");
+    } else {
+      history?.location?.state?.editedAdmin
+        ? await updateAdmin(
+            { ...adminData, access_tab: permissions.join() },
+            auth_id
+          )
+        : await createAdmin({ ...adminData, access_tab: permissions.join() });
+    }
+  };
+
+  const onChange = (e) => {
+    setAdminData({ ...adminData, [e.target.name]: e.target.value });
+  };
+
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Add Personnel"} match={match} />
@@ -53,48 +104,45 @@ const AddPersonnel = ({ match }) => {
             <div className="px-2 ">
               <div className="row">
                 <div className="col col-sm-12 col-md-4">
-                  <Form onSubmit={() => null}>
+                  <Form onSubmit={handleSubmit}>
                     <Label for="firstName">First Name</Label>
                     <Input
                       type="text"
-                      name="firstName"
-                      // value={customerCare}
-                      // onChange={onChange}
+                      name="first_name"
+                      value={adminData.first_name}
+                      onChange={onChange}
                       required
                     />
                     <Label for="lastName">Last Name</Label>
                     <Input
                       type="text"
-                      name="lastName"
-                      // value={customerCare}
-                      // onChange={onChange}
+                      name="last_name"
+                      value={adminData.last_name}
+                      onChange={onChange}
                       required
                     />
                     <Label for="phoneNumber">Phone Number </Label>
                     <Input
                       type="tel"
-                      name="phoneNumber"
-                      // value={customerCare}
-                      // onChange={onChange}
+                      name="phone_number"
+                      value={adminData.phone_number}
+                      onChange={onChange}
                       required
                     />
                     <Label for="email">Email </Label>
                     <Input
                       type="email"
                       name="email"
-                      // value={customerCare}
-                      // onChange={onChange}
+                      value={adminData.email}
+                      onChange={onChange}
                       required
                     />
 
                     <Label for="email">Permissions </Label>
-
                     <Input
                       type="select"
                       name="email"
                       onClick={() => setPermissionModalOpen(true)}
-                      // value={customerCare}
-                      // onChange={onChange}
                       required
                     >
                       <option>Select Permissions</option>
@@ -104,7 +152,7 @@ const AddPersonnel = ({ match }) => {
                       variant="contained"
                       className="text-white btn-info mt-3 "
                     >
-                      Update
+                      Save
                     </Button>
                   </Form>
                 </div>
@@ -144,11 +192,14 @@ const AddPersonnel = ({ match }) => {
                           <div key={key}>
                             <input
                               type="checkbox"
-                              name="dashboard"
-                              value="Bike"
+                              name={`view_${item.value}`}
+                              value={`view_${item.value}`}
+                              onChange={handleCheck}
+                              checked={(() =>
+                                permissions.includes(`view_${item.value}`))()}
                             />
                             <label for="vehicle1" className="ml-2">
-                              {item}
+                              {item.label}
                             </label>
                           </div>
                         ))}
@@ -173,11 +224,14 @@ const AddPersonnel = ({ match }) => {
                           <div key={key}>
                             <input
                               type="checkbox"
-                              name="dashboard"
-                              value="Bike"
+                              name={`create_${item.value}`}
+                              value={`create_${item.value}`}
+                              onChange={handleCheck}
+                              checked={(() =>
+                                permissions.includes(`create_${item.value}`))()}
                             />
                             <label for="vehicle1" className="ml-2">
-                              {item}
+                              {item.label}
                             </label>
                           </div>
                         ))}
@@ -202,11 +256,14 @@ const AddPersonnel = ({ match }) => {
                           <div key={key}>
                             <input
                               type="checkbox"
-                              name="dashboard"
-                              value="Bike"
+                              name={`delete_${item.value}`}
+                              value={`delete_${item.value}`}
+                              onChange={handleCheck}
+                              checked={(() =>
+                                permissions.includes(`delete_${item.value}`))()}
                             />
                             <label for="vehicle1" className="ml-2">
-                              {item}
+                              {item.label}
                             </label>
                           </div>
                         ))}
@@ -219,18 +276,18 @@ const AddPersonnel = ({ match }) => {
 
             <div className="text-center my-3">
               <Button
-                type="submit"
                 variant="contained"
-                className="text-white  btn-info mr-3"
+                className="btn btn-outline-info  mr-3"
+                onClick={() => setPermissionModalOpen(false)}
               >
-                Save
+                Done
               </Button>
               <Button
                 variant="contained"
-                className="btn btn-outline-danger"
-                onClick={() => setPermissionModalOpen(false)}
+                className="text-white  btn-danger"
+                onClick={() => setPermissions([])}
               >
-                Cancel
+                Remove all
               </Button>
             </div>
           </Form>
@@ -239,4 +296,11 @@ const AddPersonnel = ({ match }) => {
     </div>
   );
 };
-export default AddPersonnel;
+function mapDispatchToProps(dispatch) {
+  return {
+    createAdmin: (adminData) => dispatch(createAdmin(adminData)),
+    updateAdmin: (adminData, auth_id) =>
+      dispatch(updateAdmin(adminData, auth_id)),
+  };
+}
+export default connect(null, mapDispatchToProps)(AddPersonnel);

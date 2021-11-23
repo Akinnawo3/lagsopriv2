@@ -1,10 +1,10 @@
 /**
  * App Reducers
  */
-import { combineReducers } from 'redux';
-import settings from './settings';
-import sidebarReducer from './SidebarReducer';
-import authUserReducer from './AuthUserReducer';
+import { combineReducers } from "redux";
+import settings from "./settings";
+import sidebarReducer from "./SidebarReducer";
+import authUserReducer from "./AuthUserReducer";
 import driverReducer from "./driverReducer";
 import vehicleReducer from "./vehicleReducer";
 import adminsReducer from "./adminReducer";
@@ -27,33 +27,35 @@ import referralReducer from "./referralReducer";
 import walletReducer from "./walletReducer";
 import paymentReducer from "./paymentReducer";
 import customerCareReducer from "./customerCareReducer";
+import revenueSplitReducer from "./revenueSplitReducer";
 
 const reducers = combineReducers({
-   settings,
-   sidebar: sidebarReducer,
-   authUser: authUserReducer,
-   driver: driverReducer,
-   vehicle: vehicleReducer,
-   admins: adminsReducer,
-   loading: loadingReducer,
-   passenger: passengerReducer,
-   classTypes: classTypesReducer,
-   bookingTypes: bookingTypesReducer,
-   promoDiscounts: promoDiscountReducer,
-   fees: feesReducer,
-   areas: areasReducer,
-   ticketTypes: ticketTypesReducer,
-   support: supportReducer,
-   rating: ratingReducer,
-   fdt: fdtReducer,
-   trips: tripReducer,
-   sos: emergencyReducer,
-   users: usersReducer,
-   cancellationReasons: cancellationReasonReducer,
-   referrals: referralReducer,
-   wallets: walletReducer,
-   payments: paymentReducer,
-   customerCare: customerCareReducer,
+  settings,
+  sidebar: sidebarReducer,
+  authUser: authUserReducer,
+  driver: driverReducer,
+  vehicle: vehicleReducer,
+  admins: adminsReducer,
+  loading: loadingReducer,
+  passenger: passengerReducer,
+  classTypes: classTypesReducer,
+  bookingTypes: bookingTypesReducer,
+  promoDiscounts: promoDiscountReducer,
+  fees: feesReducer,
+  areas: areasReducer,
+  ticketTypes: ticketTypesReducer,
+  support: supportReducer,
+  rating: ratingReducer,
+  fdt: fdtReducer,
+  trips: tripReducer,
+  sos: emergencyReducer,
+  users: usersReducer,
+  cancellationReasons: cancellationReasonReducer,
+  referrals: referralReducer,
+  wallets: walletReducer,
+  payments: paymentReducer,
+  customerCare: customerCareReducer,
+  revenueSplit: revenueSplitReducer,
 });
 
 export default reducers;
