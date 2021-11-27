@@ -91,6 +91,7 @@
 		"leaflet": "^1.6.0",
 		"moment": "^2.24.0",
 		"mui-datatables": "^3.4.1",
+		"qrcode.react": "^1.0.1",
 		"rc-queue-anim": "^1.8.4",
 		"react-addons-update": "15.6.2",
 		"react-autosuggest": "^10.0.2",
