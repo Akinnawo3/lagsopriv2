@@ -44,9 +44,11 @@ const Emergency = ({ match, getSOS, sos, loading, getSOSCount, sosCount }) => {
             <Table>
               <TableHead>
                 <TableRow hover>
+                  <TableCell>Reporter</TableCell>
                   <TableCell>Address</TableCell>
                   <TableCell>Latitude</TableCell>
                   <TableCell>Longitude</TableCell>
+                  <TableCell>Time of Report</TableCell>
                   <TableCell>Status</TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
@@ -56,9 +58,11 @@ const Emergency = ({ match, getSOS, sos, loading, getSOSCount, sosCount }) => {
                   {sos.length > 0 &&
                     sos.map((data) => (
                       <TableRow hover key={data.id}>
+                        <TableCell>{"Driver or Rider"}</TableCell>
                         <TableCell>{data.address}</TableCell>
                         <TableCell>{data.latitude}</TableCell>
                         <TableCell>{data.longitude}</TableCell>
+                        <TableCell>{"Time of Report"}</TableCell>
                         <TableCell>
                           <Badge
                             color={data.status === 0 ? "danger" : "success"}

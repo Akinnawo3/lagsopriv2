@@ -120,3 +120,20 @@ export const createCommercialDriverFee =
       NotificationManager.error(err.response.data.error);
     }
   };
+export const createReferralBonus = (referral_bonus) => async (dispatch) => {
+  const body = { referral_bonus };
+  try {
+    await dispatch(startStatusLoading());
+    const res = await axios.post(`${api.customerCare}/v1.1/settings`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success("Fee added Successfully!");
+      await dispatch(getCustomerCare());
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+    NotificationManager.error(err.response.data.error);
+  }
+};

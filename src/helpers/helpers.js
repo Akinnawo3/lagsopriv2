@@ -356,3 +356,5 @@ export const getActualAddress = async (lat, lng) => {
 
   return res;
 };
+
+export const stringToNumber = (string) => parseFloat(string.replace(/,/g, ""));

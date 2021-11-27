@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Badge, Card, CardBody, Col, Row } from "reactstrap";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import { connect } from "react-redux";
-
+import { stringToNumber } from "Helpers/helpers";
 import {
   Form,
   FormGroup,
@@ -14,7 +14,6 @@ import {
   Input,
   Button,
 } from "reactstrap";
-
 import {
   createCustomerCare,
   createWaitingTime,
@@ -67,26 +66,26 @@ const OneOffPayment = ({
       ...general_payload,
       cost_of_asset: costAssetSoc,
       total:
-        parseInt(costAssetSoc, 10) +
-        parseInt(insurance, 10) +
-        parseInt(dashcam, 10) +
-        parseInt(softSkillsPlusOthers, 10) +
-        parseInt(lasdri, 10) +
-        parseInt(dmsSub, 10) +
-        parseInt(eTaxi, 10),
+        stringToNumber(costAssetSoc) +
+        stringToNumber(insurance) +
+        stringToNumber(dashcam) +
+        stringToNumber(softSkillsPlusOthers) +
+        stringToNumber(lasdri) +
+        stringToNumber(dmsSub) +
+        stringToNumber(eTaxi),
     });
     // to update for commercial driver take note of the cost_of_asset (thets were the ajor difference is)
     await createCommercialDriverFee({
       ...general_payload,
       cost_of_asset: costAssetComm,
       total:
-        parseInt(costAssetComm, 10) +
-        parseInt(insurance, 10) +
-        parseInt(dashcam, 10) +
-        parseInt(softSkillsPlusOthers, 10) +
-        parseInt(lasdri, 10) +
-        parseInt(dmsSub, 10) +
-        parseInt(eTaxi, 10),
+        stringToNumber(costAssetComm) +
+        stringToNumber(insurance) +
+        stringToNumber(dashcam) +
+        stringToNumber(softSkillsPlusOthers) +
+        stringToNumber(lasdri) +
+        stringToNumber(dmsSub) +
+        stringToNumber(eTaxi),
     });
   };
 
@@ -103,7 +102,6 @@ const OneOffPayment = ({
     setDmsSub(customerCareNumbers?.com_driver_fee?.dms_subscription);
     setEtaxi(customerCareNumbers?.com_driver_fee?.e_taxi_sub);
   };
-  console.log(customerCareNumbers.com_driver_fee);
 
   useEffect(() => {
     getCustomerCare(true);
@@ -133,7 +131,7 @@ const OneOffPayment = ({
                       className="pr-2 font-xl"
                       style={{ fontSize: "2.5rem" }}
                     >
-                      {`₦${customerCareNumbers?.com_driver_fee?.total}`}
+                      {`₦${customerCareNumbers?.com_driver_fee?.total.toLocaleString()}`}
                     </span>
                   </div>
                 </Card>
@@ -148,7 +146,7 @@ const OneOffPayment = ({
                     style={{ height: "70px" }}
                   >
                     <span className=" font-xl" style={{ fontSize: "2.5rem" }}>
-                      {`₦${customerCareNumbers?.soc_driver_fee?.total}`}
+                      {`₦${customerCareNumbers?.soc_driver_fee?.total.toLocaleString()}`}
                     </span>
                   </div>
                 </Card>

@@ -87,6 +87,66 @@ const EmergencyDetails = ({
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
+                      <strong>Class of Ride</strong>
+                    </span>
+                   {"     "}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Booking type</strong>
+                    </span>
+                   {"     "}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Name of Rider</strong>
+                    </span>
+                   {"     "}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Pickup Location</strong>
+                    </span>
+                   {"     "}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Dropoff Location</strong>
+                    </span>
+                   {"     "}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Driver Name Location</strong>
+                    </span>
+                   {"     "}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Driver  Phone</strong>
+                    </span>
+                   {"     "}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Vehicle Details</strong>
+                    </span>
+                   {"     "}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Clip of Incident</strong>
+                    </span>
+                   {"     "}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Channel of Report</strong>
+                    </span>
+                   {"     "}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
                       <strong>User Phone number</strong>
                     </span>
                     {sosDetails.user_phone_number}
