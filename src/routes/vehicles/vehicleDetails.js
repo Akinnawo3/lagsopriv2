@@ -8,6 +8,7 @@ import {getVehicle, revokeVehicle} from "Actions/vehicleAction";
 import {Badge} from "reactstrap";
 import Button from "@material-ui/core/Button";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
+import download from "downloadjs";
 
 const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetails, loadingStatus, revokeVehicle}) => {
   const inputEl = useRef(null);
@@ -18,15 +19,9 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
   const opnRevokeVehicleModal = () => {
     inputEl.current.open();
   };
-
   const downloadQRCode = () => {
-    const qrCodeURL = document.getElementById("qrCodeEl").toDataURL("image/png").replace("image/png", "image/octet-stream");
-    let aEl = document.createElement("a");
-    aEl.href = qrCodeURL;
-    aEl.download = "QR_Code.png";
-    document.body.appendChild(aEl);
-    aEl.click();
-    document.body.removeChild(aEl);
+    // const qrCodeURL = "data:application/octet-stream;base64," + vehicleDetails?.qr_code;
+    download(vehicleDetails?.qr_code, "QR_code.png", "image/png");
   };
 
   return (
@@ -109,7 +104,7 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
                     <div className="d-flex justify-content-between align-items-start ">
                       <strong>QR Code</strong>
                       <div className="d-flex flex-column">
-                        <QRCode id="qrCodeEl" value={vehicleDetails?.qr_code ? vehicleDetails?.qr_code : ""} />
+                        <img id="qrCodeEl" src={vehicleDetails?.qr_code ? vehicleDetails.qr_code : ""} />
                         <Button onClick={downloadQRCode} className="bg-primary mt-1 text-white btn-md">
                           Download
                         </Button>

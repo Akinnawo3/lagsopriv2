@@ -12,7 +12,7 @@ import {calculatePostDate, getStatus2, getStatusColor2} from "Helpers/helpers";
 import {Badge, Card, CardBody, Col, Row} from "reactstrap";
 import {getWallets} from "Actions/walletAction";
 
-const Wallets = ({wallets, walletsCount, auth_id, getWallets, loading, wallet}) => {
+const RevenueSplit = ({wallets, walletsCount, auth_id, getWallets, loading, wallet}) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const paginate = (pageNumber) => {
@@ -21,7 +21,6 @@ const Wallets = ({wallets, walletsCount, auth_id, getWallets, loading, wallet}) 
     window.scrollTo(0, 0);
   };
 
-  console.log(wallets);
   return (
     <div style={{minHeight: "70vh"}}>
       <Row className="mb-4">
@@ -104,4 +103,4 @@ const mapStateToProps = (state) => ({
   loading: state.loading.loading,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Wallets);
+export default connect(mapStateToProps, mapDispatchToProps)(RevenueSplit);
