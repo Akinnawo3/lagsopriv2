@@ -55,13 +55,12 @@ const Wallets = ({wallets, walletsCount, auth_id, getWallets, loading, wallet}) 
         </Col>
       </Row>
       {wallets?.length > 0 && (
-        <RctCollapsibleCard heading="Revenue Split Transaction">
+        <RctCollapsibleCard heading="Transaction">
           <div className="table-responsive" style={{minHeight: "50vh"}}>
             <Table>
               <TableHead>
                 <TableRow hover>
-                  <TableCell>Stakeholders</TableCell>
-                  <TableCell>Percentage</TableCell>
+                  <TableCell>Description</TableCell>
                   <TableCell>Amount </TableCell>
                   <TableCell>Date </TableCell>
                   <TableCell>Status</TableCell>
@@ -71,10 +70,10 @@ const Wallets = ({wallets, walletsCount, auth_id, getWallets, loading, wallet}) 
                 <Fragment>
                   {wallets.map((user, key) => (
                     <TableRow hover key={key}>
-                      <TableCell>{user.transaction_id}</TableCell>
+                      <TableCell>{user.description}</TableCell>
                       <TableCell>₦{user.amount.toLocaleString()}</TableCell>
                       <TableCell>{calculatePostDate(user.createdAt)}</TableCell>
-                      <TableCell>{user.recipient}</TableCell>
+                      {/* <TableCell>{user.recipient}</TableCell> */}
                       <TableCell>
                         <Badge color={getStatusColor2(user.status)}>{getStatus2(user.status)}</Badge>
                       </TableCell>
