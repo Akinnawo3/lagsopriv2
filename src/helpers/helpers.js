@@ -5,7 +5,7 @@ import moment from "moment";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import React from "react";
-import { startOfWeek } from "date-fns";
+import {startOfWeek} from "date-fns";
 
 /**
  * Function to convert hex to rgba
@@ -18,13 +18,7 @@ export function hexToRgbA(hex, alpha) {
       c = [c[0], c[0], c[1], c[1], c[2], c[2]];
     }
     c = "0x" + c.join("");
-    return (
-      "rgba(" +
-      [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(",") +
-      "," +
-      alpha +
-      ")"
-    );
+    return "rgba(" + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(",") + "," + alpha + ")";
   }
   throw new Error("Bad Hex");
 }
@@ -171,28 +165,14 @@ let timeZone = (date) => {
   return date;
 };
 
-let MonthDays = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sept",
-  "Oct",
-  "Nov",
-  "Dec",
-];
+let MonthDays = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
 export const calculatePostDate = (date) => {
   if (!date) {
     return;
   }
   let DateNow = new Date(); // current date
   let postedDate = new Date(timeZone(date.replace(" ", "T"))); // date posted
-  let postedTime =
-    date.indexOf("T") > -1 ? date.substr(date.indexOf("T") + 1, 5) : ""; //get the time
+  let postedTime = date.indexOf("T") > -1 ? date.substr(date.indexOf("T") + 1, 5) : ""; //get the time
   let postedMnth = MonthDays[postedDate.getMonth()]; //get the month
   let postedYear = postedDate.getFullYear(); //get the year
   let postedDay = postedDate.getDate(); //get the date of the month
@@ -202,10 +182,7 @@ export const calculatePostDate = (date) => {
   if (sDate >= 86400) {
     // if days
     rDate = parseInt(Math.round(sDate / 86400));
-    outputDate =
-      rDate === 1
-        ? "Yesterday " + postedTime
-        : `${postedMnth} ${postedDay}, ${postedYear} ${postedTime}`;
+    outputDate = rDate === 1 ? "Yesterday " + postedTime : `${postedMnth} ${postedDay}, ${postedYear} ${postedTime}`;
   } else if (sDate >= 3600) {
     //if hours
     rDate = parseInt(Math.round(sDate / 3600));
@@ -229,12 +206,7 @@ export const formatTime = (timestamp) => {
   var hours = Math.floor(timestamp / 60 / 60);
   var minutes = Math.floor(timestamp / 60) - hours * 60;
   var seconds = Math.floor(timestamp % 60);
-  var formatted =
-    hours.toString().padStart(2, "0") +
-    ":" +
-    minutes.toString().padStart(2, "0") +
-    ":" +
-    seconds.toString().padStart(2, "0");
+  var formatted = hours.toString().padStart(2, "0") + ":" + minutes.toString().padStart(2, "0") + ":" + seconds.toString().padStart(2, "0");
 
   return formatted;
 };
@@ -242,15 +214,8 @@ export const formatTime = (timestamp) => {
 export const getFirstDayOfMonth = () => {
   const date = new Date();
   let firstDay = new Date(date.getFullYear(), date.getMonth() + 1, 1);
-  const month =
-    firstDay.getMonth().toString().length === 1 &&
-    firstDay.getMonth().toString() !== "9"
-      ? "0" + firstDay.getMonth()
-      : firstDay.getMonth();
-  const day =
-    firstDay.getDate().toString().length === 1
-      ? "0" + firstDay.getDate()
-      : firstDay.getDate();
+  const month = firstDay.getMonth().toString().length === 1 && firstDay.getMonth().toString() !== "9" ? "0" + firstDay.getMonth() : firstDay.getMonth();
+  const day = firstDay.getDate().toString().length === 1 ? "0" + firstDay.getDate() : firstDay.getDate();
   const year = firstDay.getFullYear();
   return `${year}-${month}-${day}`;
 };
@@ -258,30 +223,16 @@ export const getFirstDayOfMonth = () => {
 export const getLastDayOfMonth = () => {
   const date = new Date();
   let lastDay = new Date(date.getFullYear(), date.getMonth() + 2, 0);
-  const month =
-    lastDay.getMonth().toString().length === 1 &&
-    lastDay.getMonth().toString() !== "9"
-      ? "0" + lastDay.getMonth()
-      : lastDay.getMonth();
-  const day =
-    lastDay.getDate().toString().length === 1
-      ? "0" + lastDay.getDate()
-      : lastDay.getDate();
+  const month = lastDay.getMonth().toString().length === 1 && lastDay.getMonth().toString() !== "9" ? "0" + lastDay.getMonth() : lastDay.getMonth();
+  const day = lastDay.getDate().toString().length === 1 ? "0" + lastDay.getDate() : lastDay.getDate();
   const year = lastDay.getFullYear();
   return `${year}-${month}-${day}`;
 };
 
 export const getTodayDate = () => {
   const date = new Date();
-  const month =
-    date.getMonth().toString().length === 1 &&
-    date.getMonth().toString() !== "9"
-      ? "0" + (date.getMonth() + 1)
-      : date.getMonth() + 1;
-  const day =
-    date.getDate().toString().length === 1
-      ? "0" + date.getDate()
-      : date.getDate();
+  const month = date.getMonth().toString().length === 1 && date.getMonth().toString() !== "9" ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+  const day = date.getDate().toString().length === 1 ? "0" + date.getDate() : date.getDate();
   const year = date.getFullYear();
   return `${year}-${month}-${day}`;
 };
@@ -310,12 +261,7 @@ export const m = (geo1, geo2) => {
   var R = 6371; // Radius of the earth in km
   var dLat = deg2rad(geo2.latitude - geo1.latitude); // deg2rad below
   var dLon = deg2rad(geo2.longitude - geo1.longitude);
-  var a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(deg2rad(geo1.latitude)) *
-      Math.cos(deg2rad(geo2.latitude)) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
+  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(deg2rad(geo1.latitude)) * Math.cos(deg2rad(geo2.latitude)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   var d = R * c; // Distance in km
   return !isNaN(d) ? d.toFixed(2) : d;
@@ -323,7 +269,7 @@ export const m = (geo1, geo2) => {
 
 export const idVerificationType = (idType) => {
   switch (idType) {
-    case "drivers_license":
+    case "driver_license":
       return "Driving Licence";
       break;
     case "nin":
@@ -341,14 +287,7 @@ export const idVerificationType = (idType) => {
 };
 
 export const getActualAddress = async (lat, lng) => {
-  const res = await fetch(
-    "https://maps.googleapis.com/maps/api/geocode/json?address=" +
-      lat +
-      "," +
-      lng +
-      "&key=" +
-      "AIzaSyCw_5YoOp78lvq1Dgfri-TnDjRSf1cguf0"
-  )
+  const res = await fetch("https://maps.googleapis.com/maps/api/geocode/json?address=" + lat + "," + lng + "&key=" + "AIzaSyCw_5YoOp78lvq1Dgfri-TnDjRSf1cguf0")
     .then((response) => response.json())
     .then((responseJson) => {
       return responseJson.results[0].formatted_address;

@@ -15,14 +15,14 @@ const api = {
   trip: "https://tripreporting-service-microservices.api.lagosride.com",
   sos: "https://sos-service-microservices.api.lagosride.com",
   // revenueSplit: 'https://taxirevenuesplitbackend-microservices.api.lagosride.com',
-  cancellationReasons:
-    "https://tripcancel-reasons-microservices.api.lagosride.com",
+  cancellationReasons: "https://tripcancel-reasons-microservices.api.lagosride.com",
   customerCare: "https://settings-service-microservices.api.lagosride.com",
   referral: "https://referral-service-microservices.api.lagosride.com",
   messageWorker: "https://message-service-microservices.api.lagosride.com",
   wallet: "https://wallet-service-microservices.api.lagosride.com",
   contactUs: "https://contact-us-microservices.api.lagosride.com",
   revenueSplit: "https://revenue-service-microservices.api.lagosride.com",
+  idVerification: "https://verify-service-microservices.api.lagosride.com",
 };
 
 export default api;

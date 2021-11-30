@@ -58,7 +58,7 @@ const Emergency = ({ match, getSOS, sos, loading, getSOSCount, sosCount }) => {
                   {sos.length > 0 &&
                     sos.map((data) => (
                       <TableRow hover key={data.id}>
-                        <TableCell>{"Driver or Rider"}</TableCell>
+                        <TableCell>{"Placeholder"}</TableCell>
                         <TableCell>{data.address}</TableCell>
                         <TableCell>{data.latitude}</TableCell>
                         <TableCell>{data.longitude}</TableCell>

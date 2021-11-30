@@ -1,7 +1,7 @@
 /**
  * App Reducers
  */
-import { combineReducers } from "redux";
+import {combineReducers} from "redux";
 import settings from "./settings";
 import sidebarReducer from "./SidebarReducer";
 import authUserReducer from "./AuthUserReducer";
@@ -28,6 +28,7 @@ import walletReducer from "./walletReducer";
 import paymentReducer from "./paymentReducer";
 import customerCareReducer from "./customerCareReducer";
 import revenueSplitReducer from "./revenueSplitReducer";
+import idVerificationReducer from "./idVerificationReducer";
 
 const reducers = combineReducers({
   settings,
@@ -56,6 +57,7 @@ const reducers = combineReducers({
   payments: paymentReducer,
   customerCare: customerCareReducer,
   revenueSplit: revenueSplitReducer,
+  idVerification: idVerificationReducer,
 });
 
 export default reducers;
