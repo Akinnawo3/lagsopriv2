@@ -152,3 +152,7 @@ export const CUSTOMER_CARE = "CUSTOMER_CARE";
 //revenue split
 
 export const REVENUE_SPLIT_DATA = "REVENUE_SPLIT_DATA";
+export const DRIVER_REVENUE_SPLIT = "DRIVER_REVENUE_SPLIT";
+
+//ID verificaion
+export const VERIFICATION_RESULT = "VERIFICATION_RESULT";

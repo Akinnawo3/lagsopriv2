@@ -7,6 +7,7 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import TripFare from "./component/tripFare";
 import OneOffPayment from "./component/oneOffPayment";
 import VerificationFee from "./component/verificationFee";
+import ReferralFee from "./component/referralFee";
 
 const Fees = ({ match }) => {
   const [activeTab, setActiveTab] = useState(1);
@@ -35,7 +36,7 @@ const Fees = ({ match }) => {
           One-off Payment{" "}
         </div>
         <div
-          className={`py-2 px-3 border border-primary ${
+          className={`py-2 px-3 border border-primary mx-2  ${
             activeTab === 3 && "text-white"
           } ${activeTab === 3 && "bg-primary"}`}
           style={{ borderRadius: "26px" }}
@@ -43,12 +44,22 @@ const Fees = ({ match }) => {
         >
           Verification Fee
         </div>
+        <div
+          className={`py-2 px-3 border border-primary ${
+            activeTab === 4 && "text-white"
+          } ${activeTab === 4 && "bg-primary"}`}
+          style={{ borderRadius: "26px" }}
+          onClick={() => setActiveTab(4)}
+        >
+          Referral Fee
+        </div>
       </div>
 
       <div className="mt-4">
         {activeTab === 1 && <TripFare />}
         {activeTab === 2 && <OneOffPayment />}
         {activeTab === 3 && <VerificationFee />}
+        {activeTab === 4 && <ReferralFee />}
       </div>
     </div>
   );

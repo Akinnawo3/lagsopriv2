@@ -1,43 +1,31 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
-import {
-  Badge,
-  ModalHeader,
-  Modal,
-  ModalBody,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  ModalFooter,
-} from "reactstrap";
+import React, {useState, useCallback, useEffect, useRef} from "react";
+import {Badge, ModalHeader, Modal, ModalBody, Form, FormGroup, Label, Input, ModalFooter} from "reactstrap";
 import Button from "@material-ui/core/Button";
-import { getStatus, getStatusColor, idVerificationType } from "Helpers/helpers";
-import {
-  changeDriverStatus,
-  changeDriverCategory,
-  verifyID,
-} from "Actions/driverAction";
-import { getCustomerCare } from "Actions/customerCareAction";
-import { connect } from "react-redux";
-import { assignVehicleOnProfile, getVehicle } from "Actions/vehicleAction";
+import {getStatus, getStatusColor, idVerificationType} from "Helpers/helpers";
+import {changeDriverStatus, changeDriverCategory, verifyID} from "Actions/driverAction";
+import {getCustomerCare} from "Actions/customerCareAction";
+import {sendVerificationRequest} from "Actions/idVerificationAction";
+import {connect} from "react-redux";
+import {assignVehicleOnProfile, getVehicle} from "Actions/vehicleAction";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
-import { Link } from "react-router-dom";
-import { NotificationManager } from "react-notifications";
+import {Link} from "react-router-dom";
+import {NotificationManager} from "react-notifications";
 import emailMessages from "Assets/data/email-messages/emailMessages";
 import TableCell from "@material-ui/core/TableCell";
 import moment from "moment";
 import suspensionReasonsList from "../../../assets/data/suspension-reasons/suspensionReasonsList";
+import Spinner from "Components/spinner/Spinner";
 
 const DriverProfile = ({
   driver,
   changeDriverStatus,
   changeDriverCategory,
-  verifyID,
+  sendVerificationRequest,
   loadingStatus,
   vehicles,
   assignVehicle,
   vehicleDetails,
-  getVehicle,
+  verificationResult,
   getCustomerCare,
   customerCareNumbers,
 }) => {
@@ -45,12 +33,9 @@ const DriverProfile = ({
   const [addVehicleModal, setAddVehicleModal] = useState(false);
   const [idVerificationModalOpen, setIdVerificationModalOpen] = useState(false);
   const [idType, setIdType] = useState("");
-  const [driverCategory, setDriverCategory] = useState(
-    driver?.driver_data?.driver_category
-  );
+  const [driverCategory, setDriverCategory] = useState(driver?.driver_data?.driver_category);
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
-  const [suspensionReasonsModalOpen, setSuspensionReasonsModalOpen] =
-    useState(false);
+  const [suspensionReasonsModalOpen, setSuspensionReasonsModalOpen] = useState(false);
   const [vehicleData, setVehicleData] = useState({});
   const [argument, setArgument] = useState(null);
   const [title, setTitle] = useState("");
@@ -63,22 +48,17 @@ const DriverProfile = ({
     email: driver?.email,
     vehicle: "",
   });
-  const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const onChange = (e) => setFormData({...formData, [e.target.name]: e.target.value});
 
-  const { vehicle } = formData;
+  const {vehicle} = formData;
 
   useEffect(() => {
     getCustomerCare();
     if (vehicle && vehicles.length > 0) {
-      const vehicleValue = vehicles.find(
-        (element) => element.vehicle_id === vehicle
-      );
+      const vehicleValue = vehicles.find((element) => element.vehicle_id === vehicle);
       setVehicleData(vehicleValue);
     }
   }, [vehicle]);
-
-  console.log(customerCareNumbers);
 
   const opnAddVehicleModal = () => {
     setAddVehicleModal(true);
@@ -133,9 +113,7 @@ const DriverProfile = ({
 
   const onApproved = () => {
     if (!driver.driver_data?.vehicle_id) {
-      NotificationManager.error(
-        "A vehicle must be assigned to the driver before approval"
-      );
+      NotificationManager.error("A vehicle must be assigned to the driver before approval");
     } else {
       setTitle("Are you sure you want to approve driver");
       setMessage("This driver will be approved on the platform.");
@@ -169,17 +147,17 @@ const DriverProfile = ({
     setArgument(6);
     inputEl.current.open();
   };
-  const triggerIdVerifcation = (type) => {
+
+  console.log(verificationResult);
+
+  const triggerIdVerifcation = (type, value, firstName, lastName) => {
     setIdType(type);
+    sendVerificationRequest(type, value, firstName, lastName);
     setIdVerificationModalOpen(true);
   };
   const verifyId = (type) => {
     setIdVerificationModalOpen(false);
-    setTitle(
-      `Are you sure you want to verify this Driver's ${idVerificationType(
-        idType
-      )}`
-    );
+    setTitle(`Are you sure you want to verify this Driver's ${idVerificationType(idType)}`);
     setMessage(`The driver's ${idVerificationType(idType)} will be verified`);
     setArgument(7);
     inputEl.current.open();
@@ -188,65 +166,28 @@ const DriverProfile = ({
     if (e.target.checked) {
       setSuspensionReasons([...suspensionReasons, e.target.value]);
     } else {
-      const removeReason = suspensionReasons.filter(
-        (item) => item === e.target.value
-      );
+      const removeReason = suspensionReasons.filter((item) => item === e.target.value);
       setSuspensionReasons(removeReason);
     }
   };
   const onConfirm = () => {
     if (argument === 1) {
-      changeDriverStatus(
-        driver?.auth_id,
-        "1",
-        driver,
-        emailMessages.acceptMsg,
-        "Driver Reactivated"
-      );
+      changeDriverStatus(driver?.auth_id, "1", driver, emailMessages.acceptMsg, "Driver Reactivated");
     }
     if (argument === 2) {
-      changeDriverStatus(
-        driver?.auth_id,
-        "2",
-        driver,
-        emailMessages.verifiedMessage,
-        "Driver Verified"
-      );
+      changeDriverStatus(driver?.auth_id, "2", driver, emailMessages.verifiedMessage, "Driver Verified");
     }
     if (argument === 3) {
-      changeDriverStatus(
-        driver?.auth_id,
-        "3",
-        driver,
-        emailMessages.trainedMessage,
-        "Driver Traning Confirmed"
-      );
+      changeDriverStatus(driver?.auth_id, "3", driver, emailMessages.trainedMessage, "Driver Traning Confirmed");
     }
     if (argument === 4) {
-      changeDriverStatus(
-        driver?.auth_id,
-        "4",
-        driver,
-        emailMessages.approveMsg,
-        "Driver Activated"
-      );
+      changeDriverStatus(driver?.auth_id, "4", driver, emailMessages.approveMsg, "Driver Activated");
     }
     if (argument === 5) {
-      changeDriverStatus(
-        driver?.auth_id,
-        "5",
-        driver,
-        emailMessages.suspendMsg(suspensionReasons),
-        "Driver Suspended"
-      );
+      changeDriverStatus(driver?.auth_id, "5", driver, emailMessages.suspendMsg(suspensionReasons), "Driver Suspended");
     }
     if (argument === 6) {
-      changeDriverCategory(
-        driver?.auth_id,
-        driverCategory,
-        driver,
-        "Category Changed"
-      );
+      changeDriverCategory(driver?.auth_id, driverCategory, driver, "Category Changed");
     }
     if (argument === 7) {
       verifyID(driver?.auth_id, "1", idType);
@@ -254,7 +195,7 @@ const DriverProfile = ({
     inputEl.current.close();
   };
   return (
-    <div className="row" style={{ fontSize: "0.8rem" }}>
+    <div className="row" style={{fontSize: "0.8rem"}}>
       <div className="col-sm-10 col-lg-5">
         <div className="tab-content">
           <div className="tab-pane active" id="home">
@@ -359,9 +300,7 @@ const DriverProfile = ({
                 <span className="pull-left">
                   <strong>Bank Account</strong>
                 </span>
-                {driver?.driver_data?.bank_account
-                  ? driver?.driver_data?.bank_account
-                  : "NA"}
+                {driver?.driver_data?.bank_account ? driver?.driver_data?.bank_account : "NA"}
               </li>
             </ul>
           </div>
@@ -377,10 +316,7 @@ const DriverProfile = ({
                 </span>
                 {driver?.driver_data?.driver_category}
                 {driver?.driver_data?.driver_status < 2 && (
-                  <span
-                    className="bg-primary rounded fw-bold p-2 ml-3 text-white"
-                    onClick={() => setCategoryModalOpen(true)}
-                  >
+                  <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => setCategoryModalOpen(true)}>
                     Change
                   </span>
                 )}
@@ -390,9 +326,7 @@ const DriverProfile = ({
                 <span className="pull-left">
                   <strong>Daily debt service Amt</strong>
                 </span>
-                {driver?.driver_data?.payment_plan?.plan
-                  ? "₦" + driver?.driver_data?.payment_plan?.plan
-                  : "NA"}
+                {driver?.driver_data?.payment_plan?.plan ? "₦" + driver?.driver_data?.payment_plan?.plan : "NA"}
               </li>
               {/* <li className="list-group-item text-right"><span
                                 className="pull-left"><strong>Made First Payment</strong></span>
@@ -407,12 +341,10 @@ const DriverProfile = ({
                   <i className="ti-check ml-3" />
                 ) : (
                   <Button
-                    className={`btn-warning rounded fw-bold p-2 ml-3 ${
-                      driver?.driver_data?.driver_status > 1 && "d-none"
-                    }`}
+                    className={`btn-warning rounded fw-bold p-2 ml-3 ${driver?.driver_data?.driver_status > 1 && "d-none"}`}
                     onClick={() =>
                       driver?.driver_data?.license_id?.value
-                        ? triggerIdVerifcation("drivers_license")
+                        ? triggerIdVerifcation("driver_license", driver?.driver_data?.license_id?.value, driver?.first_name, driver?.last_name)
                         : NotificationManager.error("No provided ID number")
                     }
                   >
@@ -424,20 +356,15 @@ const DriverProfile = ({
                 <span className="pull-left">
                   <strong>LASDRI ID</strong>
                 </span>
-                {driver?.driver_data?.lasdri_id?.value === driver?.phone_number
-                  ? ""
-                  : driver?.driver_data?.lasdri_id?.value}
+                {driver?.driver_data?.lasdri_id?.value === driver?.phone_number ? "" : driver?.driver_data?.lasdri_id?.value}
                 {driver?.driver_data?.lasdri_id?.status ? (
                   <i className="ti-check ml-3" />
                 ) : (
                   <Button
-                    className={`btn-warning rounded fw-bold p-2 ml-3 ${
-                      driver?.driver_data?.driver_status > 1 && "d-none"
-                    }`}
+                    className={`btn-warning rounded fw-bold p-2 ml-3 ${driver?.driver_data?.driver_status > 1 && "d-none"}`}
                     onClick={() =>
-                      driver?.driver_data?.lasdri_id?.value !==
-                      driver?.phone_number
-                        ? triggerIdVerifcation("lasdri")
+                      driver?.driver_data?.lasdri_id?.value
+                        ? triggerIdVerifcation("lasdri", driver?.driver_data?.lasdri_id?.value, driver?.first_name, driver?.last_name)
                         : NotificationManager.error("No provided ID number")
                     }
                   >
@@ -449,20 +376,15 @@ const DriverProfile = ({
                 <span className="pull-left">
                   <strong>LASSRA ID</strong>
                 </span>
-                {driver?.driver_data?.lassra_id?.value === driver?.phone_number
-                  ? ""
-                  : driver?.driver_data?.lassra_id?.value}
+                {driver?.driver_data?.lassra_id?.value === driver?.phone_number ? "" : driver?.driver_data?.lassra_id?.value}
                 {driver?.driver_data?.lassra_id?.status ? (
                   <i className="ti-check ml-3" />
                 ) : (
                   <Button
-                    className={`btn-warning rounded fw-bold p-2 ml-3 ${
-                      driver?.driver_data?.driver_status > 1 && "d-none"
-                    }`}
+                    className={`btn-warning rounded fw-bold p-2 ml-3 ${driver?.driver_data?.driver_status > 1 && "d-none"}`}
                     onClick={() =>
-                      driver?.driver_data?.lassra_id?.value !==
-                      driver?.phone_number
-                        ? triggerIdVerifcation("lassra")
+                      driver?.driver_data?.license_id?.value
+                        ? triggerIdVerifcation("lassra", driver?.driver_data?.lassra_id?.value, driver?.first_name, driver?.last_name)
                         : NotificationManager.error("No provided ID number")
                     }
                   >
@@ -479,12 +401,10 @@ const DriverProfile = ({
                   <i className="ti-check ml-3" />
                 ) : (
                   <Button
-                    className={`btn-warning rounded fw-bold p-2 ml-3 ${
-                      driver?.driver_data?.driver_status > 1 && "d-none"
-                    }`}
+                    className={`btn-warning rounded fw-bold p-2 ml-3 ${driver?.driver_data?.driver_status > 1 && "d-none"}`}
                     onClick={() =>
                       driver?.driver_data?.nin_id?.value
-                        ? triggerIdVerifcation("nin")
+                        ? triggerIdVerifcation("nin",driver?.driver_data?.nin_id?.value, driver?.first_name, driver?.last_name)
                         : NotificationManager.error("No provided ID number")
                     }
                   >
@@ -496,9 +416,7 @@ const DriverProfile = ({
                 <span className="pull-left">
                   <strong>Verification Payment Status</strong>
                 </span>
-                {driver?.driver_data?.verification_payment?.status
-                  ? "Paid"
-                  : "Not Paid"}
+                {driver?.driver_data?.verification_payment?.status ? "Paid" : "Not Paid"}
               </li>
               {driver?.driver_data?.verification_payment?.status && (
                 <li className="list-group-item text-right">
@@ -513,16 +431,14 @@ const DriverProfile = ({
                   <strong>One-off Payment Amount</strong>
                 </span>
                 {driver?.driver_data?.driver_category === "social"
-                  ? `# ${customerCareNumbers.soc_driver_fee}`
-                  : `# ${customerCareNumbers.com_driver_fee}`}
+                  ? `# ${customerCareNumbers?.soc_driver_fee.total?.toLocaleString()}`
+                  : `# ${customerCareNumbers?.com_driver_fee?.total?.toLocaleString()}`}
               </li>
               <li className="list-group-item text-right">
                 <span className="pull-left">
                   <strong>One-off Payment</strong>
                 </span>
-                {driver?.driver_data?.asset_payment?.status
-                  ? "Paid"
-                  : "Not Paid"}
+                {driver?.driver_data?.asset_payment?.status ? "Paid" : "Not Paid"}
               </li>
               {driver?.driver_data?.asset_payment?.status && (
                 <li className="list-group-item text-right">
@@ -538,16 +454,13 @@ const DriverProfile = ({
                 </span>
                 {driver?.driver_data?.year_exp}
               </li>
-              {driver?.driver_data?.vehicle_id ===
-                vehicleDetails?.vehicle_id && (
+              {driver?.driver_data?.vehicle_id === vehicleDetails?.vehicle_id && (
                 <>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
                       <strong>Vehicle Plate No </strong>
                     </span>
-                    <Link to={`/admin/vehicles/${vehicleDetails?.vehicle_id}`}>
-                      {vehicleDetails?.car_number_plate}
-                    </Link>
+                    <Link to={`/admin/vehicles/${vehicleDetails?.vehicle_id}`}>{vehicleDetails?.car_number_plate}</Link>
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
@@ -570,31 +483,19 @@ const DriverProfile = ({
                 <span className="pull-left">
                   <strong>Status</strong>
                 </span>
-                <Badge
-                  color={getStatusColor(driver?.driver_data?.driver_status)}
-                >
-                  {getStatus(driver.driver_data?.driver_status)}
-                </Badge>
+                <Badge color={getStatusColor(driver?.driver_data?.driver_status)}>{getStatus(driver.driver_data?.driver_status)}</Badge>
               </li>
               <li className="list-group-item text-right">
                 <span className="pull-left">
                   <strong>App Status</strong>
                 </span>
-                <Badge
-                  color={driver?.driver_data?.online ? "success" : "danger"}
-                >
-                  {driver?.driver_data?.online ? "Online" : "Offline"}
-                </Badge>
+                <Badge color={driver?.driver_data?.online ? "success" : "danger"}>{driver?.driver_data?.online ? "Online" : "Offline"}</Badge>
               </li>
               <li className="list-group-item text-right">
                 <span className="pull-left">
                   <strong>Driver's Location on Map</strong>
                 </span>
-                <button
-                  type="button"
-                  className="rct-link-btn text-primary"
-                  title="view details"
-                >
+                <button type="button" className="rct-link-btn text-primary" title="view details">
                   <Link to={`/admin/map`}>
                     <i className="ti-eye" />
                   </Link>
@@ -613,27 +514,18 @@ const DriverProfile = ({
                     driver?.driver_data?.lassra_id?.status &&
                     driver?.driver_data?.nin_id?.status && (
                       <div className="text-center">
-                        <Button
-                          disabled={loadingStatus}
-                          onClick={() => onVerified()}
-                          className="bg-success mt-3 text-white"
-                        >
+                        <Button disabled={loadingStatus} onClick={() => onVerified()} className="bg-success mt-3 text-white">
                           Verify Driver
                         </Button>
                       </div>
                     )}
-                  {driver?.driver_data?.driver_status === 2 &&
-                    driver?.driver_data?.asset_payment?.status && (
-                      <div className="text-center">
-                        <Button
-                          disabled={loadingStatus}
-                          onClick={() => onTrained()}
-                          className="bg-success mt-3 text-white"
-                        >
-                          Mark as Trained
-                        </Button>
-                      </div>
-                    )}
+                  {driver?.driver_data?.driver_status === 2 && driver?.driver_data?.asset_payment?.status && (
+                    <div className="text-center">
+                      <Button disabled={loadingStatus} onClick={() => onTrained()} className="bg-success mt-3 text-white">
+                        Mark as Trained
+                      </Button>
+                    </div>
+                  )}
                   {/* {driver?.driver_data?.driver_status === 3 &&
                                         <div className='text-center d-flex'>
                                             {/* <Button disabled={loadingStatus} onClick={() => onTrained()} className="bg-warning mt-3 text-white mr-2">Confirm Driver Training</Button> */}
@@ -641,42 +533,31 @@ const DriverProfile = ({
                   {/* </div>}  */}
                   {driver?.driver_data?.driver_status === 4 && (
                     <div className="text-center">
-                      <Button
-                        disabled={loadingStatus}
-                        onClick={() => setSuspensionReasonsModalOpen(true)}
-                        className="bg-danger mt-3 text-white"
-                      >
+                      <Button disabled={loadingStatus} onClick={() => setSuspensionReasonsModalOpen(true)} className="bg-danger mt-3 text-white">
                         Suspend Driver
                       </Button>
                     </div>
                   )}
                   {driver?.driver_data?.driver_status === 5 && (
                     <div className="text-center">
-                      <Button
-                        disabled={loadingStatus}
-                        onClick={() => onReactivate()}
-                        className="bg-success mt-3 text-white"
-                      >
+                      <Button disabled={loadingStatus} onClick={() => onReactivate()} className="bg-success mt-3 text-white">
                         Reactivate Driver
                       </Button>
                     </div>
                   )}
-                  {driver?.driver_data?.driver_status === 3 &&
-                    !driver.driver_data?.vehicle_id &&
-                    driver?.driver_data?.asset_payment.status &&
-                    driver?.driver_data?.verification_payment.status && (
-                      <div className="text-center ml-2">
-                        <Button
-                          disabled={loadingStatus}
-                          onClick={() => {
-                            opnAddVehicleModal();
-                          }}
-                          className="bg-warning mt-3 text-white"
-                        >
-                          Assign Vehicle
-                        </Button>
-                      </div>
-                    )}
+                  {driver?.driver_data?.driver_status === 3 && !driver.driver_data?.vehicle_id && driver?.driver_data?.asset_payment.status && driver?.driver_data?.verification_payment.status && (
+                    <div className="text-center ml-2">
+                      <Button
+                        disabled={loadingStatus}
+                        onClick={() => {
+                          opnAddVehicleModal();
+                        }}
+                        className="bg-warning mt-3 text-white"
+                      >
+                        Assign Vehicle
+                      </Button>
+                    </div>
+                  )}
                 </span>
               </li>
             </ul>
@@ -697,45 +578,21 @@ const DriverProfile = ({
       {/*        />*/}
       {/*    </div>*/}
       {/*</div>*/}
-      <Modal
-        size="lg"
-        isOpen={isViewerOpen}
-        toggle={() => setIsViewerOpen(!isViewerOpen)}
-      >
-        <ModalHeader toggle={() => setIsViewerOpen(!isViewerOpen)}>
-          Receipt Preview
-        </ModalHeader>
+      <Modal size="lg" isOpen={isViewerOpen} toggle={() => setIsViewerOpen(!isViewerOpen)}>
+        <ModalHeader toggle={() => setIsViewerOpen(!isViewerOpen)}>Receipt Preview</ModalHeader>
         <img src={driver?.driver_data?.receipt_url} alt="receipt" />
       </Modal>
       {/* modal that changes the driver category  */}
-      <Modal
-        size="sm"
-        isOpen={categoryModalOpen}
-        toggle={() => setCategoryModalOpen(!categoryModalOpen)}
-      >
-        <ModalHeader toggle={() => setCategoryModalOpen(!categoryModalOpen)}>
-          Change Driver Category
-        </ModalHeader>
+      <Modal size="sm" isOpen={categoryModalOpen} toggle={() => setCategoryModalOpen(!categoryModalOpen)}>
+        <ModalHeader toggle={() => setCategoryModalOpen(!categoryModalOpen)}>Change Driver Category</ModalHeader>
         <ModalBody>
           <Form onSubmit={handleCategorySubmit}>
             <div className="px-3">
-              <Input
-                type="radio"
-                name="driver_category"
-                value="social"
-                checked={driverCategory === "social"}
-                onChange={() => setDriverCategory("social")}
-              />
+              <Input type="radio" name="driver_category" value="social" checked={driverCategory === "social"} onChange={() => setDriverCategory("social")} />
               Social Driver
             </div>
             <div className="px-3">
-              <Input
-                type="radio"
-                name="driver_category"
-                value="commercial"
-                checked={driverCategory === "commercial"}
-                onChange={() => setDriverCategory("commercial")}
-              />
+              <Input type="radio" name="driver_category" value="commercial" checked={driverCategory === "commercial"} onChange={() => setDriverCategory("commercial")} />
               Commercial Driver
             </div>
             <div className="mt-2 text-right">
@@ -745,92 +602,63 @@ const DriverProfile = ({
         </ModalBody>
       </Modal>
       {/* modal for verifying each of the IDs */}
-      <Modal
-        size="md"
-        isOpen={idVerificationModalOpen}
-        toggle={() => setIdVerificationModalOpen(!idVerificationModalOpen)}
-      >
-        <ModalHeader
-          toggle={() => setIdVerificationModalOpen(!idVerificationModalOpen)}
-        >
-          Verify {idVerificationType(idType)}
-        </ModalHeader>
-        <ModalBody>
-          <h1>verifying id ...</h1>
-          <div className="mt-2 text-right">
-            <button
-              className=" btn rounded btn-primary"
-              onClick={() => verifyId(idType)}
-            >
+      <Modal size="md" isOpen={idVerificationModalOpen} toggle={() => setIdVerificationModalOpen(!idVerificationModalOpen)}>
+        <ModalHeader toggle={() => setIdVerificationModalOpen(!idVerificationModalOpen)}>Verify {idVerificationType(idType)}</ModalHeader>
+        <ModalBody style={{minHeight: 100}}>
+          {loadingStatus && (
+            <div className="d-flex flex-column justify-content-center align-items-center">
+              <Spinner />
+              <h3 className="fw-bold mt-3">verifying id </h3>
+            </div>
+          )}
+          {!loadingStatus && (
+            <div>
+              {verificationResult?.status === "error" && (
+                <div className="d-flex flex-column justify-content-center align-items-center">
+                  <div className="fw-bold text-danger">{verificationResult?.msg} </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* <div className="mt-2 text-right">
+            <button className=" btn rounded btn-primary" onClick={() => verifyId(idType)}>
               Verify {idVerificationType(idType)}
             </button>
-          </div>
+          </div> */}
         </ModalBody>
       </Modal>
       <Modal isOpen={addVehicleModal} toggle={() => onAddVehicleModalClose()}>
-        <ModalHeader toggle={() => onAddVehicleModalClose()}>
-          Assign Vehicle
-        </ModalHeader>
+        <ModalHeader toggle={() => onAddVehicleModalClose()}>Assign Vehicle</ModalHeader>
         <ModalBody>
           <div>
             <Form onSubmit={onSubmit}>
               <FormGroup>
                 <Label for="userName">First Name</Label>
-                <Input
-                  onChange={onChange}
-                  readOnly={true}
-                  type="text"
-                  name="firstname"
-                  value={driver?.first_name}
-                />
+                <Input onChange={onChange} readOnly={true} type="text" name="firstname" value={driver?.first_name} />
               </FormGroup>
               <FormGroup>
                 <Label for="userName">Last Name</Label>
-                <Input
-                  onChange={onChange}
-                  readOnly={true}
-                  type="text"
-                  name="lastname"
-                  value={driver?.last_name}
-                />
+                <Input onChange={onChange} readOnly={true} type="text" name="lastname" value={driver?.last_name} />
               </FormGroup>
               <FormGroup>
                 <Label for="userEmail">Email</Label>
-                <Input
-                  onChange={onChange}
-                  type="email"
-                  name="email"
-                  readOnly={true}
-                  value={driver?.email}
-                />
+                <Input onChange={onChange} type="email" name="email" readOnly={true} value={driver?.email} />
               </FormGroup>
               <FormGroup>
                 <Label for="exampleSelect">Vehicles</Label>
-                <Input
-                  type="select"
-                  name="vehicle"
-                  onChange={onChange}
-                  value={vehicle}
-                  required={true}
-                >
+                <Input type="select" name="vehicle" onChange={onChange} value={vehicle} required={true}>
                   <option value="">Select Vehicle</option>
                   {vehicles &&
                     vehicles.map((vehicle) => (
-                      <option
-                        key={vehicle.vehicle_id}
-                        value={vehicle.vehicle_id}
-                      >
+                      <option key={vehicle.vehicle_id} value={vehicle.vehicle_id}>
                         {vehicle.car_number_plate}
                       </option>
                     ))}
                 </Input>
               </FormGroup>
               <ModalFooter>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  className="text-white btn-success"
-                >
+                <Button type="submit" variant="contained" className="text-white btn-success">
                   Assign
                 </Button>
               </ModalFooter>
@@ -840,34 +668,20 @@ const DriverProfile = ({
       </Modal>
 
       {/* modal to select reason for suspension */}
-      <Modal
-        isOpen={suspensionReasonsModalOpen}
-        toggle={() => setSuspensionReasonsModalOpen(false)}
-      >
-        <ModalHeader toggle={() => setSuspensionReasonsModalOpen(false)}>
-          Select Reasons for Suspension
-        </ModalHeader>
+      <Modal isOpen={suspensionReasonsModalOpen} toggle={() => setSuspensionReasonsModalOpen(false)}>
+        <ModalHeader toggle={() => setSuspensionReasonsModalOpen(false)}>Select Reasons for Suspension</ModalHeader>
         <ModalBody>
           <div className="ml-4">
             <Form onSubmit={onSuspend}>
               {suspensionReasonsList.map((item) => (
                 <FormGroup>
-                  <Input
-                    onChange={handleReasonClick}
-                    readOnly={true}
-                    type="checkbox"
-                    value={item}
-                  />
+                  <Input onChange={handleReasonClick} readOnly={true} type="checkbox" value={item} />
                   {item}
                 </FormGroup>
               ))}
 
               <ModalFooter>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  className="text-white btn-danger"
-                >
+                <Button type="submit" variant="contained" className="text-white btn-danger">
                   Proceed
                 </Button>
               </ModalFooter>
@@ -876,70 +690,19 @@ const DriverProfile = ({
         </ModalBody>
       </Modal>
 
-      <DeleteConfirmationDialog
-        ref={inputEl}
-        title={title}
-        message={message}
-        onConfirm={onConfirm}
-      />
+      <DeleteConfirmationDialog ref={inputEl} title={title} message={message} onConfirm={onConfirm} />
     </div>
   );
 };
 function mapDispatchToProps(dispatch) {
   return {
     getCustomerCare: (spinner) => dispatch(getCustomerCare(spinner)),
-    changeDriverStatus: (
-      auth_id,
-      driver_status,
-      driverData,
-      message_type,
-      subject
-    ) =>
-      dispatch(
-        changeDriverStatus(
-          auth_id,
-          driver_status,
-          driverData,
-          message_type,
-          subject
-        )
-      ),
-    changeDriverCategory: (
-      auth_id,
-      category,
-      driverData,
-      message_type,
-      subject
-    ) =>
-      dispatch(
-        changeDriverCategory(
-          auth_id,
-          category,
-          driverData,
-          message_type,
-          subject
-        )
-      ),
-    verifyID: (auth_id, verification_status, verification_name) =>
-      dispatch(verifyID(auth_id, verification_status, verification_name)),
-    assignVehicle: (
-      vehicle_id,
-      driver_auth_id,
-      driverData,
-      vehicleData,
-      message_type
-    ) =>
-      dispatch(
-        assignVehicleOnProfile(
-          vehicle_id,
-          driver_auth_id,
-          driverData,
-          vehicleData,
-          message_type
-        )
-      ),
-    getVehicle: (vehicle_id, spinner) =>
-      dispatch(getVehicle(vehicle_id, spinner)),
+    changeDriverStatus: (auth_id, driver_status, driverData, message_type, subject) => dispatch(changeDriverStatus(auth_id, driver_status, driverData, message_type, subject)),
+    changeDriverCategory: (auth_id, category, driverData, message_type, subject) => dispatch(changeDriverCategory(auth_id, category, driverData, message_type, subject)),
+    // verifyID: (auth_id, verification_status, verification_name) => dispatch(verifyID(auth_id, verification_status, verification_name)),
+    assignVehicle: (vehicle_id, driver_auth_id, driverData, vehicleData, message_type) => dispatch(assignVehicleOnProfile(vehicle_id, driver_auth_id, driverData, vehicleData, message_type)),
+    getVehicle: (vehicle_id, spinner) => dispatch(getVehicle(vehicle_id, spinner)),
+    sendVerificationRequest: (id_type, id_value, first_name, last_name) => dispatch(sendVerificationRequest(id_type, id_value, first_name, last_name)),
   };
 }
 const mapStateToProps = (state) => ({
@@ -947,5 +710,6 @@ const mapStateToProps = (state) => ({
   vehicles: state.vehicle.vehicles,
   vehicleDetails: state.vehicle.vehicleDetails,
   customerCareNumbers: state.customerCare.customerCareNumbers,
+  verificationResult: state.idVerification.verificationResult,
 });
 export default connect(mapStateToProps, mapDispatchToProps)(DriverProfile);

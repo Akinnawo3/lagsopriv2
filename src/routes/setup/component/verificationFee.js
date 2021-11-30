@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Badge, Card, CardBody, Col, Row } from "reactstrap";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
+import { stringToNumber } from "Helpers/helpers";
 import {
   Form,
   FormGroup,
@@ -14,27 +15,15 @@ import {
 } from "reactstrap";
 
 import {
-  createCustomerCare,
-  createWaitingTime,
   createVerificationFee,
-  deleteCustomerCare,
   getCustomerCare,
-  updateCustomerCare,
-  createSocialDriverFee,
-  createCommercialDriverFee,
 } from "Actions/customerCareAction";
 import { connect } from "react-redux";
 
 const VerificationFee = ({
-  match,
   getCustomerCare,
   customerCareNumbers,
-  createCustomerCare,
-  createWaitingTime,
   createVerificationFee,
-  createSocialDriverFee,
-  createCommercialDriverFee,
-  loading,
 }) => {
   const [parameterModalOpen, setParameterModalOpen] = useState(false);
   const [breakDownModalOpen, setBreakDownModalOpen] = useState(false);
@@ -57,10 +46,10 @@ const VerificationFee = ({
       lassra,
       lasdri,
       total:
-        parseInt(driverLicence, 10) +
-        parseInt(nin, 10) +
-        parseInt(lassra, 10) +
-        parseInt(lasdri, 10),
+        stringToNumber(driverLicence) +
+        stringToNumber(nin) +
+        stringToNumber(lassra) +
+        stringToNumber(lasdri),
     });
   };
 
@@ -72,7 +61,6 @@ const VerificationFee = ({
     setlasdri(customerCareNumbers?.verification_fee.lasdri);
   };
 
-  console.log(customerCareNumbers?.verification_fee);
   return (
     <div className="row">
       <div className="col col-xs-12 col-md-9">
@@ -97,7 +85,7 @@ const VerificationFee = ({
                       className="pr-2 font-xl"
                       style={{ fontSize: "2.5rem" }}
                     >
-                      {`#${customerCareNumbers?.verification_fee?.total}`}
+                      {`#${customerCareNumbers?.verification_fee?.total.toLocaleString()}`}
                     </span>
                   </div>
                 </Card>
@@ -282,23 +270,13 @@ const VerificationFee = ({
 function mapDispatchToProps(dispatch) {
   return {
     getCustomerCare: (spinner) => dispatch(getCustomerCare(spinner)),
-    createCustomerCare: (customer_care) =>
-      dispatch(createCustomerCare(customer_care)),
-    createWaitingTime: (waiting_time) =>
-      dispatch(createWaitingTime(waiting_time)),
     createVerificationFee: (verification_fee) =>
       dispatch(createVerificationFee(verification_fee)),
-    createSocialDriverFee: (soc_driver_fee) =>
-      dispatch(createSocialDriverFee(soc_driver_fee)),
-    createCommercialDriverFee: (com_driver_fee) =>
-      dispatch(createCommercialDriverFee(com_driver_fee)),
   };
 }
 
 const mapStateToProps = (state) => ({
   customerCareNumbers: state.customerCare.customerCareNumbers,
-  loading: state.loading.loading,
-  loadingStatus: state.loading.loadingStatus,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(VerificationFee);
