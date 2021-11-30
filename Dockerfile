@@ -1,6 +1,7 @@
 # Stage 1
 FROM node:12 as build-deps
 WORKDIR /usr/src/app
+# COPY package.json ./
 COPY package.json yarn.lock ./
 RUN yarn
 COPY . ./
@@ -39,6 +40,8 @@ CMD ["nginx", "-g", "daemon off;"]
 #RUN npm rebuild node-sass
 #EXPOSE 3000
 #CMD npm start
+
+
 
 
 
