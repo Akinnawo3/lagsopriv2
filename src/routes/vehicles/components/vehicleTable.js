@@ -34,6 +34,9 @@ const  VehicleTable = ({ getVehicles, vehicles, loading, createVehicles, updateV
     const [deleteId, setDeleteId] = useState(null)
 
 
+    const d = new Date();
+    let year = d.getFullYear();
+
 
     useEffect(()=> {
         if(vehicles) {
@@ -233,7 +236,7 @@ const  VehicleTable = ({ getVehicles, vehicles, loading, createVehicles, updateV
                         </FormGroup>
                         <FormGroup>
                             <Label for="text">Year</Label>
-                            <Input type="number" name="model" value={model} onChange={onChange} required />
+                            <Input type="number" name="model" value={model} onChange={onChange} required max={year} />
                         </FormGroup>
                         <FormGroup>
                             <Label for="text">Colour</Label>
