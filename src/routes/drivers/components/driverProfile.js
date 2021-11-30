@@ -78,7 +78,6 @@ const DriverProfile = ({
     }
   }, [vehicle]);
 
-  console.log(customerCareNumbers);
 
   const opnAddVehicleModal = () => {
     setAddVehicleModal(true);

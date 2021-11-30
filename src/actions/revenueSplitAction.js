@@ -1,12 +1,7 @@
 import axios from "axios";
-import { REVENUE_SPLIT_DATA } from "./types";
-import {
-  endLoading,
-  endStatusLoading,
-  startLoading,
-  startStatusLoading,
-} from "./loadingAction";
-import { NotificationManager } from "react-notifications";
+import {REVENUE_SPLIT_DATA, DRIVER_REVENUE_SPLIT} from "./types";
+import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
+import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 
 export const getRevenueSplitData = (spinner) => async (dispatch) => {
@@ -34,10 +29,7 @@ export const getRevenueSplitData = (spinner) => async (dispatch) => {
 export const updateRevenueSplitData = (data) => async (dispatch) => {
   try {
     await dispatch(startStatusLoading());
-    const res = await axios.post(
-      `${api.revenueSplit}/v1.1/admin/settings`,
-      data
-    );
+    const res = await axios.post(`${api.revenueSplit}/v1.1/admin/settings`, data);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
@@ -48,5 +40,27 @@ export const updateRevenueSplitData = (data) => async (dispatch) => {
   } catch (err) {
     dispatch(endStatusLoading());
     NotificationManager.error(err.response.data.error);
+  }
+};
+
+export const getDriverRevenueSPlit = (spinner, driverID, startDate, endDate) => async (dispatch) => {
+  try {
+    spinner && dispatch(startLoading());
+    !spinner && dispatch(startStatusLoading());
+    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/revenues/?driver_id=${driverID}&start_date=${startDate}&end_date=${endDate}`);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      dispatch({
+        type: DRIVER_REVENUE_SPLIT,
+        payload: res.data.data,
+      });
+    }
+    dispatch(endLoading());
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endLoading());
+    dispatch(endStatusLoading());
+    NotificationManager.error(err.response.data.result);
   }
 };
