@@ -28,6 +28,7 @@ const DriverProfile = ({
   verificationResult,
   getCustomerCare,
   customerCareNumbers,
+  verifyID,
 }) => {
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const [addVehicleModal, setAddVehicleModal] = useState(false);
@@ -190,7 +191,11 @@ const DriverProfile = ({
       changeDriverCategory(driver?.auth_id, driverCategory, driver, "Category Changed");
     }
     if (argument === 7) {
-      verifyID(driver?.auth_id, "1", idType);
+      if (idType === "driver_license") {
+        verifyID(driver?.auth_id, "1", "drivers_license");
+      } else {
+        verifyID(driver?.auth_id, "1", idType);
+      }
     }
     inputEl.current.close();
   };
@@ -404,7 +409,7 @@ const DriverProfile = ({
                     className={`btn-warning rounded fw-bold p-2 ml-3 ${driver?.driver_data?.driver_status > 1 && "d-none"}`}
                     onClick={() =>
                       driver?.driver_data?.nin_id?.value
-                        ? triggerIdVerifcation("nin",driver?.driver_data?.nin_id?.value, driver?.first_name, driver?.last_name)
+                        ? triggerIdVerifcation("nin", driver?.driver_data?.nin_id?.value, driver?.first_name, driver?.last_name)
                         : NotificationManager.error("No provided ID number")
                     }
                   >
@@ -618,14 +623,68 @@ const DriverProfile = ({
                   <div className="fw-bold text-danger">{verificationResult?.msg} </div>
                 </div>
               )}
+
+              {verificationResult?.status === "success" && (
+                <div>
+                  <ul className="list-group">
+                    <div className="rounded rounded-circle">
+                      <img alt="" src={verificationResult?.data?.photo} />
+                    </div>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Name</strong>
+                      </span>
+                      {`${verificationResult?.data?.firstname} ${verificationResult?.data?.middlename} ${verificationResult?.data?.lastname}`}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Reg Name Matches ID Name</strong>
+                      </span>
+                      {`${verificationResult?.data?.fieldMatches?.lastname ? "Yes" : "No"} `}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Birth Date</strong>
+                      </span>
+                      {`${verificationResult?.data?.birthdate} `}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Gender</strong>
+                      </span>
+                      {`${verificationResult?.data?.gender} `}
+                    </li>
+                    {idType === "driver_licence" && (
+                      <li className="list-group-item text-right">
+                        <span className="pull-left">
+                          <strong>Expiry Date</strong>
+                        </span>
+                        {`${verificationResult?.expiryDate}`}
+                      </li>
+                    )}
+                    <div className="mt-2 text-right">
+                      <button className=" btn rounded btn-primary" onClick={() => verifyId(idType)}>
+                        Verify {idVerificationType(idType)}
+                      </button>
+                    </div>
+                  </ul>
+                </div>
+              )}
+
+              {(verificationResult?.status === "1" || verificationResult?.code === "00") && (
+                <div>
+                  <div className="d-flex flex-column justify-content-center align-items-center">
+                    <h2 className="fw-bold ">{verificationResult?.message} </h2>
+                  </div>
+                  <div className="mt-2 text-right">
+                    <button className=" btn rounded btn-primary" onClick={() => verifyId(idType)}>
+                      Verify {idVerificationType(idType)}
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           )}
-
-          {/* <div className="mt-2 text-right">
-            <button className=" btn rounded btn-primary" onClick={() => verifyId(idType)}>
-              Verify {idVerificationType(idType)}
-            </button>
-          </div> */}
         </ModalBody>
       </Modal>
       <Modal isOpen={addVehicleModal} toggle={() => onAddVehicleModalClose()}>
@@ -699,7 +758,7 @@ function mapDispatchToProps(dispatch) {
     getCustomerCare: (spinner) => dispatch(getCustomerCare(spinner)),
     changeDriverStatus: (auth_id, driver_status, driverData, message_type, subject) => dispatch(changeDriverStatus(auth_id, driver_status, driverData, message_type, subject)),
     changeDriverCategory: (auth_id, category, driverData, message_type, subject) => dispatch(changeDriverCategory(auth_id, category, driverData, message_type, subject)),
-    // verifyID: (auth_id, verification_status, verification_name) => dispatch(verifyID(auth_id, verification_status, verification_name)),
+    verifyID: (auth_id, verification_status, verification_name) => dispatch(verifyID(auth_id, verification_status, verification_name)),
     assignVehicle: (vehicle_id, driver_auth_id, driverData, vehicleData, message_type) => dispatch(assignVehicleOnProfile(vehicle_id, driver_auth_id, driverData, vehicleData, message_type)),
     getVehicle: (vehicle_id, spinner) => dispatch(getVehicle(vehicle_id, spinner)),
     sendVerificationRequest: (id_type, id_value, first_name, last_name) => dispatch(sendVerificationRequest(id_type, id_value, first_name, last_name)),
