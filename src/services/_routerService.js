@@ -28,6 +28,8 @@ import RatingsRoutes from "Routes/ratings/ratingsRoutes";
 import WalletsRoutes from "Routes/wallets/walletsRoutes";
 import PaymentsServiceRoutes from "Routes/payments-service/paymentsServiceRoutes";
 import SetupRoutes from "Routes/setup/SetupRoutes";
+import MaintenanceLog from "../routes/maintenance-log/maintenanceRoutes";
+import MaintenanceRoutes from "../routes/maintenance-log/maintenanceRoutes";
 
 export default [
   {
@@ -146,6 +148,10 @@ export default [
   {
     path: "emergency",
     component: EmergencyRoutes,
+  },
+  {
+    path: "maintenance",
+    component: MaintenanceRoutes,
   },
   {
     path: "login",

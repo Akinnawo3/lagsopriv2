@@ -15,9 +15,8 @@ import {getSOS, getSOSCount} from "Actions/emergencyAction";
 import EmptyData from "Components/EmptyData/EmptyData";
 import Pagination from "react-js-pagination";
 import {Badge} from "reactstrap";
-import moment from "moment";
 
-const Emergency = ({match, getSOS, sos, loading, getSOSCount, sosCount}) => {
+const MaintenanceLog = ({match, getSOS, sos, loading, getSOSCount, sosCount}) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -34,7 +33,7 @@ const Emergency = ({match, getSOS, sos, loading, getSOSCount, sosCount}) => {
   console.log(sos);
   return (
     <div className="table-wrapper">
-      <PageTitleBar title={"Emergency"} match={match} />
+      <PageTitleBar title={"Maintenance and Repair"} match={match} />
       {!loading && sos?.length > 0 && (
         <RctCollapsibleCard heading="Emergency" fullBlock style={{minHeight: "70vh"}}>
           <div className="table-responsive" style={{minHeight: "50vh"}}>
@@ -55,11 +54,11 @@ const Emergency = ({match, getSOS, sos, loading, getSOSCount, sosCount}) => {
                   {sos.length > 0 &&
                     sos.map((data) => (
                       <TableRow hover key={data.id}>
-                        <TableCell>{data.user_data?.user_type}</TableCell>
+                        <TableCell>{"Placeholder"}</TableCell>
                         <TableCell>{data.address}</TableCell>
                         <TableCell>{data.latitude}</TableCell>
                         <TableCell>{data.longitude}</TableCell>
-                        <TableCell>{moment(data.createdAt).format("LLLL")}</TableCell>
+                        <TableCell>{"Time of Report"}</TableCell>
                         <TableCell>
                           <Badge color={data.status === 0 ? "danger" : "success"}>{data.status === 0 ? "Unresolved" : "Resolved"}</Badge>
                         </TableCell>
@@ -99,4 +98,4 @@ const mapStateToProps = (state) => ({
   loading: state.loading.loading,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Emergency);
+export default connect(mapStateToProps, mapDispatchToProps)(MaintenanceLog);

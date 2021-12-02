@@ -212,6 +212,16 @@ const AsyncEmergencyDetails = Loadable({
   loading: () => <RctPageLoader />,
 });
 
+const AsyncMaintenanceLog = Loadable({
+  loader: () => import("Routes/maintenance-log/maintenanceLog"),
+  loading: () => <RctPageLoader />,
+});
+
+const AsyncMaintenanceDetails = Loadable({
+  loader: () => import("Routes/maintenance-log/maintenanceDetails"),
+  loading: () => <RctPageLoader />,
+});
+
 const AsyncSupport = Loadable({
   loader: () => import("Routes/support/support"),
   loading: () => <RctPageLoader />,
@@ -459,6 +469,8 @@ export {
   AsyncEmergency,
   AsyncEmergencyEmail,
   AsyncEmergencyDetails,
+  AsyncMaintenanceLog,
+  AsyncMaintenanceDetails,
   AsyncUsers,
   AsyncSupportDetails,
   AsyncSupportSetup,
