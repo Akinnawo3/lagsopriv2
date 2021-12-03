@@ -73,6 +73,8 @@ module.exports = {
   "sidebar.emergency": "Emergency",
   "sidebar.emergencyNumber": "Emergency Number",
   "sidebar.emergencyEmail": "Emergency Email",
+  "sidebar.maintenance": "Maintenance and Repairs",
+  "sidebar.maintenance-log": "Maintenance/Repairs Log",
   "sidebar.support": "Support",
   "sidebar.analytics": "Analytics",
   "sidebar.summary": "Summary",
@@ -371,10 +373,8 @@ module.exports = {
   "widgets.stepper": "Stepper",
   "widgets.horizontalLinear": "Horizontal Linear",
   "widgets.horizontalNonLinear": "Horizontal Non Linear",
-  "widgets.horizontalLinerAlternativeLabel":
-    "Horizontal Liner Alternative Label",
-  "widgets.horizontalNonLinerAlternativeLabel":
-    "Horizontal Non Liner Alternative Label",
+  "widgets.horizontalLinerAlternativeLabel": "Horizontal Liner Alternative Label",
+  "widgets.horizontalNonLinerAlternativeLabel": "Horizontal Non Liner Alternative Label",
   "widgets.verticalStepper": "Vertical Stepper",
   "widgets.descriptionAlert": "Description Alert",
   "widgets.customIconAlert": "Custom Icon Alert",
@@ -721,10 +721,8 @@ module.exports = {
   "widgets.permanentdrawer": "Permanent Drawer",
   "widgets.persistentdrawer": "Persistent Drawer",
   "widgets.swiches": "Swiches",
-  "widgets.horizontalLinearAlternativeLabel":
-    "Horizontal Linear Alternative Label",
-  "widgets.horizontalNonLinearAlternativeLabel":
-    "Horizontal Non Linear Alternative Label",
+  "widgets.horizontalLinearAlternativeLabel": "Horizontal Linear Alternative Label",
+  "widgets.horizontalNonLinearAlternativeLabel": "Horizontal Non Linear Alternative Label",
   "widgets.notifications": "Notifications",
   "widgets.basicAlert": "Basic Alert",
   "widgets.successAlert": "Success Alert",
@@ -793,8 +791,7 @@ module.exports = {
   "widgets.completed": "Completed",
   "widgets.new": "New",
   "widgets.ShareWithFriends": "Share with friends!",
-  "widgets.helpToShareText":
-    "Help us spread the world by sharing our website with your friends and followers on social media!",
+  "widgets.helpToShareText": "Help us spread the world by sharing our website with your friends and followers on social media!",
   "widgets.thisWeek": "This Week",
   "widgets.howWouldYouRateUs": "How would you rate us?",
   "widgets.booking": "Booking",
@@ -842,8 +839,7 @@ module.exports = {
   "components.placeOrder": "Place Order",
   "components.payment": "Payment",
   "components.billingAddress": "Billing Address",
-  "components.ShippingAddressText":
-    "Shipping address is the same as billing address.",
+  "components.ShippingAddressText": "Shipping address is the same as billing address.",
   "components.CartEmptyText": "Your Shopping Cart Is Empty!",
   "components.NoItemFound": "No Item Found",
   "components.goToShop": "Go To Shop",

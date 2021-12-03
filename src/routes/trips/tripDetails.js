@@ -7,7 +7,7 @@ import { getTrip } from "Actions/tripAction";
 import { formatTime, getActualAddress } from "Helpers/helpers";
 import { Link } from "react-router-dom";
 
-const TripDetails = ({ getTrip, match, loading, trip, actualAddress }) => {
+const TripDetails = ({ getTrip, match, loading, trip }) => {
   const [isModal, setIsModal] = useState(false);
   const [riderDetails, setRiderDetails] = useState({});
   const [actualDropoffAddress, setActualDropoffAddress] = useState("");
@@ -24,6 +24,9 @@ const TripDetails = ({ getTrip, match, loading, trip, actualAddress }) => {
     const res = await getActualAddress(riderDetails?.end_lat, riderDetails?.end_lon);
     setActualDropoffAddress(res);
   })();
+
+
+  const getAc
 
   return (
     <div className="mb-5" style={{ minHeight: "90vh" }}>
@@ -375,8 +378,8 @@ const TripDetails = ({ getTrip, match, loading, trip, actualAddress }) => {
 function mapDispatchToProps(dispatch) {
   return {
     getTrip: (trip_id, spinner) => dispatch(getTrip(trip_id, spinner)),
-    getActualAddress: (lat, lng, spinner) =>
-      dispatch(getActualAddress(lat, lng, spinner)),
+    // getActualAddress: (lat, lng, spinner) =>
+    //   dispatch(getActualAddress(lat, lng, spinner)),
   };
 }
 

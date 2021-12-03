@@ -276,13 +276,20 @@ export default {
         },
       ],
     },
-    // {
-    //    "menu_title": "sidebar.analytics",
-    //    "menu_icon": "zmdi zmdi-hospital",
-    //    "type_multi": null,
-    //    "new_item": false,
-    //    "path": "/admin/analytics"
-    // },
+    {
+      menu_title: "sidebar.maintenance",
+      menu_icon: "zmdi zmdi-settings",
+      type_multi: null,
+      new_item: false,
+      child_routes: [
+        {
+          path: "/admin/maintenance",
+          new_item: false,
+          menu_title: "sidebar.maintenance-log",
+        },
+      ],
+    },
+
     {
       menu_title: "sidebar.fdt and schedule",
       menu_icon: "zmdi zmdi-map",
@@ -366,13 +373,13 @@ export default {
       new_item: false,
       path: "/admin/map",
     },
-    {
-      menu_title: "sidebar.settings",
-      menu_icon: "zmdi zmdi-map",
-      type_multi: null,
-      new_item: false,
-      path: "/admin/settings",
-    },
+    // {
+    //   menu_title: "sidebar.settings",
+    //   menu_icon: "zmdi zmdi-map",
+    //   type_multi: null,
+    //   new_item: false,
+    //   path: "/admin/settings",
+    // },
     {
       menu_title: "sidebar.admin-log",
       menu_icon: "zmdi zmdi-map",
