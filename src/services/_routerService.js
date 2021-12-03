@@ -27,13 +27,9 @@ import TripRoutes from "Routes/trips/tripsRoutes";
 import RatingsRoutes from "Routes/ratings/ratingsRoutes";
 import WalletsRoutes from "Routes/wallets/walletsRoutes";
 import PaymentsServiceRoutes from "Routes/payments-service/paymentsServiceRoutes";
-<<<<<<< HEAD
 import SetupRoutes from "Routes/setup/setupRoutes";
-=======
-import SetupRoutes from "Routes/setup/SetupRoutes";
 import MaintenanceLog from "../routes/maintenance-log/maintenanceRoutes";
 import MaintenanceRoutes from "../routes/maintenance-log/maintenanceRoutes";
->>>>>>> 0722b6393e4f6e28dfd6676177d03f7121c7c080
 
 export default [
    {
@@ -133,7 +129,6 @@ export default [
       component: RatingsRoutes,
    },
 
-<<<<<<< HEAD
    {
       path: "areas",
       component: AsyncAreas,
@@ -155,6 +150,10 @@ export default [
       component: EmergencyRoutes,
    },
    {
+      path: "maintenance",
+      component: MaintenanceRoutes,
+   },
+   {
       path: "login",
       component: Login,
    },
@@ -162,40 +161,6 @@ export default [
       path: "activity-log",
       component: AsyncActivityLog,
    },
-=======
-  {
-    path: "areas",
-    component: AsyncAreas,
-  },
-  {
-    path: "support",
-    component: SupportRoutes,
-  },
-  {
-    path: "settings",
-    component: AsyncCustomerCare,
-  },
-  // {
-  //    path: 'analytics',
-  //    component: AsyncAnalytics
-  // },
-  {
-    path: "emergency",
-    component: EmergencyRoutes,
-  },
-  {
-    path: "maintenance",
-    component: MaintenanceRoutes,
-  },
-  {
-    path: "login",
-    component: Login,
-  },
-  {
-    path: "activity-log",
-    component: AsyncActivityLog,
-  },
->>>>>>> 0722b6393e4f6e28dfd6676177d03f7121c7c080
 
    {
       path: "setup",
