@@ -23,6 +23,7 @@ const api = {
   contactUs: "https://contact-us-microservices.api.lagosride.com",
   revenueSplit: "https://revenue-service-microservices.api.lagosride.com",
   idVerification: "https://verify-service-microservices.api.lagosride.com",
+  messageSending: "https://message-service-microservices.api.lagosride.com",
 };
 
 export default api;

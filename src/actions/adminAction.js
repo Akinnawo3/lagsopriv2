@@ -1,18 +1,12 @@
 import axios from "axios";
-import {
-  endLoading,
-  endStatusLoading,
-  startLoading,
-  startStatusLoading,
-} from "./loadingAction";
-import { ADMINS, ADMIN_COUNT, USER_COUNT, USERS } from "./types";
-import { NotificationManager } from "react-notifications";
+import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
+import {sendMessage} from "./messagesAction";
+import {ADMINS, ADMIN_COUNT, USER_COUNT, USERS} from "./types";
+import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
-import { configureStore } from "../store";
-import {
-  changeCurrentPage,
-  onAddUpdateUserModalClose,
-} from "Routes/admin/admins";
+import {configureStore} from "../store";
+import {changeCurrentPage, onAddUpdateUserModalClose} from "Routes/admin/admins";
+import emailMessages from "Assets/data/email-messages/emailMessages";
 
 export const getAdmins =
   (page_no = 1, spinner) =>
@@ -20,9 +14,7 @@ export const getAdmins =
     try {
       spinner && (await dispatch(startLoading()));
       !spinner && (await dispatch(startStatusLoading()));
-      const res = await axios.get(
-        `${api.user}/v1.1/admin/users?user_type=admin&item_per_page=20&page=${page_no}`
-      );
+      const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=admin&item_per_page=20&page=${page_no}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -41,9 +33,7 @@ export const getAdmins =
 
 export const getAdminCount = () => async (dispatch) => {
   try {
-    const res = await axios.get(
-      `${api.user}/v1.1/admin/users?user_type=admin&component=count`
-    );
+    const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=admin&component=count`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
@@ -66,20 +56,30 @@ export const createAdmin = (adminData) => async (dispatch) => {
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      await changeCurrentPage();
+      // await changeCurrentPage();
       await NotificationManager.success("Admin Created Successfully!");
+      await dispatch(
+        sendMessage({
+          type: "generic",
+          subject: "Admin Login Details",
+          message: emailMessages.newAdminMsg(`${adminData.first_name}`, adminData.phone_number, "Password123"),
+          // message: "the messagejnrjtnjrn",
+          name: adminData.first_name,
+          email: adminData.email,
+        })
+      );
       await dispatch(getAdmins());
       await dispatch(getAdminCount());
     }
     dispatch(endStatusLoading());
   } catch (e) {
-    console.log(e);
+    console.log(e.message);
     dispatch(endStatusLoading());
     NotificationManager.error("Network error");
   }
 };
 
-export const updateAdmin = (adminData,auth_id) => async (dispatch) => {
+export const updateAdmin = (adminData, auth_id) => async (dispatch) => {
   const body = {
     ...adminData,
     password: "Password123",
@@ -95,7 +95,7 @@ export const updateAdmin = (adminData,auth_id) => async (dispatch) => {
     }
     dispatch(endStatusLoading());
   } catch (e) {
-    console.log(e)
+    console.log(e);
     dispatch(endStatusLoading());
     NotificationManager.error("Network error");
   }
@@ -125,15 +125,11 @@ export const deleteAdmin = (auth_id, adminsData) => async (dispatch) => {
 export const searchAdmins = (searchData) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
-    const res = await axios.get(
-      `${api.user}/v1.1/admin/users?q=${searchData}&user_type=admin`
-    );
+    const res = await axios.get(`${api.user}/v1.1/admin/users?q=${searchData}&user_type=admin`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      const res2 = await axios.get(
-        `${api.user}/v1.1/admin/users?q=${searchData}&component=count&user_type=admin`
-      );
+      const res2 = await axios.get(`${api.user}/v1.1/admin/users?q=${searchData}&component=count&user_type=admin`);
       dispatch({
         type: ADMIN_COUNT,
         payload: res2.data.data.total ? res2.data.data.total : 0,
