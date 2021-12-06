@@ -65,7 +65,7 @@ const ReferralFee = ({
                       className="pr-2 font-xl"
                       style={{ fontSize: "2.5rem" }}
                     >
-                      {`#${customerCareNumbers?.referral_bonus}`}
+                      {` ₦${customerCareNumbers?.referral_bonus}`}
                     </span>
                   </div>
                 </Card>

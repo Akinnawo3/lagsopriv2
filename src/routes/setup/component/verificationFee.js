@@ -85,7 +85,7 @@ const VerificationFee = ({
                       className="pr-2 font-xl"
                       style={{ fontSize: "2.5rem" }}
                     >
-                      {`#${customerCareNumbers?.verification_fee?.total.toLocaleString()}`}
+                      {` ₦${customerCareNumbers?.verification_fee?.total.toLocaleString()}`}
                     </span>
                   </div>
                 </Card>

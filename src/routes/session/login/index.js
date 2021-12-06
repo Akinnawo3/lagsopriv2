@@ -74,8 +74,7 @@ const Signin = ({ loginUser, loading }) => {
                                  </Button>
                               </FormGroup>
                            </Form>
-                           <p className="text-muted">By signing up you agree to {AppConfig.brandName}</p>
-                           <p><a className="text-muted">Terms of Service</a></p>
+                           {/* <p className="text-muted">By signing up you agree to {AppConfig.brandName}</p> */}
                         </div>
                      </div>
                   </div>

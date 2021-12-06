@@ -12,7 +12,6 @@ import {Link} from "react-router-dom";
 import {NotificationManager} from "react-notifications";
 import emailMessages from "Assets/data/email-messages/emailMessages";
 import TableCell from "@material-ui/core/TableCell";
-import moment from "moment";
 import suspensionReasonsList from "../../../assets/data/suspension-reasons/suspensionReasonsList";
 import Spinner from "Components/spinner/Spinner";
 
@@ -436,8 +435,8 @@ const DriverProfile = ({
                   <strong>One-off Payment Amount</strong>
                 </span>
                 {driver?.driver_data?.driver_category === "social"
-                  ? `# ${customerCareNumbers?.soc_driver_fee.total?.toLocaleString()}`
-                  : `# ${customerCareNumbers?.com_driver_fee?.total?.toLocaleString()}`}
+                  ? ` ₦ ${customerCareNumbers?.soc_driver_fee.total?.toLocaleString()}`
+                  : ` ₦ ${customerCareNumbers?.com_driver_fee?.total?.toLocaleString()}`}
               </li>
               <li className="list-group-item text-right">
                 <span className="pull-left">
@@ -623,7 +622,6 @@ const DriverProfile = ({
                   <div className="fw-bold text-danger">{verificationResult?.msg} </div>
                 </div>
               )}
-
               {verificationResult?.status === "success" && (
                 <div>
                   <ul className="list-group">
@@ -670,12 +668,25 @@ const DriverProfile = ({
                   </ul>
                 </div>
               )}
-
-              {(verificationResult?.status === "1" || verificationResult?.code === "00") && (
+              {/* status "1" is for lasdri when valid status 
+              status "0" is for lasdri when valid but expired
+              status "00" is for lassra when valid */}
+              {(verificationResult?.status === "1" || verificationResult?.status === "0" || verificationResult?.code === "00") && (
                 <div>
-                  <div className="d-flex flex-column justify-content-center align-items-center">
-                    <h2 className="fw-bold ">{verificationResult?.message} </h2>
-                  </div>
+                  <ul className="list-group">
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Message</strong>
+                      </span>
+                      {`${verificationResult?.message}`}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Name</strong>
+                      </span>
+                      {`${verificationResult?.name}`}
+                    </li>
+                  </ul>
                   <div className="mt-2 text-right">
                     <button className=" btn rounded btn-primary" onClick={() => verifyId(idType)}>
                       Verify {idVerificationType(idType)}

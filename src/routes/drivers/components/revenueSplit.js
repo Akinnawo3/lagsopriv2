@@ -82,7 +82,7 @@ const RevenueSplit = ({getDriverRevenueSPlit, driverRevenueSplit, auth_id}) => {
                 <TableRow hover>
                   <TableCell>Debt Service</TableCell>
                   {/* <TableCell>Percentage</TableCell> */}
-                  <TableCell>{`#${totalDebtService}`}</TableCell>
+                  <TableCell>{` ₦${totalDebtService}`}</TableCell>
                   <TableCell>{moment(driverRevenueSplit?.created).format("dddd, MMMM Do YYYY")} </TableCell>
                   <TableCell>
                     <Badge color={getStatusColor(totalDebtService)}>{getStatus(totalDebtService)}</Badge>
@@ -91,7 +91,7 @@ const RevenueSplit = ({getDriverRevenueSPlit, driverRevenueSplit, auth_id}) => {
                 <TableRow hover>
                   <TableCell>Daily LASG Tax</TableCell>
                   {/* <TableCell>Percentage</TableCell> */}
-                  <TableCell>{`#${driverRevenueSplit?.daily_tax}`}</TableCell>
+                  <TableCell>{` ₦${driverRevenueSplit?.daily_tax}`}</TableCell>
                   <TableCell>{moment(driverRevenueSplit?.created).format("dddd, MMMM Do YYYY")} </TableCell>
                   <TableCell>
                     <Badge color={getStatusColor(driverRevenueSplit?.daily_tax)}>{getStatus(driverRevenueSplit?.daily_tax)}</Badge>
@@ -100,7 +100,7 @@ const RevenueSplit = ({getDriverRevenueSPlit, driverRevenueSplit, auth_id}) => {
                 <TableRow hover>
                   <TableCell>Tech Co.</TableCell>
                   {/* <TableCell>Percentage</TableCell> */}
-                  <TableCell>{`#${driverRevenueSplit?.tech_co}`}</TableCell>
+                  <TableCell>{` ₦${driverRevenueSplit?.tech_co}`}</TableCell>
                   <TableCell>{moment(driverRevenueSplit?.created).format("dddd, MMMM Do YYYY")} </TableCell>
                   <TableCell>
                     <Badge color={getStatusColor(driverRevenueSplit?.tech_co)}>{getStatus(driverRevenueSplit?.tech_co)}</Badge>
@@ -109,7 +109,7 @@ const RevenueSplit = ({getDriverRevenueSPlit, driverRevenueSplit, auth_id}) => {
                 <TableRow hover>
                   <TableCell>Refleeting</TableCell>
                   {/* <TableCell>Percentage</TableCell> */}
-                  <TableCell>{`#${driverRevenueSplit?.refleeting}`}</TableCell>
+                  <TableCell>{` ₦${driverRevenueSplit?.refleeting}`}</TableCell>
                   <TableCell>{moment(driverRevenueSplit?.created).format("dddd, MMMM Do YYYY")} </TableCell>
                   <TableCell>
                     <Badge color={getStatusColor(driverRevenueSplit?.refleeting)}>{getStatus(driverRevenueSplit?.refleeting)}</Badge>
@@ -118,7 +118,7 @@ const RevenueSplit = ({getDriverRevenueSPlit, driverRevenueSplit, auth_id}) => {
                 <TableRow hover>
                   <TableCell>Asset Co</TableCell>
                   {/* <TableCell>Percentage</TableCell> */}
-                  <TableCell>{`#${driverRevenueSplit?.asset_co}`}</TableCell>
+                  <TableCell>{` ₦${driverRevenueSplit?.asset_co}`}</TableCell>
                   <TableCell>{moment(driverRevenueSplit?.created).format("dddd, MMMM Do YYYY")} </TableCell>
                   <TableCell>
                     <Badge color={getStatusColor(driverRevenueSplit?.asset_co)}>{getStatus(driverRevenueSplit?.asset_co)}</Badge>
@@ -127,7 +127,7 @@ const RevenueSplit = ({getDriverRevenueSPlit, driverRevenueSplit, auth_id}) => {
                 <TableRow hover>
                   <TableCell>Communication</TableCell>
                   {/* <TableCell>Percentage</TableCell> */}
-                  <TableCell>{`#${driverRevenueSplit?.comms}`}</TableCell>
+                  <TableCell>{` ₦${driverRevenueSplit?.comms}`}</TableCell>
                   <TableCell>{moment(driverRevenueSplit?.created).format("dddd, MMMM Do YYYY")} </TableCell>
                   <TableCell>
                     <Badge color={getStatusColor(driverRevenueSplit?.comms)}>{getStatus(driverRevenueSplit?.comms)}</Badge>
@@ -136,7 +136,7 @@ const RevenueSplit = ({getDriverRevenueSPlit, driverRevenueSplit, auth_id}) => {
                 <TableRow hover>
                   <TableCell>Maintenance</TableCell>
                   {/* <TableCell>Percentage</TableCell> */}
-                  <TableCell>{`#${driverRevenueSplit?.maintenance}`}</TableCell>
+                  <TableCell>{` ₦${driverRevenueSplit?.maintenance}`}</TableCell>
                   <TableCell>{moment(driverRevenueSplit?.created).format("dddd, MMMM Do YYYY")} </TableCell>
                   <TableCell>
                     <Badge color={getStatusColor(driverRevenueSplit?.maintenance)}>{getStatus(driverRevenueSplit?.maintenance)}</Badge>

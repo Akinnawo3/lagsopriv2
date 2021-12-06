@@ -1,26 +1,19 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, {useState, useEffect, Fragment} from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { getAdminLogs, getAdminLogsCount } from "Actions/userAction";
+import {getAdminLogs, getAdminLogsCount} from "Actions/userAction";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import { Form, FormGroup, Label, Input } from "reactstrap";
+import {Form, FormGroup, Label, Input} from "reactstrap";
 import Button from "@material-ui/core/Button";
 import Pagination from "react-js-pagination";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import moment from "moment";
-
-const ActivityLog = ({
-  loading,
-  getAdminLogs,
-  AdminActivityLog,
-  getAdminLogsCount,
-  AdminActivityLogCount,
-  match,
-}) => {
+import {calculatePostDate} from "Helpers/helpers";
+const ActivityLog = ({loading, getAdminLogs, AdminActivityLog, getAdminLogsCount, AdminActivityLogCount, match}) => {
   const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
     getAdminLogs(1, true);
@@ -32,14 +25,13 @@ const ActivityLog = ({
     window.scrollTo(0, 0);
   };
 
-
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Activities"} match={match} />
       {!loading && (
         <RctCollapsibleCard heading="Activity Log" fullBlock>
           {AdminActivityLog?.length > 0 && (
-            <div className="table-responsive" style={{ minHeight: "50vh" }}>
+            <div className="table-responsive" style={{minHeight: "50vh"}}>
               <Table>
                 <TableHead>
                   <TableRow hover>
@@ -52,11 +44,9 @@ const ActivityLog = ({
                   <Fragment>
                     {AdminActivityLog.map((item, key) => (
                       <TableRow hover key={key}>
+                        <TableCell>{item.first_name + "  " + item.last_name}</TableCell>
                         <TableCell>
-                          {item.first_name + "  " + item.last_name}
-                        </TableCell>
-                        <TableCell>
-                          {moment(item.createdAt).format("LLLL")}
+                          {calculatePostDate(item.createdAt)}
                           {/* {item.createdAt} */}
                         </TableCell>
                         <TableCell>{item.body}</TableCell>
@@ -91,8 +81,7 @@ const ActivityLog = ({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAdminLogs: (page_no, loading) =>
-      dispatch(getAdminLogs(page_no, loading)),
+    getAdminLogs: (page_no, loading) => dispatch(getAdminLogs(page_no, loading)),
     getAdminLogsCount: (loading) => dispatch(getAdminLogsCount(loading)),
   };
 }

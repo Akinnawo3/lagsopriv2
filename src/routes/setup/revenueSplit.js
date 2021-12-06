@@ -91,13 +91,13 @@ const RevenueSplit = ({
                         <li className="ml-3">
                           <div className="d-flex justify-content-between">
                             <div>Commercial Driver</div>
-                            <strong>{`#${revenueSplitData?.commercial_debt_service}`}</strong>
+                            <strong>{` ₦${revenueSplitData?.commercial_debt_service}`}</strong>
                           </div>
                         </li>
                         <li className="ml-3">
                           <div className="d-flex justify-content-between">
                             <div>Social Driver</div>
-                            <strong>{`#${revenueSplitData?.social_debt_service}`}</strong>
+                            <strong>{` ₦${revenueSplitData?.social_debt_service}`}</strong>
                           </div>
                         </li>
                       </ol>
@@ -105,7 +105,7 @@ const RevenueSplit = ({
                     <li className="mb-3">
                       <div className="d-flex justify-content-between">
                         <div>Dail LASG Tax</div>
-                        <strong>{`#${revenueSplitData?.daily_tax}`}</strong>
+                        <strong>{` ₦${revenueSplitData?.daily_tax}`}</strong>
                       </div>
                     </li>
                     <li className="mb-3">

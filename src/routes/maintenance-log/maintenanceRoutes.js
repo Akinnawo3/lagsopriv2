@@ -12,7 +12,7 @@ const MaintenanceLog = ({match}) => (
   <div className="content-wrapper">
     <Switch>
       <Route path={`/admin/maintenance/:id`} component={AsyncMaintenanceDetails} />
-      <Route path={`/admin/maintenance`} component={AsyncMaintenanceDetails} />
+      <Route path={`/admin/maintenance`} component={AsyncMaintenanceLog} />
     </Switch>
   </div>
 );

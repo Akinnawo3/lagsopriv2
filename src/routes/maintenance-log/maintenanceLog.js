@@ -40,18 +40,17 @@ const MaintenanceLog = ({match, getSOS, sos, loading, getSOSCount, sosCount}) =>
             <Table>
               <TableHead>
                 <TableRow hover>
-                  <TableCell>Reporter</TableCell>
-                  <TableCell>Address</TableCell>
-                  <TableCell>Latitude</TableCell>
-                  <TableCell>Longitude</TableCell>
-                  <TableCell>Time of Report</TableCell>
-                  <TableCell>Status</TableCell>
+                  <TableCell>Driver Name</TableCell>
+                  <TableCell>Car Number</TableCell>
+                  <TableCell>Car Plate Number</TableCell>
+                  <TableCell>Time </TableCell>
+                  <TableCell> Status</TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 <Fragment>
-                  {sos.length > 0 &&
+                  {/* {sos.length > 0 &&
                     sos.map((data) => (
                       <TableRow hover key={data.id}>
                         <TableCell>{"Placeholder"}</TableCell>
@@ -64,13 +63,77 @@ const MaintenanceLog = ({match, getSOS, sos, loading, getSOSCount, sosCount}) =>
                         </TableCell>
                         <TableCell>
                           <button type="button" className="rct-link-btn text-primary" title="view details">
-                            <Link to={`/admin/emergency/${data.sos_id}`}>
+                            <Link to={`/admin/maintenance/skm`}>
                               <i className="ti-eye" />
                             </Link>
                           </button>
                         </TableCell>
                       </TableRow>
-                    ))}
+                    ))} */}
+                  <TableRow hover key={"fdj"}>
+                    <TableCell>Victor</TableCell>
+                    <TableCell> 1234567</TableCell>
+                    <TableCell> KBW-2232</TableCell>
+                    <TableCell> 3 mins ago</TableCell>
+                    <TableCell>
+                      <Badge color="success">Completed</Badge>
+                    </TableCell>
+                    <TableCell>
+                      <button type="button" className="rct-link-btn text-primary" title="view details">
+                        <Link to={`/admin/maintenance/skm`}>
+                          <i className="ti-eye" />
+                        </Link>
+                      </button>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow hover key={"fdj"}>
+                    <TableCell>Victor</TableCell>
+                    <TableCell> 1234567</TableCell>
+                    <TableCell> KBW-2232</TableCell>
+                    <TableCell> 3 mins ago</TableCell>
+                    <TableCell>
+                      <Badge color="success">Completed</Badge>
+                    </TableCell>
+                    <TableCell>
+                      <button type="button" className="rct-link-btn text-primary" title="view details">
+                        <Link to={`/admin/maintenance/skm`}>
+                          <i className="ti-eye" />
+                        </Link>
+                      </button>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow hover key={"fdj"}>
+                    <TableCell>Victor</TableCell>
+                    <TableCell> 1234567</TableCell>
+                    <TableCell> KBW-2232</TableCell>
+                    <TableCell> 3 mins ago</TableCell>
+                    <TableCell>
+                      <Badge color="success">Completed</Badge>
+                    </TableCell>
+                    <TableCell>
+                      <button type="button" className="rct-link-btn text-primary" title="view details">
+                        <Link to={`/admin/maintenance/skm`}>
+                          <i className="ti-eye" />
+                        </Link>
+                      </button>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow hover key={"fdj"}>
+                    <TableCell>Victor</TableCell>
+                    <TableCell> 1234567</TableCell>
+                    <TableCell> KBW-2232</TableCell>
+                    <TableCell> 3 mins ago</TableCell>
+                    <TableCell>
+                      <Badge color="success">Completed</Badge>
+                    </TableCell>
+                    <TableCell>
+                      <button type="button" className="rct-link-btn text-primary" title="view details">
+                        <Link to={`/admin/maintenance/skm`}>
+                          <i className="ti-eye" />
+                        </Link>
+                      </button>
+                    </TableCell>
+                  </TableRow>
                 </Fragment>
               </TableBody>
             </Table>
