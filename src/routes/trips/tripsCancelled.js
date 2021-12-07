@@ -32,7 +32,7 @@ function mapDispatchToProps(dispatch) {
 const mapStateToProps = (state) => ({
   trips: state.trips.trips,
   tripCount: state.trips.tripCount,
-  isLoading: state.loading.loading,x
+  isLoading: state.loading.loading,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TripsCancelled);
