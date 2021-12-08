@@ -75,6 +75,7 @@ module.exports = {
   "sidebar.emergencyEmail": "Emergency Email",
   "sidebar.maintenance": "Maintenance and Repairs",
   "sidebar.maintenance-log": "Maintenance/Repairs Log",
+  "sidebar.promo": "Promotions",
   "sidebar.support": "Support",
   "sidebar.analytics": "Analytics",
   "sidebar.summary": "Summary",
