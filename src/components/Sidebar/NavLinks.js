@@ -387,12 +387,12 @@ export default {
       new_item: false,
       path: "/admin/activity-log",
     },
-    // {
-    //   menu_title: "sidebar.promo",
-    //   menu_icon: "zmdi zmdi-map",
-    //   type_multi: null,
-    //   new_item: false,
-    //   path: "/admin/promo-discounts",
-    // },
+    {
+      menu_title: "sidebar.promo",
+      menu_icon: "zmdi zmdi-map",
+      type_multi: null,
+      new_item: false,
+      path: "/admin/promo-discounts",
+    },
   ],
 };

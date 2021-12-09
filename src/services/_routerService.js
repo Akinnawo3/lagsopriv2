@@ -31,6 +31,9 @@ import PaymentsServiceRoutes from "Routes/payments-service/paymentsServiceRoutes
 import SetupRoutes from "Routes/setup/setupRoutes";
 import MaintenanceLog from "../routes/maintenance-log/maintenanceRoutes";
 import MaintenanceRoutes from "../routes/maintenance-log/maintenanceRoutes";
+import promoRoutes from "../routes/promo-discounts/promoRoutes";
+
+
 
 export default [
   {
@@ -83,7 +86,7 @@ export default [
   },
   {
     path: "promo-discounts",
-    component: AsyncPromoDiscount,
+    component: promoRoutes,
   },
   // {
   //    path: 'cancellations',

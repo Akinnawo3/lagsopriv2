@@ -1,20 +1,15 @@
-import React, {useState, useEffect, Fragment, useRef} from 'react';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
-import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
-import { Form, FormGroup, Label, Input } from 'reactstrap';
+import React, {useState, useEffect, Fragment, useRef} from "react";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
+import {Form, FormGroup, Label, Input} from "reactstrap";
 import Button from "@material-ui/core/Button";
 import Pagination from "react-js-pagination";
-import {
-    Modal,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-} from 'reactstrap';
+import {Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import {connect} from "react-redux";
 import Spinner from "../../components/spinner/Spinner";
@@ -22,298 +17,311 @@ import IconButton from "@material-ui/core/IconButton";
 import MobileSearchForm from "Components/Header/MobileSearchForm";
 import {CSVLink} from "react-csv";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import {
-    createPromoDiscount,
-    deletePromoDiscount,
-    getPromoDiscount,
-    updatePromoDiscount
-} from "../../actions/promoDiscountsAction";
+import {calculatePostDate} from "Helpers/helpers";
+import {createPromoDiscount, deletePromoDiscount, getPromoDiscount, getPromoDiscountCount, updatePromoDiscount} from "../../actions/promoDiscountsAction";
+import {Link} from "react-router-dom";
+import moment from "moment";
 
-const  PromoDiscounts = (props) => {
-    const {
-        match,
-        getPromoDiscounts,
-        promoDiscounts,
-        createPromoDiscount,
-        updatePromoDiscount,
-        loading,
-        deletePromoDiscount,
-        loadingStatus} = props
-    const [addNewUserModal, setAddNewUserModal] = useState(false)
-    const [editUser, setEditUser] = useState(false)
-    const [updateId, setUpdateId] = useState(null)
-    const [deleteId, setDeleteId] = useState(null)
-    const [formData, setFormData] = useState({promoCode: '', type: '', usageLimit: '', discountPrice: '', discountPercentage: '', endDate: ''})
-    const [searchData, setSearchData] = useState('')
-    const inputEl = useRef(null);
-    const [posts, setPosts] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage] = useState(10);
-    const indexOfLastPost = currentPage * postsPerPage;
-    const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost)
-    const [excelExport, setExcelExport] = useState([])
+const PromoDiscounts = (props) => {
+  const {match, getPromoDiscounts, promoDiscountsCount, promoDiscounts, createPromoDiscount, updatePromoDiscount, getPromoDiscountCount, loading, deletePromoDiscount, loadingStatus} = props;
+  const [addNewUserModal, setAddNewUserModal] = useState(false);
+  const [editUser, setEditUser] = useState(false);
+  const [updateId, setUpdateId] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
+  const [formData, setFormData] = useState({
+    code_type: "",
+    custom_code: "",
+    promo_code_owner: "",
+    expiry_date: "",
+    description: "",
+    num_of_rides: "",
+    users_limit: "",
+    discount_type: "",
+    discount_value: "",
+  });
+  const [searchData, setSearchData] = useState("");
+  const inputEl = useRef(null);
+  const [posts, setPosts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(10);
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+  const [excelExport, setExcelExport] = useState([]);
 
-    useEffect(()=> {
-        getPromoDiscounts();
-    },[])
+  useEffect(() => {
+    getPromoDiscounts(1);
+    getPromoDiscountCount();
+  }, []);
 
-    const paginate = pageNumber => {
-        setCurrentPage(pageNumber);
-        window.scrollTo(0, 0);
-    };
+  // const paginate = (pageNumber) => {
+  //   setCurrentPage(pageNumber);
+  //   window.scrollTo(0, 0);
+  // };
 
-    const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
-    const {promoCode, type, usageLimit, discountPrice, discountPercentage, endDate} = formData
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    getPromoDiscounts(pageNumber);
+    window.scrollTo(0, 0);
+  };
 
-    const opnAddNewUserModal = (e) => {
-        e.preventDefault();
-        setAddNewUserModal(true)
-    }
+  const onChange = (e) => setFormData({...formData, [e.target.name]: e.target.value});
+  const {code_type, custom_code, promo_code_owner, expiry_date, description, num_of_rides, users_limit, discount_type, discount_value} = formData;
 
+  const opnAddNewUserModal = (e) => {
+    e.preventDefault();
+    setAddNewUserModal(true);
+  };
+  console.log(discount_type);
 
-    const opnAddNewUserEditModal = (id) => {
-        promoDiscounts.map(promoDiscount => {
-            if(promoDiscount.id === id){
-                setFormData(
-                    {
-                        promoCode: promoDiscount.promoCode,
-                        type: promoDiscount.type,
-                        usageLimit: promoDiscount.usageLimit,
-                        discountPrice: promoDiscount.discountPrice,
-                        discountPercentage: promoDiscount.discountPercentage,
-                        endDate: promoDiscount.endDate
-                    })
-                setUpdateId(promoDiscount.id)
-            }
-        })
-        setAddNewUserModal(true)
-        setEditUser(true)
-    }
+  const opnAddNewUserEditModal = (id) => {
+    const editedPromo = promoDiscounts.find((item) => item.promo_code_id === id);
+    console.log(editedPromo?.expiry_date);
+    setUpdateId(id);
+    console.log(editedPromo);
+    setFormData({
+      code_type: editedPromo?.code_type,
+      custom_code: editedPromo?.code,
+      promo_code_owner: editedPromo?.promo_code_owner,
+      expiry_date: editedPromo?.expiry_date,
+      description: editedPromo?.description,
+      num_of_rides: editedPromo?.num_of_rides,
+      users_limit: editedPromo?.users_limit,
+      discount_type: editedPromo?.discount_type,
+      discount_value: editedPromo?.discount_value,
+    });
+    // setFormData({...formData, });
+    // setFormData({...formData, });
+    // setFormData({...formData,});
+    // setFormData({...formData, num_of_rides: editedPromo?.num_of_rides});
+    // setFormData({...formData, users_limit: editedPromo?.users_limit});
+    // setFormData({...formData, discount_type: editedPromo?.discount_type});
+    // setFormData({...formData, discount_value: editedPromo?.discount_value});
+    setAddNewUserModal(true);
+    setEditUser(true);
+  };
 
-    const onAddUpdateUserModalClose = () => {
-        setFormData(
-            {
-                promoCode: '', type: '', usageLimit: '', discountPrice: '', discountPercentage: '', endDate: ''
-            })
-        setUpdateId(null)
-        setAddNewUserModal(false);
-        setEditUser(false);
-    }
+  const onAddUpdateUserModalClose = () => {
+    setFormData({
+      code_type: "",
+      custom_code: "",
+      promo_code_owner: "",
+      expiry_date: "",
+      description: "",
+      num_of_rides: "",
+      users_limit: "",
+      discount_type: "",
+      discount_value: "",
+    });
+    setUpdateId(null);
+    setAddNewUserModal(false);
+    setEditUser(false);
+  };
 
-    const onDelete = (id) => {
-        inputEl.current.open();
-        setDeleteId(id)
-    }
+  const onDelete = (id) => {
+    inputEl.current.open();
+    setDeleteId(id);
+  };
 
-    const onSubmit = async (e) => {
-        e.preventDefault();
-        onAddUpdateUserModalClose()
-        !editUser?  await createPromoDiscount(promoCode, type, usageLimit, discountPrice, discountPercentage, endDate) : await updatePromoDiscount(updateId, promoCode, type, usageLimit, discountPrice, discountPercentage, endDate)
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    onAddUpdateUserModalClose();
+    const apiData =
+      code_type === "custom"
+        ? {code_type, custom_code, promo_code_owner, expiry_date, description, num_of_rides, users_limit, discount_type, discount_value}
+        : {code_type, promo_code_owner, expiry_date, description, num_of_rides, users_limit, discount_type, discount_value};
+    !editUser ? await createPromoDiscount(apiData) : await updatePromoDiscount(apiData, updateId);
+  };
 
-
-    };
-
-    const onChangeSearch = (e) =>{
-        e.preventDefault();
-        setSearchData(e.target.value );
-    };
-
-    useEffect(()=> {
-        if(searchData && promoDiscounts){
-            setCurrentPage(1)
-            const search = promoDiscounts.filter(promoDiscount => {
-                return (promoDiscount.promoCode.toLowerCase().includes(searchData.toLowerCase()))
-            });
-            setPosts(search)
-        } else if(searchData === "") {
-            setPosts(promoDiscounts.sort((a, b) => parseFloat(b.id) - parseFloat(a.id)))
-        }
-    },[searchData]);
-
-    useEffect(()=> {
-        if(promoDiscounts) {
-            setPosts(promoDiscounts.sort((a, b) => parseFloat(b.id) - parseFloat(a.id)))
-            let result = promoDiscounts.map(promoDiscount=> {
-                return {
-                    promoCode: promoDiscount['promoCode'],
-                    type: promoDiscount['type'],
-                    usageLimit: promoDiscount['usageLimit'],
-                    discountPrice: promoDiscount['discountPrice'],
-                    discountPercentage: promoDiscount['discountPercentage'],
-                    endDate: promoDiscount['endDate']
-                }
-            })
-            setExcelExport(result)
-        }
-    },[promoDiscounts])
+  const onChangeSearch = (e) => {
+    e.preventDefault();
+    setSearchData(e.target.value);
+  };
 
 
-    const removeDeleteId = ()=> {
-        setDeleteId(null)
-    }
+  const removeDeleteId = () => {
+    setDeleteId(null);
+  };
 
-    return (
-        <div className="table-wrapper">
-            <PageTitleBar title={"Discount Promo"} match={match} />
-            {loadingStatus &&
-            <LinearProgress />
-            }
-            {loading && <Spinner />}
-            {!loading &&
-            <RctCollapsibleCard heading="Discount Promo" fullBlock>
-                <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-                    <div className="search-wrapper">
-                        <Input type="search" className="search-input-lg" name="searchData" value={searchData} onChange={onChangeSearch} placeholder="Search.." />
-                    </div>
-                    <IconButton mini="true" className="search-icon-btn">
-                        <i className="zmdi zmdi-search"></i>
-                    </IconButton>
-                    <MobileSearchForm
-                        // isOpen={isMobileSearchFormVisible}
-                        onClose={() => this.setState({ isMobileSearchFormVisible: false })}
-                    />
-                </li>
-                <div className="float-right">
-                    <CSVLink
-                        // headers={headers}
-                        data={excelExport}
-                        filename={"discountPromo.csv"}
-                        className="btn-sm btn-outline-default mr-10 bg-primary text-white"
-                        target="_blank"
-                    >
-                        <i className="zmdi zmdi-download mr-2"></i>
-                        Export to Excel
-                    </CSVLink>
-                    {/*<CSVLink*/}
-                    {/*    // headers={headers}*/}
-                    {/*    data={sampleData}*/}
-                    {/*    filename={"sampleAdmins.csv"}*/}
-                    {/*    className="btn-sm btn-outline-default mr-10 bg-success text-white"*/}
-                    {/*    target="_blank"*/}
-                    {/*>*/}
-                    {/*    <i className="zmdi zmdi-download mr-2"></i>*/}
+  return (
+    <div className="table-wrapper">
+      <PageTitleBar title={"Discount Promo"} match={match} />
+      {!loading && (
+        <RctCollapsibleCard heading="Discount Promo" fullBlock>
+          {/* <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+            <div className="search-wrapper">
+              <Input type="search" className="search-input-lg" name="searchData code or owner" value={searchData} onChange={onChangeSearch} placeholder="Search.." />
+            </div>
+            <IconButton mini="true" className="search-icon-btn">
+              <i className="zmdi zmdi-search"></i>
+            </IconButton>
+       
+          </li> */}
+          <div className="float-right">
 
-                    {/*    Sample excel to upload*/}
-                    {/*</CSVLink>*/}
-                    {/*<a href="#" onClick={(e) => opnAddNewUserModal1(e)} color="primary" className="btn-sm btn-outline-default mr-10 bg-danger text-white"><i className="zmdi zmdi-upload mr-2"></i>Upload</a>*/}
-                    <a href="#" onClick={(e) => opnAddNewUserModal(e)} color="primary" className="caret btn-sm mr-10">Create New Promo <i className="zmdi zmdi-plus"></i></a>
-                </div>
-                <div className="table-responsive" style={{minHeight: "50vh"}}>
-                    <Table>
-                        <TableHead>
-                            <TableRow hover>
-                                <TableCell>Promo Code</TableCell>
-                                <TableCell>Type</TableCell>
-                                <TableCell>Usage Limit</TableCell>
-                                <TableCell>Discount Price</TableCell>
-                                <TableCell>Discount Percentage</TableCell>
-                                <TableCell>End Date</TableCell>
-                                <TableCell>Actions</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            <Fragment>
-                                {posts && currentPosts.map((promoDiscount, key) => (
-                                    <TableRow hover key={key}>
-                                        <TableCell>{promoDiscount.promoCode}</TableCell>
-                                        <TableCell>{promoDiscount.type}</TableCell>
-                                        <TableCell>{promoDiscount.usageLimit}</TableCell>
-                                        <TableCell>{promoDiscount.discountPrice}</TableCell>
-                                        <TableCell>{promoDiscount.discountPercentage}</TableCell>
-                                        <TableCell>{promoDiscount.endDate}</TableCell>
-                                        <TableCell>
-                                            <button type="button" className="rct-link-btn" onClick={(e) => opnAddNewUserEditModal(promoDiscount.id)}><i className="ti-pencil"></i></button>
-                                            <button type="button" className="rct-link-btn ml-lg-3 text-danger" onClick={() => onDelete(promoDiscount.id)}><i className="ti-close"></i></button>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </Fragment>
-                        </TableBody>
-                    </Table>
-                    {posts.length < 1 && <div className="d-flex align-items-center justify-content-center w-100 p-5">No Promo Discount Found</div>}
-                </div>
-                <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
-                    {posts.length > 0 &&
-                    <Pagination
-                        activePage={currentPage}
-                        itemClass="page-item"
-                        linkClass="page-link"
-                        itemsCountPerPage={postsPerPage}
-                        totalItemsCount={posts.length}
-                        onChange={paginate}
-                    />}
-                </div>
-            </RctCollapsibleCard>
-            }
-            <Modal isOpen={addNewUserModal} toggle={() => onAddUpdateUserModalClose()}>
-                <ModalHeader toggle={() => onAddUpdateUserModalClose()}>
-                    {editUser ? 'Update Promo Discount': 'Create New Promo Discount'}
-                </ModalHeader>
-                <Form onSubmit={onSubmit}>
-                    <ModalBody>
-                        <FormGroup>
-                            <Label>Promo Code</Label>
-                            <Input type="text"  name="promoCode" value={promoCode} onChange={onChange}   required/>
-                        </FormGroup>
-                        <FormGroup>
-                            <Label>Type</Label>
-                            <Input type="text"  name="type" value={type} onChange={onChange}  required />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label>Usage Limit</Label>
-                            <Input type="number"  name="usageLimit" value={usageLimit} onChange={onChange}  required />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label>Discount Price</Label>
-                            <Input type="number"  name="discountPrice" value={discountPrice} onChange={onChange}  required />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label>Discount Percentage</Label>
-                            <Input type="number"  name="discountPercentage" value={discountPercentage} onChange={onChange}  required />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label>End Date</Label>
-                            <Input type="date"  name="endDate" value={endDate} onChange={onChange}  required />
-                        </FormGroup>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button type="submit" variant="contained" className="text-white btn-success">Submit</Button>
-                    </ModalFooter>
-                </Form>
-            </Modal>
-            <DeleteConfirmationDialog
-                ref={inputEl}
-                title="Are You Sure You Want To Delete?"
-                message="This will delete user permanently."
-                onConfirm={() => {
-                    deletePromoDiscount(deleteId);
-                    inputEl.current.close();
-                }}
-                removeDeleteId={removeDeleteId}
-            />
-        </div>
-    );
-
-}
+            <a href="#" onClick={(e) => opnAddNewUserModal(e)} color="primary" className="caret btn-sm mr-10">
+              Create New Promo <i className="zmdi zmdi-plus"></i>
+            </a>
+          </div>
+          <div className="table-responsive" style={{minHeight: "50vh"}}>
+            <Table>
+              <TableHead>
+                <TableRow hover>
+                  <TableCell>Promo Code</TableCell>
+                  <TableCell>Type</TableCell>
+                  <TableCell>Promo Code Owner</TableCell>
+                  <TableCell>Usage Limit</TableCell>
+                  <TableCell>Discount Value</TableCell>
+                  <TableCell>Creation Time</TableCell>
+                  <TableCell>End Date</TableCell>
+                  <TableCell>Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <Fragment>
+                  {promoDiscounts &&
+                    promoDiscounts.map((promoDiscount, key) => (
+                      <TableRow hover key={key}>
+                        <TableCell>{promoDiscount.code}</TableCell>
+                        <TableCell>{promoDiscount.code_type}</TableCell>
+                        <TableCell>{promoDiscount.promo_code_owner}</TableCell>
+                        <TableCell>{promoDiscount.users_limit}</TableCell>
+                        <TableCell>{`${promoDiscount?.discount_type === "amount" ? "₦" : ""} ${promoDiscount.discount_value} ${promoDiscount?.discount_type === "percentage" ? "%" : ""}`}</TableCell>
+                        <TableCell>{calculatePostDate(promoDiscount.createdAt)}</TableCell>
+                        <TableCell>{moment(promoDiscount.expiry_date).format("LL")}</TableCell>
+                        <TableCell>
+                          <button type="button" className="rct-link-btn" onClick={(e) => opnAddNewUserEditModal(promoDiscount.promo_code_id)}>
+                            <i className="ti-pencil"></i>
+                          </button>
+                          <button type="button" className="rct-link-btn ml-lg-3 text-danger mr-2" onClick={() => onDelete(promoDiscount.promo_code_id)}>
+                            <i className="ti-trash"></i>{" "}
+                          </button>
+                          <button type="button" className="rct-link-btn text-primary" title="view details">
+                            <Link to={`/admin/promo-discounts/${promoDiscount.promo_code_id}`}>
+                              <i className="ti-eye" />
+                            </Link>
+                          </button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </Fragment>
+              </TableBody>
+            </Table>
+            {promoDiscounts.length < 1 && <div className="d-flex align-items-center justify-content-center w-100 p-5">No Promo Discount Found</div>}
+          </div>
+          <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
+            {promoDiscounts.length > 0 && (
+              <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={promoDiscountsCount} onChange={paginate} />
+            )}
+          </div>
+        </RctCollapsibleCard>
+      )}
+      <Modal isOpen={addNewUserModal} toggle={() => onAddUpdateUserModalClose()}>
+        <ModalHeader toggle={() => onAddUpdateUserModalClose()}>{editUser ? "Update Promo Discount" : "Create New Promo Discount"}</ModalHeader>
+        <Form onSubmit={onSubmit}>
+          <ModalBody>
+            <FormGroup>
+              <Label>Promo Type</Label>
+              <Input type="select" name="code_type" value={code_type} onChange={onChange} required>
+                <option value="" selected hidden>
+                  --Select promo type --
+                </option>
+                <option value="custom" selected={code_type === "custom"}>
+                  Custom
+                </option>
+                <option value="generic" selected={code_type === "generic"}>
+                  Generic
+                </option>
+              </Input>
+            </FormGroup>
+            {code_type === "custom" && (
+              <FormGroup>
+                <Label>Custom Code</Label>
+                <Input type="text" name="custom_code" value={custom_code} onChange={onChange} />
+              </FormGroup>
+            )}
+            <FormGroup>
+              <Label>Promo Code Owner</Label>
+              <Input type="text" name="promo_code_owner" value={promo_code_owner} onChange={onChange} required />
+            </FormGroup>
+            <FormGroup>
+              <Label>Expiry Date</Label>
+              <Input
+                type="date"
+                name="expiry_date"
+                value={moment(expiry_date).format("YYYY-MM-DD")}
+                // value={expiry_date}
+                onChange={onChange}
+                required
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label>Description</Label>
+              <Input type="text" name="description" value={description} onChange={onChange} required />
+            </FormGroup>
+            <FormGroup>
+              <Label>Number of Rides</Label>
+              <Input type="number" name="num_of_rides" value={num_of_rides} onChange={onChange} required min="0" />
+            </FormGroup>
+            <FormGroup>
+              <Label>Number of Slots</Label>
+              <Input type="number" name="users_limit" value={users_limit} onChange={onChange} required min="0" />
+            </FormGroup>
+            <FormGroup>
+              <Label>Discount value type</Label>
+              <Input type="select" name="discount_type" value={discount_type} onChange={onChange} required>
+                <option value="" selected hidden>
+                  --Select type --
+                </option>
+                <option value="percentage" selected={discount_type === "percentage"}>
+                  Percentage
+                </option>
+                <option value="amount" selected={discount_type === "amount"}>
+                  Amount
+                </option>
+              </Input>
+            </FormGroup>
+            <FormGroup>
+              <Label>Discount Value</Label>
+              <Input type="number" name="discount_value" value={discount_value} onChange={onChange} min="1" required />
+            </FormGroup>
+          </ModalBody>
+          <ModalFooter>
+            <Button type="submit" variant="contained" className="text-white btn-success">
+              Submit
+            </Button>
+          </ModalFooter>
+        </Form>
+      </Modal>
+      <DeleteConfirmationDialog
+        ref={inputEl}
+        title="Are You Sure You Want To Delete?"
+        message="This will delete user permanently."
+        onConfirm={() => {
+          deletePromoDiscount(deleteId);
+          inputEl.current.close();
+        }}
+        removeDeleteId={removeDeleteId}
+      />
+    </div>
+  );
+};
 
 function mapDispatchToProps(dispatch) {
-    return {
-        getPromoDiscounts: () => dispatch(getPromoDiscount()),
-        createPromoDiscount: (promoCode, type, usageLimit, discountPrice, discountPercentage, endDate) => dispatch(createPromoDiscount(promoCode, type, usageLimit, discountPrice, discountPercentage, endDate)),
-        updatePromoDiscount: (id, promoCode, type, usageLimit, discountPrice, discountPercentage, endDate) => dispatch(updatePromoDiscount(id, promoCode, type, usageLimit, discountPrice, discountPercentage, endDate)),
-        deletePromoDiscount: (id) => dispatch(deletePromoDiscount(id)),
-    };
+  return {
+    getPromoDiscounts: (page_no) => dispatch(getPromoDiscount(page_no)),
+    getPromoDiscountCount: () => dispatch(getPromoDiscountCount()),
+    createPromoDiscount: (data) => dispatch(createPromoDiscount(data)),
+    updatePromoDiscount: (data, id) => dispatch(updatePromoDiscount(data, id)),
+    deletePromoDiscount: (id) => dispatch(deletePromoDiscount(id)),
+  };
 }
 
-const mapStateToProps = state => ({
-    promoDiscounts: state.promoDiscounts.promoDiscounts,
-    loading: state.loading.loading,
-    loadingStatus: state.loading.loadingStatus
-
-
-
+const mapStateToProps = (state) => ({
+  promoDiscounts: state.promoDiscounts.promoDiscounts,
+  promoDiscountsCount: state.promoDiscounts.promoDiscountsCount,
+  loading: state.loading.loading,
+  loadingStatus: state.loading.loadingStatus,
 });
 
-export default connect( mapStateToProps, mapDispatchToProps) (PromoDiscounts);
-
+export default connect(mapStateToProps, mapDispatchToProps)(PromoDiscounts);

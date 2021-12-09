@@ -85,7 +85,6 @@ const DriverTable = ({
     }
   }, [drivers]);
 
-  console.log(drivers);
 
   return (
     <div>
