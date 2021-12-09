@@ -18,12 +18,14 @@ import MobileSearchForm from "Components/Header/MobileSearchForm";
 import {CSVLink} from "react-csv";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import {calculatePostDate} from "Helpers/helpers";
-import {createPromoDiscount, deletePromoDiscount, getPromoDiscount, getPromoDiscountCount, updatePromoDiscount} from "../../actions/promoDiscountsAction";
+import {createPromoDiscount, deletePromoDiscount, getPromoDiscount, getPromoDiscountCount, updatePromoDiscount, searchPromo} from "../../actions/promoDiscountsAction";
 import {Link} from "react-router-dom";
 import moment from "moment";
+import SearchComponent from "Components/SearchComponent/SearchComponent";
 
 const PromoDiscounts = (props) => {
-  const {match, getPromoDiscounts, promoDiscountsCount, promoDiscounts, createPromoDiscount, updatePromoDiscount, getPromoDiscountCount, loading, deletePromoDiscount, loadingStatus} = props;
+  const {match, getPromoDiscounts, promoDiscountsCount, promoDiscounts, searchPromo, createPromoDiscount, updatePromoDiscount, getPromoDiscountCount, loading, deletePromoDiscount, loadingStatus} =
+    props;
   const [addNewUserModal, setAddNewUserModal] = useState(false);
   const [editUser, setEditUser] = useState(false);
   const [updateId, setUpdateId] = useState(null);
@@ -138,7 +140,6 @@ const PromoDiscounts = (props) => {
     setSearchData(e.target.value);
   };
 
-
   const removeDeleteId = () => {
     setDeleteId(null);
   };
@@ -148,17 +149,10 @@ const PromoDiscounts = (props) => {
       <PageTitleBar title={"Discount Promo"} match={match} />
       {!loading && (
         <RctCollapsibleCard heading="Discount Promo" fullBlock>
-          {/* <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-            <div className="search-wrapper">
-              <Input type="search" className="search-input-lg" name="searchData code or owner" value={searchData} onChange={onChangeSearch} placeholder="Search.." />
-            </div>
-            <IconButton mini="true" className="search-icon-btn">
-              <i className="zmdi zmdi-search"></i>
-            </IconButton>
-       
-          </li> */}
+          <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+            {/* <SearchComponent getPreviousData={getPromoDiscounts} getSearchedData={searchPromo} setCurrentPage={setCurrentPage} getCount={getPromoDiscountCount} /> */}
+          </li>
           <div className="float-right">
-
             <a href="#" onClick={(e) => opnAddNewUserModal(e)} color="primary" className="caret btn-sm mr-10">
               Create New Promo <i className="zmdi zmdi-plus"></i>
             </a>
@@ -179,8 +173,8 @@ const PromoDiscounts = (props) => {
               </TableHead>
               <TableBody>
                 <Fragment>
-                  {promoDiscounts &&
-                    promoDiscounts.map((promoDiscount, key) => (
+                  {promoDiscounts.length > 0 &&
+                    promoDiscounts?.map((promoDiscount, key) => (
                       <TableRow hover key={key}>
                         <TableCell>{promoDiscount.code}</TableCell>
                         <TableCell>{promoDiscount.code_type}</TableCell>
@@ -312,6 +306,7 @@ function mapDispatchToProps(dispatch) {
     getPromoDiscounts: (page_no) => dispatch(getPromoDiscount(page_no)),
     getPromoDiscountCount: () => dispatch(getPromoDiscountCount()),
     createPromoDiscount: (data) => dispatch(createPromoDiscount(data)),
+    searchPromo: (searchData) => dispatch(searchPromo(data)),
     updatePromoDiscount: (data, id) => dispatch(updatePromoDiscount(data, id)),
     deletePromoDiscount: (id) => dispatch(deletePromoDiscount(id)),
   };

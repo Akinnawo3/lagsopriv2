@@ -7,9 +7,18 @@ import api from "../environments/environment";
 export const createPromoDiscount = (body) => async (dispatch) => {
   try {
     await dispatch(startStatusLoading());
-    await axios.post(`${api.wallet}/v1.1/admin/promo-code`, body);
-    await NotificationManager.success("Promo Created Successfully!");
-    await dispatch(getPromoDiscount(1));
+    const res = await axios.post(`${api.wallet}/v1.1/admin/promo-code`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+      await dispatch(endStatusLoading());
+    } else {
+      await NotificationManager.success("Promo Created Successfully!");
+      dispatch({
+        type: PROMO_TYPE,
+        payload: res.data.data,
+      });
+      await dispatch(getPromoDiscount(1));
+    }
     await dispatch(endStatusLoading());
   } catch (err) {
     dispatch(endStatusLoading());
@@ -18,7 +27,7 @@ export const createPromoDiscount = (body) => async (dispatch) => {
 };
 
 export const getPromoDiscount =
-  (page_no = 1, searchData="") =>
+  (page_no = 1) =>
   async (dispatch) => {
     try {
       await dispatch(startLoading());
@@ -68,12 +77,41 @@ export const getPromoDiscountCount = () => async (dispatch) => {
   } catch (err) {}
 };
 
+export const searchPromo = (searchData) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.get(`${api.wallet}/v1.1/admin/promo-code?q=${searchData}`);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      const res2 = await axios.get(`${api.user}/v1.1/admin/promo-code?q=${searchData}&component=count`);
+      dispatch({
+        type: PROMO_COUNT,
+        payload: res2.data.data.total ? res2.data.data.total : 0,
+      });
+      dispatch({
+        type: PROMO_TYPE,
+        payload: res.data.data,
+      });
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+  }
+};
+
 export const updatePromoDiscount = (body, promo_code_id) => async (dispatch) => {
   try {
     await dispatch(startStatusLoading());
-    await axios.put(`${api.wallet}/v1.1/admin/promo-code/${promo_code_id}`, body);
-    await NotificationManager.success("Promo Updated Successfully!");
-    await dispatch(getPromoDiscount(1));
+    const res = await axios.put(`${api.wallet}/v1.1/admin/promo-code/${promo_code_id}`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+      await dispatch(endStatusLoading());
+    } else {
+      await NotificationManager.success("Promo Updated Successfully!");
+
+      await dispatch(getPromoDiscount(1));
+    }
     await dispatch(endStatusLoading());
   } catch (err) {
     dispatch(endStatusLoading());
