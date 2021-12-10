@@ -178,6 +178,7 @@ const  VehicleTable = ({ getVehicles, vehicles, loading, createVehicles, updateV
                         <TableHead>
                             <TableRow hover>
                                 <TableCell>Plate No</TableCell>
+                                <TableCell>Serial No</TableCell>
                                 <TableCell>Model</TableCell>
                                 <TableCell>Year</TableCell>
                                 <TableCell>status</TableCell>
@@ -189,6 +190,7 @@ const  VehicleTable = ({ getVehicles, vehicles, loading, createVehicles, updateV
                                 {vehicles.map((vehicle, key) => (
                                     <TableRow hover key={key}>
                                         <TableCell>{vehicle.car_number_plate}</TableCell>
+                                        <TableCell>{vehicle.car_number}</TableCell>
                                         <TableCell>{vehicle.car_make}</TableCell>
                                         <TableCell>{vehicle.car_model}</TableCell>
                                         <TableCell><Badge color={vehicle.assigned ? 'success': 'danger'}>{vehicle.assigned ? 'Assigned' : 'Unassigned'}</Badge></TableCell>

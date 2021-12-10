@@ -45,6 +45,12 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
+                      <strong>Serial Number </strong>
+                    </span>
+                    {vehicleDetails?.car_number}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
                       <strong>Vehicle Plate No</strong>
                     </span>
                     {vehicleDetails?.car_number_plate}
