@@ -22,6 +22,7 @@ import {createPromoDiscount, deletePromoDiscount, getPromoDiscount, getPromoDisc
 import {Link} from "react-router-dom";
 import moment from "moment";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
+import {getTodayDate} from "Helpers/helpers";
 
 const PromoDiscounts = (props) => {
   const {match, getPromoDiscounts, promoDiscountsCount, promoDiscounts, searchPromo, createPromoDiscount, updatePromoDiscount, getPromoDiscountCount, loading, deletePromoDiscount, loadingStatus} =
@@ -34,6 +35,7 @@ const PromoDiscounts = (props) => {
     code_type: "",
     custom_code: "",
     promo_code_owner: "",
+    start_date: "",
     expiry_date: "",
     description: "",
     num_of_rides: "",
@@ -51,6 +53,7 @@ const PromoDiscounts = (props) => {
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
   const [excelExport, setExcelExport] = useState([]);
 
+  console.log(getTodayDate());
   useEffect(() => {
     getPromoDiscounts(1);
     getPromoDiscountCount();
@@ -68,23 +71,22 @@ const PromoDiscounts = (props) => {
   };
 
   const onChange = (e) => setFormData({...formData, [e.target.name]: e.target.value});
-  const {code_type, custom_code, promo_code_owner, expiry_date, description, num_of_rides, users_limit, discount_type, discount_value} = formData;
+  const {code_type, custom_code, promo_code_owner, start_date, expiry_date, description, num_of_rides, users_limit, discount_type, discount_value} = formData;
 
   const opnAddNewUserModal = (e) => {
     e.preventDefault();
     setAddNewUserModal(true);
   };
-  console.log(discount_type);
 
   const opnAddNewUserEditModal = (id) => {
     const editedPromo = promoDiscounts.find((item) => item.promo_code_id === id);
-    console.log(editedPromo?.expiry_date);
     setUpdateId(id);
     console.log(editedPromo);
     setFormData({
       code_type: editedPromo?.code_type,
       custom_code: editedPromo?.code,
       promo_code_owner: editedPromo?.promo_code_owner,
+      start_date: editedPromo?.start_date,
       expiry_date: editedPromo?.expiry_date,
       description: editedPromo?.description,
       num_of_rides: editedPromo?.num_of_rides,
@@ -108,6 +110,7 @@ const PromoDiscounts = (props) => {
       code_type: "",
       custom_code: "",
       promo_code_owner: "",
+      start_date: "",
       expiry_date: "",
       description: "",
       num_of_rides: "",
@@ -130,8 +133,8 @@ const PromoDiscounts = (props) => {
     onAddUpdateUserModalClose();
     const apiData =
       code_type === "custom"
-        ? {code_type, custom_code, promo_code_owner, expiry_date, description, num_of_rides, users_limit, discount_type, discount_value}
-        : {code_type, promo_code_owner, expiry_date, description, num_of_rides, users_limit, discount_type, discount_value};
+        ? {code_type, custom_code, promo_code_owner, start_date, expiry_date, description, num_of_rides, users_limit, discount_type, discount_value}
+        : {code_type, start_date, expiry_date, description, num_of_rides, users_limit, discount_type, discount_value, start_date: expiry_date};
     !editUser ? await createPromoDiscount(apiData) : await updatePromoDiscount(apiData, updateId);
   };
 
@@ -167,6 +170,7 @@ const PromoDiscounts = (props) => {
                   <TableCell>Usage Limit</TableCell>
                   <TableCell>Discount Value</TableCell>
                   <TableCell>Creation Time</TableCell>
+                  <TableCell>Start Date</TableCell>
                   <TableCell>End Date</TableCell>
                   <TableCell>Actions</TableCell>
                 </TableRow>
@@ -182,6 +186,7 @@ const PromoDiscounts = (props) => {
                         <TableCell>{promoDiscount.users_limit}</TableCell>
                         <TableCell>{`${promoDiscount?.discount_type === "amount" ? "₦" : ""} ${promoDiscount.discount_value} ${promoDiscount?.discount_type === "percentage" ? "%" : ""}`}</TableCell>
                         <TableCell>{calculatePostDate(promoDiscount.createdAt)}</TableCell>
+                        <TableCell>{moment(promoDiscount.start_date).format("LL")}</TableCell>
                         <TableCell>{moment(promoDiscount.expiry_date).format("LL")}</TableCell>
                         <TableCell>
                           <button type="button" className="rct-link-btn" onClick={(e) => opnAddNewUserEditModal(promoDiscount.promo_code_id)}>
@@ -234,20 +239,19 @@ const PromoDiscounts = (props) => {
                 <Input type="text" name="custom_code" value={custom_code} onChange={onChange} />
               </FormGroup>
             )}
+            {code_type === "custom" && (
+              <FormGroup>
+                <Label>Promo Code Owner</Label>
+                <Input type="text" name="promo_code_owner" value={promo_code_owner} onChange={onChange} required />
+              </FormGroup>
+            )}
             <FormGroup>
-              <Label>Promo Code Owner</Label>
-              <Input type="text" name="promo_code_owner" value={promo_code_owner} onChange={onChange} required />
+              <Label>Start Date</Label>
+              <Input type="date" name="start_date" min={getTodayDate()} value={moment(start_date).format("YYYY-MM-DD")} onChange={onChange} required />
             </FormGroup>
             <FormGroup>
               <Label>Expiry Date</Label>
-              <Input
-                type="date"
-                name="expiry_date"
-                value={moment(expiry_date).format("YYYY-MM-DD")}
-                // value={expiry_date}
-                onChange={onChange}
-                required
-              />
+              <Input type="date" name="expiry_date" min={getTodayDate()} value={moment(expiry_date).format("YYYY-MM-DD")} onChange={onChange} required />
             </FormGroup>
             <FormGroup>
               <Label>Description</Label>
@@ -277,7 +281,7 @@ const PromoDiscounts = (props) => {
             </FormGroup>
             <FormGroup>
               <Label>Discount Value</Label>
-              <Input type="number" name="discount_value" value={discount_value} onChange={onChange} min="1" required />
+              <Input type="number" name="discount_value" value={discount_value} onChange={onChange} min="1" max={discount_type === "percentage" ? 100 : ""} required />
             </FormGroup>
           </ModalBody>
           <ModalFooter>
