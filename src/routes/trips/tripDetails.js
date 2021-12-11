@@ -13,7 +13,7 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
   const [actualDropoffAddress, setActualDropoffAddress] = useState("");
 
   //only available for cancelled trips, serves the purpose of the trip details to show more info , it is passed along with the "Link"
-  const {trip_cancelled} = location.state;
+  const {trip_cancelled} = location?.state? location?.state :"" ;
   console.log(trip_cancelled);
   useEffect(() => {
     getTrip(match.params.id, true);

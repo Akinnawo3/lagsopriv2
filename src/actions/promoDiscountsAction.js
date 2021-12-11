@@ -84,7 +84,7 @@ export const searchPromo = (searchData) => async (dispatch) => {
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      const res2 = await axios.get(`${api.user}/v1.1/admin/promo-code?q=${searchData}&component=count`);
+      const res2 = await axios.get(`${api.wallet}/v1.1/admin/promo-code?q=${searchData}&component=count`);
       dispatch({
         type: PROMO_COUNT,
         payload: res2.data.data.total ? res2.data.data.total : 0,

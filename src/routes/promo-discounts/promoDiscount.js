@@ -9,7 +9,8 @@ import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard
 import {Form, FormGroup, Label, Input} from "reactstrap";
 import Button from "@material-ui/core/Button";
 import Pagination from "react-js-pagination";
-import {Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
+
+import {Modal, ModalHeader, ModalBody, ModalFooter, Row, Col} from "reactstrap";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import {connect} from "react-redux";
 import Spinner from "../../components/spinner/Spinner";
@@ -131,11 +132,16 @@ const PromoDiscounts = (props) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     onAddUpdateUserModalClose();
-    const apiData =
+    const apiDataCreate =
       code_type === "custom"
         ? {code_type, custom_code, promo_code_owner, start_date, expiry_date, description, num_of_rides, users_limit, discount_type, discount_value}
-        : {code_type, start_date, expiry_date, description, num_of_rides, users_limit, discount_type, discount_value, start_date: expiry_date};
-    !editUser ? await createPromoDiscount(apiData) : await updatePromoDiscount(apiData, updateId);
+        : {code_type, start_date, expiry_date, description, num_of_rides, users_limit, discount_type, discount_value, start_date};
+    const apiDataEdit =
+      code_type === "custom"
+        ? {start_date, expiry_date, description, num_of_rides, users_limit, discount_type, discount_value}
+        : {start_date, expiry_date, description, num_of_rides, users_limit, discount_type, discount_value};
+
+    !editUser ? await createPromoDiscount(apiDataCreate) : await updatePromoDiscount(apiDataEdit, updateId);
   };
 
   const onChangeSearch = (e) => {
@@ -147,13 +153,17 @@ const PromoDiscounts = (props) => {
     setDeleteId(null);
   };
 
+  const getSearchData = (searchData) => {
+    searchPromo(searchData, status);
+  };
+
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Discount Promo"} match={match} />
       {!loading && (
         <RctCollapsibleCard heading="Discount Promo" fullBlock>
           <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-            {/* <SearchComponent getPreviousData={getPromoDiscounts} getSearchedData={searchPromo} setCurrentPage={setCurrentPage} getCount={getPromoDiscountCount} /> */}
+            <SearchComponent getPreviousData={getPromoDiscounts} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={getPromoDiscountCount} placeHolder="Search promo code" />
           </li>
           <div className="float-right">
             <a href="#" onClick={(e) => opnAddNewUserModal(e)} color="primary" className="caret btn-sm mr-10">
@@ -165,11 +175,10 @@ const PromoDiscounts = (props) => {
               <TableHead>
                 <TableRow hover>
                   <TableCell>Promo Code</TableCell>
-                  <TableCell>Type</TableCell>
+                  <TableCell>Code Type</TableCell>
                   <TableCell>Promo Code Owner</TableCell>
-                  <TableCell>Usage Limit</TableCell>
+                  <TableCell>Users Limit</TableCell>
                   <TableCell>Discount Value</TableCell>
-                  <TableCell>Creation Time</TableCell>
                   <TableCell>Start Date</TableCell>
                   <TableCell>End Date</TableCell>
                   <TableCell>Actions</TableCell>
@@ -185,7 +194,6 @@ const PromoDiscounts = (props) => {
                         <TableCell>{promoDiscount.promo_code_owner}</TableCell>
                         <TableCell>{promoDiscount.users_limit}</TableCell>
                         <TableCell>{`${promoDiscount?.discount_type === "amount" ? "₦" : ""} ${promoDiscount.discount_value} ${promoDiscount?.discount_type === "percentage" ? "%" : ""}`}</TableCell>
-                        <TableCell>{calculatePostDate(promoDiscount.createdAt)}</TableCell>
                         <TableCell>{moment(promoDiscount.start_date).format("LL")}</TableCell>
                         <TableCell>{moment(promoDiscount.expiry_date).format("LL")}</TableCell>
                         <TableCell>
@@ -219,21 +227,24 @@ const PromoDiscounts = (props) => {
         <ModalHeader toggle={() => onAddUpdateUserModalClose()}>{editUser ? "Update Promo Discount" : "Create New Promo Discount"}</ModalHeader>
         <Form onSubmit={onSubmit}>
           <ModalBody>
-            <FormGroup>
-              <Label>Promo Type</Label>
-              <Input type="select" name="code_type" value={code_type} onChange={onChange} required>
-                <option value="" selected hidden>
-                  --Select promo type --
-                </option>
-                <option value="custom" selected={code_type === "custom"}>
-                  Custom
-                </option>
-                <option value="generic" selected={code_type === "generic"}>
-                  Generic
-                </option>
-              </Input>
-            </FormGroup>
-            {code_type === "custom" && (
+            {!editUser && (
+              <FormGroup>
+                <Label>Promo Type</Label>
+                <Input type="select" name="code_type" value={code_type} onChange={onChange} required>
+                  <option value="" selected hidden>
+                    --Select promo type --
+                  </option>
+                  <option value="custom" selected={code_type === "custom"}>
+                    Custom
+                  </option>
+                  <option value="generic" selected={code_type === "generic"}>
+                    Generic
+                  </option>
+                </Input>
+              </FormGroup>
+            )}
+
+            {code_type === "custom" && !editUser && (
               <FormGroup>
                 <Label>Custom Code</Label>
                 <Input type="text" name="custom_code" value={custom_code} onChange={onChange} />
@@ -262,7 +273,7 @@ const PromoDiscounts = (props) => {
               <Input type="number" name="num_of_rides" value={num_of_rides} onChange={onChange} required min="0" />
             </FormGroup>
             <FormGroup>
-              <Label>Number of Slots</Label>
+              <Label>Users Limit</Label>
               <Input type="number" name="users_limit" value={users_limit} onChange={onChange} required min="0" />
             </FormGroup>
             <FormGroup>
@@ -310,7 +321,7 @@ function mapDispatchToProps(dispatch) {
     getPromoDiscounts: (page_no) => dispatch(getPromoDiscount(page_no)),
     getPromoDiscountCount: () => dispatch(getPromoDiscountCount()),
     createPromoDiscount: (data) => dispatch(createPromoDiscount(data)),
-    searchPromo: (searchData) => dispatch(searchPromo(data)),
+    searchPromo: (searchData) => dispatch(searchPromo(searchData)),
     updatePromoDiscount: (data, id) => dispatch(updatePromoDiscount(data, id)),
     deletePromoDiscount: (id) => dispatch(deletePromoDiscount(id)),
   };

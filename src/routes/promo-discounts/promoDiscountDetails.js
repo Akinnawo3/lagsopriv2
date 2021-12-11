@@ -73,7 +73,7 @@ const PromoDiscountDetails = ({getPromoDiscountDetails, match, loading, location
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
-                      <strong>Discount Value Type</strong>
+                      <strong>Discount Type</strong>
                     </span>
                     {promoDetails?.discount_type}
                   </li>
