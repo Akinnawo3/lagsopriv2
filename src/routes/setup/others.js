@@ -73,14 +73,11 @@ const Others = ({
             <div className="row">
               <div className="col col-sm-12 col-md-10">
                 <div className="fw-bold">Customer Lines</div>
-                <small>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do
-                </small>
+            
                 <div className="d-flex mt-3">
                   <div>
                     <FormGroup>
-                      <Label for="lastName">Line 1</Label>
+                      <Label for="lastName">Customer Care Line</Label>
                       <Input
                         type="text"
                         name="number"
@@ -103,7 +100,7 @@ const Others = ({
                         </FormGroup>;
                       })} */}
                   </div>
-                  <div className="ml-3 mt-2 ">
+                  <div className="ml-3 mt-1 ">
                     <Button
                       variant="contained"
                       className="btn btn-outline-primary mt-4"
@@ -115,10 +112,7 @@ const Others = ({
                 </div>
                 <hr className="m-0" />
                 <div className="fw-bold mt-3">Total Waiting Time</div>
-                <small>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do
-                </small>
+               
                 <div className="d-flex mt-3">
                   <div>
                     <Form>

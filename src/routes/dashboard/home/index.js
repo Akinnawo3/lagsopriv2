@@ -21,7 +21,7 @@ import {
 	ordersData,
 	trafficStatus,
 } from './data';
-import GoogleMapComponent from "../../../components/Maps/GoogleMapComponent";
+import GoogleMapComponent from "../../../components/Maps/GoogleMapComponentDrivers";
 import GoogleMapComponentUser from "Components/Maps/GoogleMapComponentUsers";
 import VehicleChart from "Components/Widgets/VehicleChart";
 import DriverChart from "Components/Widgets/DriverChart";

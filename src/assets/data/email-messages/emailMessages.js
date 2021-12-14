@@ -16,7 +16,7 @@ export default {
 
   newAdminMsg: (name, phoneNumber, Password) => {
     // ${role}
-    return `Dear ${name}, you have been successfully set up as an admin on LagosRide with telephone number : ${phoneNumber}, here is your password -${Password}. Click on the link below to sign in. admin.lagosride.com`;
+    return `Dear ${name}, you have been successfully set up as an admin on LagosRide with telephone number : ${phoneNumber}, here is your password -${Password}. Click on the link below to sign in. <a href="https://lrdash.lagosride.com/">lrdash.lagosride.com</a>`;
   },
 
   // "You have been suspended from LagosRide for the following reasons;\n" +

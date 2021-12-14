@@ -188,6 +188,7 @@ export const getSOSNumber = (spinner) => async (dispatch) => {
 };
 
 export const deleteSOSNumber = (phone_number) => async (dispatch) => {
+  console.log(phone_number)
   try {
     dispatch(startStatusLoading());
     const res = await axios.delete(`${api.sos}/v1.1/admin/recipient-contact`, {

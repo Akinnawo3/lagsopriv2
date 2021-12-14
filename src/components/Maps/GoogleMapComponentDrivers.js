@@ -7,7 +7,7 @@ import GoogleMap from 'google-map-react';
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import { m } from "Helpers/helpers";
 
-const GoogleMapComponent = ({ match, userLocation, getUsersLocation, waiting, moving }) => {
+const GoogleMapComponentDrivers = ({ match, userLocation, getUsersLocation, waiting, moving }) => {
     const [center, setCenter] = useState([6.459970538, 3.301247232])
     const [zoom, setZoom] = useState(14)
 
@@ -83,6 +83,6 @@ const GoogleMapComponent = ({ match, userLocation, getUsersLocation, waiting, mo
         </div>
     );
 }
-export default GoogleMapComponent
+export default GoogleMapComponentDrivers
 
 

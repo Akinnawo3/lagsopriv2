@@ -670,7 +670,7 @@ const DriverProfile = ({
               )}
               {/* status "1" is for lasdri when valid status 
               status "0" is for lasdri when valid but expired */}
-              {(verificationResult?.status === "1" || verificationResult?.status === "0" || verificationResult?.code === "00") && (
+              {(verificationResult?.status === "1" || verificationResult?.status === "0" ) && (
                 <div>
                   <ul className="list-group">
                     <li className="list-group-item text-right">
@@ -683,7 +683,13 @@ const DriverProfile = ({
                       <span className="pull-left">
                         <strong>Name</strong>
                       </span>
-                      {`${verificationResult?.name}`}
+                      {`${verificationResult?.f_name} ${verificationResult?.m_name} ${verificationResult?.surname}`}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>DATE OF BIRTH</strong>
+                      </span>
+                      {`${verificationResult?.dob} `}
                     </li>
                   </ul>
                   <div className="mt-2 text-right">

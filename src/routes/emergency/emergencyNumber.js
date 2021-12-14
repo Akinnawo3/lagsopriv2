@@ -49,7 +49,7 @@ const EmergencyNumber = ({
 
   const onDelete = (number) => {
     inputEl.current.open();
-    setDeleteId(deleteId);
+    setDeleteId(number);
   };
 
   return (

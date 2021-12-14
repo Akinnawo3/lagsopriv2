@@ -33,24 +33,26 @@ import MaintenanceLog from "../routes/maintenance-log/maintenanceRoutes";
 import MaintenanceRoutes from "../routes/maintenance-log/maintenanceRoutes";
 import promoRoutes from "../routes/promo-discounts/promoRoutes";
 
-
-
 export default [
   {
     path: "dashboard",
     component: Dashboard,
+    permission: "view_dashboard",
   },
   {
     path: "drivers",
     component: DriverRoutes,
+    permission: "view_drivers",
   },
   {
     path: "admins",
     component: AsyncAdmins,
+    permission: "view_personnels",
   },
   {
     path: "users",
     component: AsyncUsers,
+    permission: "view_users",
   },
   // {
   //    path: 'class-types',
@@ -63,14 +65,17 @@ export default [
   {
     path: "fees",
     component: AsyncFeesOld,
+    permission: "view_setup",
   },
   {
     path: "wallets",
     component: WalletsRoutes,
+    permission: "view_drivers",
   },
   {
     path: "cancellation-reasons",
     component: AsyncCancellationReasons,
+    permission: "view_setup",
   },
   // {
   //    path: 'voucher',
@@ -79,14 +84,17 @@ export default [
   {
     path: "referral",
     component: ReferralRoutes,
+    permission: "view_referral",
   },
-  {
-    path: "revenue",
-    component: AsyncRevenueSplitOld,
-  },
+  // {
+  //   path: "revenue",
+  //   component: AsyncRevenueSplitOld,
+  //   permission: "view_referral",
+  // },
   {
     path: "promo-discounts",
     component: promoRoutes,
+    permission: "view_promo",
   },
   // {
   //    path: 'cancellations',
@@ -95,10 +103,12 @@ export default [
   {
     path: "payments",
     component: PaymentsRoutes,
+    permission: "view_trip_payments",
   },
   {
     path: "payments-service",
     component: PaymentsServiceRoutes,
+    permission: "view_trip_payments",
   },
   // {
   //    path: 'refunds',
@@ -107,44 +117,53 @@ export default [
   {
     path: "trips",
     component: TripRoutes,
+    permission: "view_trip_manifest",
   },
   {
     path: "vehicles",
     component: VehicleRoutes,
+    permission: "view_vehicles",
   },
   {
     path: "passengers",
     component: PassengerRoutes,
+    permission: "view_passengers",
   },
   {
     path: "map",
     component: AsyncGooleMapsComponent,
+    permission: "view_maps",
   },
   {
     path: "schedule",
     component: ScheduleRoutes,
+    permission: "view_FDTs_and_Schedules",
   },
   {
     path: "fdt",
     component: FdtRoutes,
+    permission: "view_FDTs_and_Schedules",
   },
   {
     path: "ratings",
     component: RatingsRoutes,
+    permission: "view_ratings_and_reviews",
   },
 
-  {
-    path: "areas",
-    component: AsyncAreas,
-  },
+  // {
+  //   path: "areas",
+  //   component: AsyncAreas,
+  //   permission: "view_ratings_and_reviews",
+  // },
   {
     path: "support",
     component: SupportRoutes,
+    permission: "view_tickets",
   },
-  {
-    path: "settings",
-    component: AsyncCustomerCare,
-  },
+  // {
+  //   path: "settings",
+  //   component: AsyncCustomerCare,
+  // },
   // {
   //    path: 'analytics',
   //    component: AsyncAnalytics
@@ -152,10 +171,12 @@ export default [
   {
     path: "emergency",
     component: EmergencyRoutes,
+    permission: "view_emergency",
   },
   {
     path: "maintenance",
     component: MaintenanceRoutes,
+    permission: "view_maintenance_&_repairs",
   },
   {
     path: "login",
@@ -164,10 +185,12 @@ export default [
   {
     path: "activity-log",
     component: AsyncActivityLog,
+    permision: "view_activity_log",
   },
 
   {
     path: "setup",
     component: SetupRoutes,
+    permision: "view_setup",
   },
 ];
