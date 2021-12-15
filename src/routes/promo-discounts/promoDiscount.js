@@ -25,7 +25,7 @@ import moment from "moment";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {getTodayDate} from "Helpers/helpers";
 import {verifyUserPermssion} from "../../container/DefaultLayout";
-export let onAddUpdateUserModalClose
+export let onAddUpdateUserModalClose;
 const PromoDiscounts = (props) => {
   const {match, getPromoDiscounts, promoDiscountsCount, promoDiscounts, searchPromo, createPromoDiscount, updatePromoDiscount, getPromoDiscountCount, loading, deletePromoDiscount, loadingStatus} =
     props;
@@ -107,7 +107,7 @@ const PromoDiscounts = (props) => {
     setEditUser(true);
   };
 
-   onAddUpdateUserModalClose = () => {
+  onAddUpdateUserModalClose = () => {
     setFormData({
       code_type: "",
       custom_code: "",
@@ -296,7 +296,7 @@ const PromoDiscounts = (props) => {
             </FormGroup>
           </ModalBody>
           <ModalFooter>
-            <Button type="submit" variant="contained" className="text-white btn-success">
+            <Button type="submit" variant="contained" className="text-white btn-success" disabled={loading}>
               Submit
             </Button>
           </ModalFooter>
