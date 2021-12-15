@@ -296,7 +296,7 @@ const PromoDiscounts = (props) => {
             </FormGroup>
           </ModalBody>
           <ModalFooter>
-            <Button type="submit" variant="contained" className="text-white btn-success" disabled={loading}>
+            <Button type="submit" variant="contained" className="text-white btn-success" disabled={loadingStatus}>
               Submit
             </Button>
           </ModalFooter>
