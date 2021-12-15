@@ -6,7 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { Link } from 'react-router-dom';
 import QueueAnim from 'rc-queue-anim';
 
-export default class NotFound extends Component {
+export default class UnAuthorised extends Component {
    render() {
       return (
          <QueueAnim type="bottom" duration={2000}>

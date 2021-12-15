@@ -9,6 +9,7 @@ import {Badge, ModalHeader, Modal, ModalBody, Form, FormGroup, Label, Input, Mod
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import moment from "moment";
 import {formatTime, getActualAddress} from "Helpers/helpers";
+import {verifyUserPermssion} from "../../container/DefaultLayout";
 
 const EmergencyDetails = ({match, loading, sosDetails, getSOSDetails, sosUserDetails, changeSOStatus, assignSOSToAdmin}) => {
   const inputEl = useRef(null);
@@ -176,10 +177,10 @@ const EmergencyDetails = ({match, loading, sosDetails, getSOSDetails, sosUserDet
                   </li>
                   {sosDetails.status === 0 && (
                     <div className="mt-3">
-                      <button className="btn btn-info mr-4" onClick={() => setIsOpen(true)}>
+                      <button className="btn btn-info mr-4" onClick={() => verifyUserPermssion("update_emergency_status", () => setIsOpen(true))}>
                         Assign to an Admin
                       </button>
-                      <button className="btn btn-warning" onClick={() => inputEl.current.open()}>
+                      <button className="btn btn-warning" onClick={() => verifyUserPermssion("update_emergency_status", () => inputEl.current.open())}>
                         Mark as resolved
                       </button>
                     </div>

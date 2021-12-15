@@ -297,3 +297,6 @@ export const getActualAddress = async (lat, lng) => {
 };
 
 export const stringToNumber = (string) => parseFloat(string.replace(/,/g, ""));
+
+// this function checks the array of the permissions of a user and returns true/false if a perticullar permission is found in the array
+// export const verifyUserPermssion = (checkedPermission, permissionsArray) => permissionsArray.includes(checkedPermission);

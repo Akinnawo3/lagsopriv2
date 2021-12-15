@@ -13,11 +13,18 @@ import routerService from "../services/_routerService";
 import Spinner from "Components/spinner/Spinner";
 import RctThemeProvider from "./RctThemeProvider";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import UnAuthorised from "Routes/session/401";
+export let verifyUserPermssion;
+import {NotificationManager} from "react-notifications";
 
 class DefaultLayout extends Component {
   render() {
     const {match, isLoading, authUserProfile} = this.props;
     console.log(authUserProfile);
+    verifyUserPermssion = (permission, runfunction, e) => {
+      e?.preventDefault()
+      return authUserProfile.user_type === "superadmin" || authUserProfile.access_tab.includes(permission) ? runfunction() : NotificationManager.error("Access Denied");
+    };
     return (
       <RctAppLayout>
         {isLoading && <Spinner />}
@@ -27,7 +34,7 @@ class DefaultLayout extends Component {
               <Route
                 key={key}
                 path={`${match.url}/${route.path}`}
-                component={authUserProfile.user_type === "superadmin" || authUserProfile.access_tab.includes(route.permision) || route.path === "login" ? route.component : () => <h1>Unauthorised</h1>}
+                component={authUserProfile.user_type === "superadmin" || authUserProfile.access_tab.includes(route.permission) || route.path === "login" ? route.component : () => <UnAuthorised />}
               />
             );
           })}

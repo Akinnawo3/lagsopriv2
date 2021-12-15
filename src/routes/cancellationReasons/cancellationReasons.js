@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment, useRef } from "react";
+import React, {useState, useEffect, Fragment, useRef} from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -6,30 +6,25 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import { Form, FormGroup, Label, Input } from "reactstrap";
+import {Form, FormGroup, Label, Input} from "reactstrap";
 import Button from "@material-ui/core/Button";
-import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import {Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import IconButton from "@material-ui/core/IconButton";
 import MobileSearchForm from "Components/Header/MobileSearchForm";
-import { CSVLink } from "react-csv";
+import {CSVLink} from "react-csv";
 import EmptyData from "Components/EmptyData/EmptyData";
-import {
-  createCR,
-  deleteCR,
-  getCR,
-  updateCR,
-} from "Actions/cancellationReasonsAction";
+import {createCR, deleteCR, getCR, updateCR} from "Actions/cancellationReasonsAction";
+import {verifyUserPermssion} from "../../container/DefaultLayout";
 
 const CancellationReasons = (props) => {
-  const { match, getCR, reasons, createCR, updateCR, loading, deleteCR } =
-    props;
+  const {match, getCR, reasons, createCR, updateCR, loading, deleteCR} = props;
   const [addNewCRModal, setAddNewCRModal] = useState(false);
   const [editCR, setEditCR] = useState(false);
   const [updateId, setUpdateId] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
-  const [formData, setFormData] = useState({ desc: "", type: "" });
+  const [formData, setFormData] = useState({desc: "", type: ""});
   const [searchData, setSearchData] = useState("");
   const inputEl = useRef(null);
 
@@ -37,9 +32,8 @@ const CancellationReasons = (props) => {
     getCR(true);
   }, []);
 
-  const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  const { desc, type } = formData;
+  const onChange = (e) => setFormData({...formData, [e.target.name]: e.target.value});
+  const {desc, type} = formData;
 
   const opnAddNewCRModal = (e) => {
     e.preventDefault();
@@ -103,19 +97,12 @@ const CancellationReasons = (props) => {
             />
           </li>
           <div className="float-right">
-            <a
-              href="#"
-              onClick={(e) => opnAddNewCRModal(e)}
-              color="primary"
-              className="caret btn-sm mr-10 mb-2"
-            >
-              <button className="ml-2 btn btn-outline-primary btn-sm rounded">
-                Add New
-              </button>
+            <a href="#" onClick={(e) => verifyUserPermssion("create_setup", () => opnAddNewCRModal(e))} color="primary" className="caret btn-sm mr-10 mb-2">
+              <button className="ml-2 btn btn-outline-primary btn-sm rounded">Add New</button>
             </a>
           </div>
           {!loading && reasons.length > 0 && (
-            <div className="table-responsive" style={{ minHeight: "50vh" }}>
+            <div className="table-responsive" style={{minHeight: "50vh"}}>
               <Table>
                 <TableHead>
                   <TableRow hover>
@@ -129,22 +116,12 @@ const CancellationReasons = (props) => {
                     {reasons.map((reason, key) => (
                       <TableRow hover key={key}>
                         <TableCell>{reason.reason}</TableCell>
-                        <TableCell className="text-capitalize">
-                          {reason.type}
-                        </TableCell>
+                        <TableCell className="text-capitalize">{reason.type}</TableCell>
                         <TableCell>
-                          <button
-                            type="button"
-                            className="rct-link-btn"
-                            onClick={(e) => opnAddNewCREditModal(reason._id)}
-                          >
+                          <button type="button" className="rct-link-btn" onClick={(e) => opnAddNewCREditModal(reason._id)}>
                             <i className="ti-pencil"></i>
                           </button>
-                          <button
-                            type="button"
-                            className="rct-link-btn ml-lg-3 text-danger"
-                            onClick={() => onDelete(reason._id)}
-                          >
+                          <button type="button" className="rct-link-btn ml-lg-3 text-danger" onClick={() => onDelete(reason._id)}>
                             <i className="ti-trash"></i>
                           </button>
                         </TableCell>
@@ -160,30 +137,16 @@ const CancellationReasons = (props) => {
       )}
 
       <Modal isOpen={addNewCRModal} toggle={() => onAddUpdateCRModalClose()}>
-        <ModalHeader toggle={() => onAddUpdateCRModalClose()}>
-          {editCR ? "Update Reason" : "Create Reason"}
-        </ModalHeader>
+        <ModalHeader toggle={() => onAddUpdateCRModalClose()}>{editCR ? "Update Reason" : "Create Reason"}</ModalHeader>
         <Form onSubmit={onSubmit}>
           <ModalBody>
             <FormGroup>
               <Label for="lastName">Reason</Label>
-              <Input
-                type="textarea"
-                name="desc"
-                value={desc}
-                onChange={onChange}
-                required
-              />
+              <Input type="textarea" name="desc" value={desc} onChange={onChange} required />
             </FormGroup>
             <FormGroup>
               <Label for="exampleSelect">User Tppe</Label>
-              <Input
-                type="select"
-                name="type"
-                onChange={onChange}
-                value={type}
-                required={true}
-              >
+              <Input type="select" name="type" onChange={onChange} value={type} required={true}>
                 <option value="">Select type</option>
                 <option value="driver">Driver</option>
                 <option value="rider">Passenger</option>
@@ -192,11 +155,7 @@ const CancellationReasons = (props) => {
             </FormGroup>
           </ModalBody>
           <ModalFooter>
-            <Button
-              type="submit"
-              variant="contained"
-              className="text-white btn-info"
-            >
+            <Button type="submit" variant="contained" className="text-white btn-info">
               Save
             </Button>
           </ModalFooter>
@@ -230,7 +189,4 @@ const mapStateToProps = (state) => ({
   loadingStatus: state.loading.loadingStatus,
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CancellationReasons);
+export default connect(mapStateToProps, mapDispatchToProps)(CancellationReasons);

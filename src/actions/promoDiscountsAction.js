@@ -3,6 +3,7 @@ import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./
 import {PROMO_TYPE, PROMO_COUNT, PROMO_DETAILS} from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
+import {onAddUpdateUserModalClose} from "../routes/promo-discounts/promoDiscount";
 
 export const createPromoDiscount = (body) => async (dispatch) => {
   try {
@@ -17,6 +18,7 @@ export const createPromoDiscount = (body) => async (dispatch) => {
         type: PROMO_TYPE,
         payload: res.data.data,
       });
+      onAddUpdateUserModalClose();
       await dispatch(getPromoDiscount(1));
     }
     await dispatch(endStatusLoading());

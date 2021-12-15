@@ -1,27 +1,14 @@
 import axios from "axios";
-import {
-  SOS,
-  SOS_COUNT,
-  SOS_DETAILS,
-  SOS_USER_DETAILS,
-  SOS_NUMBERS,
-} from "./types";
-import {
-  endLoading,
-  endStatusLoading,
-  startLoading,
-  startStatusLoading,
-} from "./loadingAction";
-import { NotificationManager } from "react-notifications";
+import {SOS, SOS_COUNT, SOS_DETAILS, SOS_USER_DETAILS, SOS_NUMBERS} from "./types";
+import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
+import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 
 export const getSOS = (page_no, spinner) => async (dispatch) => {
   try {
     spinner && dispatch(startLoading());
     !spinner && dispatch(startStatusLoading());
-    const res = await axios.get(
-      `${api.sos}/v1.1/sos/?page=${page_no}&item_per_page=20`
-    );
+    const res = await axios.get(`${api.sos}/v1.1/sos/?page=${page_no}&item_per_page=20`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
@@ -48,9 +35,7 @@ export const getSOSDetails = (sos_id, spinner) => async (dispatch) => {
       NotificationManager.error(res.data.msg);
     } else {
       if (res?.data?.data?.user_id) {
-        const res2 = await axios.get(
-          `${api.user}/v1.1/admin/users/${res.data.data.user_id}`
-        );
+        const res2 = await axios.get(`${api.user}/v1.1/admin/users/${res.data.data.user_id}`);
         dispatch({
           type: SOS_USER_DETAILS,
           payload: res2.data.data,
@@ -188,12 +173,10 @@ export const getSOSNumber = (spinner) => async (dispatch) => {
 };
 
 export const deleteSOSNumber = (phone_number) => async (dispatch) => {
-  console.log(phone_number)
+  console.log(phone_number);
   try {
     dispatch(startStatusLoading());
-    const res = await axios.delete(`${api.sos}/v1.1/admin/recipient-contact`, {
-      phone_number,
-    });
+    const res = await axios.delete(`${api.sos}/v1.1/admin/recipient-contact/${phone_number}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
@@ -209,9 +192,7 @@ export const deleteSOSNumber = (phone_number) => async (dispatch) => {
 export const deleteSOSEmail = (email) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
-    const res = await axios.delete(`${api.sos}/v1.1/admin/recipient-contact`, {
-      email,
-    });
+    const res = await axios.delete(`${api.sos}/v1.1/admin/recipient-contact/${email}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {

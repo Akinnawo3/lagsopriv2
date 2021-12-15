@@ -13,7 +13,7 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
   const [actualDropoffAddress, setActualDropoffAddress] = useState("");
 
   //only available for cancelled trips, serves the purpose of the trip details to show more info , it is passed along with the "Link"
-  const {trip_cancelled} = location?.state? location?.state :"" ;
+  const {trip_cancelled} = location?.state ? location?.state : "";
   useEffect(() => {
     getTrip(match.params.id, true);
   }, [match.params.id]);
@@ -28,6 +28,7 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
     setActualDropoffAddress(res);
   })();
 
+  console.log(trip);
   return (
     <div className="mb-5" style={{minHeight: "90vh"}}>
       <Helmet>
@@ -128,23 +129,20 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
                       </span>
                       {trip_cancelled?.cancel_id}
                     </li>
-                 
-                 
+
                     <li className="list-group-item text-right">
                       <span className="pull-left">
                         <strong>Rider Name</strong>
                       </span>
-                   
+
                       {trip_cancelled?.rider_data?.name}
-                   
                     </li>
                     <li className="list-group-item text-right">
                       <span className="pull-left">
                         <strong>Rider Phone Number</strong>
                       </span>
-                   
+
                       {trip_cancelled?.rider_data?.phone}
-                   
                     </li>
                     <li className="list-group-item text-right">
                       <span className="pull-left">
@@ -313,6 +311,16 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
                   {riderDetails?.status === "on_trip" ? "current" : riderDetails?.status === "on_pickup" ? "on route" : riderDetails?.status === "cancel" ? "cancelled" : riderDetails?.status}
                 </Badge>
               </div>
+            </div>
+          </div>
+          <div className="row mt-4">
+            <div className="col-6">
+              <div className="schedulePickup">Payment Method</div>
+              <div className="scheduleHeader mt-1">{riderDetails?.payment_method}</div>
+            </div>
+            <div className="col-6">
+              <div className="schedulePickup">Cash Status</div>
+              <div className="scheduleHeader mt-1">{riderDetails?.cash_status?.cash_option}</div>
             </div>
           </div>
           {riderDetails?.status === "cancel" && (

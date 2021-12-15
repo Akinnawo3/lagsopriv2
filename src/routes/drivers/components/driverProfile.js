@@ -14,6 +14,7 @@ import emailMessages from "Assets/data/email-messages/emailMessages";
 import TableCell from "@material-ui/core/TableCell";
 import suspensionReasonsList from "../../../assets/data/suspension-reasons/suspensionReasonsList";
 import Spinner from "Components/spinner/Spinner";
+import {verifyUserPermssion} from "../../../container/DefaultLayout";
 
 const DriverProfile = ({
   driver,
@@ -518,14 +519,14 @@ const DriverProfile = ({
                     driver?.driver_data?.lassra_id?.status &&
                     driver?.driver_data?.nin_id?.status && (
                       <div className="text-center">
-                        <Button disabled={loadingStatus} onClick={() => onVerified()} className="bg-success mt-3 text-white">
+                        <Button disabled={loadingStatus} onClick={() => verifyUserPermssion("update_driver_status", () => onVerified())} className="bg-success mt-3 text-white">
                           Verify Driver
                         </Button>
                       </div>
                     )}
                   {driver?.driver_data?.driver_status === 2 && driver?.driver_data?.asset_payment?.status && (
                     <div className="text-center">
-                      <Button disabled={loadingStatus} onClick={() => onTrained()} className="bg-success mt-3 text-white">
+                      <Button disabled={loadingStatus} onClick={() => verifyUserPermssion("update_driver_status", () => onTrained())} className="bg-success mt-3 text-white">
                         Mark as Trained
                       </Button>
                     </div>
@@ -537,27 +538,21 @@ const DriverProfile = ({
                   {/* </div>}  */}
                   {driver?.driver_data?.driver_status === 4 && (
                     <div className="text-center">
-                      <Button disabled={loadingStatus} onClick={() => setSuspensionReasonsModalOpen(true)} className="bg-danger mt-3 text-white">
+                      <Button disabled={loadingStatus} onClick={() => verifyUserPermssion("update_driver_status", () => setSuspensionReasonsModalOpen(true))} className="bg-danger mt-3 text-white">
                         Suspend Driver
                       </Button>
                     </div>
                   )}
                   {driver?.driver_data?.driver_status === 5 && (
                     <div className="text-center">
-                      <Button disabled={loadingStatus} onClick={() => onReactivate()} className="bg-success mt-3 text-white">
+                      <Button disabled={loadingStatus} onClick={() => verifyUserPermssion("update_driver_status", () => onReactivate())} className="bg-success mt-3 text-white">
                         Reactivate Driver
                       </Button>
                     </div>
                   )}
                   {driver?.driver_data?.driver_status === 3 && !driver.driver_data?.vehicle_id && driver?.driver_data?.asset_payment.status && driver?.driver_data?.verification_payment.status && (
                     <div className="text-center ml-2">
-                      <Button
-                        disabled={loadingStatus}
-                        onClick={() => {
-                          opnAddVehicleModal();
-                        }}
-                        className="bg-warning mt-3 text-white"
-                      >
+                      <Button disabled={loadingStatus} onClick={() => verifyUserPermssion("assign_vehicle_to_driver", () => opnAddVehicleModal())} className="bg-warning mt-3 text-white">
                         Assign Vehicle
                       </Button>
                     </div>
@@ -670,7 +665,7 @@ const DriverProfile = ({
               )}
               {/* status "1" is for lasdri when valid status 
               status "0" is for lasdri when valid but expired */}
-              {(verificationResult?.status === "1" || verificationResult?.status === "0" ) && (
+              {(verificationResult?.status === "1" || verificationResult?.status === "0") && (
                 <div>
                   <ul className="list-group">
                     <li className="list-group-item text-right">
@@ -690,6 +685,12 @@ const DriverProfile = ({
                         <strong>DATE OF BIRTH</strong>
                       </span>
                       {`${verificationResult?.dob} `}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>PHONE NUMBER</strong>
+                      </span>
+                      {`${verificationResult?.phone_no} `}
                     </li>
                   </ul>
                   <div className="mt-2 text-right">

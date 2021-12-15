@@ -24,7 +24,8 @@ import {Link} from "react-router-dom";
 import moment from "moment";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {getTodayDate} from "Helpers/helpers";
-
+import {verifyUserPermssion} from "../../container/DefaultLayout";
+export let onAddUpdateUserModalClose
 const PromoDiscounts = (props) => {
   const {match, getPromoDiscounts, promoDiscountsCount, promoDiscounts, searchPromo, createPromoDiscount, updatePromoDiscount, getPromoDiscountCount, loading, deletePromoDiscount, loadingStatus} =
     props;
@@ -106,7 +107,7 @@ const PromoDiscounts = (props) => {
     setEditUser(true);
   };
 
-  const onAddUpdateUserModalClose = () => {
+   onAddUpdateUserModalClose = () => {
     setFormData({
       code_type: "",
       custom_code: "",
@@ -131,7 +132,6 @@ const PromoDiscounts = (props) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    onAddUpdateUserModalClose();
     const apiDataCreate =
       code_type === "custom"
         ? {code_type, custom_code, promo_code_owner, start_date, expiry_date, description, num_of_rides, users_limit, discount_type, discount_value}
@@ -166,7 +166,7 @@ const PromoDiscounts = (props) => {
             <SearchComponent getPreviousData={getPromoDiscounts} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={getPromoDiscountCount} placeHolder="Search promo code" />
           </li>
           <div className="float-right">
-            <a href="#" onClick={(e) => opnAddNewUserModal(e)} color="primary" className="caret btn-sm mr-10">
+            <a href="#" onClick={(e) => verifyUserPermssion("create_promo_code", () => opnAddNewUserModal(e))} color="primary" className="caret btn-sm mr-10">
               Create New Promo <i className="zmdi zmdi-plus"></i>
             </a>
           </div>
@@ -197,10 +197,10 @@ const PromoDiscounts = (props) => {
                         <TableCell>{moment(promoDiscount.start_date).format("LL")}</TableCell>
                         <TableCell>{moment(promoDiscount.expiry_date).format("LL")}</TableCell>
                         <TableCell>
-                          <button type="button" className="rct-link-btn" onClick={(e) => opnAddNewUserEditModal(promoDiscount.promo_code_id)}>
+                          <button type="button" className="rct-link-btn" onClick={(e) => verifyUserPermssion("update_promo_code", () => opnAddNewUserEditModal(promoDiscount.promo_code_id))}>
                             <i className="ti-pencil"></i>
                           </button>
-                          <button type="button" className="rct-link-btn ml-lg-3 text-danger mr-2" onClick={() => onDelete(promoDiscount.promo_code_id)}>
+                          <button type="button" className="rct-link-btn ml-lg-3 text-danger mr-2" onClick={() => verifyUserPermssion("delete_promo_code", () => onDelete(promoDiscount.promo_code_id))}>
                             <i className="ti-trash"></i>{" "}
                           </button>
                           <button type="button" className="rct-link-btn text-primary" title="view details">

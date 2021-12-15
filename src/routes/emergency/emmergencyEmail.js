@@ -1,34 +1,24 @@
 /**
  * Emergency Numbers
  */
-import React, { useState, useEffect, Fragment, useRef } from "react";
+import React, {useState, useEffect, Fragment, useRef} from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import { Form, FormGroup, Label, Input } from "reactstrap";
+import {Form, FormGroup, Label, Input} from "reactstrap";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import Button from "@material-ui/core/Button";
-import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import { connect } from "react-redux";
-import {
-  deleteSOSEmail,
-  getSOSNumber,
-  setSOSEmail,
-} from "Actions/emergencyAction";
+import {Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
+import {connect} from "react-redux";
+import {deleteSOSEmail, getSOSNumber, setSOSEmail} from "Actions/emergencyAction";
 import EmptyData from "Components/EmptyData/EmptyData";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
+import {verifyUserPermssion} from "../../container/DefaultLayout";
 
-const EmergencyEmail = ({
-  match,
-  setSOSEmail,
-  getSOSNumber,
-  sosNumbers,
-  loading,
-  deleteSOSEmail,
-}) => {
+const EmergencyEmail = ({match, setSOSEmail, getSOSNumber, sosNumbers, loading, deleteSOSEmail}) => {
   const [email, setEmail] = useState("");
   const [isModal, setIsModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
@@ -55,23 +45,14 @@ const EmergencyEmail = ({
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Emergency Emails"} match={match} />
-      <RctCollapsibleCard
-        heading={sosNumbers?.emails?.length > 0 ? "Emergency Emails" : null}
-        fullBlock
-        style={{ minHeight: "70vh" }}
-      >
+      <RctCollapsibleCard heading={sosNumbers?.emails?.length > 0 ? "Emergency Emails" : null} fullBlock style={{minHeight: "70vh"}}>
         <div className="float-right">
-          <a
-            href="#"
-            onClick={(e) => setIsModal(true)}
-            color="primary"
-            className="caret btn-sm mr-10"
-          >
+          <a href="#" onClick={(e) => verifyUserPermssion("create_emergency_emails", () => setIsModal(true))} color="primary" className="caret btn-sm mr-10">
             Add New SOS Email <i className="zmdi zmdi-plus"></i>
           </a>
         </div>
         {!loading && sosNumbers.emails?.length > 0 && (
-          <div className="table-responsive" style={{ minHeight: "50vh" }}>
+          <div className="table-responsive" style={{minHeight: "50vh"}}>
             <Table>
               <TableHead>
                 <TableRow hover>
@@ -86,11 +67,7 @@ const EmergencyEmail = ({
                       <TableRow hover key={data}>
                         <TableCell>{data}</TableCell>
                         <TableCell>
-                          <button
-                            type="button"
-                            className="rct-link-btn ml-lg-3 text-danger ml-2"
-                            onClick={() => onDelete(data)}
-                          >
+                          <button type="button" className="rct-link-btn ml-lg-3 text-danger ml-2" onClick={() => verifyUserPermssion("delete_emergency_email", () => onDelete(data))}>
                             <i className="ti-trash"></i>
                           </button>
                         </TableCell>
@@ -104,28 +81,16 @@ const EmergencyEmail = ({
       </RctCollapsibleCard>
       {sosNumbers.emails?.length < 1 && <EmptyData />}
       <Modal isOpen={isModal} toggle={() => setIsModal(false)}>
-        <ModalHeader toggle={() => setIsModal(false)}>
-          Add SOS Email
-        </ModalHeader>
+        <ModalHeader toggle={() => setIsModal(false)}>Add SOS Email</ModalHeader>
         <Form onSubmit={onSubmit}>
           <ModalBody>
             <FormGroup>
               <Label for="firstName">EMail</Label>
-              <Input
-                type="email"
-                name="tel"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+              <Input type="email" name="tel" value={email} onChange={(e) => setEmail(e.target.value)} required />
             </FormGroup>
           </ModalBody>
           <ModalFooter>
-            <Button
-              type="submit"
-              variant="contained"
-              className="text-white btn-success"
-            >
+            <Button type="submit" variant="contained" className="text-white btn-success">
               Submit
             </Button>
           </ModalFooter>

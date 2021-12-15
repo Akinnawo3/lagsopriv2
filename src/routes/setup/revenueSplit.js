@@ -1,31 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import {
-  Form,
-  FormGroup,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Label,
-  Input,
-  Button,
-  Row,
-  Col,
-} from "reactstrap";
-import {
-  getRevenueSplitData,
-  updateRevenueSplitData,
-} from "Actions/revenueSplitAction";
-import { connect } from "react-redux";
+import {Form, FormGroup, Modal, ModalHeader, ModalBody, ModalFooter, Label, Input, Button, Row, Col} from "reactstrap";
+import {getRevenueSplitData, updateRevenueSplitData} from "Actions/revenueSplitAction";
+import {connect} from "react-redux";
+import {verifyUserPermssion} from "../../container/DefaultLayout";
 
-const RevenueSplit = ({
-  match,
-  getRevenueSplitData,
-  revenueSplitData,
-  updateRevenueSplitData,
-}) => {
+const RevenueSplit = ({match, getRevenueSplitData, revenueSplitData, updateRevenueSplitData}) => {
   useEffect(() => {
     getRevenueSplitData(true);
   }, []);
@@ -75,10 +56,7 @@ const RevenueSplit = ({
       <PageTitleBar title={"Revenue Split"} match={match} />
       <div className="row">
         <div className="col col-xs-12 col-md-8">
-          <RctCollapsibleCard
-            heading="Revenue Split"
-            style={{ minHeight: "70vh" }}
-          >
+          <RctCollapsibleCard heading="Revenue Split" style={{minHeight: "70vh"}}>
             <div className="px-2">
               <div className="row mt-4 ml-2">
                 <div className="cl col-sm-12 col-md-6">
@@ -142,10 +120,7 @@ const RevenueSplit = ({
                 </div>
               </div>
               <div classsName="d-flex">
-                <button
-                  className="btn btn-info mr-3"
-                  onClick={openBreakDownModal}
-                >
+                <button className="btn btn-info mr-3" onClick={() => verifyUserPermssion("create_setup", openBreakDownModal)}>
                   Edit
                 </button>
                 {/* <button
@@ -159,14 +134,8 @@ const RevenueSplit = ({
           </RctCollapsibleCard>
         </div>
         {/* parameter modal */}
-        <Modal
-          isOpen={parameterModalOpen}
-          toggle={() => setParameterModalOpen(false)}
-          size="sm"
-        >
-          <ModalHeader toggle={() => setParameterModalOpen(false)}>
-            Add Parameter
-          </ModalHeader>
+        <Modal isOpen={parameterModalOpen} toggle={() => setParameterModalOpen(false)} size="sm">
+          <ModalHeader toggle={() => setParameterModalOpen(false)}>Add Parameter</ModalHeader>
           <Form onSubmit={() => null}>
             <ModalBody>
               <FormGroup>
@@ -191,18 +160,10 @@ const RevenueSplit = ({
               </FormGroup>
             </ModalBody>
             <ModalFooter>
-              <Button
-                type="submit"
-                variant="contained"
-                className="text-white btn-info mr-2"
-              >
+              <Button type="submit" variant="contained" className="text-white btn-info mr-2">
                 Add Parameter
               </Button>
-              <Button
-                variant="contained"
-                className="btn btn-outline-danger"
-                onClick={() => setParameterModalOpen(false)}
-              >
+              <Button variant="contained" className="btn btn-outline-danger" onClick={() => setParameterModalOpen(false)}>
                 Cancel
               </Button>
             </ModalFooter>
@@ -210,40 +171,21 @@ const RevenueSplit = ({
         </Modal>
 
         {/* breakdoen modal     */}
-        <Modal
-          isOpen={breakDownModalOpen}
-          toggle={() => setBreakDownModalOpen(false)}
-          size="md"
-          scrollable
-        >
-          <ModalHeader toggle={() => setBreakDownModalOpen(false)}>
-            Update fee
-          </ModalHeader>
+        <Modal isOpen={breakDownModalOpen} toggle={() => setBreakDownModalOpen(false)} size="md" scrollable>
+          <ModalHeader toggle={() => setBreakDownModalOpen(false)}>Update fee</ModalHeader>
           <Form onSubmit={updateValues}>
             <ModalBody>
               <Row>
                 <Col sm="12" md="6">
                   <FormGroup>
                     <Label for="lastName">Commercial Driver</Label>
-                    <Input
-                      type="number"
-                      name="name"
-                      value={commercialDebtService}
-                      onChange={(e) => setCommercialDebtService(e.target.value)}
-                      required
-                    />
+                    <Input type="number" name="name" value={commercialDebtService} onChange={(e) => setCommercialDebtService(e.target.value)} required />
                   </FormGroup>
                 </Col>
                 <Col sm="12" md="6">
                   <FormGroup>
                     <Label for="lastName">Social Driver</Label>
-                    <Input
-                      type="text"
-                      name="number"
-                      value={socialDebtService}
-                      onChange={(e) => setSocialDebtService(e.target.value)}
-                      required
-                    />
+                    <Input type="text" name="number" value={socialDebtService} onChange={(e) => setSocialDebtService(e.target.value)} required />
                   </FormGroup>
                 </Col>
               </Row>
@@ -251,25 +193,13 @@ const RevenueSplit = ({
                 <Col sm="12" md="6">
                   <FormGroup>
                     <Label for="lastName">Daily LASG Tax</Label>
-                    <Input
-                      type="text"
-                      name="number"
-                      value={dailyTax}
-                      onChange={(e) => setDailyTax(e.target.value)}
-                      required
-                    />
+                    <Input type="text" name="number" value={dailyTax} onChange={(e) => setDailyTax(e.target.value)} required />
                   </FormGroup>
                 </Col>
                 <Col sm="12" md="6">
                   <FormGroup>
                     <Label for="lastName">Tech co</Label>
-                    <Input
-                      type="text"
-                      name="number"
-                      value={techCo}
-                      onChange={(e) => setTechCo(e.target.value)}
-                      required
-                    />
+                    <Input type="text" name="number" value={techCo} onChange={(e) => setTechCo(e.target.value)} required />
                   </FormGroup>
                 </Col>
               </Row>
@@ -277,25 +207,13 @@ const RevenueSplit = ({
                 <Col sm="12" md="6">
                   <FormGroup>
                     <Label for="lastName">Re-fleeting</Label>
-                    <Input
-                      type="text"
-                      name="number"
-                      value={refleeting}
-                      onChange={(e) => setRefleeting(e.target.value)}
-                      required
-                    />
+                    <Input type="text" name="number" value={refleeting} onChange={(e) => setRefleeting(e.target.value)} required />
                   </FormGroup>
                 </Col>
                 <Col sm="12" md="6">
                   <FormGroup>
                     <Label for="lastName">Asset co</Label>
-                    <Input
-                      type="text"
-                      name="number"
-                      value={assetCo}
-                      onChange={(e) => setAssetCo(e.target.value)}
-                      required
-                    />
+                    <Input type="text" name="number" value={assetCo} onChange={(e) => setAssetCo(e.target.value)} required />
                   </FormGroup>
                 </Col>
               </Row>
@@ -303,42 +221,22 @@ const RevenueSplit = ({
                 <Col sm="12" md="6">
                   <FormGroup>
                     <Label for="lastName">Communication</Label>
-                    <Input
-                      type="text"
-                      name="number"
-                      value={comms}
-                      onChange={(e) => setComms(e.target.value)}
-                      required
-                    />
+                    <Input type="text" name="number" value={comms} onChange={(e) => setComms(e.target.value)} required />
                   </FormGroup>
                 </Col>
                 <Col sm="12" md="6">
                   <FormGroup>
                     <Label for="lastName">Maintenance and Insurance</Label>
-                    <Input
-                      type="text"
-                      name="number"
-                      value={maintenance}
-                      onChange={(e) => setMaintenance(e.target.value)}
-                      required
-                    />
+                    <Input type="text" name="number" value={maintenance} onChange={(e) => setMaintenance(e.target.value)} required />
                   </FormGroup>
                 </Col>
               </Row>
             </ModalBody>
             <ModalFooter>
-              <Button
-                type="submit"
-                variant="contained"
-                className="text-white  btn-info mr-2"
-              >
+              <Button type="submit" variant="contained" className="text-white  btn-info mr-2">
                 Save Update
               </Button>
-              <Button
-                variant="contained"
-                className="btn btn-outline-danger"
-                onClick={() => setBreakDownModalOpen(false)}
-              >
+              <Button variant="contained" className="btn btn-outline-danger" onClick={() => setBreakDownModalOpen(false)}>
                 Cancel
               </Button>
             </ModalFooter>

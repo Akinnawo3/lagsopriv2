@@ -150,11 +150,11 @@ export default [
     permission: "view_ratings_and_reviews",
   },
 
-  // {
-  //   path: "areas",
-  //   component: AsyncAreas,
-  //   permission: "view_ratings_and_reviews",
-  // },
+  {
+    path: "areas",
+    component: AsyncAreas,
+    permission: "view_setup",
+  },
   {
     path: "support",
     component: SupportRoutes,
@@ -185,12 +185,12 @@ export default [
   {
     path: "activity-log",
     component: AsyncActivityLog,
-    permision: "view_activity_log",
+    permission: "view_activity_log",
   },
 
   {
     path: "setup",
     component: SetupRoutes,
-    permision: "view_setup",
+    permission: "view_setup",
   },
 ];

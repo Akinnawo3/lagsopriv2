@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import {NotificationManager} from "react-notifications";
 import {createAdmin, updateAdmin} from "Actions/adminAction";
 import {Form, Modal, ModalHeader, ModalBody, Label, Input, Button} from "reactstrap";
+import {verifyUserPermssion} from "../../../container/DefaultLayout";
 const AddPersonnel = ({match, history, updateAdmin, createAdmin}) => {
   const permissionArray = history?.location?.state?.editedAdmin?.access_tab ? history?.location?.state?.editedAdmin?.access_tab : [];
   const [permissionModalOpen, setPermissionModalOpen] = useState(false);
@@ -30,7 +31,7 @@ const AddPersonnel = ({match, history, updateAdmin, createAdmin}) => {
   const [adminData, setAdminData] = useState(data);
 
   const viewPermissions = [
-    { label: "Dashboard", value: "dashboard" },
+    {label: "Dashboard", value: "dashboard"},
     {label: "Users", value: "users"},
     {label: "Passengers", value: "passengers"},
     {label: "Personnels", value: "personnels"},
@@ -92,10 +93,15 @@ const AddPersonnel = ({match, history, updateAdmin, createAdmin}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!permissions.length) {
       NotificationManager.error("Select Admin Permissions");
     } else {
-      history?.location?.state?.editedAdmin ? await updateAdmin({...adminData, access_tab: permissions.join()}, auth_id) : await createAdmin({...adminData, access_tab: permissions.join()});
+      if (history?.location?.state?.editedAdmin) {
+        verifyUserPermssion("create_personnel", () => updateAdmin({...adminData, access_tab: permissions.join()}, auth_id));
+      } else {
+        verifyUserPermssion("create_personnel", () => createAdmin({...adminData, access_tab: permissions.join()}));
+      }
     }
   };
 
@@ -233,13 +239,7 @@ const AddPersonnel = ({match, history, updateAdmin, createAdmin}) => {
                       <div className="mt-3 ml-4 ">
                         {otherPermissions.map((item, key) => (
                           <div key={key}>
-                            <input
-                              type="checkbox"
-                              name={item.value}
-                              value={item.value}
-                              onChange={handleCheck}
-                              checked={(() => permissions.includes(item.value))()}
-                            />
+                            <input type="checkbox" name={item.value} value={item.value} onChange={handleCheck} checked={(() => permissions.includes(item.value))()} />
                             <label for="vehicle1" className="ml-2">
                               {item.label}
                             </label>
