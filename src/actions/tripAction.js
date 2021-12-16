@@ -445,8 +445,6 @@ export const getTripCountWaitingDrivers = () => async (dispatch) => {
 
 export const getTripCountMovingDrivers = () => async (dispatch) => {
   try {
-    spinner && dispatch(startLoading());
-    !spinner && dispatch(startStatusLoading());
     const res = await axios.get(
       `${api.trip}/v1.1/trips/?component=moving_driver&trip_status=on_ride`
     );

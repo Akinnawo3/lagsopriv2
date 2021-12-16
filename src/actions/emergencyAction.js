@@ -197,7 +197,7 @@ export const deleteSOSEmail = (email) => async (dispatch) => {
       NotificationManager.error(res.data.msg);
     } else {
       await dispatch(getSOSNumber());
-      await NotificationManager.success("Number Deleted Successfully!");
+      await NotificationManager.success("Email Deleted Successfully!");
     }
     dispatch(endStatusLoading());
   } catch (err) {
