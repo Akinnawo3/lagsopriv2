@@ -32,6 +32,7 @@ import SetupRoutes from "Routes/setup/setupRoutes";
 import MaintenanceLog from "../routes/maintenance-log/maintenanceRoutes";
 import MaintenanceRoutes from "../routes/maintenance-log/maintenanceRoutes";
 import promoRoutes from "../routes/promo-discounts/promoRoutes";
+import RevenueRoute from "../routes/revenues/revenueRoutes";
 
 export default [
   {
@@ -192,5 +193,12 @@ export default [
     path: "setup",
     component: SetupRoutes,
     permission: "view_setup",
+  },
+
+  //routes that have no permission identifiers
+  {
+    path: "revenues",
+    component: RevenueRoute,
+    permission: "view_trip_payments",
   },
 ];

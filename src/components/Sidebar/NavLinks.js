@@ -173,6 +173,9 @@ export default {
         },
       ],
     },
+
+
+
     // {
     //    "menu_title": "sidebar.cancellation",
     //    "menu_icon": "zmdi zmdi-close",
@@ -200,6 +203,19 @@ export default {
           path: "/admin/payments/unsuccessful",
           new_item: false,
           menu_title: "sidebar.unsuccessful",
+        },
+      ],
+    },
+
+    {
+      menu_title: "sidebar.revenue",
+      menu_icon:  "icon-credit-card",
+      type_multi: null,
+      // "new_item": true,
+      child_routes: [
+        {
+          path: "/admin/revenues",
+          menu_title: "sidebar.revenue",
         },
       ],
     },

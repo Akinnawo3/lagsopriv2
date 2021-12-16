@@ -53,6 +53,7 @@ module.exports = {
   "sidebar.cancelled": "Cancelled",
   "sidebar.cancellation": "Cancellation",
   "sidebar.payments": "Trip Payments",
+  "sidebar.revenue": "Revenues",
   "sidebar.map": "Map",
   "sidebar.service-payments": "Service Payments",
   "sidebar.paymentsService": "Payments Service",

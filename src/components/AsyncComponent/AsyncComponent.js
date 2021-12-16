@@ -122,6 +122,11 @@ const AsyncPaymentsServiceUnsuccessful = Loadable({
   loading: () => <RctPageLoader />,
 });
 
+const AsyncRevenues = Loadable({
+  loader: () => import("Routes/revenues/revenues"),
+  loading: () => <RctPageLoader />,
+});
+
 const AsyncBookingTypes = Loadable({
   loader: () => import("Routes/booking-types/booking-types"),
   loading: () => <RctPageLoader />,
@@ -450,6 +455,7 @@ export {
   AsyncInactiveDrivers,
   AsyncActiveDrivers,
   AsyncTrips,
+  AsyncRevenues,
   AsyncPassengers,
   AsyncDrivers,
   AsyncDriver,
