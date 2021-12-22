@@ -65,7 +65,7 @@ const PaymentWidget = () =>  {
                 <List className="p-0 fs-14">
                     <ListItem className="mt-3 d-flex justify-content-between border-bottom  align-items-center p-15">
                         <span className="font-weight-bold">
-                            Today Payments
+                            Today's Payments
                         </span>
                     </ListItem>
                     <ListItem className="d-flex justify-content-between align-items-center border-bottom p-15">

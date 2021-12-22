@@ -33,7 +33,7 @@ const ScheduleWidget = () => {
             <RctCardContent>
                 <div className="d-flex justify-content-between">
                     <div className="align-items-start">
-                        <h3 className="mb-10">Today <br/> Schedules</h3>
+                        <h3 className="mb-10">Today's <br/> Schedules</h3>
                         <h2 className="mb-0"><CountUp start={0} end={count}/></h2>
                     </div>
                     <div className="align-items-end">

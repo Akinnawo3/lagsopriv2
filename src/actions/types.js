@@ -68,6 +68,9 @@ export const BOOKING_TYPE = "BOOKING_TYPE";
 export const PROMO_TYPE = "PROMO_TYPE";
 export const PROMO_COUNT = "PROMO_COUNT";
 export const PROMO_DETAILS = "PROMO_DETAILS";
+export const PROMO_USERS = "PROMO_USERS";
+export const PROMO_USERS_COUNT = "PROMO_USERS_COUNT";
+
 //referral
 export const REFERRAL = "REFERRAL";
 export const REFERRAL_COUNT = "REFERRAL_COUNT";

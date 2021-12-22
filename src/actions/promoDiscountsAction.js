@@ -1,6 +1,6 @@
 import axios from "axios";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
-import {PROMO_TYPE, PROMO_COUNT, PROMO_DETAILS} from "./types";
+import {PROMO_TYPE, PROMO_COUNT, PROMO_DETAILS, PROMO_USERS, PROMO_USERS_COUNT} from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 import {onAddUpdateUserModalClose} from "../routes/promo-discounts/promoDiscount";
@@ -111,7 +111,7 @@ export const updatePromoDiscount = (body, promo_code_id) => async (dispatch) => 
       await dispatch(endStatusLoading());
     } else {
       await NotificationManager.success("Promo Updated Successfully!");
-
+      onAddUpdateUserModalClose();
       await dispatch(getPromoDiscount(1));
     }
     await dispatch(endStatusLoading());
@@ -133,4 +133,38 @@ export const deletePromoDiscount = (promo_code_id) => async (dispatch) => {
     await dispatch(endStatusLoading());
     NotificationManager.error(err.response.data.result);
   }
+};
+
+export const getPromoUsers =
+  (page_no = 1, promo_code_id) =>
+  async (dispatch) => {
+    try {
+      await dispatch(startLoading());
+      const res = await axios.get(`${api.wallet}/v1.1/admin/promo-code-users/?promo_code_id=${promo_code_id}&&item_per_page=20&page=${page_no}`);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        dispatch({
+          type: PROMO_USERS,
+          payload: res.data.data.user_data,
+        });
+      }
+      dispatch(endLoading());
+    } catch (err) {
+      dispatch(endLoading());
+    }
+  };
+
+export const getPromoUsersCount = (promo_code_id) => async (dispatch) => {
+  try {
+    const res = await axios.get(`${api.wallet}/v1.1/admin/promo-code-users/?promo_code_id=${promo_code_id}&&component=count`);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      dispatch({
+        type: PROMO_USERS_COUNT,
+        payload: res.data.data.total ? res.data.data.total : 0,
+      });
+    }
+  } catch (err) {}
 };

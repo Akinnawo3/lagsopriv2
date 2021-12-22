@@ -354,6 +354,10 @@ const AsyncPromoDiscountDetails = Loadable({
   loader: () => import("Routes/promo-discounts/promoDiscountDetails"),
   loading: () => <RctPageLoader />,
 });
+const AsyncPromoBeneficiaries = Loadable({
+  loader: () => import("Routes/promo-discounts/promoBeneficiaries"),
+  loading: () => <RctPageLoader />,
+});
 
 // for setup
 const AsyncFees = Loadable({
@@ -467,6 +471,7 @@ export {
   AsyncActivityLog,
   AsyncPromoDiscount,
   AsyncPromoDiscountDetails,
+  AsyncPromoBeneficiaries,
   AsyncGooleMapsComponent,
   AsyncLeafletMapComponent,
   AsyncSessionLoginComponent,
