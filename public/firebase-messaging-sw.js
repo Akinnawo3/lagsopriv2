@@ -16,5 +16,5 @@ if ("serviceWorker" in navigator) {
       console.log("Service worker registration failed, error:", err);
     });
 }
-  
-const initMessaging = firebase.messaging(); 
+
+const initMessaging = firebase.messaging();
