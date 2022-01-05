@@ -1,9 +1,11 @@
-import {PROMO_TYPE, PROMO_COUNT,PROMO_DETAILS} from "Actions/types";
+import {PROMO_TYPE, PROMO_COUNT, PROMO_DETAILS, PROMO_USERS, PROMO_USERS_COUNT} from "Actions/types";
 
 const initialState = {
   promoDiscounts: [],
   promoDiscountsCount: "",
   promoDetails: "",
+  promoUsers: "",
+  promoUsersCount: "",
 };
 
 function promoDiscountReducer(state = initialState, action) {
@@ -25,6 +27,18 @@ function promoDiscountReducer(state = initialState, action) {
       return {
         ...state,
         promoDetails: payload,
+      };
+    }
+    case PROMO_USERS: {
+      return {
+        ...state,
+        promoUsers: payload,
+      };
+    }
+    case PROMO_USERS_COUNT: {
+      return {
+        ...state,
+        promoUsersCount: payload,
       };
     }
     default:

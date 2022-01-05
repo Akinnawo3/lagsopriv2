@@ -1,11 +1,11 @@
 /**
  * App.js Layout Start Here
  */
-import React, { Component } from "react";
+import React, {Component} from "react";
 import axios from "axios";
-import { connect } from "react-redux";
-import { Redirect, Route } from "react-router-dom";
-import { NotificationContainer } from "react-notifications";
+import {connect} from "react-redux";
+import {Redirect, Route} from "react-router-dom";
+import {NotificationContainer} from "react-notifications";
 import RctThemeProvider from "./RctThemeProvider";
 import RctDefaultLayout from "./DefaultLayout";
 import {
@@ -36,7 +36,7 @@ axios.interceptors.response.use(
 /**
  * Initial Path To Check Whether User Is Logged In Or Not
  */
-const InitialPath = ({ component: Component, authUser, isAdmin, ...rest }) => (
+const InitialPath = ({component: Component, authUser, isAdmin, ...rest}) => (
   <Route
     {...rest}
     render={(props) =>
@@ -46,7 +46,7 @@ const InitialPath = ({ component: Component, authUser, isAdmin, ...rest }) => (
         <Redirect
           to={{
             pathname: "/login",
-            state: { from: props.location },
+            state: {from: props.location},
           }}
         />
       )
@@ -56,9 +56,7 @@ const InitialPath = ({ component: Component, authUser, isAdmin, ...rest }) => (
 
 class App extends Component {
   render() {
-    const { location, match, user, userProfile } = this.props;
-
-    // console.log(location.pathname)
+    const {location, match, user, userProfile} = this.props;
 
     if (location.pathname === "/") {
       if (user === null) {
@@ -77,12 +75,7 @@ class App extends Component {
     return (
       <RctThemeProvider>
         <NotificationContainer />
-        <InitialPath
-          path={`${match.url}admin`}
-          authUser={user}
-          isAdmin={userProfile?.user_type}
-          component={RctDefaultLayout}
-        />
+        <InitialPath path={`${match.url}admin`} authUser={user} isAdmin={userProfile?.user_type} component={RctDefaultLayout} />
         <Route path="/" component={AsyncSessionLoginComponent} />
       </RctThemeProvider>
     );
@@ -90,9 +83,9 @@ class App extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ authUser }) => {
-  const { user, userProfile } = authUser;
-  return { user, userProfile };
+const mapStateToProps = ({authUser}) => {
+  const {user, userProfile} = authUser;
+  return {user, userProfile};
 };
 
 export default connect(mapStateToProps)(App);

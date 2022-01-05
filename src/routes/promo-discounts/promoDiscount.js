@@ -27,6 +27,7 @@ import {getTodayDate} from "Helpers/helpers";
 import {verifyUserPermssion} from "../../container/DefaultLayout";
 export let onAddUpdateUserModalClose;
 const PromoDiscounts = (props) => {
+  console.log(process.env.REACT_APP_MEASUREMENT_ID);
   const {match, getPromoDiscounts, promoDiscountsCount, promoDiscounts, searchPromo, createPromoDiscount, updatePromoDiscount, getPromoDiscountCount, loading, deletePromoDiscount, loadingStatus} =
     props;
   const [addNewUserModal, setAddNewUserModal] = useState(false);
@@ -55,7 +56,6 @@ const PromoDiscounts = (props) => {
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
   const [excelExport, setExcelExport] = useState([]);
 
-  console.log(getTodayDate());
   useEffect(() => {
     getPromoDiscounts(1);
     getPromoDiscountCount();
@@ -258,11 +258,18 @@ const PromoDiscounts = (props) => {
             )}
             <FormGroup>
               <Label>Start Date</Label>
-              <Input type="date" name="start_date" min={getTodayDate()} value={moment(start_date).format("YYYY-MM-DD")} onChange={onChange} required />
+              <Input
+                type="date"
+                name="start_date"
+                // min={getTodayDate()}
+                value={moment(start_date).format("YYYY-MM-DD")}
+                onChange={onChange}
+                required
+              />
             </FormGroup>
             <FormGroup>
               <Label>Expiry Date</Label>
-              <Input type="date" name="expiry_date" min={getTodayDate()} value={moment(expiry_date).format("YYYY-MM-DD")} onChange={onChange} required />
+              <Input type="date" name="expiry_date" value={moment(expiry_date).format("YYYY-MM-DD")} onChange={onChange} required />
             </FormGroup>
             <FormGroup>
               <Label>Description</Label>

@@ -20,7 +20,6 @@ import {NotificationManager} from "react-notifications";
 class DefaultLayout extends Component {
   render() {
     const {match, isLoading, authUserProfile} = this.props;
-    console.log(authUserProfile);
     verifyUserPermssion = (permission, runfunction, e) => {
       e?.preventDefault()
       return authUserProfile.user_type === "superadmin" || authUserProfile.access_tab.includes(permission) ? runfunction() : NotificationManager.error("Access Denied");

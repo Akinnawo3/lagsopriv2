@@ -617,7 +617,7 @@ module.exports = {
   "widgets.today": "Today",
   "widgets.campaignPerformance": "Campaign Performance",
   "widgets.supportRequest": "Support Request",
-  "widgets.trips": "Today Trips",
+  "widgets.trips": "Today's Trips",
   "widgets.usersList": "Users List ",
   "widgets.lastWeek": "Last Week",
   "themeOptions.sidebarOverlay": "Sidebar Overlay",

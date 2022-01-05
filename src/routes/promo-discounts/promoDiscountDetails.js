@@ -106,7 +106,7 @@ const PromoDiscountDetails = ({getPromoDiscountDetails, match, loading, location
                       <strong>View Beneficiaries </strong>
                     </span>
                     <button type="button" className="rct-link-btn text-primary" title="view details">
-                      <Link to={`/admin/promo-discounts/k`}>
+                      <Link to={`/admin/promo-discounts/${promoDetails.promo_code_id}/beneficiaries`}>
                         <i className="ti-eye" />
                       </Link>
                     </button>
