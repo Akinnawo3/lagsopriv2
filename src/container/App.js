@@ -57,10 +57,6 @@ const InitialPath = ({component: Component, authUser, isAdmin, ...rest}) => (
 class App extends Component {
   render() {
     const {location, match, user, userProfile} = this.props;
-    // console.log(location.pathname)
-    console.log(process.env.REACT_APP_MEASUREMENT_ID
-    
-    );
 
     if (location.pathname === "/") {
       if (user === null) {

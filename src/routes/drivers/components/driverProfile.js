@@ -149,7 +149,7 @@ const DriverProfile = ({
     inputEl.current.open();
   };
 
-  console.log(verificationResult);
+  console.log(driver);
 
   const triggerIdVerifcation = (type, value, firstName, lastName) => {
     setIdType(type);
@@ -631,9 +631,21 @@ const DriverProfile = ({
                     </li>
                     <li className="list-group-item text-right">
                       <span className="pull-left">
-                        <strong>Reg Name Matches ID Name</strong>
+                        <strong>First Name Matches Reg. Details</strong>
                       </span>
-                      {`${verificationResult?.data?.fieldMatches?.lastname ? "Yes" : "No"} `}
+                      {`${verificationResult?.data?.firstname?.toUpperCase() === driver?.first_name?.toUpperCase() ? "Yes" : "No"} `}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Last Name Matches Reg. Details</strong>
+                      </span>
+                      {`${verificationResult?.data?.lastname?.toUpperCase() === driver?.last_name?.toUpperCase() ? "Yes" : "No"} `}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Phone Number Matches Reg. Details</strong>
+                      </span>
+                      {`${verificationResult?.data?.phone === driver?.phone_number ? "Yes" : "No"} `}
                     </li>
                     <li className="list-group-item text-right">
                       <span className="pull-left">
@@ -680,6 +692,26 @@ const DriverProfile = ({
                       </span>
                       {`${verificationResult?.f_name} ${verificationResult?.m_name} ${verificationResult?.surname}`}
                     </li>
+
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>First Name Matches Reg. Details</strong>
+                      </span>
+                      {`${verificationResult?.f_name?.toUpperCase() === driver?.first_name?.toUpperCase() ? "Yes" : "No"} `}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Last Name Matches Reg. Details</strong>
+                      </span>
+                      {`${verificationResult?.surname?.toUpperCase() === driver?.last_name?.toUpperCase() ? "Yes" : "No"} `}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Phone Number Matches Reg. Details</strong>
+                      </span>
+                      {`${verificationResult?.phone_no === driver?.phone_number ? "Yes" : "No"} `}
+                    </li>
+
                     <li className="list-group-item text-right">
                       <span className="pull-left">
                         <strong>DATE OF BIRTH</strong>
@@ -716,6 +748,26 @@ const DriverProfile = ({
                       </span>
                       {`${verificationResult?.biographicData[0]?.firstName} ${verificationResult?.biographicData[0]?.middleName} ${verificationResult?.biographicData[0]?.surname}`}
                     </li>
+
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>First Name Matches Reg. Details</strong>
+                      </span>
+                      {`${verificationResult?.biographicData[0]?.firstName?.toUpperCase() === driver?.first_name?.toUpperCase() ? "Yes" : "No"} `}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Last Name Matches Reg. Details</strong>
+                      </span>
+                      {`${verificationResult?.biographicData[0]?.surname?.toUpperCase() === driver?.last_name?.toUpperCase() ? "Yes" : "No"} `}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Phone Number Matches Reg. Details</strong>
+                      </span>
+                      {`${verificationResult?.biographicData[0]?.phoneNumber === driver?.phone_number ? "Yes" : "No"} `}
+                    </li>
+
                     <li className="list-group-item text-right">
                       <span className="pull-left">
                         <strong>GENDER</strong>

@@ -22,17 +22,20 @@ import axios from "axios";
 import firebase from "./firebase";
 
 const MainApp = () => {
-  // useEffect(() => {
-  //   const messaging = firebase.messaging();
-  //   messaging
-  //     .getToken()
-  //     .then((token) => {
-  //       console.log("Firebase Token Get::", token);
-  //     })
-  //     .catch((err) => {
-  //       console.log("firebase push notification error::", err);
-  //     });
-  // }, []);
+
+
+  useEffect(() => {
+    const messaging = firebase.messaging();
+    messaging
+      .getToken()
+      .then((token) => {
+        console.log("Firebase Token Get::", token);
+      })
+      .catch((err) => {
+        console.log("firebase push notification error::", err);
+      });
+  }, []);
+  
 
   (function () {
     const token = cookies.get("user_id");

@@ -157,6 +157,11 @@ module.exports = {
       filename: "./index.html",
       favicon: "./public/favicon.ico",
     }),
+    // new HtmlWebPackPlugin({
+    //   template: "./public/firebase-messaging-sw.js",
+    //   filename: "./firebase-messaging-sw.js",
+    //   inject: false,
+    // }),
     new MiniCssExtractPlugin({
       filename: "[name].css",
       chunkFilename: "static/css/[name].[hash:8].css",

@@ -1,3 +1,5 @@
+// console.log(process.env.NODE_ENV);
+
 const api = {
   bookingTypes: "https://taxitriptypebackend-microservices.api.lagosride.com",
   // classTypes: 'https://134.209.16.20:7090',
