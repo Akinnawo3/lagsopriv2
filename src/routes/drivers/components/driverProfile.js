@@ -550,7 +550,7 @@ const DriverProfile = ({
                       </Button>
                     </div>
                   )}
-                  {driver?.driver_data?.driver_status === 3 && !driver.driver_data?.vehicle_id && driver?.driver_data?.asset_payment.status && driver?.driver_data?.verification_payment.status && (
+                  {driver?.driver_data?.driver_status >= 2 && !driver.driver_data?.vehicle_id && driver?.driver_data?.asset_payment.status && driver?.driver_data?.verification_payment.status && (
                     <div className="text-center ml-2">
                       <Button disabled={loadingStatus} onClick={() => verifyUserPermssion("assign_vehicle_to_driver", () => opnAddVehicleModal())} className="bg-warning mt-3 text-white">
                         Assign Vehicle
@@ -765,7 +765,7 @@ const DriverProfile = ({
                       <span className="pull-left">
                         <strong>Phone Number Matches Reg. Details</strong>
                       </span>
-                      {`${verificationResult?.biographicData[0]?.phoneNumber === driver?.phone_number ? "Yes" : "No"} `}
+                      {`${verificationResult?.biographicData[0]?.phoneNumber === "+234" + driver?.phone_number.substring(1) ? "Yes" : "No"} `}
                     </li>
 
                     <li className="list-group-item text-right">
