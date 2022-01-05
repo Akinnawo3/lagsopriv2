@@ -19,22 +19,10 @@ const cookies = new Cookies();
 
 import {configureStore} from "./store";
 import axios from "axios";
-import firebase from "./firebase";
 
 const MainApp = () => {
 
 
-  useEffect(() => {
-    const messaging = firebase.messaging();
-    messaging
-      .getToken()
-      .then((token) => {
-        console.log("Firebase Token Get::", token);
-      })
-      .catch((err) => {
-        console.log("firebase push notification error::", err);
-      });
-  }, []);
   
 
   (function () {
