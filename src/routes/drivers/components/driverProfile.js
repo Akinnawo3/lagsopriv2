@@ -617,6 +617,11 @@ const DriverProfile = ({
                   <div className="fw-bold text-danger">{verificationResult?.msg} </div>
                 </div>
               )}
+              {verificationResult?.status === "error" && (
+                <div className="d-flex flex-column justify-content-center align-items-center">
+                  <div className="fw-bold text-danger">{verificationResult?.message} </div>
+                </div>
+              )}
               {verificationResult?.status === "success" && (
                 <div>
                   <ul className="list-group">
