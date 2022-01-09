@@ -1,5 +1,6 @@
-// console.log(process.env.NODE_ENV);
+import {configureStore} from "../store";
 
+console.log(configureStore().getState());
 const api = {
   bookingTypes: "https://taxitriptypebackend-microservices.api.lagosride.com",
   // classTypes: 'https://134.209.16.20:7090',
@@ -28,4 +29,23 @@ const api = {
   messageSending: "https://message-service-microservices.api.lagosride.com",
 };
 
+const apiTest = {
+  user: "http://staging-server.lagosride.com/user-service",
+  wallet: "http://staging-server.lagosride.com/wallet-service",
+  referral: "http://staging-server.lagosride.com/referral-service",
+  fdt: "http://staging-server.lagosride.com/fdt-service",
+  trip: "http://staging-server.lagosride.com/tripreporting-service",
+  rating: "http://staging-server.lagosride.com/triprating-service",
+  messageWorker: "http://staging-server.lagosride.com/message-service",
+  cancellationReasons: "http://staging-server.lagosride.com/trip-cancellation",
+  customerCare: "http://staging-server.lagosride.com/setting-service",
+  support: "http://staging-server.lagosride.com/support-service",
+  sos: "http://staging-server.lagosride.com/sos-service",
+  vehicles: "http://staging-server.lagosride.com/vehicle-service",
+  area: "http://staging-server.lagosride.com/area-service",
+  revenueSplit: "http://staging-server.lagosride.com/revenue-service",
+  idVerification: "http://staging-server.lagosride.com/verify-service ",
+  messageSending: "http://staging-server.lagosride.com/message-service",
+  fees: "http://staging-server.lagosride.com/fees-service",
+};
 export default api;

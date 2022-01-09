@@ -1,42 +1,38 @@
-import { NotificationManager } from 'react-notifications';
-import { LOGIN_USER } from './types';
-import { endLoading, startLoading } from "./loadingAction";
-import axios from 'axios'
+import {NotificationManager} from "react-notifications";
+import {LOGIN_USER} from "./types";
+import {endLoading, startLoading} from "./loadingAction";
+import axios from "axios";
 import cookies from "Util/cookies";
 import api from "../environments/environment";
 
-
-
-export const loginUser = (phone_number, password) => async dispatch => {
-    const body = { phone_number, password, user_type: 'admin' }
-    try {
-        dispatch(startLoading());
-        const res = await axios.post(`${api.user}/v1.1/auth/login`, body)
-        if (res.data.status === 'error') {
-            NotificationManager.error(res.data.msg);
-        } else {
-            const userType = res.data.data.user_type
-            if ((userType === 'superadmin') || (userType === 'admin')) {
-                const token = res.data.data.token
-                await cookies.set('user_id', token);
-                await cookies.set('userProfile', JSON.stringify(res.data.data))
-                await dispatch({
-                    type: LOGIN_USER,
-                    payload: res.data.data
-                })
-                location.replace("/");
-            } else {
-                NotificationManager.error('Invalid phone or password')
-            }
-        }
-        dispatch(endLoading());
-    } catch (err) {
-        dispatch(endLoading());
-        NotificationManager.error('Network error please try again or check your internet connection ');
-
+export const loginUser = (phone_number, password) => async (dispatch) => {
+  const body = {phone_number, password, user_type: "admin"};
+  try {
+    dispatch(startLoading());
+    const res = await axios.post(`${api.user}/v1.1/auth/login`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      const userType = res.data.data.user_type;
+      if (userType === "superadmin" || userType === "admin") {
+        const token = res.data.data.token;
+        await cookies.set("user_id", token);
+        await cookies.set("userProfile", JSON.stringify(res.data.data));
+        await dispatch({
+          type: LOGIN_USER,
+          payload: res.data.data,
+        });
+        location.replace("/");
+      } else {
+        NotificationManager.error("Invalid phone or password");
+      }
     }
+    dispatch(endLoading());
+  } catch (err) {
+    dispatch(endLoading());
+    NotificationManager.error("Network error please try again or check your internet connection ");
+  }
 };
-
 
 // export const logoutUser = () => async dispatch => {
 //     try {
@@ -60,9 +56,8 @@ export const loginUser = (phone_number, password) => async dispatch => {
 //     }
 // };
 
-
 export const logoutUser = async () => {
-    cookies.remove('user_id');
-    // localStorage.removeItem("user_id");
-    location.replace("/login");
+  cookies.remove("user_id");
+  // localStorage.removeItem("user_id");
+  location.replace("/login");
 };

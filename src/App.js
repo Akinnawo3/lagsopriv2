@@ -21,10 +21,6 @@ import {configureStore} from "./store";
 import axios from "axios";
 
 const MainApp = () => {
-
-
-  
-
   (function () {
     const token = cookies.get("user_id");
     // console.log(token)
