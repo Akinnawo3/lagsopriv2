@@ -65,7 +65,7 @@ class Header extends Component {
   render() {
     const {horizontalMenu, agencyMenu, location, isLoadingStatus, isTest} = this.props;
 
-    console.log(isTest);
+    console.log(isTest)
     return (
       <div>
         {isLoadingStatus && <LinearProgress />}

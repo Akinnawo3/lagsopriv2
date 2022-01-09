@@ -4,6 +4,7 @@ import {LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE, LOGOUT_USER, LOGIN_USER} from "A
 /**
  * initial auth user
  */
+
 const INIT_STATE = {
   user: cookies.get("user_id"),
   userProfile: cookies.get("userProfile"),
