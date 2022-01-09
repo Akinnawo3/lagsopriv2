@@ -18,6 +18,7 @@ import DashboardOverlay from "../DashboardOverlay/DashboardOverlay";
 import {logoutUser} from "Actions/authAction";
 import {switchEnvironment} from "Actions/environmentAction";
 import Switch from "@material-ui/core/Switch";
+import { LinearProgress } from "@material-ui/core";
 
 class Header extends Component {
   state = {
