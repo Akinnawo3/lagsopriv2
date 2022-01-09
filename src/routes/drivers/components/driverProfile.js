@@ -634,6 +634,7 @@ const DriverProfile = ({
                       </span>
                       {`${verificationResult?.data?.firstname} ${verificationResult?.data?.middlename} ${verificationResult?.data?.lastname}`}
                     </li>
+                
                     <li className="list-group-item text-right">
                       <span className="pull-left">
                         <strong>First Name Matches Reg. Details</strong>
@@ -669,7 +670,7 @@ const DriverProfile = ({
                         <span className="pull-left">
                           <strong>Expiry Date</strong>
                         </span>
-                        {`${verificationResult?.expiryDate}`}
+                        {`${verificationResult?.data?.expiryDate}`}
                       </li>
                     )}
                     <div className="mt-2 text-right">

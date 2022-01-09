@@ -161,3 +161,7 @@ export const DRIVER_REVENUE_SPLIT = "DRIVER_REVENUE_SPLIT";
 
 //ID verificaion
 export const VERIFICATION_RESULT = "VERIFICATION_RESULT";
+
+//Environment
+
+export const SWITCH_ENVIRONMENT = "SWITCH_ENVIRONMENT";
