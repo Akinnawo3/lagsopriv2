@@ -12,6 +12,7 @@ import Button from "@material-ui/core/Button";
 import Pagination from "react-js-pagination";
 import {connect} from "react-redux";
 import moment from "moment";
+import EmptyData from "Components/EmptyData/EmptyData";
 import {calculatePostDate} from "Helpers/helpers";
 const ActivityLog = ({loading, getAdminLogs, AdminActivityLog, getAdminLogsCount, AdminActivityLogCount, match}) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -65,10 +66,8 @@ const ActivityLog = ({loading, getAdminLogs, AdminActivityLog, getAdminLogsCount
                 activePage={currentPage}
                 itemClass="page-item"
                 linkClass="page-link"
-                // itemsCountPerPage={20}
-                // totalItemsCount={AdminActivityLogCount.total}
+                itemsCountPerPage={20}
                 totalItemsCount={AdminActivityLogCount?.total}
-                totalItemsCount={200}
                 onChange={paginate}
               />
             </div>
