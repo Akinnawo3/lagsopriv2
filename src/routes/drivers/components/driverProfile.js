@@ -29,6 +29,7 @@ const DriverProfile = ({
   getCustomerCare,
   customerCareNumbers,
   verifyID,
+  isTest,
 }) => {
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const [addVehicleModal, setAddVehicleModal] = useState(false);
@@ -149,11 +150,11 @@ const DriverProfile = ({
     inputEl.current.open();
   };
 
-  console.log(driver);
+  console.log(isTest);
 
   const triggerIdVerifcation = (type, value, firstName, lastName) => {
     setIdType(type);
-    sendVerificationRequest(type, value, firstName, lastName);
+    !isTest && sendVerificationRequest(type, value, firstName, lastName);
     setIdVerificationModalOpen(true);
   };
   const verifyId = (type) => {
@@ -612,6 +613,18 @@ const DriverProfile = ({
           )}
           {!loadingStatus && (
             <div>
+              {isTest && (
+                <div>
+                  <div className="d-flex flex-column justify-content-center align-items-center">
+                    <div className="fw-bold text-danger">This is test enironment so there is no verification API call </div>
+                  </div>
+                  <div className="mt-2 text-right">
+                    <button className=" btn rounded btn-primary" onClick={() => verifyId(idType)}>
+                      Verify {idVerificationType(idType)}
+                    </button>
+                  </div>
+                </div>
+              )}
               {verificationResult?.status === "error" && (
                 <div className="d-flex flex-column justify-content-center align-items-center">
                   <div className="fw-bold text-danger">{verificationResult?.msg} </div>
@@ -634,7 +647,7 @@ const DriverProfile = ({
                       </span>
                       {`${verificationResult?.data?.firstname} ${verificationResult?.data?.middlename} ${verificationResult?.data?.lastname}`}
                     </li>
-                
+
                     <li className="list-group-item text-right">
                       <span className="pull-left">
                         <strong>First Name Matches Reg. Details</strong>
@@ -905,5 +918,6 @@ const mapStateToProps = (state) => ({
   vehicleDetails: state.vehicle.vehicleDetails,
   customerCareNumbers: state.customerCare.customerCareNumbers,
   verificationResult: state.idVerification.verificationResult,
+  isTest: state.environment.isTest,
 });
 export default connect(mapStateToProps, mapDispatchToProps)(DriverProfile);
