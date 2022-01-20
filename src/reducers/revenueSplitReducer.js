@@ -1,8 +1,9 @@
-import {REVENUE_SPLIT_DATA, DRIVER_REVENUE_SPLIT} from "Actions/types";
+import {REVENUE_SPLIT_DATA, DRIVER_REVENUE_SPLIT, CHART_REVENUE_DATA} from "Actions/types";
 
 const initialState = {
   revenueSplitData: {},
   driverRevenueSplit: {},
+  chartRevenueData: [],
 };
 
 function revenueSplitReducer(state = initialState, action) {
@@ -18,6 +19,12 @@ function revenueSplitReducer(state = initialState, action) {
       return {
         ...state,
         driverRevenueSplit: payload,
+      };
+    }
+    case CHART_REVENUE_DATA: {
+      return {
+        ...state,
+        chartRevenueData: payload,
       };
     }
     default:

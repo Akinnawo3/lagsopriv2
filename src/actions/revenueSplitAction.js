@@ -1,5 +1,5 @@
 import axios from "axios";
-import {REVENUE_SPLIT_DATA, DRIVER_REVENUE_SPLIT} from "./types";
+import {REVENUE_SPLIT_DATA, DRIVER_REVENUE_SPLIT, CHART_REVENUE_DATA} from "./types";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
@@ -53,6 +53,28 @@ export const getDriverRevenueSPlit = (spinner, driverID, startDate, endDate) => 
     } else {
       dispatch({
         type: DRIVER_REVENUE_SPLIT,
+        payload: res.data.data,
+      });
+    }
+    dispatch(endLoading());
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endLoading());
+    dispatch(endStatusLoading());
+    NotificationManager.error(err.response.data.result);
+  }
+};
+
+export const getChartRevenueData = (spinner, startDate, endDate) => async (dispatch) => {
+  try {
+    spinner && dispatch(startLoading());
+    !spinner && dispatch(startStatusLoading());
+    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/revenue-shares?start_date=${"2022-01-18"}&end_date=${"2022-01-20"}`);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      dispatch({
+        type: CHART_REVENUE_DATA,
         payload: res.data.data,
       });
     }
