@@ -15,7 +15,6 @@ import {createCustomerCare, createWaitingTime, deleteCustomerCare, getCustomerCa
 import {verifyUserPermssion} from "../../container/DefaultLayout";
 
 const Others = ({match, createCustomerCare, createWaitingTime, getCustomerCare, customerCareNumbers, loading}) => {
-  const {waiting_time} = customerCareNumbers;
   const [customerCareModal, setCustomerCareModal] = useState(false);
   const [customercareNumber, setCustomercareNumber] = useState();
   const [waitingTimeModal, setWaitingTimeModal] = useState(false);
@@ -26,7 +25,7 @@ const Others = ({match, createCustomerCare, createWaitingTime, getCustomerCare, 
   }, []);
 
   // console.log(customerCareNumbers?.customer_care_line[0]?.split(","));
-  console.log(waitingTime);
+  console.log(customerCareNumbers);
 
   const updateCustomerCareNumber = (e) => {
     e.preventDefault();
@@ -54,7 +53,7 @@ const Others = ({match, createCustomerCare, createWaitingTime, getCustomerCare, 
                   <div>
                     <FormGroup>
                       <Label for="lastName">Customer Care Line</Label>
-                      <Input type="text" name="number" value={customerCareNumbers.customer_care_line[0]} required />
+                      <Input type="text" name="number" value={customerCareNumbers.customer_care_line ? customerCareNumbers?.customer_care_line[0] : ""} required />
                     </FormGroup>
 
                     {/* {customerCareNumbers?.customer_care_line[0]
@@ -82,19 +81,19 @@ const Others = ({match, createCustomerCare, createWaitingTime, getCustomerCare, 
 
                 <div className="d-flex mt-3">
                   <div>
-                    <Form>
-                      <div>
-                        <Form onSubmit={updateWaitingTime} className="d-flex align-items-center">
-                          <FormGroup>
-                            <Label for="lastName">Waiting Time</Label>
-                            <Input type="text" name="number" value={customerCareNumbers.waiting_time} onChange={(e) => setWaitingTime(e.target.value)} required />
-                          </FormGroup>
-                          <Button variant="contained" className="btn btn-outline-primary mt-2 ml-2" onClick={() => verifyUserPermssion("create_setup", () => setWaitingTimeModal(true))}>
-                            Update
-                          </Button>
-                        </Form>
-                      </div>
+                    {/* <Form> */}
+                    {/* <div> */}
+                    <Form onSubmit={updateWaitingTime} className="d-flex align-items-center">
+                      <FormGroup>
+                        <Label for="lastName">Waiting Time</Label>
+                        <Input type="text" name="number" value={customerCareNumbers?.waiting_time} onChange={(e) => setWaitingTime(e.target.value)} required />
+                      </FormGroup>
+                      <Button variant="contained" className="btn btn-outline-primary mt-2 ml-2" onClick={() => verifyUserPermssion("create_setup", () => setWaitingTimeModal(true))}>
+                        Update
+                      </Button>
                     </Form>
+                    {/* </div>
+                    </Form> */}
                   </div>
                 </div>
                 <hr className="m-0" />

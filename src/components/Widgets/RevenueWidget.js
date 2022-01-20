@@ -16,6 +16,8 @@ const RevenueWidget = () => {
     getRevenues();
   }, []);
 
+  console.log(getTodayDate());
+
   const getRevenues = async () => {
     try {
       // const res = await axios.get(`${api.trip}/v1.1/trips/?component=fare&start_date=${getTodayDate()}&end_date=${getTodayDate()}`);
@@ -36,7 +38,9 @@ const RevenueWidget = () => {
             <h3 className="mb-10">
               Today's <br /> Revenue
             </h3>
-            <h2 className="mb-0">₦<CountUp start={0} end={balance} /></h2>
+            <h2 className="mb-0">
+              ₦<CountUp start={0} end={balance} />
+            </h2>
           </div>
           <div className="align-items-end">
             <i className="zmdi zmdi-time"></i>

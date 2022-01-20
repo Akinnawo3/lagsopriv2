@@ -1,10 +1,18 @@
-import React from "react";
+import React, {useEffect} from "react";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import {OverallTrafficStatusWidget} from "Components/Widgets";
 import IntlMessages from "Util/IntlMessages";
-import ChartConfig from 'Constants/chart-config';
+import ChartConfig from "Constants/chart-config";
+import {getChartRevenueData} from "../../actions/revenueSplitAction";
+import {connect} from "react-redux";
 
-const recvenues = () => {
+const recvenues = ({getChartRevenueData, revenueChartData}) => {
+  useEffect(() => {
+    getChartRevenueData(true);
+  }, []);
+
+  console.log(revenueChartData);
+
   const trafficStatus = {
     chartLabels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "oct", "Nov", "Dec"],
     chartDatasets: [
@@ -40,4 +48,13 @@ const recvenues = () => {
   );
 };
 
-export default recvenues;
+function mapDispatchToProps(dispatch) {
+  return {
+    getChartRevenueData: (spinner, startDate, endDate) => dispatch(getChartRevenueData(spinner, startDate, endDate)),
+  };
+}
+const mapStateToProps = (state) => ({
+  loadingStatus: state.loading.loadingStatus,
+  revenueChartData: state.revenueSplit.chartRevenueData,
+});
+export default connect(mapStateToProps, mapDispatchToProps)(recvenues);
