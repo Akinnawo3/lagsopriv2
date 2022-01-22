@@ -18,7 +18,7 @@ import DashboardOverlay from "../DashboardOverlay/DashboardOverlay";
 import {logoutUser} from "Actions/authAction";
 import {switchEnvironment} from "Actions/environmentAction";
 import Switch from "@material-ui/core/Switch";
-import { LinearProgress } from "@material-ui/core";
+import {LinearProgress} from "@material-ui/core";
 
 class Header extends Component {
   state = {
@@ -66,7 +66,7 @@ class Header extends Component {
   render() {
     const {horizontalMenu, agencyMenu, location, isLoadingStatus, isTest} = this.props;
 
-    console.log(isTest)
+    console.log(isTest);
     return (
       <div>
         {isLoadingStatus && <LinearProgress />}
@@ -110,6 +110,9 @@ class Header extends Component {
               <Switch checked={isTest} onClick={() => this.props.switchEnvironment()} color="primary" className="switch-btn" />
             </div>
             <ul className="navbar-right list-inline mb-0">
+              <li className="list-inline-item setting-icon ml-2">
+                <i className="zmdi zmdi-power text-danger mr-1" title="Logout" style={{fontSize: "20px"}}></i>
+              </li>
               <li className="list-inline-item setting-icon ml-2">
                 <a
                   onClick={() => {
