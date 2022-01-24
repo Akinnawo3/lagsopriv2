@@ -69,7 +69,7 @@ export const getChartRevenueData = (spinner, startDate, endDate) => async (dispa
   try {
     spinner && dispatch(startLoading());
     !spinner && dispatch(startStatusLoading());
-    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/revenue-shares?start_date=${"2022-01-18"}&end_date=${"2022-01-20"}`);
+    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/revenue-shares?start_date=${"2022-01-18"}&end_date=${"2022-01-21"}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {

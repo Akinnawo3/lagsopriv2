@@ -1,7 +1,7 @@
 export default {
   acceptMsg:
     "We are pleased to inform you that your application has been accepted on LagosRide, You will be required to undergo a LagosRide Driver professional training. A date for your training will be communicated with you shortly.",
-  verifiedMessage: "Congratulations, your details have been verified. Please goo to the app to proceed and continuee your onboarding process.",
+  verifiedMessage: "Congratulations, your details have been verified. Please go to the app to proceed and continue your onboarding process.",
   approveMsg: ({firstName, vehicleDetails}) => {
     return `Dear ${firstName}, Your payment has been acknowledged, and a vehicle ( ${vehicleDetails.car_number_plate}, ${vehicleDetails.car_color} ${vehicleDetails.car_make}, ${vehicleDetails.car_model} ) has been assigned to you. Kindly log into the app to start earning. Thank you for partnering with us.`;
   },
