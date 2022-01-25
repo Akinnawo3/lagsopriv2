@@ -15,11 +15,20 @@ import {Link} from "react-router-dom";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {getChartRevenueData} from "../../actions/revenueSplitAction";
 import moment from "moment";
+import {getFirstDayOfMonth, getTodayDate} from "../../helpers/helpers";
 
 const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
+  const [dateType, setDateType] = useState("daily");
+  const [startDate, setStartDate] = useState(getFirstDayOfMonth());
+  const [endDate, setEndDate] = useState(getTodayDate());
+
   useEffect(() => {
-    getChartRevenueData(true);
-  }, []);
+    getChartRevenueData(true, startDate, endDate, dateType);
+  }, [dateType, startDate, endDate]);
+
+  const handleChange = (e) => {
+    setDateType(e.target.value);
+  };
 
   const dateTypeFilter = [
     {value: "", label: "- - Filter by Date Type- -"},
@@ -31,13 +40,22 @@ const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
     <div>
       <RctCollapsibleCard heading={"Revenues Table"} fullBlock style={{minHeight: "70vh"}}>
         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-          <select id="filter-dropdown" name="fiter-dropdown" onChange={handleChange} className="p-1 px-4">
+          {/* <small className="fw-bold">Date Type Filter</small> */}
+          <select name="fiter-dropdown" onChange={handleChange} className="p-1 px-4">
             {dateTypeFilter.map((item, index) => (
               <option value={item.value} key={index}>
                 {item.label}
               </option>
             ))}
           </select>{" "}
+        </li>
+        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+          <small className="fw-bold mr-2">From</small>
+          <input type="date" id="start" name="trip-start" defaultValue={startDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setStartDate(e.target.value)} />
+        </li>
+        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+          <small className="fw-bold mr-2">To</small>
+          <input type="date" id="start" name="trip-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setEndDate(e.target.value)} />
         </li>
         {!loading && revenueChartData.length > 0 && (
           <>
@@ -84,7 +102,7 @@ const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
 };
 function mapDispatchToProps(dispatch) {
   return {
-    getChartRevenueData: (spinner, startDate, endDate) => dispatch(getChartRevenueData(spinner, startDate, endDate)),
+    getChartRevenueData: (spinner, startDate, endDate, dateType) => dispatch(getChartRevenueData(spinner, startDate, endDate, dateType)),
   };
 }
 const mapStateToProps = (state) => ({
