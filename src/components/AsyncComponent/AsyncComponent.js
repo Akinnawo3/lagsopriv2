@@ -385,7 +385,7 @@ const AsyncAddPersonnel = Loadable({
   loading: () => <RctPageLoader />,
 });
 const AsyncNotifications = Loadable({
-  loader: () => import("Routes/notifications"),
+  loader: () => import("Routes/notifications/notifications"),
   loading: () => <RctPageLoader />,
 });
 
