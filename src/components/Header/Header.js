@@ -110,12 +110,14 @@ class Header extends Component {
               <Switch checked={isTest} onClick={() => this.props.switchEnvironment()} color="primary" className="switch-btn" />
             </div>
             <ul className="navbar-right list-inline mb-0">
-              <li className="list-inline-item setting-icon ml-2 position-relative">
-                <i className="zmdi zmdi-notifications-none text-danger mr-1 " title="Notifications" style={{fontSize: "25px"}}></i>
-                <small className="bg-danger px-1 rounded-circle text-white position-absolute " style={{top: -2, left: -2, fontSize: 8}}>
-                  2
-                </small>
-              </li>
+              <Link to="/notifications">
+                <li className="list-inline-item setting-icon ml-2 position-relative">
+                  <i className="zmdi zmdi-notifications-none text-danger mr-1 " title="Notifications" style={{fontSize: "25px"}}></i>
+                  <small className="bg-danger px-1 rounded-circle text-white position-absolute " style={{top: -2, left: -2, fontSize: 8}}>
+                    2
+                  </small>
+                </li>
+              </Link>
               <li className="list-inline-item setting-icon ml-2">
                 <a
                   onClick={() => {

@@ -163,7 +163,7 @@ export default [
     permission: "view_tickets",
   },
   {
-    path: "/notifications",
+    path: "notifications",
     component: AsyncNotifications,
     permission: "view_notifications",
   },
