@@ -384,6 +384,10 @@ const AsyncAddPersonnel = Loadable({
   loader: () => import("Routes/setup/component/addPersonnel"),
   loading: () => <RctPageLoader />,
 });
+const AsyncNotifications = Loadable({
+  loader: () => import("Routes/notifications/notifications"),
+  loading: () => <RctPageLoader />,
+});
 
 // report
 
@@ -460,6 +464,7 @@ export {
   AsyncActiveDrivers,
   AsyncTrips,
   AsyncRevenues,
+  AsyncNotifications,
   AsyncPassengers,
   AsyncDrivers,
   AsyncDriver,

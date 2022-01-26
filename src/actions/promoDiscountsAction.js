@@ -146,7 +146,7 @@ export const getPromoUsers =
       } else {
         dispatch({
           type: PROMO_USERS,
-          payload: res.data.data.user_data,
+          payload: res.data.data,
         });
       }
       dispatch(endLoading());

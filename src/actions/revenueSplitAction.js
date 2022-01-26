@@ -65,24 +65,26 @@ export const getDriverRevenueSPlit = (spinner, driverID, startDate, endDate) => 
   }
 };
 
-export const getChartRevenueData = (spinner, startDate, endDate) => async (dispatch) => {
-  try {
-    spinner && dispatch(startLoading());
-    !spinner && dispatch(startStatusLoading());
-    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/revenue-shares?start_date=${"2022-01-18"}&end_date=${"2022-01-20"}`);
-    if (res.data.status === "error") {
-      NotificationManager.error(res.data.msg);
-    } else {
-      dispatch({
-        type: CHART_REVENUE_DATA,
-        payload: res.data.data,
-      });
+export const getChartRevenueData =
+  (spinner, startDate, endDate, dateType = "daily") =>
+  async (dispatch) => {
+    try {
+      spinner && dispatch(startLoading());
+      !spinner && dispatch(startStatusLoading());
+      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/revenue-shares?start_date=${startDate}&end_date=${endDate}&date_type=${dateType}`);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        dispatch({
+          type: CHART_REVENUE_DATA,
+          payload: res.data.data,
+        });
+      }
+      dispatch(endLoading());
+      dispatch(endStatusLoading());
+    } catch (err) {
+      dispatch(endLoading());
+      dispatch(endStatusLoading());
+      NotificationManager.error(err.response.data.result);
     }
-    dispatch(endLoading());
-    dispatch(endStatusLoading());
-  } catch (err) {
-    dispatch(endLoading());
-    dispatch(endStatusLoading());
-    NotificationManager.error(err.response.data.result);
-  }
-};
+  };

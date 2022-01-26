@@ -41,6 +41,8 @@ const PromoBeneficiaries = (props) => {
     window.scrollTo(0, 0);
   };
 
+  console.log(promoUsers);
+
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Promo Beneficiaries"} match={match} />
@@ -53,6 +55,7 @@ const PromoBeneficiaries = (props) => {
                   <TableCell> Name</TableCell>
                   <TableCell>Email</TableCell>
                   <TableCell>Phone Number</TableCell>
+                  <TableCell> Number of rides</TableCell>
                   {/* <TableCell>Actions</TableCell> */}
                 </TableRow>
               </TableHead>
@@ -61,9 +64,10 @@ const PromoBeneficiaries = (props) => {
                   {promoUsers?.length > 0 &&
                     promoUsers?.map((item, key) => (
                       <TableRow hover key={key}>
-                        <TableCell>{`${item.first_name} ${item.last_name}`}</TableCell>
-                        <TableCell>{item.email}</TableCell>
-                        <TableCell>{item.phone_number}</TableCell>
+                        <TableCell>{`${item?.first_name} ${item?.last_name}`}</TableCell>
+                        <TableCell>{item?.email}</TableCell>
+                        <TableCell>{item?.phone_number}</TableCell>
+                        <TableCell>{item?.num_of_rides}</TableCell>
                         <TableCell>
                           <button type="button" className="rct-link-btn text-primary" title="view details">
                             {/* <Link to={`/admin/promo-discounts/${promoDiscount.promo_code_id}`}>
