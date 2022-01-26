@@ -14,6 +14,7 @@ import {
   AsyncCustomerCare,
   AsyncActivityLog,
   AsyncPromoDiscount,
+  AsyncNotifications,
 } from "Components/AsyncComponent/AsyncComponent";
 import DriverRoutes from "Routes/drivers/driverRoutes";
 import VehicleRoutes from "Routes/vehicles/vehicleRoutes";
@@ -160,6 +161,11 @@ export default [
     path: "support",
     component: SupportRoutes,
     permission: "view_tickets",
+  },
+  {
+    path: "/notifications",
+    component: AsyncNotifications,
+    permission: "view_notifications",
   },
   // {
   //   path: "settings",

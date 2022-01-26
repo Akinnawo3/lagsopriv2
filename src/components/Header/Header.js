@@ -110,8 +110,11 @@ class Header extends Component {
               <Switch checked={isTest} onClick={() => this.props.switchEnvironment()} color="primary" className="switch-btn" />
             </div>
             <ul className="navbar-right list-inline mb-0">
-              <li className="list-inline-item setting-icon ml-2">
-                <i className="zmdi zmdi-power text-danger mr-1" title="Logout" style={{fontSize: "20px"}}></i>
+              <li className="list-inline-item setting-icon ml-2 position-relative">
+                <i className="zmdi zmdi-notifications-none text-danger mr-1 " title="Notifications" style={{fontSize: "25px"}}></i>
+                <small className="bg-danger px-1 rounded-circle text-white position-absolute " style={{top: -2, left: -2, fontSize: 8}}>
+                  2
+                </small>
               </li>
               <li className="list-inline-item setting-icon ml-2">
                 <a
@@ -121,14 +124,14 @@ class Header extends Component {
                   href="#"
                   className="text-primary"
                 >
-                  <i className="zmdi zmdi-power text-danger mr-1" title="Logout" style={{fontSize: "20px"}}></i>
+                  <i className="zmdi zmdi-power text-danger mr-1" title="Logout" style={{fontSize: "25px"}}></i>
                   {/*<span>Log Out</span>*/}
                 </a>
               </li>
               <li className="list-inline-item">
                 <Tooltip title="Full Screen" placement="bottom">
                   <IconButton aria-label="settings" onClick={() => this.toggleScreenFull()}>
-                    <i className="zmdi zmdi-crop-free"></i>
+                    <i className="zmdi zmdi-crop-free" style={{fontSize: "25px"}}></i>
                   </IconButton>
                 </Tooltip>
               </li>

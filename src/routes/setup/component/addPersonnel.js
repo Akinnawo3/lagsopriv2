@@ -52,6 +52,7 @@ const AddPersonnel = ({match, history, updateAdmin, createAdmin}) => {
     {label: "Promo", value: "promo"},
     {label: "Maps", value: "maps"},
     {label: "Setup", value: "setup"},
+    {label: "Notifications", value: "notifications"},
   ];
   const createPermissions = [
     {label: "Vehicle", value: "vehicle"},
