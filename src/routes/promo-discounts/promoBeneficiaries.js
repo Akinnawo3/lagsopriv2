@@ -6,25 +6,9 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import {Form, FormGroup, Label, Input} from "reactstrap";
-import Button from "@material-ui/core/Button";
 import Pagination from "react-js-pagination";
-
-import {Modal, ModalHeader, ModalBody, ModalFooter, Row, Col} from "reactstrap";
-import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import {connect} from "react-redux";
-import Spinner from "../../components/spinner/Spinner";
-import IconButton from "@material-ui/core/IconButton";
-import MobileSearchForm from "Components/Header/MobileSearchForm";
-import {CSVLink} from "react-csv";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import {calculatePostDate} from "Helpers/helpers";
 import {getPromoUsers, getPromoUsersCount} from "../../actions/promoDiscountsAction";
-import {Link} from "react-router-dom";
-import moment from "moment";
-import SearchComponent from "Components/SearchComponent/SearchComponent";
-import {getTodayDate} from "Helpers/helpers";
-import {verifyUserPermssion} from "../../container/DefaultLayout";
 export let onAddUpdateUserModalClose;
 const PromoBeneficiaries = (props) => {
   const {match, loading, getPromoUsers, promoUsers, getPromoUsersCount, promoUsersCount} = props;
