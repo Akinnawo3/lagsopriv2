@@ -16,12 +16,17 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import UnAuthorised from "Routes/session/401";
 export let verifyUserPermssion;
 import {NotificationManager} from "react-notifications";
+import appSocket from "../actions/socketActions";
 
 class DefaultLayout extends Component {
+  componentDidMount() {
+    appSocket.createConnection();
+  }
+
   render() {
     const {match, isLoading, authUserProfile} = this.props;
     verifyUserPermssion = (permission, runfunction, e) => {
-      e?.preventDefault()
+      e?.preventDefault();
       return authUserProfile.user_type === "superadmin" || authUserProfile.access_tab.includes(permission) ? runfunction() : NotificationManager.error("Access Denied");
     };
     return (

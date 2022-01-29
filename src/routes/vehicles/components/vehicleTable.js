@@ -39,6 +39,7 @@ const VehicleTable = ({getVehicles, vehicles, loading, createVehicles, updateVeh
     if (vehicles) {
       let result = vehicles.map((vehicle) => {
         return {
+          SerialNo: vehicle.car_number,
           plateNo: vehicle.car_number_plate,
           model: vehicle.car_model,
           make: vehicle.car_make,

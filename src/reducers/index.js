@@ -30,6 +30,7 @@ import customerCareReducer from "./customerCareReducer";
 import revenueSplitReducer from "./revenueSplitReducer";
 import idVerificationReducer from "./idVerificationReducer";
 import environmentReducer from "./environmentReducer";
+import notificationReducer from "./notificationReducer";
 
 const reducers = combineReducers({
   settings,
@@ -60,6 +61,7 @@ const reducers = combineReducers({
   revenueSplit: revenueSplitReducer,
   idVerification: idVerificationReducer,
   environment: environmentReducer,
+  notification: notificationReducer
 });
 
 export default reducers;

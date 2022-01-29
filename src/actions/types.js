@@ -166,3 +166,7 @@ export const VERIFICATION_RESULT = "VERIFICATION_RESULT";
 //Environment
 
 export const SWITCH_ENVIRONMENT = "SWITCH_ENVIRONMENT";
+
+//notifications
+export const NOTIFICATION = "NOTIFICATION";
+export const CLEAR_COUNTER = "CLEAR_COUNTER";

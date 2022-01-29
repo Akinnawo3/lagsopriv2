@@ -19,6 +19,9 @@ const cookies = new Cookies();
 
 import {configureStore} from "./store";
 import axios from "axios";
+import api from "./environments/environment";
+import appSocket from "./actions/socketActions";
+//socket
 
 const MainApp = () => {
   (function () {
@@ -27,6 +30,8 @@ const MainApp = () => {
       axios.defaults.headers.common["Authorization"] = token;
     }
   })();
+
+
 
   return (
     <Provider store={configureStore()}>
