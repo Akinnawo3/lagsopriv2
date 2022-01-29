@@ -1,13 +1,16 @@
-import React, {useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import "../../assets/scss/_notifications.scss";
 import notification from "../../assets/img/notification.jpg";
 import {connect} from "react-redux";
+import Skeleton, {SkeletonTheme} from "react-loading-skeleton";
 import {getNotifications} from "../../actions/notificationAction";
+import EmptyData from "Components/EmptyData/EmptyData";
 
-const Notifications = ({match, notifications, getNotifications, authUserProfile, loading}) => {
+const Notifications = ({match, notifications, getNotifications, authUserProfile, loading, loadingStatus}) => {
+  const [items, setItems] = useState(Array.from({length: 6}));
   useEffect(() => {
-    getNotifications(true, 1, authUserProfile.user_type);
+    getNotifications(false, 1, authUserProfile.user_type);
   }, []);
 
   console.log(notifications);
@@ -15,7 +18,19 @@ const Notifications = ({match, notifications, getNotifications, authUserProfile,
   return (
     <div>
       <PageTitleBar title={"Notifications"} match={match} />
-      {!loading && (
+      {loadingStatus && (
+        <SkeletonTheme baseColor="#ffff" highlightColor="#EFF1F3">
+          {items.map((item) => (
+            <div className="d-flex align-items-center item  border-bottom">
+              <div className=" mr-2 ">
+                <Skeleton width={550} height={70} />
+              </div>
+            </div>
+          ))}
+        </SkeletonTheme>
+      )}
+
+      {!loadingStatus && notifications.length > 0 && (
         <section className="section-50">
           <div className="container">
             <div className="notification-ui_dd-content">
@@ -62,6 +77,7 @@ const Notifications = ({match, notifications, getNotifications, authUserProfile,
           </div>
         </section>
       )}
+      {!loadingStatus && notifications.length === 0 && <EmptyData />}
     </div>
   );
 };
