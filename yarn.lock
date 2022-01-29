@@ -9457,6 +9457,11 @@
   dependencies:
     "prop-types" "^15.5.0"
 
+"react-loading-skeleton@^3.0.2":
+  "integrity" "sha512-rlALwuZEcjazUDeIy3+fEhm20Uk9Yd/zZGeITU034K2ts5/yEf7RuZaV2FyrPWypIII4LAsFEo9WDTPKp6G0fQ=="
+  "resolved" "https://registry.npmjs.org/react-loading-skeleton/-/react-loading-skeleton-3.0.2.tgz"
+  "version" "3.0.2"
+
 "react-notifications@^1.6.0":
   "integrity" "sha512-3mlMiNLDQtp64IP+EnYx3xgmbdpzrLQiSO8AP+8o4LiYQC6HcgdVB+MMdGuYZ1ttfKeLgTgol2ESFQJhmz0O3Q=="
   "resolved" "https://registry.npmjs.org/react-notifications/-/react-notifications-1.7.2.tgz"
