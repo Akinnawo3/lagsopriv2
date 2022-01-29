@@ -1,4 +1,4 @@
-import {NOTIFICATION, CLEAR_COUNTER} from "Actions/types";
+import {NOTIFICATION, UPDATE_COUNTER, CLEAR_COUNTER} from "Actions/types";
 
 const initialState = {
   notifications: [],
@@ -9,17 +9,25 @@ function notificationReducer(state = initialState, action) {
   const {type, payload} = action;
   switch (type) {
     case NOTIFICATION: {
+      console.log(payload);
       return {
         ...state,
         notifications: payload,
       };
     }
-    case CLEAR_COUNTER: {
+    case UPDATE_COUNTER: {
+      alert(payload);
       return {
         ...state,
-        counter: 0,
+        counter: payload,
       };
     }
+    // case CLEAR_COUNTER: {
+    //   return {
+    //     ...state,
+    //     counter: 0,
+    //   };
+    // }
     default:
       return state;
   }

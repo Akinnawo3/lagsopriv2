@@ -2,6 +2,7 @@ import io from "socket.io-client";
 import api from "../environments/environment";
 import {configureStore} from "../store";
 import Cookies from "universal-cookie";
+import socketMessageActions from "./socketMessageActions";
 
 const cookies = new Cookies();
 
@@ -27,7 +28,7 @@ appSocket.createConnection = () => {
   });
 
   appSocket.io.on("msg", (data) => {
-    console.log(data);
+    socketMessageActions(data);
   });
 };
 

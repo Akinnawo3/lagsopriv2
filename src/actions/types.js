@@ -169,4 +169,5 @@ export const SWITCH_ENVIRONMENT = "SWITCH_ENVIRONMENT";
 
 //notifications
 export const NOTIFICATION = "NOTIFICATION";
+export const UPDATE_COUNTER = "UPDATE_COUNTER"
 export const CLEAR_COUNTER = "CLEAR_COUNTER";

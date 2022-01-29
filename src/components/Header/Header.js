@@ -114,7 +114,7 @@ class Header extends Component {
                 <li className="list-inline-item setting-icon ml-2 position-relative">
                   <i className="zmdi zmdi-notifications-none text-danger mr-1 " title="Notifications" style={{fontSize: "25px"}}></i>
                   <small className="bg-danger px-1 rounded-circle text-white position-absolute " style={{top: -2, left: -2, fontSize: 8}}>
-                    2
+                    {this.props.counter}
                   </small>
                 </li>
               </Link>
@@ -154,8 +154,9 @@ const mapStateToProps = ({settings, loading, environment, notification}) => {
   const navCollapsed = settings.navCollapsed;
   const isTest = environment.isTest;
   const notifications = notification.notifications;
+  const counter = notification.counter;
 
-  return {settings, isLoadingStatus, navCollapsed, isTest, notifications};
+  return {settings, isLoadingStatus, navCollapsed, isTest, notifications, counter};
 };
 
 function mapDispatchToProps(dispatch) {
