@@ -34,7 +34,7 @@ const MainApp = () => {
 
 
   return (
-    <Provider store={configureStore()}>
+    <Provider store={configureStore}>
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <Router>
           <Switch>

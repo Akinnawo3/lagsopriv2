@@ -4,7 +4,7 @@ import {UPDATE_COUNTER} from "Actions/types";
 const socketMessageActions = (data) => {
   switch (data.action) {
     case "new_notification":
-      configureStore().dispatch({
+      configureStore.dispatch({
         type: UPDATE_COUNTER,
         payload: data.data.length,
       });

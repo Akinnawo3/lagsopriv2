@@ -9,14 +9,12 @@ function notificationReducer(state = initialState, action) {
   const {type, payload} = action;
   switch (type) {
     case NOTIFICATION: {
-      console.log(payload);
       return {
         ...state,
         notifications: payload,
       };
     }
     case UPDATE_COUNTER: {
-      alert(payload);
       return {
         ...state,
         counter: payload,

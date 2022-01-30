@@ -1,7 +1,7 @@
 import {configureStore} from "../store";
 
 const api = (() =>
-  configureStore().getState().environment.isTest
+  configureStore.getState().environment.isTest
     ? {
         user: "https://staging-server.lagosride.com/user-service",
         wallet: "https://staging-server.lagosride.com/wallet-service",
