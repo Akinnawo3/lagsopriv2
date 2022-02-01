@@ -35,7 +35,7 @@ const Notifications = ({match, notifications, getNotifications, authUserProfile,
       {!loadingStatus &&
         notifications.length > 0 &&
         notifications.map((item) => (
-          <section className="section-50">
+          <section className="">
             <div className="container">
               <div className="notification-ui_dd-content">
                 <div className="notification-list notification-list--unread">

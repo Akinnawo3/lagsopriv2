@@ -176,6 +176,7 @@ module.exports = {
   "sidebar.ticket new": "New Tickets",
   "sidebar.ticket setup": "setup",
   "sidebar.settings": "Settings",
+  "sidebar.fence": "Geo-fencing",
   "sidebar.contactUs": "Contact Us",
   "sidebar.googleMaps": "Google Maps",
   "sidebar.leafletMaps": "Leaflet Maps",

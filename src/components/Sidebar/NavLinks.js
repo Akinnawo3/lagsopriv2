@@ -12,12 +12,17 @@ export default {
           new_item: false,
           path: "/admin/setup/fees",
         },
+
         {
           menu_title: "sidebar.areas",
           new_item: false,
           path: "/admin/areas",
         },
-
+        {
+          menu_title: "sidebar.fence",
+          new_item: false,
+          path: "/admin/setup/geo-fencing",
+        },
         {
           menu_title: "sidebar.revenueSplit",
           new_item: false,
@@ -174,8 +179,6 @@ export default {
       ],
     },
 
-
-
     // {
     //    "menu_title": "sidebar.cancellation",
     //    "menu_icon": "zmdi zmdi-close",
@@ -209,7 +212,7 @@ export default {
 
     {
       menu_title: "sidebar.revenue",
-      menu_icon:  "icon-credit-card",
+      menu_icon: "icon-credit-card",
       type_multi: null,
       // "new_item": true,
       child_routes: [
