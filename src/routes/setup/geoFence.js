@@ -6,7 +6,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import {Form, FormGroup, Label, Input} from "reactstrap";
+import {Form, div, Label, Input} from "reactstrap";
 import Button from "@material-ui/core/Button";
 import Pagination from "react-js-pagination";
 import {Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
@@ -24,7 +24,10 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
   const [addNewGeoFenceModal, setAddNewGeoFenceModal] = useState(false);
   const [geoFenceName, setGeoFenceName] = useState("");
   const [geoFenceDescription, setGeoFenceDescription] = useState("");
-  const [locations, setLocations] = useState()
+  const [locations, setLocations] = useState([
+    {lat: "", lon: ""},
+    {lat: "", lon: ""},
+  ]);
 
   const [editGeoFence, setEditGeoFence] = useState(false);
 
@@ -94,8 +97,7 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
   const onSubmit = async (e) => {
     e.preventDefault();
     onGeoFenceModalClose();
-    const locations = [coord1, coord2, coord1];
-    !editGeoFence ? await createGeoFence(geoFenceName, geoFenceDescription, locations) : null;
+    !editGeoFence ? await createGeoFence(geoFenceName, geoFenceDescription, [...locations, locations[0]]) : null;
   };
 
   // useEffect(() => {
@@ -141,6 +143,16 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
   //   getAreaCount();
   // };
 
+  const handleCoordinateChange = (e, index) => {
+    const tempArray = locations.slice();
+    if (e.target.name === "long") {
+      tempArray[index].lon = e.target.value;
+    } else {
+      tempArray[index].lat = e.target.value;
+    }
+    setLocations(tempArray);
+  };
+
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Areas"} match={match} />
@@ -180,29 +192,31 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
                 <button className="ml-2 btn btn-outline-primary btn-sm rounded">Add New</button>
               </a>
             </div>
-            {/* {areas.length > 0 && ( */}
-            <div className="table-responsive" style={{minHeight: "50vh"}}>
-              <Table>
-                <TableHead>
-                  <TableRow hover>
-                    <TableCell>Geo-Fence Name</TableCell>
-                    <TableCell></TableCell>
-                    <TableCell>Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <Fragment>
-                    {/* {areas.map((area, key) => ( */}
-                    <TableRow hover key={"key"}>
-                      <TableCell>hardcoded cell</TableCell>
+            {geofences.length > 0 && (
+              <div className="table-responsive" style={{minHeight: "50vh"}}>
+                <Table>
+                  <TableHead>
+                    <TableRow hover>
+                      <TableCell> Name</TableCell>
+                      <TableCell> Description</TableCell>
+                      <TableCell> Type</TableCell>
+                      <TableCell>Actions</TableCell>
                     </TableRow>
-                    {/* ))} */}
-                  </Fragment>
-                </TableBody>
-              </Table>
-            </div>
-            {/* )} */}
-            {/* {areas.length < 1 && <EmptyData />} */}
+                  </TableHead>
+                  <TableBody>
+                    <Fragment>
+                      {geofences.map((item, key) => (
+                        <TableRow hover key={key}>
+                          <TableCell>{item.name}</TableCell>
+                          <TableCell>{item.des}</TableCell>
+                        </TableRow>
+                      ))}
+                    </Fragment>
+                  </TableBody>
+                </Table>
+              </div>
+            )}
+            {geofences.length < 1 && <EmptyData />}
 
             {/* {!loading && areas.length > 0 && (
               <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
@@ -216,46 +230,33 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
         <ModalHeader toggle={() => onGeoFenceModalClose()}>{editGeoFence ? "Update Area" : "Create New Area"}</ModalHeader>
         <Form onSubmit={onSubmit}>
           <ModalBody>
-            <FormGroup>
+            <div>
               <Label>Geo-Fence Name</Label>
               <Input type="text" name="geoFenceName" value={geoFenceName} onChange={(e) => setGeoFenceName(e.target.value)} required />
-            </FormGroup>
-            <FormGroup>
+            </div>
+            <div>
               <Label>Geo-Fence Description</Label>
               <Input type="textarea" name="geoFenceDescription" value={geoFenceDescription} onChange={(e) => setGeoFenceDescription(e.target.value)} required />
-            </FormGroup>
-            <small className="text-muted fw-bold">Coordinate 1</small>
-            <div className="d-flex">
-              <FormGroup className="mr-2">
-                <Label>Long</Label>
-                <Input type="number" name="geoFenceName" value={coord1.lon} onChange={(e) => setCoord1({...coord1, lon: e.target.value})} required />
-              </FormGroup>
-              <FormGroup className="ml-2">
-                <Label>Lat</Label>
-                <Input type="number" name="geoFenceName" value={coord1.lat} onChange={(e) => setCoord1({...coord1, lat: e.target.value})} required />
-              </FormGroup>
             </div>
-            <small className="text-muted fw-bold">Coordinate 2</small>
-            <div className="d-flex">
-              <FormGroup className="mr-2">
-                <Label>Long</Label>
-                <Input type="number" name="geoFenceName" value={coord2.lon} onChange={(e) => setCoord2({...coord2, lon: e.target.value})} required />
-              </FormGroup>
-              <FormGroup className="ml-2">
-                <Label>Lat</Label>
-                <Input type="number" name="geoFenceName" value={coord2.lat} onChange={(e) => setCoord2({...coord2, lat: e.target.value})} required />
-              </FormGroup>
-            </div>
-            <small className="text-muted fw-bold">Coordinate 3</small>
-            <div className="d-flex">
-              <FormGroup className="mr-2">
-                <Label>Long</Label>
-                <Input type="number" name="geoFenceName" value={coord1.lon} onChange={(e) => setCoord1({...coord1, lon: e.target.value})} required />
-              </FormGroup>
-              <FormGroup className="ml-2">
-                <Label>Lat</Label>
-                <Input type="number" name="geoFenceName" value={coord1.lat} onChange={(e) => setCoord1({...coord1, lat: e.target.value})} required />
-              </FormGroup>
+            {locations.map((item, index) => (
+              <div key={index}>
+                <small className="text-muted fw-bold"> {`Coordinate ${index + 1}  ${index === 0 ? "(Starting Point)" : ""}`} </small>
+                <div className="d-flex">
+                  <div className="mr-2 mb-0">
+                    <Label>Long</Label>
+                    <Input type="number" name="long" value={item.lon} onChange={(e) => handleCoordinateChange(e, index)} required />
+                  </div>
+                  <div className="ml-2">
+                    <Label>Lat</Label>
+                    <Input type="number" min={-90} max={90} name="lat" value={item.lat} onChange={(e) => handleCoordinateChange(e, index)} required />
+                  </div>
+                </div>
+              </div>
+            ))}
+            <div className="d-flex justify-content-end">
+              <Button variant="contained" className="mt-1 text-white btn-info " onClick={() => setLocations([...locations, {lat: "", lon: ""}])}>
+                Add Coordinate
+              </Button>
             </div>
           </ModalBody>
           <ModalFooter>
