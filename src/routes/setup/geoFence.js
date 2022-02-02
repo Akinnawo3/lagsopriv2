@@ -69,9 +69,10 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
 
   const onGeoFenceEdit = (geoFence_id) => {
     const editedItem = geofences.find((item) => item._id === geoFence_id);
+    setUpdateId(editedItem?._id);
     setGeoFenceName(editedItem?.name);
     setGeoFenceDescription(editedItem?.description);
-    setLocations(editedItem?.setLocations);
+    setLocations(editedItem?.setLocations.pop());
     setAddNewGeoFenceModal(true);
     setEditGeoFence(true);
   };
