@@ -124,11 +124,15 @@ export const updatePromoDiscount = (body, promo_code_id) => async (dispatch) => 
 export const deletePromoDiscount = (promo_code_id) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
-    await axios.delete(`${api.wallet}/v1.1/admin/promo-code/${promo_code_id}`);
-    await NotificationManager.success("Promo Deleted Successfully!");
-    await dispatch(endStatusLoading());
-    await dispatch(getPromoDiscount(1));
-    await dispatch(getPromoDiscountCount());
+    const res = await axios.delete(`${api.wallet}/v1.1/admin/promo-code/${promo_code_id}`);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success("Promo Deleted Successfully!");
+      await dispatch(getPromoDiscount(1));
+      await dispatch(getPromoDiscountCount());
+    }
+    dispatch(endStatusLoading());
   } catch (err) {
     await dispatch(endStatusLoading());
     NotificationManager.error(err.response.data.result);

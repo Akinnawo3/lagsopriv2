@@ -83,38 +83,34 @@ export const getGeoFenceCount = () => async (dispatch) => {
 //   }
 // };
 
-export const updateGeoFence = (area_id, area_name, lga) => async (dispatch) => {
-  const body = {area_name, lga};
-  try {
-    dispatch(startStatusLoading());
-    const res = await axios.put(`${api.area}/v1.1/areas/${area_id}`, body);
-    if (res.data.status === "error") {
-      NotificationManager.error(res.data.msg);
-    } else {
-      await NotificationManager.success("Area Updated Successfully!");
-      await dispatch(getAreas());
-    }
-    dispatch(endStatusLoading());
-  } catch (err) {
-    dispatch(endStatusLoading());
-    NotificationManager.error(err.response.data.message);
-  }
-};
+// export const updateGeoFence = (area_id, area_name, lga) => async (dispatch) => {
+//   const body = {area_name, lga};
+//   try {
+//     dispatch(startStatusLoading());
+//     const res = await axios.put(`${api.area}/v1.1/areas/${area_id}`, body);
+//     if (res.data.status === "error") {
+//       NotificationManager.error(res.data.msg);
+//     } else {
+//       await NotificationManager.success("Area Updated Successfully!");
+//       await dispatch(getAreas());
+//     }
+//     dispatch(endStatusLoading());
+//   } catch (err) {
+//     dispatch(endStatusLoading());
+//     NotificationManager.error(err.response.data.message);
+//   }
+// };
 
-export const deleteGeoFence = (area_id, areas) => async (dispatch) => {
+export const deleteGeoFence = (geoFence_id) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
-    const res = await axios.delete(`${api.area}/v1.1/areas/${area_id}`);
+    const res = await axios.delete(`${api.customerCare}/v1.1/settings/geofence/${geoFence_id}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      await NotificationManager.success("Area deleted Successfully!");
-      const areaData = areas.filter((area) => area.area_id !== area_id);
-      dispatch({
-        type: AREAS,
-        payload: areaData,
-      });
-      dispatch(getAreasCount());
+      await NotificationManager.success("Geo-Fence deleted Successfully!");
+      dispatch(getGeoFence(1));
+      dispatch(getGeoFenceCount());
     }
     dispatch(endStatusLoading());
   } catch (err) {

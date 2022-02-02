@@ -18,9 +18,9 @@ import EmptyData from "Components/EmptyData/EmptyData";
 import {CSVLink} from "react-csv";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {verifyUserPermssion} from "../../container/DefaultLayout";
-import {createGeoFence, getGeoFence, getGeoFenceCount} from "../../actions/geoFencingAction";
+import {createGeoFence, getGeoFence, getGeoFenceCount, deleteGeoFence} from "../../actions/geoFencingAction";
 
-const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount, geofencesCount, geofences}) => {
+const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount, geofencesCount, geofences, deleteGeoFence}) => {
   const [currentPage, setCurentPage] = useState(1);
   const [addNewGeoFenceModal, setAddNewGeoFenceModal] = useState(false);
   const [geoFenceName, setGeoFenceName] = useState("");
@@ -29,7 +29,6 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
     {lat: "", lon: ""},
     {lat: "", lon: ""},
   ]);
-
   const [editGeoFence, setEditGeoFence] = useState(false);
   const [updateId, setUpdateId] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
@@ -68,19 +67,14 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
   //   setAddNewAreaModal1(false);
   // };
 
-  // const opnAddNewAreaEditModal = (area_id) => {
-  //   areas.map((area) => {
-  //     if (area.area_id === area_id) {
-  //       setFormData({
-  //         lga: area.lga,
-  //         areaName: area.area_name,
-  //       });
-  //       setUpdateId(area.area_id);
-  //     }
-  //   });
-  //   setAddNewAreaModal(true);
-  //   setEditGeoFence(true);
-  // };
+  const onGeoFenceEdit = (geoFence_id) => {
+    const editedItem = geofences.find((item) => item._id === geoFence_id);
+    setGeoFenceName(editedItem?.name);
+    setGeoFenceDescription(editedItem?.description);
+    setLocations(editedItem?.setLocations);
+    setAddNewGeoFenceModal(true);
+    setEditGeoFence(true);
+  };
 
   const onGeoFenceModalClose = () => {
     setUpdateId(null);
@@ -216,7 +210,7 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
                           <TableCell>{item?.description}</TableCell>
                           <TableCell>{item?.location[0]?.type}</TableCell>
                           <TableCell>
-                            <button type="button" className="rct-link-btn" onClick={(e) => null}>
+                            <button type="button" className="rct-link-btn" onClick={(e) => onGeoFenceEdit(item?._id)}>
                               <i className="ti-pencil"></i>
                             </button>
                             <button type="button" className="rct-link-btn ml-lg-3 text-danger" onClick={() => onDelete(item?._id)}>
@@ -294,7 +288,7 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
         title="Are You Sure You Want To Delete?"
         message="This will delete area permanently."
         onConfirm={() => {
-          // deleteArea(deleteId, areas);
+          deleteGeoFence(deleteId);
           inputEl.current.close();
         }}
       />
@@ -309,9 +303,8 @@ function mapDispatchToProps(dispatch) {
     createGeoFence: (name, description, locations) => dispatch(createGeoFence(name, description, locations)),
     getGeoFence: (page_no, spinner) => dispatch(getGeoFence(page_no, spinner)),
     getGeoFenceCount: () => dispatch(getGeoFenceCount()),
-    // searchArea: (data) => dispatch(searchAreas(data)),
-    // updateArea: (area_id, area_name, lga) => dispatch(updateArea(area_id, area_name, lga)),
-    // deleteArea: (area_id, areas) => dispatch(deleteArea(area_id, areas)),
+    deleteGeoFence: (geoFence_id) => dispatch(deleteGeoFence(geoFence_id)),
+
   };
 }
 
