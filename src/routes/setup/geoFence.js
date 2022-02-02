@@ -21,6 +21,7 @@ import {verifyUserPermssion} from "../../container/DefaultLayout";
 import {createGeoFence, getGeoFence, getGeoFenceCount} from "../../actions/geoFencingAction";
 
 const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount, geofencesCount, geofences}) => {
+  const [currentPage, setCurentPage] = useState(1);
   const [addNewGeoFenceModal, setAddNewGeoFenceModal] = useState(false);
   const [geoFenceName, setGeoFenceName] = useState("");
   const [geoFenceDescription, setGeoFenceDescription] = useState("");
@@ -30,11 +31,9 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
   ]);
 
   const [editGeoFence, setEditGeoFence] = useState(false);
-
   const [updateId, setUpdateId] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
   const inputEl = useRef(null);
-  const [currentPage, setCurrentPage] = useState(1);
   // const [excelExport, setExcelExport] = useState([]);
   // const [addNewAreaModal1, setAddNewAreaModal1] = useState(false);
 
@@ -89,15 +88,21 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
     setEditGeoFence(false);
   };
 
-  // const onDelete = (area_id) => {
-  //   inputEl.current.open();
-  //   setDeleteId(area_id);
-  // };
+  const onDelete = (geoFence_id) => {
+    inputEl.current.open();
+    setDeleteId(geoFence_id);
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
     onGeoFenceModalClose();
     !editGeoFence ? await createGeoFence(geoFenceName, geoFenceDescription, [...locations, locations[0]]) : null;
+  };
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    getGeoFence(1, true);
+    window.scrollTo(0, 0);
   };
 
   // useEffect(() => {
@@ -157,14 +162,14 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
     <div className="table-wrapper">
       <PageTitleBar title={"Areas"} match={match} />
       {!loading && (
-        <RctCollapsibleCard heading="Areas" fullBlock>
+        <RctCollapsibleCard heading="Geo Fencing" fullBlock>
           <>
             <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
               {/* <div className="search-wrapper">
-                <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={"Area name"} />
+                <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={"Geo-Fence Name"} />
               </div> */}
             </li>
-            <div className="float-right">
+            <div className="float-right mb-2">
               {/* <CSVLink
                             // headers={headers}
                             data={excelExport}
@@ -192,7 +197,7 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
                 <button className="ml-2 btn btn-outline-primary btn-sm rounded">Add New</button>
               </a>
             </div>
-            {geofences.length > 0 && (
+            {geofences?.length > 0 && (
               <div className="table-responsive" style={{minHeight: "50vh"}}>
                 <Table>
                   <TableHead>
@@ -207,8 +212,17 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
                     <Fragment>
                       {geofences.map((item, key) => (
                         <TableRow hover key={key}>
-                          <TableCell>{item.name}</TableCell>
-                          <TableCell>{item.des}</TableCell>
+                          <TableCell>{item?.name}</TableCell>
+                          <TableCell>{item?.description}</TableCell>
+                          <TableCell>{item?.location[0]?.type}</TableCell>
+                          <TableCell>
+                            <button type="button" className="rct-link-btn" onClick={(e) => null}>
+                              <i className="ti-pencil"></i>
+                            </button>
+                            <button type="button" className="rct-link-btn ml-lg-3 text-danger" onClick={() => onDelete(item?._id)}>
+                              <i className="ti-trash"></i>
+                            </button>
+                          </TableCell>
                         </TableRow>
                       ))}
                     </Fragment>
@@ -216,13 +230,13 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
                 </Table>
               </div>
             )}
-            {geofences.length < 1 && <EmptyData />}
+            {geofences?.length < 1 && <EmptyData />}
 
-            {/* {!loading && areas.length > 0 && (
+            {!loading && geofences?.length > 0 && (
               <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
-                <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={areaCount} onChange={paginate} />
+                <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={geofencesCount} onChange={paginate} />
               </div>
-            )} */}
+            )}
           </>
         </RctCollapsibleCard>
       )}
@@ -242,11 +256,11 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
               <div key={index}>
                 <small className="text-muted fw-bold"> {`Coordinate ${index + 1}  ${index === 0 ? "(Starting Point)" : ""}`} </small>
                 <div className="d-flex">
-                  <div className="mr-2 mb-0">
+                  <div className="mr-2 mb-0 w-50">
                     <Label>Long</Label>
                     <Input type="number" name="long" value={item.lon} onChange={(e) => handleCoordinateChange(e, index)} required />
                   </div>
-                  <div className="ml-2">
+                  <div className="ml-2 w-50">
                     <Label>Lat</Label>
                     <Input type="number" min={-90} max={90} name="lat" value={item.lat} onChange={(e) => handleCoordinateChange(e, index)} required />
                   </div>
@@ -275,15 +289,15 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
           <Upload oncloseModal={onAddUpdateAreaModalClose1} />
         </ModalBody>
       </Modal> */}
-      {/* <DeleteConfirmationDialog
+      <DeleteConfirmationDialog
         ref={inputEl}
         title="Are You Sure You Want To Delete?"
         message="This will delete area permanently."
         onConfirm={() => {
-          deleteArea(deleteId, areas);
+          // deleteArea(deleteId, areas);
           inputEl.current.close();
         }}
-      /> */}
+      />
     </div>
   );
 };
