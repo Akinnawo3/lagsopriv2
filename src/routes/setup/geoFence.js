@@ -298,13 +298,10 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
 
 function mapDispatchToProps(dispatch) {
   return {
-    // getAreas: (page_no, spinner) => dispatch(getAreas(page_no, spinner)),
-    // getAreaCount: () => dispatch(getAreasCount()),
     createGeoFence: (name, description, locations) => dispatch(createGeoFence(name, description, locations)),
     getGeoFence: (page_no, spinner) => dispatch(getGeoFence(page_no, spinner)),
     getGeoFenceCount: () => dispatch(getGeoFenceCount()),
     deleteGeoFence: (geoFence_id) => dispatch(deleteGeoFence(geoFence_id)),
-
   };
 }
 
