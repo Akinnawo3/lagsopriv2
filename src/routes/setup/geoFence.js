@@ -168,11 +168,11 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
       {!loading && (
         <RctCollapsibleCard heading="Geo Fencing" fullBlock>
           <>
-            <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-              {/* <div className="search-wrapper">
+            {/* <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+              <div className="search-wrapper">
                 <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={"Geo-Fence Name"} />
-              </div> */}
-            </li>
+              </div>
+            </li> */}
             <div className="float-right mb-2">
               {/* <CSVLink
                             // headers={headers}
