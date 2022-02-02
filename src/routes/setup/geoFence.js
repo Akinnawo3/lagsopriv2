@@ -18,16 +18,17 @@ import EmptyData from "Components/EmptyData/EmptyData";
 import {CSVLink} from "react-csv";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {verifyUserPermssion} from "../../container/DefaultLayout";
-import {createGeoFence, getGeoFence, getGeoFenceCount, deleteGeoFence} from "../../actions/geoFencingAction";
+import {createGeoFence, getGeoFence, getGeoFenceCount, deleteGeoFence, updateGeoFence} from "../../actions/geoFencingAction";
 
-const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount, geofencesCount, geofences, deleteGeoFence}) => {
+const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount, geofencesCount, geofences, deleteGeoFence, updateGeoFence}) => {
   const [currentPage, setCurentPage] = useState(1);
   const [addNewGeoFenceModal, setAddNewGeoFenceModal] = useState(false);
   const [geoFenceName, setGeoFenceName] = useState("");
   const [geoFenceDescription, setGeoFenceDescription] = useState("");
   const [locations, setLocations] = useState([
-    {lat: "", lon: ""},
-    {lat: "", lon: ""},
+    {lon: "", lat: ""},
+    {lon: "", lat: ""},
+    {lon: "", lat: ""},
   ]);
   const [editGeoFence, setEditGeoFence] = useState(false);
   const [updateId, setUpdateId] = useState(null);
@@ -40,9 +41,6 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
     getGeoFence(1, true);
     getGeoFenceCount();
   }, []);
-
-  console.log(geofences);
-  console.log(geofencesCount);
 
   // const paginate = (pageNumber) => {
   //   setCurrentPage(pageNumber);
@@ -72,7 +70,11 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
     setUpdateId(editedItem?._id);
     setGeoFenceName(editedItem?.name);
     setGeoFenceDescription(editedItem?.description);
-    setLocations(editedItem?.setLocations.pop());
+    //this is to remove the extra coordinate (a repetition of the starting point) that was joined from the backend
+    const otherLocations = editedItem?.location[0]?.coordinates[0].slice(0, -1);
+    //to re-arrange the arrays to match the structure defined in the locations state
+    const arrangedLocation = otherLocations.map((item) => ({lon: item[0].toString(), lat: item[1].toString()}));
+    setLocations(arrangedLocation);
     setAddNewGeoFenceModal(true);
     setEditGeoFence(true);
   };
@@ -91,7 +93,14 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
   const onSubmit = async (e) => {
     e.preventDefault();
     onGeoFenceModalClose();
-    !editGeoFence ? await createGeoFence(geoFenceName, geoFenceDescription, [...locations, locations[0]]) : null;
+    !editGeoFence ? await createGeoFence(geoFenceName, geoFenceDescription, locations) : updateGeoFence(updateId, geoFenceName, geoFenceDescription, locations);
+    setGeoFenceName("");
+    setGeoFenceDescription("");
+    setLocations([
+      {lon: "", lat: ""},
+      {lon: "", lat: ""},
+      {lon: "", lat: ""},
+    ]);
   };
 
   const paginate = (pageNumber) => {
@@ -270,7 +279,7 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
           </ModalBody>
           <ModalFooter>
             <Button type="submit" variant="contained" className="text-white btn-info mr-2">
-              Add
+              {editGeoFence ? "Update" : " Add"}
             </Button>
             <Button variant="contained" className="btn btn-outline-danger" onClick={() => onGeoFenceModalClose()}>
               Cancel
@@ -300,6 +309,7 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
 function mapDispatchToProps(dispatch) {
   return {
     createGeoFence: (name, description, locations) => dispatch(createGeoFence(name, description, locations)),
+    updateGeoFence: (geoFence_id, name, description, locations) => dispatch(updateGeoFence(geoFence_id, name, description, locations)),
     getGeoFence: (page_no, spinner) => dispatch(getGeoFence(page_no, spinner)),
     getGeoFenceCount: () => dispatch(getGeoFenceCount()),
     deleteGeoFence: (geoFence_id) => dispatch(deleteGeoFence(geoFence_id)),

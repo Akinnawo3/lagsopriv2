@@ -12,7 +12,7 @@ export const createGeoFence = (name, description, locations) => async (dispatch)
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      await NotificationManager.success("Area Created Successfully!");
+      await NotificationManager.success("Geo-Fence Created Successfully!");
       await dispatch(getGeoFence(1, true));
     }
     dispatch(endStatusLoading());
@@ -83,23 +83,23 @@ export const getGeoFenceCount = () => async (dispatch) => {
 //   }
 // };
 
-// export const updateGeoFence = (area_id, area_name, lga) => async (dispatch) => {
-//   const body = {area_name, lga};
-//   try {
-//     dispatch(startStatusLoading());
-//     const res = await axios.put(`${api.area}/v1.1/areas/${area_id}`, body);
-//     if (res.data.status === "error") {
-//       NotificationManager.error(res.data.msg);
-//     } else {
-//       await NotificationManager.success("Area Updated Successfully!");
-//       await dispatch(getAreas());
-//     }
-//     dispatch(endStatusLoading());
-//   } catch (err) {
-//     dispatch(endStatusLoading());
-//     NotificationManager.error(err.response.data.message);
-//   }
-// };
+export const updateGeoFence = (geoFence_id, name, description, locations) => async (dispatch) => {
+  const body = {name, description, locations};
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.put(`${api.customerCare}/v1.1/settings/geofence/${geoFence_id}`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success("Geo-Fence Updated Successfully!");
+      await dispatch(getAreas());
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+    NotificationManager.error(err.response.data.message);
+  }
+};
 
 export const deleteGeoFence = (geoFence_id) => async (dispatch) => {
   try {
