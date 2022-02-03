@@ -67,7 +67,7 @@ export const searchGeoFence = (searchData) => async (dispatch) => {
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      // const res2 = await axios.get(`${api.customerCare}/v1.1/settings/geofence?q=${searchData}&component=count`);
+      const res2 = await axios.get(`${api.customerCare}/v1.1/settings/geofence?q=${searchData}&component=count`);
       dispatch({
         type: GEOFENCES,
         payload: res.data.data,
