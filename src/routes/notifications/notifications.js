@@ -7,7 +7,7 @@ import Skeleton, {SkeletonTheme} from "react-loading-skeleton";
 import {getNotifications} from "../../actions/notificationAction";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {UPDATE_COUNTER} from "../../actions/types";
-import {calculatePostDate} from "Helpers/helpers"
+import {calculatePostDate} from "Helpers/helpers";
 
 const Notifications = ({match, notifications, getNotifications, authUserProfile, loading, loadingStatus, counter, updateNotificationCounter}) => {
   const [items, setItems] = useState(Array.from({length: 6}));
@@ -45,9 +45,11 @@ const Notifications = ({match, notifications, getNotifications, authUserProfile,
                     </div>
                     <div className="notification-list_detail">
                       <p>
-                        <b>{item?.message.split(":")[0]}</b>
+                        <b>
+                          {item?.first_name} {item?.last_name}
+                        </b>
                       </p>
-                      <p className="text-muted">{item?.message.split(":")[1]}</p>
+                      <p className="text-muted">{item?.message}</p>
                       <p className="text-muted">
                         <small>{calculatePostDate(item?.createdAt)}</small>
                       </p>
