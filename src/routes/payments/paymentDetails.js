@@ -1,24 +1,13 @@
-import React, { useEffect } from "react";
-import { Helmet } from "react-helmet";
+import React, {useEffect} from "react";
+import {Helmet} from "react-helmet";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { connect } from "react-redux";
-import { getPaymentDetails } from "Actions/paymentAction";
-import {
-  calculatePostDate,
-  getStatus3,
-  getStatus4,
-  getStatusColor,
-  getStatusColor4,
-} from "Helpers/helpers";
-import { Badge } from "reactstrap";
-import { Link } from "react-router-dom";
+import {connect} from "react-redux";
+import {getPaymentDetails} from "Actions/paymentAction";
+import {calculatePostDate, getStatus3, getStatus4, getStatusColor, getStatusColor4} from "Helpers/helpers";
+import {Badge} from "reactstrap";
+import {Link} from "react-router-dom";
 
-const PaymentDetails = ({
-  match,
-  payment,
-  getPaymentDetails,
-  sosUserDetails,
-}) => {
+const PaymentDetails = ({match, payment, getPaymentDetails, sosUserDetails}) => {
   useEffect(() => {
     if (match.params.id) {
       getPaymentDetails(match.params.id);
@@ -26,13 +15,13 @@ const PaymentDetails = ({
   }, [match.params.id]);
 
   return (
-    <div className="mb-5" style={{ minHeight: "90vh" }}>
+    <div className="mb-5" style={{minHeight: "90vh"}}>
       <Helmet>
         <title>Payment Details</title>
         <meta name="description" content="Payment Details" />
       </Helmet>
       <PageTitleBar title={`Payment details`} match={match} />
-      <div className="row" style={{ fontSize: "0.8rem", minHeight: "90vh" }}>
+      <div className="row" style={{fontSize: "0.8rem", minHeight: "90vh"}}>
         <div className="col-sm-6">
           <div className="tab-content">
             <div className="tab-pane active" id="home">
@@ -51,16 +40,28 @@ const PaymentDetails = ({
                 </li>
                 <li className="list-group-item text-right">
                   <span className="pull-left">
-                    <strong>Method</strong>
+                    <strong>Charge Method</strong>
+                  </span>
+                  {payment?.charge_method}
+                </li>
+                <li className="list-group-item text-right">
+                  <span className="pull-left">
+                    <strong>Payment Method</strong>
                   </span>
                   {payment?.payment_method}
+                </li>
+                <li className="list-group-item text-right">
+                  <span className="pull-left">
+                    <strong>Ride Class</strong>
+                  </span>
+                  {payment?.ride_class}
                 </li>
                 <li className="list-group-item text-right">
                   <span className="pull-left">
                     <strong>Rider</strong>
                   </span>
                   <Link to={`/admin/passengers/${payment?.rider_id}`}>
-                    {sosUserDetails?.first_name} {sosUserDetails?.last_name}
+                    {payment?.first_name} {payment?.last_name}
                   </Link>
                 </li>
                 <li className="list-group-item text-right">
@@ -79,9 +80,7 @@ const PaymentDetails = ({
                   <span className="pull-left">
                     <strong>Trip Id</strong>
                   </span>
-                  <Link to={`/admin/trips/${payment?.trip_id}`}>
-                    {payment?.trip_id}
-                  </Link>
+                  <Link to={`/admin/trips/${payment?.trip_id}`}>{payment?.trip_id}</Link>
                 </li>
                 <li className="list-group-item text-right">
                   <span className="pull-left">
@@ -105,9 +104,7 @@ const PaymentDetails = ({
                   <span className="pull-left">
                     <strong>Status</strong>
                   </span>
-                  <Badge color={getStatusColor4(payment?.status)}>
-                    {getStatus4(payment?.status)}
-                  </Badge>
+                  <Badge color={getStatusColor4(payment?.status)}>{getStatus4(payment?.status)}</Badge>
                 </li>
               </ul>
             </div>
