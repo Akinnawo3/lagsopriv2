@@ -53,8 +53,7 @@ const PaymentTable = ({payments, paymentsCount, auth_id, getPayments, header, lo
                         <TableCell>{item.payment_id}</TableCell>
                         <TableCell>{item.trip_ref}</TableCell>
                         <TableCell>₦{item.amount.toLocaleString()}</TableCell>
-                        <TableCell>{item.amount.toLocaleString()}</TableCell>
-                        <TableCell>{item.charge_method}</TableCell>
+                        <TableCell>{`${item?.first_name} ${item?.last_name}`}</TableCell>
                         <TableCell>{calculatePostDate(item.createdAt)}</TableCell>
                         <TableCell>{item.charge_method}</TableCell>
                         <TableCell>{item.payment_method}</TableCell>
