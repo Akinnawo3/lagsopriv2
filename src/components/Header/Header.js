@@ -19,7 +19,6 @@ import {logoutUser} from "Actions/authAction";
 import {switchEnvironment} from "Actions/environmentAction";
 import Switch from "@material-ui/core/Switch";
 import {LinearProgress} from "@material-ui/core";
-
 class Header extends Component {
   state = {
     customizer: false,
@@ -64,9 +63,9 @@ class Header extends Component {
   }
 
   render() {
-    const {horizontalMenu, agencyMenu, location, isLoadingStatus, isTest} = this.props;
+    const {horizontalMenu, agencyMenu, location, isLoadingStatus, isTest, counter} = this.props;
 
-    console.log(this.props.counter);
+    console.log(counter);
     return (
       <div>
         {isLoadingStatus && <LinearProgress />}
@@ -113,9 +112,11 @@ class Header extends Component {
               <Link to="/admin/notifications">
                 <li className="list-inline-item setting-icon ml-2 position-relative">
                   <i className="zmdi zmdi-notifications-none text-danger mr-1 " title="Notifications" style={{fontSize: "25px"}}></i>
-                  <small className="bg-danger px-1 rounded-circle text-white position-absolute " style={{top: -2, left: -2, fontSize: 8}}>
-                    {this.props.counter}
-                  </small>
+                  <blink>
+                    <small className="bg-danger blink text-white position-absolute fw-bold rounded-circle" style={{top: -2, left: -2, fontSize: 8, padding: "0 4px"}}>
+                      {this.props.counter && <span>.</span>}
+                    </small>
+                  </blink>
                 </li>
               </Link>
               <li className="list-inline-item setting-icon ml-2">

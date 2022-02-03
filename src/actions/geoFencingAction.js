@@ -60,28 +60,28 @@ export const getGeoFenceCount = () => async (dispatch) => {
   } catch (err) {}
 };
 
-// export const searchAreas = (searchData) => async (dispatch) => {
-//   try {
-//     dispatch(startStatusLoading());
-//     const res = await axios.get(`${api.area}/v1.1/areas?q=${searchData}`);
-//     if (res.data.status === "error") {
-//       NotificationManager.error(res.data.msg);
-//     } else {
-//       const res2 = await axios.get(`${api.area}/v1.1/areas?q=${searchData}&component=count`);
-//       dispatch({
-//         type: AREAS,
-//         payload: res.data.data,
-//       });
-//       dispatch({
-//         type: AREA_COUNT,
-//         payload: res2.data.data.total ? res2.data.data.total : 0,
-//       });
-//     }
-//     dispatch(endStatusLoading());
-//   } catch (err) {
-//     dispatch(endStatusLoading());
-//   }
-// };
+export const searchGeoFence = (searchData) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.get(`${api.customerCare}/v1.1/settings/geofence?q=${searchData}`);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      const res2 = await axios.get(`${api.customerCare}/v1.1/settings/geofence?q=${searchData}&component=count`);
+      dispatch({
+        type: GEOFENCES,
+        payload: res.data.data,
+      });
+      dispatch({
+        type: FENCES_COUNT,
+        payload: res2.data.data.total ? res2.data.data.total : 0,
+      });
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+  }
+};
 
 export const updateGeoFence = (geoFence_id, name, description, locations) => async (dispatch) => {
   const body = {name, description, locations};

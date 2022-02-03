@@ -9,7 +9,6 @@ const socketMessageActions = (data) => {
         type: UPDATE_COUNTER,
         payload: data.data,
       });
-
       break;
 
     default:

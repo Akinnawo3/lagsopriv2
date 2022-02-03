@@ -17,15 +17,9 @@ function notificationReducer(state = initialState, action) {
     case UPDATE_COUNTER: {
       return {
         ...state,
-        counter: payload === [] ? false : true,
+        counter: !Array.isArray(payload),
       };
     }
-    // case CLEAR_COUNTER: {
-    //   return {
-    //     ...state,
-    //     counter: 0,
-    //   };
-    // }
     default:
       return state;
   }
