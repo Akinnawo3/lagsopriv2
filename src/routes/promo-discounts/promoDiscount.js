@@ -194,8 +194,8 @@ const PromoDiscounts = (props) => {
                         <TableCell>{promoDiscount.promo_code_owner}</TableCell>
                         <TableCell>{promoDiscount.users_limit}</TableCell>
                         <TableCell>{`${promoDiscount?.discount_type === "amount" ? "₦" : ""} ${promoDiscount.discount_value} ${promoDiscount?.discount_type === "percentage" ? "%" : ""}`}</TableCell>
-                        <TableCell>{moment(promoDiscount.start_date).format("LL")}</TableCell>
-                        <TableCell>{moment(promoDiscount.expiry_date).format("LL")}</TableCell>
+                        <TableCell>{moment.utc(promoDiscount.start_date).format("ll")}</TableCell>
+                        <TableCell>{moment.utc(promoDiscount.expiry_date).format("ll")}</TableCell>
                         <TableCell>
                           <button type="button" className="rct-link-btn" onClick={(e) => verifyUserPermssion("update_promo_code", () => opnAddNewUserEditModal(promoDiscount.promo_code_id))}>
                             <i className="ti-pencil"></i>

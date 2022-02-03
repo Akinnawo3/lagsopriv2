@@ -166,3 +166,12 @@ export const VERIFICATION_RESULT = "VERIFICATION_RESULT";
 //Environment
 
 export const SWITCH_ENVIRONMENT = "SWITCH_ENVIRONMENT";
+
+//notifications
+export const NOTIFICATION = "NOTIFICATION";
+export const UPDATE_COUNTER = "UPDATE_COUNTER";
+export const CLEAR_COUNTER = "CLEAR_COUNTER";
+
+//geo-fencing
+export const GEOFENCES = "GEOFENCES";
+export const FENCES_COUNT = "FENCES_COUNT";

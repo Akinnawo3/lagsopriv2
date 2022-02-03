@@ -19,6 +19,9 @@ const cookies = new Cookies();
 
 import { configureStore } from "./store";
 import axios from "axios";
+import api from "./environments/environment";
+import appSocket from "./actions/socketActions";
+//socket
 
 const MainApp = () => {
    (function () {
@@ -29,7 +32,7 @@ const MainApp = () => {
    })();
 
    return (
-      <Provider store={configureStore()}>
+      <Provider store={configureStore}>
          <MuiPickersUtilsProvider utils={MomentUtils}>
             <Router>
                <Switch>

@@ -1,8 +1,7 @@
 import {configureStore} from "../store";
 
-
 const api = (() =>
-  configureStore().getState().environment.isTest
+  configureStore.getState().environment.isTest
     ? {
         user: "https://staging-server.lagosride.com/user-service",
         wallet: "https://staging-server.lagosride.com/wallet-service",
@@ -21,6 +20,7 @@ const api = (() =>
         idVerification: "https://staging-server.lagosride.com/verify-service ",
         messageSending: "https://staging-server.lagosride.com/message-service",
         fees: "https://staging-server.lagosride.com/fees-service",
+        socket: "https://staging-server.lagosride.com/admin-socket",
       }
     : {
         bookingTypes: "https://taxitriptypebackend-microservices.api.lagosride.com",
@@ -48,6 +48,8 @@ const api = (() =>
         revenueSplit: "https://revenue-service-microservices.api.lagosride.com",
         idVerification: "https://verify-service-microservices.api.lagosride.com",
         messageSending: "https://message-service-microservices.api.lagosride.com",
+        socket: "https://staging-server.lagosride.com",
+        // socketHttp: "https://staging-server.lagosride.com/admin-socket ",
       })();
 
 export default api;

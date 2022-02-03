@@ -66,7 +66,7 @@ class Header extends Component {
   render() {
     const {horizontalMenu, agencyMenu, location, isLoadingStatus, isTest} = this.props;
 
-    console.log(isTest);
+    console.log(this.props.counter);
     return (
       <div>
         {isLoadingStatus && <LinearProgress />}
@@ -114,21 +114,20 @@ class Header extends Component {
                 <li className="list-inline-item setting-icon ml-2 position-relative">
                   <i className="zmdi zmdi-notifications-none text-danger mr-1 " title="Notifications" style={{fontSize: "25px"}}></i>
                   <small className="bg-danger px-1 rounded-circle text-white position-absolute " style={{top: -2, left: -2, fontSize: 8}}>
-                    2
+                    {this.props.counter}
                   </small>
                 </li>
               </Link>
               <li className="list-inline-item setting-icon ml-2">
-                <a
+                <div
                   onClick={() => {
                     this.props.logoutUser();
                   }}
-                  href="#"
                   className="text-primary"
                 >
                   <i className="zmdi zmdi-power text-danger mr-1" title="Logout" style={{fontSize: "25px"}}></i>
                   {/*<span>Log Out</span>*/}
-                </a>
+                </div>
               </li>
               <li className="list-inline-item">
                 <Tooltip title="Full Screen" placement="bottom">
@@ -150,11 +149,14 @@ class Header extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({settings, loading, environment}) => {
+const mapStateToProps = ({settings, loading, environment, notification}) => {
   const isLoadingStatus = loading.loadingStatus;
   const navCollapsed = settings.navCollapsed;
   const isTest = environment.isTest;
-  return {settings, isLoadingStatus, navCollapsed, isTest};
+  const notifications = notification.notifications;
+  const counter = notification.counter;
+
+  return {settings, isLoadingStatus, navCollapsed, isTest, notifications, counter};
 };
 
 function mapDispatchToProps(dispatch) {

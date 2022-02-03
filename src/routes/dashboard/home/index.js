@@ -12,7 +12,7 @@ import VehicleChart from "Components/Widgets/VehicleChart";
 import DriverChart from "Components/Widgets/DriverChart";
 import {connect} from "react-redux";
 import RevenueWidget from "../../../components/Widgets/RevenueWidget";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 const HomeDashboard = ({match}) => {
   return (
@@ -73,6 +73,8 @@ function mapDispatchToProps(dispatch) {
   return {};
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  counter: state.notification.counter,
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeDashboard);

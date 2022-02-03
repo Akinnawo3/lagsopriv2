@@ -150,7 +150,7 @@ const DriverProfile = ({
     inputEl.current.open();
   };
 
-  console.log(isTest);
+  console.log(driver);
 
   const triggerIdVerifcation = (type, value, firstName, lastName) => {
     setIdType(type);

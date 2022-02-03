@@ -2,16 +2,19 @@ import {NotificationManager} from "react-notifications";
 import {LOGIN_USER} from "./types";
 import {endLoading, startLoading} from "./loadingAction";
 import axios from "axios";
-import cookies from "Util/cookies";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
+
 import api from "../environments/environment";
 
 export const loginUser = (phone_number, password) => async (dispatch) => {
   const body = {phone_number, password, user_type: "admin"};
   try {
     dispatch(startLoading());
-    const res = await axios.post(`${api.user}/v1.1/auth/login`, body);
+    const res = await axios.post(`https://users-service-microservices.api.lagosride.com/v1.1/auth/login`, body);
+    console.log(res.data.status);
     if (res.data.status === "error") {
-      NotificationManager.error(res.data.msg);
+      NotificationManager.error("res.data.msg");
     } else {
       const userType = res.data.data.user_type;
       if (userType === "superadmin" || userType === "admin") {
@@ -30,6 +33,7 @@ export const loginUser = (phone_number, password) => async (dispatch) => {
     dispatch(endLoading());
   } catch (err) {
     dispatch(endLoading());
+    console.log(err);
     NotificationManager.error("Network error please try again or check your internet connection ");
   }
 };

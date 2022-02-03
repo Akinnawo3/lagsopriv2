@@ -384,6 +384,10 @@ const AsyncAddPersonnel = Loadable({
   loader: () => import("Routes/setup/component/addPersonnel"),
   loading: () => <RctPageLoader />,
 });
+const AsyncGeoFencing = Loadable({
+  loader: () => import("Routes/setup/geoFence"),
+  loading: () => <RctPageLoader />,
+});
 const AsyncNotifications = Loadable({
   loader: () => import("Routes/notifications/notifications"),
   loading: () => <RctPageLoader />,
@@ -469,6 +473,7 @@ export {
   AsyncDrivers,
   AsyncDriver,
   AsyncFees,
+  AsyncGeoFencing,
   AsyncOthers,
   AsyncRevenueSplit,
   AsyncRoles,

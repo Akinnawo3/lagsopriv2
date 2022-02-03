@@ -17,7 +17,6 @@ import {
   AsyncSessionPage500Component,
 } from "Components/AsyncComponent/AsyncComponent";
 import Cookies from "universal-cookie";
-
 const cookies = new Cookies();
 
 axios.interceptors.response.use(
@@ -71,6 +70,7 @@ class App extends Component {
         return <Redirect to={"/"} />;
       }
     }
+
 
     return (
       <RctThemeProvider>

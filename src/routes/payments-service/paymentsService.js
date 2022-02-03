@@ -15,6 +15,8 @@ const  PaymentsService = ({match, getPayments, getPaymentsCount, payments, payme
         getPaymentsCount()
     },[])
 
+    
+
 
     return (
         <div className="table-wrapper">

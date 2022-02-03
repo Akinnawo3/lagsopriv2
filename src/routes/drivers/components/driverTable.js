@@ -66,11 +66,19 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
           dateOfBirth: driver["dob"],
           education: driver["education"],
           stateOfOrigin: driver["state"],
+          homeAddress: driver["home_address"],
+          drverCategory: driver["driver_data"]["driver_category"],
+          lasdriID: driver["driver_data"]["lasdri_id"]["value"],
+          lassraID: driver["driver_data"]["lassra_id"]["value"],
+          drivingLicence: driver["driver_data"]["license_id"]["value"],
+          nin: driver["driver_data"]["nin_id"]["value"],
         };
       });
       setExcelExport(result);
     }
   }, [drivers]);
+
+  console.log(drivers);
 
   return (
     <div>
