@@ -7,7 +7,7 @@ const socketMessageActions = (data) => {
       console.log(data);
       configureStore.dispatch({
         type: UPDATE_COUNTER,
-        payload: data.data.length,
+        payload: data.data,
       });
 
       break;
