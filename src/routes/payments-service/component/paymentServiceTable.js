@@ -42,6 +42,16 @@ const PaymentServiceTable = ({payments, paymentsCount, auth_id, getPayments, hea
   }, [payments]);
   console.log(payments);
 
+  [
+    {
+      user_type: "rider",
+      first_name: "Increase",
+      phone_number: "08111111112",
+      last_name: "Lrtester",
+      email: "increase.nkanta@zeno.no",
+    },
+  ];
+
   return (
     <div>
       <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}}>
@@ -64,6 +74,12 @@ const PaymentServiceTable = ({payments, paymentsCount, auth_id, getPayments, hea
                     <TableCell>Payment Method</TableCell>
                     <TableCell>Payment Type</TableCell>
                     <TableCell>Status</TableCell>
+
+                    <TableCell>User Name</TableCell>
+                    <TableCell>User Phn No.</TableCell>
+                    <TableCell> User Email</TableCell>
+                    <TableCell>User Type</TableCell>
+
                     <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
@@ -78,6 +94,12 @@ const PaymentServiceTable = ({payments, paymentsCount, auth_id, getPayments, hea
                         <TableCell>
                           <Badge color={getStatusColor4(user.status)}>{getStatus4(user.status)} </Badge>
                         </TableCell>
+
+                        <TableCell>{user?.user_data.length ? `${user?.user_data[0]?.first_name} ${user?.user_data[0]?.last_name}` : ""}</TableCell>
+                        <TableCell>{user?.user_data.length ? `${user?.user_data[0]?.phone_number}` : ""}</TableCell>
+                        <TableCell>{user?.user_data.length ? `${user?.user_data[0]?.email}` : ""}</TableCell>
+                        <TableCell>{user?.user_data.length ? `${user?.user_data[0]?.user_type}` : ""}</TableCell>
+
                         <TableCell>
                           <button type="button" className="rct-link-btn text-primary" title="view details">
                             <Link to={`/admin/payments-service/${user.payment_id}`}>
