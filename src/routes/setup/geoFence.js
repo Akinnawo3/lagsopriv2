@@ -18,10 +18,10 @@ import EmptyData from "Components/EmptyData/EmptyData";
 import {CSVLink} from "react-csv";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {verifyUserPermssion} from "../../container/DefaultLayout";
-import {createGeoFence, getGeoFence, getGeoFenceCount, deleteGeoFence, updateGeoFence} from "../../actions/geoFencingAction";
+import {createGeoFence, getGeoFence, getGeoFenceCount, deleteGeoFence, updateGeoFence, searchGeoFence} from "../../actions/geoFencingAction";
 
-const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount, geofencesCount, geofences, deleteGeoFence, updateGeoFence}) => {
-  const [currentPage, setCurentPage] = useState(1);
+const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount, geofencesCount, geofences, deleteGeoFence, updateGeoFence, searchGeoFence}) => {
+  const [currentPage, setCurrentPage] = useState(1);
   const [addNewGeoFenceModal, setAddNewGeoFenceModal] = useState(false);
   const [geoFenceName, setGeoFenceName] = useState("");
   const [geoFenceDescription, setGeoFenceDescription] = useState("");
@@ -41,12 +41,6 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
     getGeoFence(1, true);
     getGeoFenceCount();
   }, []);
-
-  // const paginate = (pageNumber) => {
-  //   setCurrentPage(pageNumber);
-  //   getAreas(pageNumber);
-  //   window.scrollTo(0, 0);
-  // };
 
   // const onChange = (e) => setFormData({...formData, [e.target.name]: e.target.value});
   // const {lga, areaName} = formData;
@@ -105,9 +99,10 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
-    getGeoFence(1, true);
+    getGeoFence(pageNumber);
     window.scrollTo(0, 0);
   };
+
 
   // useEffect(() => {
   //   if (areas) {
@@ -140,17 +135,17 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
   //   },
   // ];
 
-  // const getPreviousData = () => {
-  //   getAreas(currentPage);
-  // };
+  const getPreviousData = () => {
+    getGeoFence(currentPage);
+  };
 
-  // const getSearchData = (searchData) => {
-  //   searchArea(searchData);
-  // };
+  const getSearchData = (searchData) => {
+    searchGeoFence(searchData);
+  };
 
-  // const handleCount = () => {
-  //   getAreaCount();
-  // };
+  const handleCount = () => {
+    getGeoFenceCount();
+  };
 
   const handleCoordinateChange = (e, index) => {
     const tempArray = locations.slice();
@@ -168,11 +163,11 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
       {!loading && (
         <RctCollapsibleCard heading="Geo Fencing" fullBlock>
           <>
-            {/* <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+            <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
               <div className="search-wrapper">
                 <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={"Geo-Fence Name"} />
               </div>
-            </li> */}
+            </li>
             <div className="float-right mb-2">
               {/* <CSVLink
                             // headers={headers}
@@ -311,6 +306,7 @@ function mapDispatchToProps(dispatch) {
     createGeoFence: (name, description, locations) => dispatch(createGeoFence(name, description, locations)),
     updateGeoFence: (geoFence_id, name, description, locations) => dispatch(updateGeoFence(geoFence_id, name, description, locations)),
     getGeoFence: (page_no, spinner) => dispatch(getGeoFence(page_no, spinner)),
+    searchGeoFence: (searchData) => dispatch(searchGeoFence(searchData)),
     getGeoFenceCount: () => dispatch(getGeoFenceCount()),
     deleteGeoFence: (geoFence_id) => dispatch(deleteGeoFence(geoFence_id)),
   };

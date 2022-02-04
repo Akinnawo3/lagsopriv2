@@ -14,7 +14,7 @@ export const loginUser = (phone_number, password) => async (dispatch) => {
     const res = await axios.post(`https://users-service-microservices.api.lagosride.com/v1.1/auth/login`, body);
     console.log(res.data.status);
     if (res.data.status === "error") {
-      NotificationManager.error("res.data.msg");
+      NotificationManager.error(res.data.msg);
     } else {
       const userType = res.data.data.user_type;
       if (userType === "superadmin" || userType === "admin") {

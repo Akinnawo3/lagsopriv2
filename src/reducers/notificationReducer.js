@@ -2,7 +2,7 @@ import {NOTIFICATION, UPDATE_COUNTER, CLEAR_COUNTER} from "Actions/types";
 
 const initialState = {
   notifications: [],
-  counter: 0,
+  counter: false,
 };
 
 function notificationReducer(state = initialState, action) {
@@ -17,15 +17,9 @@ function notificationReducer(state = initialState, action) {
     case UPDATE_COUNTER: {
       return {
         ...state,
-        counter: payload,
+        counter: !Array.isArray(payload),
       };
     }
-    // case CLEAR_COUNTER: {
-    //   return {
-    //     ...state,
-    //     counter: 0,
-    //   };
-    // }
     default:
       return state;
   }

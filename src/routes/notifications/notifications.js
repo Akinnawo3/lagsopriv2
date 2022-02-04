@@ -6,16 +6,17 @@ import {connect} from "react-redux";
 import Skeleton, {SkeletonTheme} from "react-loading-skeleton";
 import {getNotifications} from "../../actions/notificationAction";
 import EmptyData from "Components/EmptyData/EmptyData";
+import {UPDATE_COUNTER} from "../../actions/types";
+import {calculatePostDate} from "Helpers/helpers";
 
-const Notifications = ({match, notifications, getNotifications, authUserProfile, loading, loadingStatus, counter}) => {
+const Notifications = ({match, notifications, getNotifications, authUserProfile, loading, loadingStatus, counter, updateNotificationCounter}) => {
   const [items, setItems] = useState(Array.from({length: 6}));
   useEffect(() => {
     getNotifications(false, 1, authUserProfile.user_type);
+    updateNotificationCounter();
   }, []);
 
-  console.log(counter);
   console.log(notifications);
-  console.log("notifications");
 
   return (
     <div>
@@ -31,7 +32,6 @@ const Notifications = ({match, notifications, getNotifications, authUserProfile,
           ))}
         </SkeletonTheme>
       )}
-
       {!loadingStatus &&
         notifications.length > 0 &&
         notifications.map((item) => (
@@ -45,11 +45,13 @@ const Notifications = ({match, notifications, getNotifications, authUserProfile,
                     </div>
                     <div className="notification-list_detail">
                       <p>
-                        <b>John Doe</b> reacted to your post
+                        <b>
+                          {item?.first_name} {item?.last_name}
+                        </b>
                       </p>
                       <p className="text-muted">{item?.message}</p>
                       <p className="text-muted">
-                        <small>10 mins ago</small>
+                        <small>{calculatePostDate(item?.createdAt)}</small>
                       </p>
                     </div>
                   </div>
@@ -66,6 +68,11 @@ const Notifications = ({match, notifications, getNotifications, authUserProfile,
 function mapDispatchToProps(dispatch) {
   return {
     getNotifications: (spinner, page, userType) => dispatch(getNotifications(spinner, page, userType)),
+    updateNotificationCounter: () =>
+      dispatch({
+        type: UPDATE_COUNTER,
+        payload: [],
+      }),
   };
 }
 
