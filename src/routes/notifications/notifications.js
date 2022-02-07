@@ -46,7 +46,8 @@ const Notifications = ({match, notifications, getNotifications, authUserProfile,
                     <div className="notification-list_detail">
                       <p>
                         <b>
-                          {item?.first_name} {item?.last_name}
+                          {item?.first_name} 
+                          {item?.last_name}
                         </b>
                       </p>
                       <p className="text-muted">{item?.message}</p>
