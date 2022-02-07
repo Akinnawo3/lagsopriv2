@@ -15,19 +15,20 @@ import {Link} from "react-router-dom";
 import Pagination from "react-js-pagination";
 import EmptyData from "Components/EmptyData/EmptyData";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
+import {getCancelledTripCount, getCancelledTrips} from "../../../actions/tripAction";
 
-const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, searchTrips, getTripCount}) => {
+const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, searchTrips, getTripCount, getCancelledTrips, getCancelledTripCount}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(20);
 
   const paginate = async (pageNumber) => {
     await setCurrentPage(pageNumber);
-    await getTrips(pageNumber, status);
+    status === "cancel" ? await getCancelledTrips(pageNumber, true) : await getTrips(pageNumber, status);
     window.scrollTo(0, 0);
   };
 
   const getPreviousData = () => {
-    getTrips(1, status);
+    status === "cancel" ? getCancelledTrips(pageNumber, true) : getTrips(1, status);
   };
 
   const getSearchData = (searchData) => {
@@ -35,7 +36,7 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
   };
 
   const handleCount = () => {
-    getTripCount(status);
+    status === "cancel" ? getCancelledTripCount() : getTripCount(status);
   };
 
   console.log(trips);
@@ -43,9 +44,11 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
   return (
     <div>
       <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}}>
-        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-          <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={"Trip Id"} />
-        </li>
+        {status !== "cancel" && (
+          <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+            <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={"Trip Id"} />
+          </li>
+        )}
         {/*<div className="float-right">*/}
         {/*	{!isLoading && drivers.length > 0 &&*/}
         {/*	<CSVLink*/}
@@ -149,6 +152,8 @@ function mapDispatchToProps(dispatch) {
     getTrips: (pageNo, status, spinner) => dispatch(getTrips(pageNo, status, spinner)),
     getTripCount: (status) => dispatch(getTripCount(status)),
     searchTrips: (trip_id, status) => dispatch(searchTrip(trip_id, status)),
+    getCancelledTrips: (pageNo, spinner) => dispatch(getCancelledTrips(pageNo, spinner)),
+    getCancelledTripCount: () => dispatch(getCancelledTripCount()),
   };
 }
 
