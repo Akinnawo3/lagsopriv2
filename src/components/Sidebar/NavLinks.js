@@ -12,7 +12,6 @@ export default {
           new_item: false,
           path: "/admin/setup/fees",
         },
-
         {
           menu_title: "sidebar.areas",
           new_item: false,
@@ -30,6 +29,11 @@ export default {
         },
         {
           menu_title: "sidebar.roles",
+          new_item: false,
+          path: "/admin/setup/roles",
+        },
+        {
+          menu_title: "sidebar.oem",
           new_item: false,
           path: "/admin/setup/roles",
         },

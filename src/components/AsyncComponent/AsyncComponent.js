@@ -364,6 +364,10 @@ const AsyncFees = Loadable({
   loader: () => import("Routes/setup/fees"),
   loading: () => <RctPageLoader />,
 });
+const AsyncOem = Loadable({
+  loader: () => import("Routes/setup/oem"),
+  loading: () => <RctPageLoader />,
+});
 
 const AsyncOthers = Loadable({
   loader: () => import("Routes/setup/others"),
@@ -477,6 +481,7 @@ export {
   AsyncOthers,
   AsyncRevenueSplit,
   AsyncRoles,
+  AsyncOem,
   AsyncAddPersonnel,
   AsyncActivityLog,
   AsyncPromoDiscount,

@@ -20,27 +20,27 @@ import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {verifyUserPermssion} from "../../container/DefaultLayout";
 import {createGeoFence, getGeoFence, getGeoFenceCount, deleteGeoFence, updateGeoFence, searchGeoFence} from "../../actions/geoFencingAction";
 
-const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount, geofencesCount, geofences, deleteGeoFence, updateGeoFence, searchGeoFence}) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [addNewGeoFenceModal, setAddNewGeoFenceModal] = useState(false);
-  const [geoFenceName, setGeoFenceName] = useState("");
-  const [geoFenceDescription, setGeoFenceDescription] = useState("");
-  const [locations, setLocations] = useState([
-    {lon: "", lat: ""},
-    {lon: "", lat: ""},
-    {lon: "", lat: ""},
-  ]);
-  const [editGeoFence, setEditGeoFence] = useState(false);
-  const [updateId, setUpdateId] = useState(null);
-  const [deleteId, setDeleteId] = useState(null);
-  const inputEl = useRef(null);
+const Oem = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount, geofencesCount, geofences, deleteGeoFence, updateGeoFence, searchGeoFence}) => {
+  //   const [currentPage, setCurrentPage] = useState(1);
+  //   const [addNewGeoFenceModal, setAddNewGeoFenceModal] = useState(false);
+  //   const [geoFenceName, setGeoFenceName] = useState("");
+  //   const [geoFenceDescription, setGeoFenceDescription] = useState("");
+  //   const [locations, setLocations] = useState([
+  //     {lon: "", lat: ""},
+  //     {lon: "", lat: ""},
+  //     {lon: "", lat: ""},
+  //   ]);
+  //   const [editGeoFence, setEditGeoFence] = useState(false);
+  //   const [updateId, setUpdateId] = useState(null);
+  //   const [deleteId, setDeleteId] = useState(null);
+  //   const inputEl = useRef(null);
   // const [excelExport, setExcelExport] = useState([]);
   // const [addNewAreaModal1, setAddNewAreaModal1] = useState(false);
 
-  useEffect(() => {
-    getGeoFence(1, true);
-    getGeoFenceCount();
-  }, []);
+  //   useEffect(() => {
+  //     getGeoFence(1, true);
+  //     getGeoFenceCount();
+  //   }, []);
 
   // const onChange = (e) => setFormData({...formData, [e.target.name]: e.target.value});
   // const {lga, areaName} = formData;
@@ -50,58 +50,58 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
   //   setAddNewAreaModal(true);
   // };
 
-  const onGeoFenceModalOpen = (e) => {
-    e.preventDefault();
-    setAddNewGeoFenceModal(true);
-  };
+  //   const onGeoFenceModalOpen = (e) => {
+  //     e.preventDefault();
+  //     setAddNewGeoFenceModal(true);
+  //   };
 
   // const onAddUpdateAreaModalClose1 = () => {
   //   setAddNewAreaModal1(false);
   // };
 
-  const onGeoFenceEdit = (geoFence_id) => {
-    const editedItem = geofences.find((item) => item._id === geoFence_id);
-    setUpdateId(editedItem?._id);
-    setGeoFenceName(editedItem?.name);
-    setGeoFenceDescription(editedItem?.description);
-    //this is to remove the extra coordinate (a repetition of the starting point) that was joined from the backend
-    const otherLocations = editedItem?.location[0]?.coordinates[0].slice(0, -1);
-    //to re-arrange the arrays to match the structure defined in the locations state
-    const arrangedLocation = otherLocations.map((item) => ({lon: item[0].toString(), lat: item[1].toString()}));
-    setLocations(arrangedLocation);
-    setAddNewGeoFenceModal(true);
-    setEditGeoFence(true);
-  };
+  //   const onGeoFenceEdit = (geoFence_id) => {
+  //     const editedItem = geofences.find((item) => item._id === geoFence_id);
+  //     setUpdateId(editedItem?._id);
+  //     setGeoFenceName(editedItem?.name);
+  //     setGeoFenceDescription(editedItem?.description);
+  //     //this is to remove the extra coordinate (a repetition of the starting point) that was joined from the backend
+  //     const otherLocations = editedItem?.location[0]?.coordinates[0].slice(0, -1);
+  //     //to re-arrange the arrays to match the structure defined in the locations state
+  //     const arrangedLocation = otherLocations.map((item) => ({lon: item[0].toString(), lat: item[1].toString()}));
+  //     setLocations(arrangedLocation);
+  //     setAddNewGeoFenceModal(true);
+  //     setEditGeoFence(true);
+  //   };
 
-  const onGeoFenceModalClose = () => {
-    setUpdateId(null);
-    setAddNewGeoFenceModal(false);
-    setEditGeoFence(false);
-  };
+  //   const onGeoFenceModalClose = () => {
+  //     setUpdateId(null);
+  //     setAddNewGeoFenceModal(false);
+  //     setEditGeoFence(false);
+  //   };
 
-  const onDelete = (geoFence_id) => {
-    inputEl.current.open();
-    setDeleteId(geoFence_id);
-  };
+  //   const onDelete = (geoFence_id) => {
+  //     inputEl.current.open();
+  //     setDeleteId(geoFence_id);
+  //   };
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    onGeoFenceModalClose();
-    !editGeoFence ? await createGeoFence(geoFenceName, geoFenceDescription, locations) : updateGeoFence(updateId, geoFenceName, geoFenceDescription, locations);
-    setGeoFenceName("");
-    setGeoFenceDescription("");
-    setLocations([
-      {lon: "", lat: ""},
-      {lon: "", lat: ""},
-      {lon: "", lat: ""},
-    ]);
-  };
+  //   const onSubmit = async (e) => {
+  //     e.preventDefault();
+  //     onGeoFenceModalClose();
+  //     !editGeoFence ? await createGeoFence(geoFenceName, geoFenceDescription, locations) : updateGeoFence(updateId, geoFenceName, geoFenceDescription, locations);
+  //     setGeoFenceName("");
+  //     setGeoFenceDescription("");
+  //     setLocations([
+  //       {lon: "", lat: ""},
+  //       {lon: "", lat: ""},
+  //       {lon: "", lat: ""},
+  //     ]);
+  //   };
 
-  const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
-    getGeoFence(pageNumber);
-    window.scrollTo(0, 0);
-  };
+  //   const paginate = (pageNumber) => {
+  //     setCurrentPage(pageNumber);
+  //     getGeoFence(pageNumber);
+  //     window.scrollTo(0, 0);
+  //   };
 
   // useEffect(() => {
   //   if (areas) {
@@ -134,39 +134,39 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
   //   },
   // ];
 
-  const getPreviousData = () => {
-    getGeoFence(currentPage);
-  };
+  //   const getPreviousData = () => {
+  //     getGeoFence(currentPage);
+  //   };
 
-  const getSearchData = (searchData) => {
-    searchGeoFence(searchData);
-  };
+  //   const getSearchData = (searchData) => {
+  //     searchGeoFence(searchData);
+  //   };
 
-  const handleCount = () => {
-    getGeoFenceCount();
-  };
+  //   const handleCount = () => {
+  //     getGeoFenceCount();
+  //   };
 
-  const handleCoordinateChange = (e, index) => {
-    const tempArray = locations.slice();
-    if (e.target.name === "long") {
-      tempArray[index].lon = e.target.value;
-    } else {
-      tempArray[index].lat = e.target.value;
-    }
-    setLocations(tempArray);
-  };
+  //   const handleCoordinateChange = (e, index) => {
+  //     const tempArray = locations.slice();
+  //     if (e.target.name === "long") {
+  //       tempArray[index].lon = e.target.value;
+  //     } else {
+  //       tempArray[index].lat = e.target.value;
+  //     }
+  //     setLocations(tempArray);
+  //   };
 
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Geo Fencing"} match={match} />
-      {!loading && (
-        <RctCollapsibleCard heading="Geo Fencing" fullBlock>
+      {/* {!loading && ( */}
+        <RctCollapsibleCard heading="OEM" fullBlock>
           <>
-            <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+            {/* <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
               <div className="search-wrapper">
                 <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={"Geo-Fence Name"} />
               </div>
-            </li>
+            </li> */}
             <div className="float-right mb-2">
               {/* <CSVLink
                             // headers={headers}
@@ -191,11 +191,11 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
               {/* <a href="#" onClick={(e) => onGeoFenceModalOpen(e)} color="primary" className="btn-sm btn-outline-default mr-10 bg-danger text-white">
                 <i className="zmdi zmdi-upload mr-2"></i>Upload
               </a> */}
-              <a href="#" onClick={(e) => verifyUserPermssion("create_setup", () => onGeoFenceModalOpen(e))} color="primary" className="caret btn-sm mr-10">
+              {/* <a href="#" onClick={(e) => verifyUserPermssion("create_setup", () => onGeoFenceModalOpen(e))} color="primary" className="caret btn-sm mr-10">
                 <button className="ml-2 btn btn-outline-primary btn-sm rounded">Add New</button>
-              </a>
+              </a> */}
             </div>
-            {geofences?.length > 0 && (
+            {/* {geofences?.length > 0 && ( */}
               <div className="table-responsive" style={{minHeight: "50vh"}}>
                 <Table>
                   <TableHead>
@@ -207,7 +207,7 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    <Fragment>
+                    {/* <Fragment>
                       {geofences.map((item, key) => (
                         <TableRow hover key={key}>
                           <TableCell>{item?.name}</TableCell>
@@ -223,22 +223,22 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
                           </TableCell>
                         </TableRow>
                       ))}
-                    </Fragment>
+                    </Fragment> */}
                   </TableBody>
                 </Table>
               </div>
-            )}
-            {geofences?.length < 1 && <EmptyData />}
+            {/* )} */}
+            {/* {geofences?.length < 1 && <EmptyData />} */}
 
-            {!loading && geofences?.length > 0 && (
+            {/* {!loading && geofences?.length > 0 && (
               <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
                 <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={geofencesCount} onChange={paginate} />
               </div>
-            )}
+            )} */}
           </>
         </RctCollapsibleCard>
-      )}
-      <Modal isOpen={addNewGeoFenceModal} toggle={() => onGeoFenceModalClose()} size="sm">
+      {/* )} */}
+      {/* <Modal isOpen={addNewGeoFenceModal} toggle={() => onGeoFenceModalClose()} size="sm">
         <ModalHeader toggle={() => onGeoFenceModalClose()}>{editGeoFence ? "Update Area" : "Create New Area"}</ModalHeader>
         <Form onSubmit={onSubmit}>
           <ModalBody>
@@ -280,14 +280,14 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
             </Button>
           </ModalFooter>
         </Form>
-      </Modal>
+      </Modal> */}
       {/* <Modal isOpen={addNewGeoFenceModal} toggle={() => onAddUpdateAreaModalClose1()}>
         <ModalHeader toggle={() => onAddUpdateAreaModalClose1()}>Upload Area</ModalHeader>
         <ModalBody>
           <Upload oncloseModal={onAddUpdateAreaModalClose1} />
         </ModalBody>
       </Modal> */}
-      <DeleteConfirmationDialog
+      {/* <DeleteConfirmationDialog
         ref={inputEl}
         title="Are You Sure You Want To Delete?"
         message="This will delete area permanently."
@@ -295,7 +295,7 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
           deleteGeoFence(deleteId);
           inputEl.current.close();
         }}
-      />
+      /> */}
     </div>
   );
 };
@@ -317,4 +317,4 @@ const mapStateToProps = (state) => ({
   loading: state.loading.loading,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(GeoFence);
+export default connect(mapStateToProps, mapDispatchToProps)(Oem);

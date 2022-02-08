@@ -13,6 +13,7 @@ const SetupRoutes = ({match}) => (
       <Route path={`/admin/setup/roles`} component={AsyncRoles} />
       <Route path={`/admin/setup/add-personnel`} component={AsyncAddPersonnel} />
       <Route path={`/admin/setup/geo-fencing`} component={AsyncGeoFencing} />
+      <Route path={`/admin/setup/oem`} component={AsyncGeoFencing} />
     </Switch>
   </div>
 );

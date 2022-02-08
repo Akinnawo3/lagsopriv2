@@ -33,7 +33,7 @@ module.exports = {
   "sidebar.inactive": "Inactive",
   "sidebar.drivers": "Drivers",
   "sidebar.admin-log": "Activity Log",
-  // "sidebar.promodiscounts": "Admins",
+  "sidebar.oem": "OEM",
   "sidebar.booking-types": "Booking-Types",
   "sidebar.voucher": "Voucher",
   "sidebar.revenue": "Revenue Split",
