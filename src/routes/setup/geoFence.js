@@ -256,11 +256,11 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
                 <div className="d-flex">
                   <div className="mr-2 mb-0 w-50">
                     <Label>Long</Label>
-                    <Input type="number" name="long" value={item.lon} onChange={(e) => handleCoordinateChange(e, index)} required />
+                    <Input type="number" name="long" step="any" value={item.lon} onChange={(e) => handleCoordinateChange(e, index)} required />
                   </div>
                   <div className="ml-2 w-50">
                     <Label>Lat</Label>
-                    <Input type="number" min={-90} max={90} name="lat" value={item.lat} onChange={(e) => handleCoordinateChange(e, index)} required />
+                    <Input type="number" min={-90} max={90} step="any" name="lat" value={item.lat} onChange={(e) => handleCoordinateChange(e, index)} required />
                   </div>
                 </div>
               </div>
