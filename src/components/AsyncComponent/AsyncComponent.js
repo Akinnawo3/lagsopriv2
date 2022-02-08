@@ -278,6 +278,10 @@ const AsyncSupportContactUsDetails = Loadable({
   loader: () => import("Routes/support/contactUsDetails"),
   loading: () => <RctPageLoader />,
 });
+const AsyncServiceRequests = Loadable({
+  loader: () => import("Routes/service-requests/serviceRequests"),
+  loading: () => <RctPageLoader />,
+});
 
 // home dashboard
 const AsyncHomeDashboardComponent = Loadable({
@@ -465,6 +469,7 @@ export {
   AsyncInactiveVehicles,
   AsyncVehicles,
   AsyncVerifiedDrivers,
+  AsyncServiceRequests,
   AsyncPendingDrivers,
   AsyncAcceptedDrivers,
   AsyncTrainedDrivers,
