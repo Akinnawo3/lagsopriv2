@@ -158,17 +158,17 @@ const Oem = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount, geo
 
   return (
     <div className="table-wrapper">
-      <PageTitleBar title={"Geo Fencing"} match={match} />
+      <PageTitleBar title={"OEM"} match={match} />
       {/* {!loading && ( */}
-        <RctCollapsibleCard heading="OEM" fullBlock>
-          <>
-            {/* <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+      <RctCollapsibleCard heading="OEM" fullBlock>
+        <>
+          {/* <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
               <div className="search-wrapper">
                 <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={"Geo-Fence Name"} />
               </div>
             </li> */}
-            <div className="float-right mb-2">
-              {/* <CSVLink
+          <div className="float-right mb-2">
+            {/* <CSVLink
                             // headers={headers}
                             data={excelExport}
                             filename={"areas.csv"}
@@ -178,7 +178,7 @@ const Oem = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount, geo
                             <i className="zmdi zmdi-download mr-2"></i>
                             Export to Excel
                         </CSVLink> */}
-              {/* <CSVLink
+            {/* <CSVLink
                 // headers={headers}
                 data={sampleData}
                 filename={"sampleAreas.csv"}
@@ -188,26 +188,26 @@ const Oem = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount, geo
                 <i className="zmdi zmdi-download mr-2"></i>
                 Sample excel to upload
               </CSVLink> */}
-              {/* <a href="#" onClick={(e) => onGeoFenceModalOpen(e)} color="primary" className="btn-sm btn-outline-default mr-10 bg-danger text-white">
+            {/* <a href="#" onClick={(e) => onGeoFenceModalOpen(e)} color="primary" className="btn-sm btn-outline-default mr-10 bg-danger text-white">
                 <i className="zmdi zmdi-upload mr-2"></i>Upload
               </a> */}
-              {/* <a href="#" onClick={(e) => verifyUserPermssion("create_setup", () => onGeoFenceModalOpen(e))} color="primary" className="caret btn-sm mr-10">
+            {/* <a href="#" onClick={(e) => verifyUserPermssion("create_setup", () => onGeoFenceModalOpen(e))} color="primary" className="caret btn-sm mr-10">
                 <button className="ml-2 btn btn-outline-primary btn-sm rounded">Add New</button>
               </a> */}
-            </div>
-            {/* {geofences?.length > 0 && ( */}
-              <div className="table-responsive" style={{minHeight: "50vh"}}>
-                <Table>
-                  <TableHead>
-                    <TableRow hover>
-                      <TableCell> Name</TableCell>
-                      <TableCell> Description</TableCell>
-                      <TableCell> Type</TableCell>
-                      <TableCell>Actions</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {/* <Fragment>
+          </div>
+          {/* {geofences?.length > 0 && ( */}
+          <div className="table-responsive" style={{minHeight: "50vh"}}>
+            <Table>
+              <TableHead>
+                <TableRow hover>
+                  <TableCell> Name</TableCell>
+                  <TableCell> Description</TableCell>
+                  <TableCell> Type</TableCell>
+                  <TableCell>Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {/* <Fragment>
                       {geofences.map((item, key) => (
                         <TableRow hover key={key}>
                           <TableCell>{item?.name}</TableCell>
@@ -224,19 +224,19 @@ const Oem = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount, geo
                         </TableRow>
                       ))}
                     </Fragment> */}
-                  </TableBody>
-                </Table>
-              </div>
-            {/* )} */}
-            {/* {geofences?.length < 1 && <EmptyData />} */}
+              </TableBody>
+            </Table>
+          </div>
+          {/* )} */}
+          {/* {geofences?.length < 1 && <EmptyData />} */}
 
-            {/* {!loading && geofences?.length > 0 && (
+          {/* {!loading && geofences?.length > 0 && (
               <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
                 <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={geofencesCount} onChange={paginate} />
               </div>
             )} */}
-          </>
-        </RctCollapsibleCard>
+        </>
+      </RctCollapsibleCard>
       {/* )} */}
       {/* <Modal isOpen={addNewGeoFenceModal} toggle={() => onGeoFenceModalClose()} size="sm">
         <ModalHeader toggle={() => onGeoFenceModalClose()}>{editGeoFence ? "Update Area" : "Create New Area"}</ModalHeader>

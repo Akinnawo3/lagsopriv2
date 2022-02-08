@@ -35,7 +35,7 @@ export default {
         {
           menu_title: "sidebar.oem",
           new_item: false,
-          path: "/admin/setup/roles",
+          path: "/admin/setup/oem",
         },
         {
           menu_title: "sidebar.others",
