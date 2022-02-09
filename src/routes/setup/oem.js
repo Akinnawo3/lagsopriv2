@@ -199,12 +199,12 @@ const Oem = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount, geo
           <div className="table-responsive" style={{minHeight: "50vh"}}>
             <Table>
               <TableHead>
-                <TableRow hover>
+                {/* <TableRow hover>
                   <TableCell> Name</TableCell>
                   <TableCell> Description</TableCell>
                   <TableCell> Type</TableCell>
                   <TableCell>Actions</TableCell>
-                </TableRow>
+                </TableRow> */}
               </TableHead>
               <TableBody>
                 {/* <Fragment>

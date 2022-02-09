@@ -14,7 +14,7 @@ const ServiceRequests = ({getDrivers, match, getDriversCount}) => {
     <div className="table-wrapper">
       <PageTitleBar title={"Service Requests"} match={match} />
       {/* <DriverTable status={""} header="All Drivers" /> */}
-      <ServiceRequestsTable header="Service Requests" />
+      {/* <ServiceRequestsTable header="Service Requests" /> */}
     </div>
   );
 };
