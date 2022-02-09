@@ -12,14 +12,13 @@ export default {
           new_item: false,
           path: "/admin/setup/fees",
         },
-
         {
           menu_title: "sidebar.areas",
           new_item: false,
           path: "/admin/areas",
         },
         {
-          menu_title: "sidebar.fence",
+          menu_title: "sidebar.geoFencing",
           new_item: false,
           path: "/admin/setup/geo-fencing",
         },
@@ -32,6 +31,11 @@ export default {
           menu_title: "sidebar.roles",
           new_item: false,
           path: "/admin/setup/roles",
+        },
+        {
+          menu_title: "sidebar.oem",
+          new_item: false,
+          path: "/admin/setup/oem",
         },
         {
           menu_title: "sidebar.others",
@@ -243,6 +247,20 @@ export default {
           path: "/admin/payments-service/unsuccessful",
           new_item: false,
           menu_title: "sidebar.unsuccessful",
+        },
+      ],
+    },
+
+    {
+      menu_title: "sidebar.serviceRequests",
+      menu_icon: "icon-credit-card",
+      type_multi: null,
+      new_item: false,
+      child_routes: [
+        {
+          path: "/admin/service-requests",
+          new_item: false,
+          menu_title: "sidebar.all",
         },
       ],
     },

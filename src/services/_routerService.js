@@ -34,6 +34,7 @@ import MaintenanceLog from "../routes/maintenance-log/maintenanceRoutes";
 import MaintenanceRoutes from "../routes/maintenance-log/maintenanceRoutes";
 import promoRoutes from "../routes/promo-discounts/promoRoutes";
 import RevenueRoute from "../routes/revenues/revenueRoutes";
+import ServiceRequestsRoutes from "../routes/service-requests/serviceRequestsRoutes";
 
 export default [
   {
@@ -206,5 +207,10 @@ export default [
     path: "revenues",
     component: RevenueRoute,
     permission: "view_trip_payments",
+  },
+  {
+    path: "service-requests",
+    component: ServiceRequestsRoutes,
+    permission: "",
   },
 ];

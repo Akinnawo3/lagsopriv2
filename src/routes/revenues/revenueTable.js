@@ -22,6 +22,16 @@ const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
   const [startDate, setStartDate] = useState(getFirstDayOfMonth());
   const [endDate, setEndDate] = useState(getTodayDate());
 
+  const formatByDateType = (timeStamp) => {
+    if (dateType === "daily") {
+      return moment(timeStamp).format("MMMM Do YYYY");
+    } else if (dateType === "monthly") {
+      return moment(timeStamp).format("MMMM YYYY");
+    } else {
+      return moment(timeStamp).format("YYYY");
+    }
+  };
+
   useEffect(() => {
     getChartRevenueData(true, startDate, endDate, dateType);
   }, [dateType, startDate, endDate]);
@@ -47,7 +57,7 @@ const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
                 {item.label}
               </option>
             ))}
-          </select>{" "}
+          </select>
         </li>
         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
           <small className="fw-bold mr-2">From</small>
@@ -77,13 +87,13 @@ const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
                     {revenueChartData.length > 0 &&
                       revenueChartData.map((item, index) => (
                         <TableRow hover key={index}>
-                          <TableCell>{`${moment(item?.rev_date).format("MMMM Do YYYY")}`}</TableCell>
-                          <TableCell>{`₦${item?.asset_co}`}</TableCell>
-                          <TableCell>{`₦${item?.comms}`}</TableCell>
-                          <TableCell>{`₦${item?.daily_tax}`}</TableCell>
-                          <TableCell>{`₦${item?.maintenance}`}</TableCell>
-                          <TableCell>{`₦${item?.refleeting}`}</TableCell>
-                          <TableCell>{`₦${item?.tech_co}`}</TableCell>
+                          <TableCell>{`${formatByDateType(item?.rev_date)}`}</TableCell>
+                          <TableCell>{`₦${item?.asset_co.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.comms.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.daily_tax.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.maintenance.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.refleeting.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.tech_co.toLocaleString()}`}</TableCell>
                         </TableRow>
                       ))}
                   </Fragment>

@@ -92,7 +92,7 @@ export const updateGeoFence = (geoFence_id, name, description, locations) => asy
       NotificationManager.error(res.data.msg);
     } else {
       await NotificationManager.success("Geo-Fence Updated Successfully!");
-      await dispatch(getAreas());
+      await dispatch(getGeoFence());
     }
     dispatch(endStatusLoading());
   } catch (err) {

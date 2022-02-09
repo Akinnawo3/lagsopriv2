@@ -1,16 +1,16 @@
 /**
  * TripsCancelled
  */
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { connect } from "react-redux";
-import { getCancelledTripCount, getCancelledTrips } from "Actions/tripAction";
+import {connect} from "react-redux";
+import {getCancelledTripCount, getCancelledTrips} from "Actions/tripAction";
 import TripsTable from "Routes/trips/component/tripsTable";
 
-const TripsCancelled = ({ match, getCancelledTrips, getCancelledTripCount }) => {
+const TripsCancelled = ({match, getCancelledTrips, getCancelledTripCount}) => {
   useEffect(() => {
     getCancelledTrips(1, true);
-    getCancelledTripCount();
+    getCancelledTripCount("cancelled");
   }, []);
 
   return (
@@ -23,9 +23,8 @@ const TripsCancelled = ({ match, getCancelledTrips, getCancelledTripCount }) => 
 
 function mapDispatchToProps(dispatch) {
   return {
-    getCancelledTrips: (pageNo, spinner) =>
-      dispatch(getCancelledTrips(pageNo, spinner)),
-	  getCancelledTripCount: () => dispatch(getCancelledTripCount()),
+    getCancelledTrips: (pageNo, spinner) => dispatch(getCancelledTrips(pageNo, spinner)),
+    getCancelledTripCount: () => dispatch(getCancelledTripCount()),
   };
 }
 
@@ -36,4 +35,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TripsCancelled);
-
