@@ -16,6 +16,7 @@ const VerificationFee = ({getCustomerCare, customerCareNumbers, createVerificati
   const [nin, setNin] = useState("");
   const [lassra, setLassra] = useState("");
   const [lasdri, setlasdri] = useState("");
+  const [medicalsAndsSecurity, setMedicalsAndSecurity] = useState("");
 
   useEffect(() => {
     getCustomerCare(true);
@@ -29,7 +30,8 @@ const VerificationFee = ({getCustomerCare, customerCareNumbers, createVerificati
       nin,
       lassra,
       lasdri,
-      total: stringToNumber(driverLicence) + stringToNumber(nin) + stringToNumber(lassra) + stringToNumber(lasdri),
+      medicalsAndsSecurity,
+      total: stringToNumber(driverLicence) + stringToNumber(nin) + stringToNumber(lassra) + stringToNumber(lasdri) + stringToNumber(medicalsAndsSecurity),
     });
   };
 
@@ -39,6 +41,7 @@ const VerificationFee = ({getCustomerCare, customerCareNumbers, createVerificati
     setNin(customerCareNumbers?.verification_fee.nin);
     setLassra(customerCareNumbers?.verification_fee.lassra);
     setlasdri(customerCareNumbers?.verification_fee.lasdri);
+    setMedicalsAndSecurity(customerCareNumbers?.verification_fee.medicalsAndsSecurity);
   };
 
   return (
@@ -84,6 +87,12 @@ const VerificationFee = ({getCustomerCare, customerCareNumbers, createVerificati
                     </span>
                     <strong>{`${customerCareNumbers?.verification_fee?.lasdri}`}</strong>
                   </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <div>Medicals and security check </div>
+                    </span>
+                    <strong>{`${customerCareNumbers?.verification_fee?.medicalsAndsSecurity}`}</strong>
+                  </li>
                 </ul>
                 <div classsName="d-flex mt-3">
                   {/* <button
@@ -92,7 +101,7 @@ const VerificationFee = ({getCustomerCare, customerCareNumbers, createVerificati
                   >
                     Add Parameter
                   </button> */}
-                  <button className="btn btn-info " onClick={() => verifyUserPermssion(" create_setup ", editBreakDdown)}>
+                  <button className="btn btn-info " onClick={() => verifyUserPermssion("create_setup", editBreakDdown)}>
                     Edit Breakdown
                   </button>
                 </div>
@@ -159,6 +168,10 @@ const VerificationFee = ({getCustomerCare, customerCareNumbers, createVerificati
             <FormGroup>
               <Label for="lastName">LASDRI Verification</Label>
               <Input type="text" name="number" value={lasdri} onChange={(e) => setlasdri(e.target.value)} required />
+            </FormGroup>
+            <FormGroup>
+              <Label for="lastName">Medicals and Security Check</Label>
+              <Input type="text" name="number" value={medicalsAndsSecurity} onChange={(e) => setMedicalsAndSecurity(e.target.value)} required />
             </FormGroup>
           </ModalBody>
           <ModalFooter>
