@@ -20,6 +20,8 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
   const [excelExport, setExcelExport] = useState([]);
   const [appStatus, setAppStatus] = useState("");
   const [paymentStatus, setPaymentStatus] = useState("");
+  const [driverCategory, setDriverCategory] = useState("");
+
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
     getDrivers(status, pageNumber, 1, appStatus);
@@ -37,13 +39,25 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
   const handleChange = (e) => {
     setCurrentPage(1);
     setAppStatus(e.target.value);
-    getDrivers(status, currentPage, 1, e.target.value);
+    getDrivers(status, currentPage, 1, e.target.value, paymentStatus);
   };
   const handlePaymentChange = (e) => {
     setCurrentPage(1);
     setPaymentStatus(e.target.value);
-    getDrivers(status, currentPage, 1, "", e.target.value);
+    getDrivers(status, currentPage, 1, appStatus, e.target.value);
   };
+  const handleCategoryChange = (e) => {
+    setCurrentPage(1);
+    setDriverCategory(e.target.value);
+    getDrivers(status, currentPage, 1, appStatus, paymentStatus, e.target.value);
+  };
+
+  const driverCategoryOptions = [
+    {value: "", label: "- - Filter by Driver Category - -"},
+    {value: "commercial ", label: "Commercial"},
+    {value: "social", label: "Social"},
+  ];
+
   const paymentFilterOptions = [
     {value: "", label: "- - Filter by One-off Payment Status - -"},
     {value: "1", label: "Paid"},
@@ -86,6 +100,13 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
           <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} />
         </li>
+        <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
+          <select id="filter-dropdown" name="fiter-dropdown" onChange={handleCategoryChange} className="p-1 px-4">
+            {driverCategoryOptions.map((item) => (
+              <option value={item.value}>{item.label}</option>
+            ))}
+          </select>
+        </li>
         {status === 4 && (
           <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
             <select id="filter-dropdown" name="fiter-dropdown" onChange={handleChange} className="p-1 px-4">
@@ -124,6 +145,7 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
                     {status != 4 && <TableCell>Status</TableCell>}
                     {status === 3 && <TableCell>Vehicle Assigned</TableCell>}
                     {status === 2 && <TableCell>One-off Payment Status</TableCell>}
+                    <TableCell> Driver Category</TableCell>
                     <TableCell>App Status</TableCell>
                     <TableCell>Action</TableCell>
                   </TableRow>
@@ -147,6 +169,9 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
                             <Badge color={driver?.driver_data?.asset_payment?.status ? "success" : "danger"}>{driver?.driver_data?.asset_payment?.status ? "Paid" : "Not Paid"} </Badge>
                           </TableCell>
                         )}
+                        <TableCell>
+                          <span className={`fw-bold ${driver.driver_data.driver_category === "commercial" ? "text-primary" : "text-danger"}`}>{driver.driver_data.driver_category}</span>
+                        </TableCell>
                         <TableCell>
                           <Badge color={driver.driver_data.online ? "success" : "danger"}>{driver.driver_data.online ? "Online" : "Offline"}</Badge>
                         </TableCell>
@@ -176,7 +201,8 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
 
 function mapDispatchToProps(dispatch) {
   return {
-    getDrivers: (status, page_no, spinner, driver_online_status, asset_payment) => dispatch(getDrivers(status, page_no, spinner, driver_online_status, asset_payment)),
+    getDrivers: (status, page_no, spinner, driver_online_status, asset_payment, driver_category) =>
+      dispatch(getDrivers(status, page_no, spinner, driver_online_status, asset_payment, driver_category)),
     searchDrivers: (searchData, status) => dispatch(searchDrivers(searchData, status)),
     getDriversCount: (status) => dispatch(getDriversCount(status)),
   };
