@@ -9,7 +9,7 @@ const PendingDrivers = ({ getDrivers, match, getDriversCount }) => {
 
 	useEffect(() => {
 		getDrivers(0, 1, true);
-		getDriversCount(4)
+		getDriversCount(0)
 	}, [])
 
 
