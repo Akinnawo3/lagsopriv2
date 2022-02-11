@@ -104,10 +104,10 @@ class Header extends Component {
                 </ul>
               )}
             </div>
-            <div className="fw-bold text-danger">
+            {/* <div className="fw-bold text-danger">
               Switch to test environment
               <Switch checked={isTest} onClick={() => this.props.switchEnvironment()} color="primary" className="switch-btn" />
-            </div>
+            </div> */}
             <ul className="navbar-right list-inline mb-0">
               <Link to="/admin/notifications">
                 <li className="list-inline-item setting-icon ml-2 position-relative">

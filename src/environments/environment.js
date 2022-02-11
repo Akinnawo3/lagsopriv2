@@ -1,9 +1,9 @@
 import {configureStore} from "../store";
-
-console.log(configureStore.getState().authUser.userProfile);
+console.log(configureStore.getState().authUser.userProfile.data_mode);
 const api = (() =>
-  configureStore.getState().environment.isTest
-    ? {
+  configureStore.getState().authUser.userProfile.data_mode !== "live"
+    ? // configureStore.getState().environment.isTest
+      {
         user: "https://staging-server.lagosride.com/user-service",
         wallet: "https://staging-server.lagosride.com/wallet-service",
         referral: "https://staging-server.lagosride.com/referral-service",
@@ -28,6 +28,8 @@ const api = (() =>
         // classTypes: 'https://134.209.16.20:7090',
         classTypes: "https://taxiclasstypebackend-microservices.api.lagosride.com",
         user: "https://users-service-microservices.api.lagosride.com",
+        // user: "https://staging-server.lagosride.com/user-service",
+
         fees: "https://fees-service-microservices.api.lagosride.com",
         area: "https://area-service-microservices.api.lagosride.com",
         promo: "https://taxipromobackend-microservices.api.lagosride.com",
