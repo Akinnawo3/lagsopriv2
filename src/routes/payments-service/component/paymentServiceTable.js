@@ -35,6 +35,9 @@ const PaymentServiceTable = ({payments, paymentsCount, auth_id, getPayments, hea
           paymentID: payment.payment_id,
           paymentMethod: payment.payment_method,
           paymentType: payment.payment_type,
+          UserName: `${payment?.user_data[0]?.first_name} ${payment?.user_data[0]?.last_name}`,
+          UserPhoneNumber: payment.user_data[0]?.phone_number,
+          UserEMail: payment.user_data[0]?.email,
         };
       });
       setExcelExport(result);

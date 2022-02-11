@@ -47,7 +47,7 @@ export const getDriverRevenueSPlit = (spinner, driverID, startDate, endDate) => 
   try {
     spinner && dispatch(startLoading());
     !spinner && dispatch(startStatusLoading());
-    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/revenues/?driver_id=${driverID}&start_date=${startDate}&end_date=${endDate}`);
+    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/revenue-splits/?driver_id=${driverID}&start_date=${startDate}&end_date=${endDate}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
