@@ -1,7 +1,7 @@
 import {configureStore} from "../store";
-console.log(configureStore.getState().authUser.userProfile.data_mode);
-const api = (() =>
-  configureStore.getState().authUser.userProfile.data_mode !== "live"
+console.log(configureStore?.getState()?.authUser?.userProfile);
+const api =
+  configureStore?.getState()?.authUser?.userProfile?.data_mode !== "live"
     ? // configureStore.getState().environment.isTest
       {
         user: "https://staging-server.lagosride.com/user-service",
@@ -53,6 +53,6 @@ const api = (() =>
         messageSending: "https://message-service-microservices.api.lagosride.com",
         socket: "https://staging-server.lagosride.com",
         // socketHttp: "https://staging-server.lagosride.com/admin-socket ",
-      })();
+      };
 
 export default api;
