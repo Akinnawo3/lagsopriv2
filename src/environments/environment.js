@@ -54,5 +54,4 @@ const api =
         socket: "https://staging-server.lagosride.com",
         // socketHttp: "https://staging-server.lagosride.com/admin-socket ",
       };
-
 export default api;
