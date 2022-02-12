@@ -19,18 +19,18 @@ import {
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
-// axios.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   (error) => {
-//     if (error.response.status === 401) {
-//       cookies.remove("user_id");
-//       location.replace("/login");
-//     }
-//     return Promise.reject(error);
-//   }
-// );
+axios.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response.status === 401) {
+      cookies.remove("user_id");
+      location.replace("/login");
+    }
+    return Promise.reject(error);
+  }
+);
 
 /**
  * Initial Path To Check Whether User Is Logged In Or Not
