@@ -1,5 +1,5 @@
 import {configureStore} from "../store";
-console.log(configureStore?.getState()?.authUser?.userProfile);
+// console.log(configureStore?.getState()?.authUser?.userProfile);
 const api =
   configureStore?.getState()?.authUser?.userProfile?.data_mode !== "live"
     ? // configureStore.getState().environment.isTest
