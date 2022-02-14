@@ -13,10 +13,13 @@ import EmptyData from "Components/EmptyData/EmptyData";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {verifyUserPermssion} from "../../container/DefaultLayout";
+import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from "reactstrap";
 
 const Users = ({match, getUsers, loading, users, userCount, getUserCount, deleteUser, searchUsers}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteId, setDeleteId] = useState(null);
+  const [dropDownOpen, setDropDownOpen] = useState(false);
+
   const inputEl = useRef(null);
 
   useEffect(() => {
@@ -34,6 +37,12 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
     inputEl.current.open();
     setDeleteId(id);
   };
+
+  const toggle = () => {
+    setDropDownOpen(!dropDownOpen);
+  };
+
+  console.log(users);
 
   return (
     <div className="table-wrapper">
@@ -64,24 +73,23 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
                         <TableCell>{user.phone_number}</TableCell>
                         <TableCell>{user.user_type}</TableCell>
                         <TableCell>
-                          <button type="button" className="rct-link-btn ml-lg-3 dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">
+                          {/* <button type="button" className="rct-link-btn ml-lg-3 dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">
                             <i className="ti-pencil "></i>
-                          </button>
+                          </button> */}
+                          <Dropdown isOpen={dropDownOpen} toggle={toggle}>
+                            <DropdownToggle caret>Dropdown</DropdownToggle>
+                            <DropdownMenu>
+                              <DropdownItem header>Header</DropdownItem>
+                              <DropdownItem disabled>Action</DropdownItem>
+                              <DropdownItem>Another Action</DropdownItem>
+                              <DropdownItem divider />
+                              <DropdownItem>Another Action</DropdownItem>
+                            </DropdownMenu>
+                          </Dropdown>
+
                           <button type="button" className="rct-link-btn ml-lg-3 " onClick={() => verifyUserPermssion("delete_user", () => onDelete(user.auth_id))}>
                             <i className="ti-trash text-danger"></i>
                           </button>
-
-                          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a className="dropdown-item" href="#">
-                              Action
-                            </a>
-                            <a className="dropdown-item" href="#">
-                              Another action
-                            </a>
-                            <a className="dropdown-item" href="#">
-                              Something else here
-                            </a>
-                          </div>
                         </TableCell>
                       </TableRow>
                     ))}
