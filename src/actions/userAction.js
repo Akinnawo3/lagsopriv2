@@ -1,18 +1,7 @@
 import axios from "axios";
-import {
-  endLoading,
-  endStatusLoading,
-  startLoading,
-  startStatusLoading,
-} from "./loadingAction";
-import {
-  USERS,
-  USER_COUNT,
-  USERS_LOCATION,
-  ACTIVITY_LOGS,
-  ACTIVITY_LOGS_COUNT,
-} from "./types";
-import { NotificationManager } from "react-notifications";
+import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
+import {USERS, USER_COUNT, USERS_LOCATION, ACTIVITY_LOGS, ACTIVITY_LOGS_COUNT} from "./types";
+import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 
 export const getUsers =
@@ -21,9 +10,7 @@ export const getUsers =
     try {
       loading && (await dispatch(startLoading()));
       !loading && dispatch(startStatusLoading());
-      const res = await axios.get(
-        `${api.user}/v1.1/admin/users?item_per_page=20&page=${page_no}`
-      );
+      const res = await axios.get(`${api.user}/v1.1/admin/users?item_per_page=20&page=${page_no}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -54,6 +41,31 @@ export const getUserCount = () => async (dispatch) => {
   } catch (err) {}
 };
 
+// export const updateUser = (body) => async (dispatch) => {
+//   // const body = {component: "driver_status", auth_id, driver_status};
+//   try {
+//     dispatch(startStatusLoading());
+//     const res = await axios.put(`${api.user}/v1.1/admin/users`, body);
+//     if (res.data.status === "error") {
+//       NotificationManager.error(res.data.msg);
+//     } else {
+//       if (driverData && message_type) {
+//         await dispatch(sendDriverMessage(driverData, message_type, subject));
+//       }
+//       if (driver_status !== "4") {
+//         await NotificationManager.success("Driver Updated Successfully!");
+//       } else {
+//         await NotificationManager.success("Driver is now active!");
+//       }
+//       await dispatch(getDriver(auth_id, true));
+//     }
+//     dispatch(endStatusLoading());
+//   } catch (err) {
+//     dispatch(endStatusLoading());
+//     NotificationManager.error(err.response.data.message);
+//   }
+// };
+
 export const deleteUser = (auth_id, users) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
@@ -81,9 +93,7 @@ export const searchUsers = (searchData) => async (dispatch) => {
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      const res2 = await axios.get(
-        `${api.user}/v1.1/admin/users?q=${searchData}&component=count`
-      );
+      const res2 = await axios.get(`${api.user}/v1.1/admin/users?q=${searchData}&component=count`);
       dispatch({
         type: USER_COUNT,
         payload: res2.data.data.total ? res2.data.data.total : 0,
@@ -101,9 +111,7 @@ export const searchUsers = (searchData) => async (dispatch) => {
 
 export const getUsersLocation = (longitude, latitude) => async (dispatch) => {
   try {
-    const res = await axios.get(
-      `${api.user}/v1.1/admin/user-location/?latitude=${latitude}&longitude=${longitude}&user_type=rider`
-    );
+    const res = await axios.get(`${api.user}/v1.1/admin/user-location/?latitude=${latitude}&longitude=${longitude}&user_type=rider`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
@@ -121,9 +129,7 @@ export const getAdminLogs =
     try {
       loading && (await dispatch(startLoading()));
       !loading && dispatch(startStatusLoading());
-      const res = await axios.get(
-        `${api.user}/v1.1/admin/logs/?item_per_page=20&page=${page_no}`
-      );
+      const res = await axios.get(`${api.user}/v1.1/admin/logs/?item_per_page=20&page=${page_no}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {

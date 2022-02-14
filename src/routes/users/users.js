@@ -63,11 +63,25 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
                         <TableCell>{user.last_name}</TableCell>
                         <TableCell>{user.phone_number}</TableCell>
                         <TableCell>{user.user_type}</TableCell>
-
                         <TableCell>
-                          <button type="button" className="rct-link-btn ml-lg-3 text-danger" onClick={() => verifyUserPermssion("delete_user", () => onDelete(user.auth_id))}>
-                            <i className="ti-trash"></i>
+                          <button type="button" className="rct-link-btn ml-lg-3 dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">
+                            <i className="ti-pencil "></i>
                           </button>
+                          <button type="button" className="rct-link-btn ml-lg-3 " onClick={() => verifyUserPermssion("delete_user", () => onDelete(user.auth_id))}>
+                            <i className="ti-trash text-danger"></i>
+                          </button>
+
+                          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a className="dropdown-item" href="#">
+                              Action
+                            </a>
+                            <a className="dropdown-item" href="#">
+                              Another action
+                            </a>
+                            <a className="dropdown-item" href="#">
+                              Something else here
+                            </a>
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))}
