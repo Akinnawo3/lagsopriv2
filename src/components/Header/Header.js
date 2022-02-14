@@ -109,6 +109,9 @@ class Header extends Component {
               <Switch checked={isTest} onClick={() => this.props.switchEnvironment()} color="primary" className="switch-btn" />
             </div> */}
             <ul className="navbar-right list-inline mb-0">
+              <li className="list-inline-item text-muted">
+                Data Mode : <span className="fw-bold text-primary"> {userProfile?.data_mode}</span>
+              </li>
               <Link to="/admin/notifications">
                 <li className="list-inline-item setting-icon ml-2 position-relative">
                   <i className="zmdi zmdi-notifications-none text-danger mr-1 " title="Notifications" style={{fontSize: "25px"}}></i>
