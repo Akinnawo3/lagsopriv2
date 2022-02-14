@@ -63,9 +63,9 @@ class Header extends Component {
   }
 
   render() {
-    const {horizontalMenu, agencyMenu, location, isLoadingStatus, isTest, counter} = this.props;
+    const {horizontalMenu, agencyMenu, location, isLoadingStatus, isTest, counter, userProfile} = this.props;
 
-    console.log(counter);
+    console.log(userProfile);
     return (
       <div>
         {isLoadingStatus && <LinearProgress />}
@@ -150,14 +150,15 @@ class Header extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({settings, loading, environment, notification}) => {
+const mapStateToProps = ({settings, loading, environment, notification, authUser}) => {
   const isLoadingStatus = loading.loadingStatus;
   const navCollapsed = settings.navCollapsed;
   const isTest = environment.isTest;
   const notifications = notification.notifications;
   const counter = notification.counter;
+  const userProfile = authUser.userProfile;
 
-  return {settings, isLoadingStatus, navCollapsed, isTest, notifications, counter};
+  return {settings, isLoadingStatus, navCollapsed, isTest, notifications, counter, userProfile};
 };
 
 function mapDispatchToProps(dispatch) {
