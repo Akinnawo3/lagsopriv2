@@ -99,11 +99,11 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
                               <DropdownToggle outline={false}>Reset Details</DropdownToggle>
                               <DropdownMenu>
                                 <DropdownItem header>choose action</DropdownItem>
-                                <DropdownItem onClick={() => handleOptionCLick({editedComponent:"email", oldEmail :""})}>Change Email</DropdownItem>
+                                <DropdownItem onClick={() => handleOptionCLick({editedComponent: "email", oldEmail: user.email})}>Change Email</DropdownItem>
                                 <DropdownItem divider />
-                                <DropdownItem onClick={() => handleOptionCLick()}>Change Phone Number</DropdownItem>
+                                <DropdownItem onClick={() => handleOptionCLick({editedComponent: "phone_number", OldPhoneNumber: user.phone_number})}>Change Phone Number</DropdownItem>
                                 <DropdownItem divider />
-                                <DropdownItem onClick={() => handleOptionCLick()}>Change Password</DropdownItem>
+                                <DropdownItem onClick={() => handleOptionCLick({editedComponent: "password", OldPhoneNumber: user.phone_number})}>Change Password</DropdownItem>
                               </DropdownMenu>
                             </Dropdown>
                             <button type="button" className="rct-link-btn ml-lg-3 " onClick={() => verifyUserPermssion("delete_user", () => onDelete(user.auth_id))}>
@@ -126,13 +126,24 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
       </RctCollapsibleCard>
 
       <Modal isOpen={modalOpen} toggle={() => onModalClose()}>
-        <ModalHeader toggle={() => onModalClose()}>Operation TItle</ModalHeader>
+        <ModalHeader toggle={() => onModalClose()}>
+          Reset {component === "email" && "Email"}
+          {component === "phone_number" && "Phone Number"} {component === "password" && "Password"}
+        </ModalHeader>
         <Form onSubmit={onSubmit}>
           <ModalBody>
-            {/* <FormGroup>
-              <Label for="firstName">Fee</Label>
-              <Input type="text" name="name" defaultValue={name} onChange={onChange} required />
-            </FormGroup> */}
+            {(component === "phone_number" || component === "password") && (
+              <FormGroup>
+                <Label for="firstName">Phone Number</Label>
+                <Input type="text" name="name" defaultValue={phoneNumber} required />
+              </FormGroup>
+            )}
+            {component === "email" && (
+              <FormGroup>
+                <Label for="firstName">Phone Number</Label>
+                <Input type="text" name="name" defaultValue={email} required />
+              </FormGroup>
+            )}
           </ModalBody>
           <ModalFooter>
             <Button type="submit" variant="contained" className="text-white btn-success">
