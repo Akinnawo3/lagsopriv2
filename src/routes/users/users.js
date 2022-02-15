@@ -14,14 +14,22 @@ import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/Delete
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {verifyUserPermssion} from "../../container/DefaultLayout";
 import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from "reactstrap";
+import {Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
+import {Form, FormGroup, Label, Input} from "reactstrap";
+import Button from "@material-ui/core/Button";
 
 const Users = ({match, getUsers, loading, users, userCount, getUserCount, deleteUser, searchUsers}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteId, setDeleteId] = useState(null);
-  const [dropDownOpen, setDropDownOpen] = useState(false);
+  const [openedDropdownID, setOpenedDropdownID] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [component, setComponent] = useState("");
+  const [oldEmail, setOldEmail] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [newPhoneNumber, setNewPhoneNumber] = useState("");
 
   const inputEl = useRef(null);
-
   useEffect(() => {
     getUsers(1, true);
     getUserCount();
@@ -33,13 +41,26 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
     window.scrollTo(0, 0);
   };
 
+  const onModalClose = () => {
+    setModalOpen(false);
+  };
+
+  const onSubmit = () => {
+    console.log("v");
+  };
+
   const onDelete = (id) => {
     inputEl.current.open();
     setDeleteId(id);
   };
-
-  const toggle = () => {
-    setDropDownOpen(!dropDownOpen);
+  const toggle = (id) => {
+    openedDropdownID === id ? setOpenedDropdownID("") : setOpenedDropdownID(id);
+  };
+  const handleOptionCLick = ({editedComponent, oldEmail = "", OldPhoneNumber = ""}) => {
+    setComponent(editedComponent);
+    setOldEmail(oldEmail);
+    setPhoneNumber(OldPhoneNumber);
+    setModalOpen(true);
   };
 
   console.log(users);
@@ -73,23 +94,22 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
                         <TableCell>{user.phone_number}</TableCell>
                         <TableCell>{user.user_type}</TableCell>
                         <TableCell>
-                          {/* <button type="button" className="rct-link-btn ml-lg-3 dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">
-                            <i className="ti-pencil "></i>
-                          </button> */}
-                          <Dropdown isOpen={dropDownOpen} toggle={toggle}>
-                            <DropdownToggle caret>Dropdown</DropdownToggle>
-                            <DropdownMenu>
-                              <DropdownItem header>Header</DropdownItem>
-                              <DropdownItem disabled>Action</DropdownItem>
-                              <DropdownItem>Another Action</DropdownItem>
-                              <DropdownItem divider />
-                              <DropdownItem>Another Action</DropdownItem>
-                            </DropdownMenu>
-                          </Dropdown>
-
-                          <button type="button" className="rct-link-btn ml-lg-3 " onClick={() => verifyUserPermssion("delete_user", () => onDelete(user.auth_id))}>
-                            <i className="ti-trash text-danger"></i>
-                          </button>
+                          <span className="d-flex">
+                            <Dropdown isOpen={openedDropdownID === user?.auth_id} toggle={() => toggle(user.auth_id)}>
+                              <DropdownToggle outline={false}>Reset Details</DropdownToggle>
+                              <DropdownMenu>
+                                <DropdownItem header>choose action</DropdownItem>
+                                <DropdownItem onClick={() => handleOptionCLick({editedComponent:"email", oldEmail :""})}>Change Email</DropdownItem>
+                                <DropdownItem divider />
+                                <DropdownItem onClick={() => handleOptionCLick()}>Change Phone Number</DropdownItem>
+                                <DropdownItem divider />
+                                <DropdownItem onClick={() => handleOptionCLick()}>Change Password</DropdownItem>
+                              </DropdownMenu>
+                            </Dropdown>
+                            <button type="button" className="rct-link-btn ml-lg-3 " onClick={() => verifyUserPermssion("delete_user", () => onDelete(user.auth_id))}>
+                              <i className="ti-trash text-danger"></i>
+                            </button>
+                          </span>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -104,6 +124,24 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
         )}
         {users.length < 1 && <EmptyData />}
       </RctCollapsibleCard>
+
+      <Modal isOpen={modalOpen} toggle={() => onModalClose()}>
+        <ModalHeader toggle={() => onModalClose()}>Operation TItle</ModalHeader>
+        <Form onSubmit={onSubmit}>
+          <ModalBody>
+            {/* <FormGroup>
+              <Label for="firstName">Fee</Label>
+              <Input type="text" name="name" defaultValue={name} onChange={onChange} required />
+            </FormGroup> */}
+          </ModalBody>
+          <ModalFooter>
+            <Button type="submit" variant="contained" className="text-white btn-success">
+              Submit
+            </Button>
+          </ModalFooter>
+        </Form>
+      </Modal>
+
       <DeleteConfirmationDialog
         ref={inputEl}
         title="Are You Sure You Want To Delete?"
