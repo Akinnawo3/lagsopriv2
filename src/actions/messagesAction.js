@@ -10,12 +10,11 @@ export const sendMessage = (body) => async (dispatch) => {
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      await NotificationManager.success("Signin details sent!");
+      await NotificationManager.success(" Details sent!");
     }
     dispatch(endStatusLoading());
   } catch (e) {
     console.log(e);
     dispatch(endStatusLoading());
-    NotificationManager.error("wahala error");
   }
 };

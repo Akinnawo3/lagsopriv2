@@ -41,30 +41,29 @@ export const getUserCount = () => async (dispatch) => {
   } catch (err) {}
 };
 
-// export const updateUser = (body) => async (dispatch) => {
-//   // const body = {component: "driver_status", auth_id, driver_status};
-//   try {
-//     dispatch(startStatusLoading());
-//     const res = await axios.put(`${api.user}/v1.1/admin/users`, body);
-//     if (res.data.status === "error") {
-//       NotificationManager.error(res.data.msg);
-//     } else {
-//       if (driverData && message_type) {
-//         await dispatch(sendDriverMessage(driverData, message_type, subject));
-//       }
-//       if (driver_status !== "4") {
-//         await NotificationManager.success("Driver Updated Successfully!");
-//       } else {
-//         await NotificationManager.success("Driver is now active!");
-//       }
-//       await dispatch(getDriver(auth_id, true));
-//     }
-//     dispatch(endStatusLoading());
-//   } catch (err) {
-//     dispatch(endStatusLoading());
-//     NotificationManager.error(err.response.data.message);
-//   }
-// };
+export const ResetUserDetails = (body) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.put(`${api.user}/v1.1/admin/users`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      if (driverData && message_type) {
+        await dispatch(sendDriverMessage(driverData, message_type, subject));
+      }
+      if (driver_status !== "4") {
+        await NotificationManager.success("Driver Updated Successfully!");
+      } else {
+        await NotificationManager.success("Driver is now active!");
+      }
+      await dispatch(getDriver(auth_id, true));
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+    NotificationManager.error(err.response.data.message);
+  }
+};
 
 export const deleteUser = (auth_id, users) => async (dispatch) => {
   try {

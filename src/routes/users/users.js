@@ -128,8 +128,7 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
 
       <Modal isOpen={modalOpen} toggle={() => onModalClose()}>
         <ModalHeader toggle={() => onModalClose()}>
-          Reset {component === "email" && "Email"}
-          {component === "phone_number" && "Phone Number"} {component === "password" && "Password"}
+          Reset {component === "email" && "Email"} {component === "phone_number" && "Phone Number"} {component === "password" && "Password"}
         </ModalHeader>
         <Form onSubmit={onSubmit}>
           <ModalBody>
@@ -139,10 +138,28 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
                 <Input type="text" name="name" value={phoneNumber} required />
               </FormGroup>
             )}
+            {component === "phone_number" && (
+              <FormGroup>
+                <Label for="firstName">New Phone Number</Label>
+                <Input type="text" name="name" value={newPhoneNumber} onChange={(e) => setNewPhoneNumber(e.target.value)} required />
+              </FormGroup>
+            )}
+            {component === "password" && (
+              <FormGroup>
+                <Label for="firstName">New Password</Label>
+                <Input type="text" name="name" value={password} onChange={(e) => setPassword(e.target.value)} required />
+              </FormGroup>
+            )}
             {component === "email" && (
               <FormGroup>
-                <Label for="firstName">Phone Number</Label>
+                <Label for="firstName">Old Email</Label>
                 <Input type="text" name="name" value={oldEmail} required />
+              </FormGroup>
+            )}
+            {component === "email" && (
+              <FormGroup>
+                <Label for="firstName">New Email</Label>
+                <Input type="text" name="name" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} required />
               </FormGroup>
             )}
           </ModalBody>
