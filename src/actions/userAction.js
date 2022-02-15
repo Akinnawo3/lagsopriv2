@@ -48,15 +48,11 @@ export const ResetUserDetails = (body) => async (dispatch) => {
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      if (driverData && message_type) {
-        await dispatch(sendDriverMessage(driverData, message_type, subject));
-      }
-      if (driver_status !== "4") {
-        await NotificationManager.success("Driver Updated Successfully!");
-      } else {
-        await NotificationManager.success("Driver is now active!");
-      }
-      await dispatch(getDriver(auth_id, true));
+      // if (driverData && message_type) {
+      //   await dispatch(sendDriverMessage(driverData, message_type, subject));
+      // }
+      await NotificationManager.success("User Detail Updated Successfully!");
+      await dispatch(getUsers(1, false));
     }
     dispatch(endStatusLoading());
   } catch (err) {

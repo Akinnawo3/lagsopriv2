@@ -8,7 +8,7 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import Pagination from "react-js-pagination";
 import {connect} from "react-redux";
-import {deleteUser, getUserCount, getUsers, searchUsers} from "Actions/userAction";
+import {deleteUser, getUserCount, getUsers, searchUsers, ResetUserDetails} from "Actions/userAction";
 import EmptyData from "Components/EmptyData/EmptyData";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
@@ -18,7 +18,7 @@ import {Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 import {Form, FormGroup, Label, Input} from "reactstrap";
 import Button from "@material-ui/core/Button";
 
-const Users = ({match, getUsers, loading, users, userCount, getUserCount, deleteUser, searchUsers}) => {
+const Users = ({match, getUsers, loading, users, userCount, getUserCount, deleteUser, searchUsers, ResetUserDetails}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteId, setDeleteId] = useState(null);
   const [openedDropdownID, setOpenedDropdownID] = useState("");
@@ -46,8 +46,11 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
     setModalOpen(false);
   };
 
-  const onSubmit = () => {
-    console.log("v");
+  const onSubmit = (e) => {
+    e.preventDefault();
+    component === "email" && ResetUserDetails({component, old_email: oldEmail, new_email: newEmail});
+    component === "phone_number" && ResetUserDetails({component, old_phone_number: phoneNumber, new_phone_number: newPhoneNumber});
+    component === "password" && ResetUserDetails({component, phone_number: phoneNumber, password});
   };
 
   const onDelete = (id) => {
@@ -82,6 +85,7 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
                     <TableCell>First Name</TableCell>
                     <TableCell>Last Name</TableCell>
                     <TableCell>Phone No</TableCell>
+                    <TableCell>Email</TableCell>
                     <TableCell>Type</TableCell>
                     <TableCell>Action</TableCell>
                   </TableRow>
@@ -93,6 +97,7 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
                         <TableCell>{user.first_name}</TableCell>
                         <TableCell>{user.last_name}</TableCell>
                         <TableCell>{user.phone_number}</TableCell>
+                        <TableCell>{user.email}</TableCell>
                         <TableCell>{user.user_type}</TableCell>
                         <TableCell>
                           <span className="d-flex">
@@ -190,6 +195,7 @@ function mapDispatchToProps(dispatch) {
     deleteUser: (auth_id, users) => dispatch(deleteUser(auth_id, users)),
     getUserCount: () => dispatch(getUserCount()),
     searchUsers: (searchData) => dispatch(searchUsers(searchData)),
+    ResetUserDetails: (body) => dispatch(ResetUserDetails(body)),
   };
 }
 
