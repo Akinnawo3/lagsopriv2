@@ -17,7 +17,8 @@ import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from "reactstrap";
 import {Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 import {Form, FormGroup, Label, Input} from "reactstrap";
 import Button from "@material-ui/core/Button";
-
+import emailMessages from "Assets/data/email-messages/emailMessages";
+export let onModalCLose;
 const Users = ({match, getUsers, loading, users, userCount, getUserCount, deleteUser, searchUsers, ResetUserDetails}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteId, setDeleteId] = useState(null);
@@ -29,6 +30,7 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
   const [phoneNumber, setPhoneNumber] = useState("");
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
+  const [userFirstName, setUserFirstName] = useState("");
 
   const inputEl = useRef(null);
   useEffect(() => {
@@ -42,23 +44,48 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
     window.scrollTo(0, 0);
   };
 
-  const onModalClose = () => {
+  onModalClose = () => {
     setModalOpen(false);
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    component === "email" && ResetUserDetails({component, old_email: oldEmail, new_email: newEmail});
-    component === "phone_number" && ResetUserDetails({component, old_phone_number: phoneNumber, new_phone_number: newPhoneNumber});
-    component === "password" && ResetUserDetails({component, phone_number: phoneNumber, password});
+    let detailType;
+    let newData;
+    if (component === "email") {
+      detailType = "email";
+      newData = newEmail;
+    } else if (component === "phone_number") {
+      detailType = "phone number";
+      newData = newPhoneNumber;
+    } else {
+      detailType = "password";
+      newData = password;
+    }
+    const emailData = {
+      type: "generic",
+      subject: "Details Reset",
+      message: emailMessages.userDetailResetMsg(userFirstName, detailType, newData),
+      name: userFirstName,
+      email: oldEmail,
+    };
+
+    console.log(emailData);
+    component === "email" && ResetUserDetails({component, old_email: oldEmail, new_email: newEmail}, emailData);
+    component === "phone_number" && ResetUserDetails({component, old_phone_number: phoneNumber, new_phone_number: newPhoneNumber}, emailData);
+    component === "password" && ResetUserDetails({component, phone_number: phoneNumber, password}, emailData);
   };
 
   const onDelete = (id) => {
     inputEl.current.open();
     setDeleteId(id);
   };
-  const toggle = (id) => {
+  const toggle = (id, name) => {
+    setNewEmail("");
+    setNewPhoneNumber("");
+    setPassword("");
     openedDropdownID === id ? setOpenedDropdownID("") : setOpenedDropdownID(id);
+    setUserFirstName(name);
   };
   const handleOptionCLick = ({editedComponent, oldEmail = "", OldPhoneNumber = ""}) => {
     setComponent(editedComponent);
@@ -66,8 +93,6 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
     setPhoneNumber(OldPhoneNumber);
     setModalOpen(true);
   };
-
-  console.log(users);
 
   return (
     <div className="table-wrapper">
@@ -101,15 +126,17 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
                         <TableCell>{user.user_type}</TableCell>
                         <TableCell>
                           <span className="d-flex">
-                            <Dropdown isOpen={openedDropdownID === user?.auth_id} toggle={() => toggle(user.auth_id)}>
+                            <Dropdown isOpen={openedDropdownID === user?.auth_id} toggle={() => toggle(user.auth_id, user.first_name)}>
                               <DropdownToggle outline={false}>Reset Details</DropdownToggle>
                               <DropdownMenu>
                                 <DropdownItem header>choose action</DropdownItem>
                                 <DropdownItem onClick={() => handleOptionCLick({editedComponent: "email", oldEmail: user.email})}>Change Email</DropdownItem>
                                 <DropdownItem divider />
-                                <DropdownItem onClick={() => handleOptionCLick({editedComponent: "phone_number", OldPhoneNumber: user.phone_number})}>Change Phone Number</DropdownItem>
+                                <DropdownItem onClick={() => handleOptionCLick({editedComponent: "phone_number", OldPhoneNumber: user.phone_number, oldEmail: user.email})}>
+                                  Change Phone Number
+                                </DropdownItem>
                                 <DropdownItem divider />
-                                <DropdownItem onClick={() => handleOptionCLick({editedComponent: "password", OldPhoneNumber: user.phone_number})}>Change Password</DropdownItem>
+                                <DropdownItem onClick={() => handleOptionCLick({editedComponent: "password", OldPhoneNumber: user.phone_number, oldEmail: user.email})}>Change Password</DropdownItem>
                               </DropdownMenu>
                             </Dropdown>
                             <button type="button" className="rct-link-btn ml-lg-3 " onClick={() => verifyUserPermssion("delete_user", () => onDelete(user.auth_id))}>
@@ -195,7 +222,7 @@ function mapDispatchToProps(dispatch) {
     deleteUser: (auth_id, users) => dispatch(deleteUser(auth_id, users)),
     getUserCount: () => dispatch(getUserCount()),
     searchUsers: (searchData) => dispatch(searchUsers(searchData)),
-    ResetUserDetails: (body) => dispatch(ResetUserDetails(body)),
+    ResetUserDetails: (body, emailData) => dispatch(ResetUserDetails(body, emailData)),
   };
 }
 

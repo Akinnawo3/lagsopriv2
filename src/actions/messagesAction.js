@@ -10,7 +10,7 @@ export const sendMessage = (body) => async (dispatch) => {
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      await NotificationManager.success(" Details sent!");
+      await NotificationManager.success(" Message sent!");
     }
     dispatch(endStatusLoading());
   } catch (e) {
