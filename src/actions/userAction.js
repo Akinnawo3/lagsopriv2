@@ -4,6 +4,7 @@ import {USERS, USER_COUNT, USERS_LOCATION, ACTIVITY_LOGS, ACTIVITY_LOGS_COUNT} f
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 import {sendMessage} from "./messagesAction";
+import {onResetModalCLose} from "../routes/users/users";
 
 export const getUsers =
   (page_no = 1, loading) =>
@@ -51,6 +52,7 @@ export const ResetUserDetails = (body, emailData) => async (dispatch) => {
     } else {
       await NotificationManager.success("User Detail Updated Successfully!");
       await dispatch(sendMessage(emailData));
+      onResetModalCLose();
       await dispatch(getUsers(1, false));
     }
     dispatch(endStatusLoading());

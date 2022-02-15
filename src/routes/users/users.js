@@ -18,7 +18,8 @@ import {Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 import {Form, FormGroup, Label, Input} from "reactstrap";
 import Button from "@material-ui/core/Button";
 import emailMessages from "Assets/data/email-messages/emailMessages";
-export let onModalCLose;
+export let onResetModalClose;
+
 const Users = ({match, getUsers, loading, users, userCount, getUserCount, deleteUser, searchUsers, ResetUserDetails}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteId, setDeleteId] = useState(null);
@@ -44,7 +45,7 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
     window.scrollTo(0, 0);
   };
 
-  onModalClose = () => {
+  onResetModalClose = () => {
     setModalOpen(false);
   };
 
@@ -158,8 +159,8 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
         {users.length < 1 && <EmptyData />}
       </RctCollapsibleCard>
 
-      <Modal isOpen={modalOpen} toggle={() => onModalClose()}>
-        <ModalHeader toggle={() => onModalClose()}>
+      <Modal isOpen={modalOpen} toggle={() => onResetModalClose()}>
+        <ModalHeader toggle={() => onResetModalClose()}>
           Reset {component === "email" && "Email"} {component === "phone_number" && "Phone Number"} {component === "password" && "Password"}
         </ModalHeader>
         <Form onSubmit={onSubmit}>
