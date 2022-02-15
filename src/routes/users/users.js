@@ -28,6 +28,7 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
   const [newEmail, setNewEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
 
   const inputEl = useRef(null);
   useEffect(() => {
@@ -135,13 +136,13 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
             {(component === "phone_number" || component === "password") && (
               <FormGroup>
                 <Label for="firstName">Phone Number</Label>
-                <Input type="text" name="name" defaultValue={phoneNumber} required />
+                <Input type="text" name="name" value={phoneNumber} required />
               </FormGroup>
             )}
             {component === "email" && (
               <FormGroup>
                 <Label for="firstName">Phone Number</Label>
-                <Input type="text" name="name" defaultValue={email} required />
+                <Input type="text" name="name" value={oldEmail} required />
               </FormGroup>
             )}
           </ModalBody>
