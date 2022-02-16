@@ -113,7 +113,7 @@ const Driver = (props) => {
                 <Tab icon={<i className="icon-graph"></i>} label={"Trip History"} />
                 <Tab icon={<i className="icon-star"></i>} label={"Ratings"} />
                 <Tab icon={<i className="icon-credit-card"></i>} label={"Wallet History"} />
-                <Tab icon={<i className="icon-credit-card"></i>} label={"Revenue Split"} />
+                {/* <Tab icon={<i className="icon-credit-card"></i>} label={"Revenue Split"} /> */}
                 <Tab icon={<i className="icon-credit-card"></i>} label={"Debt Service History"} />
               </Tabs>
             </AppBar>
@@ -137,14 +137,19 @@ const Driver = (props) => {
                 <Wallets auth_id={match.params.id} wallets={wallets} wallet={wallet} walletsCount={walletsCount} />
               </TabContainer>
             )}
-            {activeTab === 4 && (
+            {/* {activeTab === 4 && (
               <TabContainer>
                 <RevenueSplit auth_id={match.params.id} wallets={wallets} wallet={wallet} walletsCount={walletsCount} />
               </TabContainer>
-            )}
-            {activeTab === 5 && (
+            )} */}
+            {activeTab === 4 && (
               <TabContainer>
-                <PaymentsServiceComponent auth_id={match.params.id} payments={payments} paymentsCount={paymentsCount} paymentsServiceBalance={paymentsServiceBalance} />
+                <PaymentsServiceComponent
+                //  auth_id={match.params.id}
+                //   payments={payments}
+                //    paymentsCount={paymentsCount}
+                //     paymentsServiceBalance={paymentsServiceBalance}
+                     />
               </TabContainer>
             )}
           </div>

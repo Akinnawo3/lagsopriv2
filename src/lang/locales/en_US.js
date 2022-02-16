@@ -20,7 +20,7 @@ module.exports = {
   "sidebar.others": "Others",
 
   "sidebar.schedule": "Schedule",
-  "sidebar.passengers": "Passengers",
+  "sidebar.passengers": "Riders",
   "sidebar.approved": "Active",
   "sidebar.all": "All",
   "sidebar.vehicles": "Vehicles",
