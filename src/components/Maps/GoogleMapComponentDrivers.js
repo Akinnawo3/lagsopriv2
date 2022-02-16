@@ -37,6 +37,8 @@ const GoogleMapComponentDrivers = ({ match, userLocation, getUsersLocation, wait
     //     getUsersLocation(lng, lat)
     // }
 
+    console.log(userLocation, 'qqqqqq')
+
 
     const AnyReactComponent = ({ text, cord }) =>
         <div>
