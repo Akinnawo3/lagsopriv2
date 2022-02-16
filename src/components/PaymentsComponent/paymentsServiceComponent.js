@@ -1,260 +1,124 @@
-import React, {useEffect, useState} from "react";
-import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import {Form, FormGroup, Modal, ModalHeader, ModalBody, ModalFooter, Label, Input, Button, Row, Col} from "reactstrap";
-import {getRevenueSplitData, updateRevenueSplitData} from "Actions/revenueSplitAction";
+import React, {useState, useEffect, Fragment} from "react";
 import {connect} from "react-redux";
-import {verifyUserPermssion} from "../../container/DefaultLayout";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import {Badge} from "reactstrap";
+import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
+import {CSVLink} from "react-csv";
+import Pagination from "react-js-pagination";
+import {calculatePostDate, getStatus, getStatusColor} from "Helpers/helpers";
+import EmptyData from "Components/EmptyData/EmptyData";
+import {Link} from "react-router-dom";
+import SearchComponent from "Components/SearchComponent/SearchComponent";
+import {getChartRevenueData} from "../../actions/revenueSplitAction";
+import moment from "moment";
+import {getFirstDayOfMonth, getTodayDate} from "../../helpers/helpers";
 
-const PaymentsServiceComponent = ({match, getRevenueSplitData, revenueSplitData, updateRevenueSplitData}) => {
+const PaymentsServiceComponent = ({getChartRevenueData, revenueChartData, loading}) => {
+  const [dateType, setDateType] = useState("daily");
+  const [startDate, setStartDate] = useState(getFirstDayOfMonth());
+  const [endDate, setEndDate] = useState(getTodayDate());
+
+  const formatByDateType = (timeStamp) => {
+    if (dateType === "daily") {
+      return moment(timeStamp).format("MMMM Do YYYY");
+    } else if (dateType === "monthly") {
+      return moment(timeStamp).format("MMMM YYYY");
+    } else {
+      return moment(timeStamp).format("YYYY");
+    }
+  };
+
   useEffect(() => {
-    getRevenueSplitData();
-  }, []);
+    getChartRevenueData(true, startDate, endDate, dateType);
+  }, [dateType, startDate, endDate]);
 
-  const [parameterModalOpen, setParameterModalOpen] = useState(false);
-  const [breakDownModalOpen, setBreakDownModalOpen] = useState(false);
-
-  const [dailyTax, setDailyTax] = useState("");
-  const [refleeting, setRefleeting] = useState("");
-  const [techCo, setTechCo] = useState("");
-  const [assetCo, setAssetCo] = useState("");
-  const [comms, setComms] = useState("");
-  const [maintenance, setMaintenance] = useState("");
-  const [commercialDebtService, setCommercialDebtService] = useState("");
-  const [socialDebtService, setSocialDebtService] = useState("");
-
-  const updateValues = (e) => {
-    e.preventDefault();
-    setBreakDownModalOpen(false);
-    const data = {
-      commercial_debt_service: commercialDebtService,
-      social_debt_service: socialDebtService,
-      daily_tax: dailyTax,
-      refleeting,
-      tech_co: techCo,
-      asset_co: assetCo,
-      comms,
-      maintenance,
-    };
-    updateRevenueSplitData(data);
+  const handleChange = (e) => {
+    setDateType(e.target.value);
   };
 
-  const openBreakDownModal = () => {
-    setBreakDownModalOpen(true);
-    setCommercialDebtService(revenueSplitData.commercial_debt_service);
-    setSocialDebtService(revenueSplitData.social_debt_service);
-    setMaintenance(revenueSplitData.maintenance);
-    setDailyTax(revenueSplitData.daily_tax);
-    setRefleeting(revenueSplitData.refleeting);
-    setTechCo(revenueSplitData.tech_co);
-    setAssetCo(revenueSplitData.asset_co);
-    setComms(revenueSplitData.comms);
-  };
-
+  const dateTypeFilter = [
+    {value: "", label: "- - Filter by Date Type- -"},
+    {value: "daily", label: "Daily"},
+    {value: "monthly", label: "Monthly"},
+    {value: "yearly", label: "Yearly"},
+  ];
   return (
-    <div className="table-wrapper">
-      <div className="row">
-        <div className="col col-xs-12 col-md-8">
-          <RctCollapsibleCard heading="Revenue Split" style={{minHeight: "70vh"}}>
-            <div className="px-2">
-              <div className="row mt-4 ml-2">
-                <div className="cl col-sm-12 col-md-6">
-                  <ol>
-                    <li className="mb-3">
-                      <div className="d-flex justify-content-between">
-                        <div>Debt Service</div>
-                      </div>
-                      <ol type="a">
-                        <li className="ml-3">
-                          <div className="d-flex justify-content-between">
-                            <div>Commercial Driver</div>
-                            <strong>{` ₦${revenueSplitData?.commercial_debt_service}`}</strong>
-                          </div>
-                        </li>
-                        <li className="ml-3">
-                          <div className="d-flex justify-content-between">
-                            <div>Social Driver</div>
-                            <strong>{` ₦${revenueSplitData?.social_debt_service}`}</strong>
-                          </div>
-                        </li>
-                      </ol>
-                    </li>
-                    <li className="mb-3">
-                      <div className="d-flex justify-content-between">
-                        <div>Dail LASG Tax</div>
-                        <strong>{` ₦${revenueSplitData?.daily_tax}`}</strong>
-                      </div>
-                    </li>
-                    <li className="mb-3">
-                      <div className="d-flex justify-content-between">
-                        <div>Tec co</div>
-                        <strong>{revenueSplitData?.tech_co}</strong>
-                      </div>
-                    </li>
-                    <li className="mb-3">
-                      <div className="d-flex justify-content-between">
-                        <div>Re-fleeting</div>
-                        <strong>{revenueSplitData?.refleeting}</strong>
-                      </div>
-                    </li>
-                    <li className="mb-3">
-                      <div className="d-flex justify-content-between">
-                        <div>Asset co</div>
-                        <strong>{revenueSplitData?.asset_co}</strong>
-                      </div>
-                    </li>
-                    <li className="mb-3">
-                      <div className="d-flex justify-content-between">
-                        <div>Communication</div>
-                        <strong>{revenueSplitData?.comms}</strong>
-                      </div>
-                    </li>
-                    <li className="mb-3">
-                      <div className="d-flex justify-content-between">
-                        <div>Maintenance and Insurance</div>
-                        <strong>{revenueSplitData?.maintenance}</strong>
-                      </div>
-                    </li>
-                  </ol>
-                </div>
-              </div>
-              <div classsName="d-flex">
-                <button className="btn btn-info mr-3" onClick={() => verifyUserPermssion("create_setup", openBreakDownModal)}>
-                  Edit
-                </button>
-                {/* <button
-                  className="btn border-info px-3"
-                  onClick={() => setParameterModalOpen(true)}
-                >
-                  Add Stakeholder
-                </button> */}
-              </div>
+    <div>
+      <RctCollapsibleCard heading={"Revenues Table"} fullBlock style={{minHeight: "70vh"}}>
+        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+          {/* <small className="fw-bold">Date Type Filter</small> */}
+          <select name="fiter-dropdown" onChange={handleChange} className="p-1 px-4">
+            {dateTypeFilter.map((item, index) => (
+              <option value={item.value} key={index}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+        </li>
+        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+          <small className="fw-bold mr-2">From</small>
+          <input type="date" id="start" name="trip-start" defaultValue={startDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setStartDate(e.target.value)} />
+        </li>
+        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+          <small className="fw-bold mr-2">To</small>
+          <input type="date" id="start" name="trip-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setEndDate(e.target.value)} />
+        </li>
+        {!loading && revenueChartData.length > 0 && (
+          <>
+            <div className="table-responsive" style={{minHeight: "50vh"}}>
+              <Table>
+                <TableHead>
+                  <TableRow hover>
+                    <TableCell>Date</TableCell>
+                    <TableCell>Asset Co.</TableCell>
+                    <TableCell>Comms</TableCell>
+                    <TableCell>Daily Tax</TableCell>
+                    <TableCell>Maintenance</TableCell>
+                    <TableCell>Refleeting</TableCell>
+                    <TableCell>Tech Co</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <Fragment>
+                    {revenueChartData.length > 0 &&
+                      revenueChartData.map((item, index) => (
+                        <TableRow hover key={index}>
+                          <TableCell>{`${formatByDateType(item?.rev_date)}`}</TableCell>
+                          <TableCell>{`₦${item?.asset_co.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.comms.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.daily_tax.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.maintenance.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.refleeting.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.tech_co.toLocaleString()}`}</TableCell>
+                        </TableRow>
+                      ))}
+                  </Fragment>
+                </TableBody>
+              </Table>
             </div>
-          </RctCollapsibleCard>
-        </div>
-        {/* parameter modal */}
-        <Modal isOpen={parameterModalOpen} toggle={() => setParameterModalOpen(false)} size="sm">
-          <ModalHeader toggle={() => setParameterModalOpen(false)}>Add Parameter</ModalHeader>
-          <Form onSubmit={() => null}>
-            <ModalBody>
-              <FormGroup>
-                <Label for="lastName">Name</Label>
-                <Input
-                  type="text"
-                  name="name"
-                  // value={customerCare}
-                  // onChange={onChange}
-                  required
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label for="lastName">Percentage</Label>
-                <Input
-                  type="text"
-                  name="number"
-                  // value={customerCare}
-                  // onChange={onChange}
-                  required
-                />
-              </FormGroup>
-            </ModalBody>
-            <ModalFooter>
-              <Button type="submit" variant="contained" className="text-white btn-info mr-2">
-                Add Parameter
-              </Button>
-              <Button variant="contained" className="btn btn-outline-danger" onClick={() => setParameterModalOpen(false)}>
-                Cancel
-              </Button>
-            </ModalFooter>
-          </Form>
-        </Modal>
-
-        {/* breakdoen modal     */}
-        <Modal isOpen={breakDownModalOpen} toggle={() => setBreakDownModalOpen(false)} size="md" scrollable>
-          <ModalHeader toggle={() => setBreakDownModalOpen(false)}>Update fee</ModalHeader>
-          <Form onSubmit={updateValues}>
-            <ModalBody>
-              <Row>
-                <Col sm="12" md="6">
-                  <FormGroup>
-                    <Label for="lastName">Commercial Driver</Label>
-                    <Input type="number" name="name" value={commercialDebtService} onChange={(e) => setCommercialDebtService(e.target.value)} required />
-                  </FormGroup>
-                </Col>
-                <Col sm="12" md="6">
-                  <FormGroup>
-                    <Label for="lastName">Social Driver</Label>
-                    <Input type="text" name="number" value={socialDebtService} onChange={(e) => setSocialDebtService(e.target.value)} required />
-                  </FormGroup>
-                </Col>
-              </Row>
-              <Row>
-                <Col sm="12" md="6">
-                  <FormGroup>
-                    <Label for="lastName">Daily LASG Tax</Label>
-                    <Input type="text" name="number" value={dailyTax} onChange={(e) => setDailyTax(e.target.value)} required />
-                  </FormGroup>
-                </Col>
-                <Col sm="12" md="6">
-                  <FormGroup>
-                    <Label for="lastName">Tech co</Label>
-                    <Input type="text" name="number" value={techCo} onChange={(e) => setTechCo(e.target.value)} required />
-                  </FormGroup>
-                </Col>
-              </Row>
-              <Row>
-                <Col sm="12" md="6">
-                  <FormGroup>
-                    <Label for="lastName">Re-fleeting</Label>
-                    <Input type="text" name="number" value={refleeting} onChange={(e) => setRefleeting(e.target.value)} required />
-                  </FormGroup>
-                </Col>
-                <Col sm="12" md="6">
-                  <FormGroup>
-                    <Label for="lastName">Asset co</Label>
-                    <Input type="text" name="number" value={assetCo} onChange={(e) => setAssetCo(e.target.value)} required />
-                  </FormGroup>
-                </Col>
-              </Row>
-              <Row>
-                <Col sm="12" md="6">
-                  <FormGroup>
-                    <Label for="lastName">Communication</Label>
-                    <Input type="text" name="number" value={comms} onChange={(e) => setComms(e.target.value)} required />
-                  </FormGroup>
-                </Col>
-                <Col sm="12" md="6">
-                  <FormGroup>
-                    <Label for="lastName">Maintenance and Insurance</Label>
-                    <Input type="text" name="number" value={maintenance} onChange={(e) => setMaintenance(e.target.value)} required />
-                  </FormGroup>
-                </Col>
-              </Row>
-            </ModalBody>
-            <ModalFooter>
-              <Button type="submit" variant="contained" className="text-white  btn-info mr-2">
-                Save Update
-              </Button>
-              <Button variant="contained" className="btn btn-outline-danger" onClick={() => setBreakDownModalOpen(false)}>
-                Cancel
-              </Button>
-            </ModalFooter>
-          </Form>
-        </Modal>
-      </div>
+            <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
+              {/* <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={driversCount} onChange={paginate} /> */}
+            </div>
+          </>
+        )}
+        {revenueChartData.length === 0 && !loading && <EmptyData />}
+      </RctCollapsibleCard>
     </div>
   );
 };
-
 function mapDispatchToProps(dispatch) {
   return {
-    getRevenueSplitData: (spinner) => dispatch(getRevenueSplitData(spinner)),
-    updateRevenueSplitData: (data) => dispatch(updateRevenueSplitData(data)),
+    getChartRevenueData: (spinner, startDate, endDate, dateType) => dispatch(getChartRevenueData(spinner, startDate, endDate, dateType)),
   };
 }
-
 const mapStateToProps = (state) => ({
-  revenueSplitData: state.revenueSplit.revenueSplitData,
+  loading: state.loading.loading,
+  loadingStatus: state.loading.loadingStatus,
+  revenueChartData: state.revenueSplit.chartRevenueData,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentsServiceComponent);
