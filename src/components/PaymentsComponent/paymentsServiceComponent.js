@@ -33,7 +33,7 @@ const PaymentsServiceComponent = ({getChartRevenueData, revenueChartData, loadin
   };
 
   useEffect(() => {
-    getChartRevenueData(true, startDate, endDate, dateType);
+    getChartRevenueData(false, startDate, endDate, dateType);
   }, [dateType, startDate, endDate]);
 
   const handleChange = (e) => {
