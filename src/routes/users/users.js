@@ -18,7 +18,7 @@ import {Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 import {Form, FormGroup, Label, Input} from "reactstrap";
 import Button from "@material-ui/core/Button";
 import emailMessages from "Assets/data/email-messages/emailMessages";
-export let onResetModalClose;
+export let onUserDetailsResetModalClose;
 
 const Users = ({match, getUsers, loading, users, userCount, getUserCount, deleteUser, searchUsers, ResetUserDetails}) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -32,7 +32,6 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [userFirstName, setUserFirstName] = useState("");
-
   const inputEl = useRef(null);
   useEffect(() => {
     getUsers(1, true);
@@ -45,7 +44,7 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
     window.scrollTo(0, 0);
   };
 
-  onResetModalClose = () => {
+  onUserDetailsResetModalClose = () => {
     setModalOpen(false);
   };
 
