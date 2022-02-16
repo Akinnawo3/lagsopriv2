@@ -3,7 +3,8 @@ import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./
 import {USERS, USER_COUNT, USERS_LOCATION, ACTIVITY_LOGS, ACTIVITY_LOGS_COUNT} from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
-
+import {sendMessage} from "./messagesAction";
+import {onUserDetailsResetModalClose} from "../routes/users/users";
 export const getUsers =
   (page_no = 1, loading) =>
   async (dispatch) => {
@@ -41,30 +42,24 @@ export const getUserCount = () => async (dispatch) => {
   } catch (err) {}
 };
 
-// export const updateUser = (body) => async (dispatch) => {
-//   // const body = {component: "driver_status", auth_id, driver_status};
-//   try {
-//     dispatch(startStatusLoading());
-//     const res = await axios.put(`${api.user}/v1.1/admin/users`, body);
-//     if (res.data.status === "error") {
-//       NotificationManager.error(res.data.msg);
-//     } else {
-//       if (driverData && message_type) {
-//         await dispatch(sendDriverMessage(driverData, message_type, subject));
-//       }
-//       if (driver_status !== "4") {
-//         await NotificationManager.success("Driver Updated Successfully!");
-//       } else {
-//         await NotificationManager.success("Driver is now active!");
-//       }
-//       await dispatch(getDriver(auth_id, true));
-//     }
-//     dispatch(endStatusLoading());
-//   } catch (err) {
-//     dispatch(endStatusLoading());
-//     NotificationManager.error(err.response.data.message);
-//   }
-// };
+export const ResetUserDetails = (body, emailData) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.put(`${api.user}/v1.1/admin/users`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success("User Detail Updated Successfully!");
+      await dispatch(sendMessage(emailData));
+      onUserDetailsResetModalClose();
+      await dispatch(getUsers(1, false));
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+    NotificationManager.error(err.response.data.message);
+  }
+};
 
 export const deleteUser = (auth_id, users) => async (dispatch) => {
   try {

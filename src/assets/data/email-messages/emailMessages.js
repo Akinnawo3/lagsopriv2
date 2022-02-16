@@ -13,10 +13,13 @@ export default {
       return `\n${index + 1}. ${item}`;
     })} \nYou will be required to report to the office for further actions, a date will be communicated with you shortly. \n Sincerely, \n \n LagosRide .`;
   },
-
   newAdminMsg: (name, phoneNumber, Password) => {
     // ${role}
     return `Dear ${name}, you have been successfully set up as an admin on LagosRide with telephone number : ${phoneNumber}, here is your password -${Password}. Click on the link below to sign in. <a href="https://lrdash.lagosride.com/">lrdash.lagosride.com</a>`;
+  },
+
+  userDetailResetMsg: (name, detailType, update) => {
+    return `Dear ${name}, your ${detailType} has been changed to ${update}`;
   },
 
   // "You have been suspended from LagosRide for the following reasons;\n" +
