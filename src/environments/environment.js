@@ -51,7 +51,6 @@ const api =
         revenueSplit: "https://revenue-service-microservices.api.lagosride.com",
         idVerification: "https://verify-service-microservices.api.lagosride.com",
         messageSending: "https://message-service-microservices.api.lagosride.com",
-        socket: "https://staging-server.lagosride.com",
-        // socketHttp: "https://staging-server.lagosride.com/admin-socket ",
+        socket: "https://admin-socket-service-microservices.api.lagosride.com/",
       };
 export default api;

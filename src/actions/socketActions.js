@@ -6,7 +6,13 @@ import socketMessageActions from "./socketMessageActions";
 
 const cookies = new Cookies();
 
-// console.log(configureStore().getState().)
+const environment= configureStore?.getState()?.authUser?.userProfile?.data_mode 
+let url;
+let path;
+
+
+
+
 const token = cookies.get("user_id");
 
 const appSocket = {};
