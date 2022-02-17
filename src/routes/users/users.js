@@ -158,8 +158,8 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
         {users.length < 1 && <EmptyData />}
       </RctCollapsibleCard>
 
-      <Modal isOpen={modalOpen} toggle={() => onResetModalClose()}>
-        <ModalHeader toggle={() => onResetModalClose()}>
+      <Modal isOpen={modalOpen} toggle={() => onUserDetailsResetModalClose()}>
+        <ModalHeader toggle={() => onUserDetailsResetModalClose()}>
           Reset {component === "email" && "Email"} {component === "phone_number" && "Phone Number"} {component === "password" && "Password"}
         </ModalHeader>
         <Form onSubmit={onSubmit}>

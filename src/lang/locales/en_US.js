@@ -227,7 +227,7 @@ module.exports = {
   "widgets.ComposeEmail": "Compose Email",
   "widgets.employeePayroll": "Employee Payroll",
   "widgets.visitors": "Visitors",
-  "widgets.passengers": "Passengers",
+  "widgets.passengers": "Riders",
   // "widgets.today": "Today",
   "widgets.orders": "Orders",
   "widgets.revenue": "Revenue",

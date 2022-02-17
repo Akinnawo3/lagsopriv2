@@ -12,8 +12,8 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import axios from "axios";
 import api from "../../environments/environment";
-import GoogleMapComponentDrivers from "../../components/Maps/GoogleMapComponentDrivers";
-import GoogleMapComponentUser from "../../components/Maps/GoogleMapComponentUsers";
+import GoogleMapComponent1 from "Components/Maps/GoogleMapComponent1";
+// import GoogleMapComponentUser from "../../components/Maps/GoogleMapComponentUsers";
 import {getUsersLocation} from "Actions/userAction";
 import {getDriversLocation} from "Actions/driverAction";
 import {getTripCountMovingDrivers, getTripCountMovingUsers, getTripCountWaitingDrivers, getTripCountWaitingUsers} from "Actions/tripAction";
@@ -35,7 +35,7 @@ const GoogleMapComponent = ({
   tripCountWaitingDrivers,
   tripCountMovingDrivers,
 }) => {
-  const [center, setCenter] = useState([6.459970538, 3.301247232]);
+  const [center, setCenter] = useState([6.4478954861952404, 3.4742776645841493]);
   const [zoom, setZoom] = useState(16);
   const [searchData, setSearchData] = useState("");
   const [searchedUser, setSearchedUser] = useState([]);
@@ -51,7 +51,7 @@ const GoogleMapComponent = ({
     }
   }, [driverLocation[0]?.lat, driverLocation[0]?.lng]);
 
-  const [center2] = useState([6.459970538, 3.301247232]);
+  const [center2] = useState([6.4478954861952404, 3.4742776645841493]);
 
   useEffect(() => {
     getUsersLocation(center2[1], center2[0]);
@@ -83,8 +83,6 @@ const GoogleMapComponent = ({
     }
   }, [searchData]);
 
-  console.log(driverLocation, "sssssss");
-
   const searchUser = async () => {
     try {
       setLoading(true);
@@ -100,6 +98,8 @@ const GoogleMapComponent = ({
     getDriverLocation(user);
     setIsShow(false);
   };
+
+  // console.log(driverLocation, 'oooooooooo')
 
   const AnyReactComponent = ({text, cord}) => (
     <div>
@@ -117,10 +117,12 @@ const GoogleMapComponent = ({
     <div>
       <div className="row">
         <div className="col-sm-12 col-md-6 w-xs-half-block">
-          <GoogleMapComponentDrivers getUsersLocation={getDriversLocation} userLocation={driversLocation} waiting={tripCountWaitingDrivers} moving={tripCountMovingDrivers} />
+          <GoogleMapComponent1 getUsersLocation={getDriversLocation} userLocation={driversLocation} waiting={tripCountWaitingDrivers} moving={tripCountMovingDrivers} title={'Drivers Map'} />
         </div>
         <div className="col-sm-12 col-md-6 w-xs-half-block">
-          <GoogleMapComponentUser getUsersLocation={getUsersLocation} userLocation={userLocation} waiting={tripCountWaitingUsers} moving={tripCountMovingUsers} />
+          <GoogleMapComponent1 getUsersLocation={getUsersLocation} userLocation={userLocation} waiting={tripCountWaitingUsers} moving={tripCountMovingUsers} title={'Riders Map'} />
+
+          {/*<GoogleMapComponentUser getUsersLocation={getUsersLocation} userLocation={userLocation} waiting={tripCountWaitingUsers} moving={tripCountMovingUsers} />*/}
         </div>
       </div>
 
@@ -196,15 +198,6 @@ function mapDispatchToProps(dispatch) {
     getDriverLocation: (driverData, VehicleData) => dispatch(getDriverLocation(driverData, VehicleData)),
   };
 }
-
-// function mapDispatchToProps(dispatch) {
-//   return {
-//   };
-// }
-
-// const mapStateToProps = (state) => ({
-//   driverLocation: state.driver.driverLocation,
-// });
 
 const mapStateToProps = (state) => ({
   userLocation: state.users.userLocation,

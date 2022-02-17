@@ -6,13 +6,20 @@ import socketMessageActions from "./socketMessageActions";
 
 const cookies = new Cookies();
 
-// console.log(configureStore().getState().)
+const environment = configureStore?.getState()?.authUser?.userProfile?.data_mode;
+let url;
+let path;
+url = environment === "live" ? "https://admin-socket-service-microservices.api.lagosride.com/" : "https://staging-server.lagosride.com";
+path = environment === "live" ? null : "/admin-socket-service";
 const token = cookies.get("user_id");
+
+// console.log(path)
+
 
 const appSocket = {};
 appSocket.createConnection = () => {
   if (appSocket.io && appSocket.io.connected) return;
-  appSocket.io = io.connect(`https://staging-server.lagosride.com?user_type=admin&token=${token}`, {path: "/admin-socket-service", transports: ["websocket"]});
+  appSocket.io = io.connect(`${url}?user_type=admin&token=${token}`, {path, transports: ["websocket"]});
 
   appSocket.io.on("connect", () => {
     console.log("Connected");

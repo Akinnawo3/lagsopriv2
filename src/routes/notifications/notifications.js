@@ -16,7 +16,6 @@ const Notifications = ({match, notifications, getNotifications, authUserProfile,
     updateNotificationCounter();
   }, []);
 
-  console.log(notifications);
 
   return (
     <div>
