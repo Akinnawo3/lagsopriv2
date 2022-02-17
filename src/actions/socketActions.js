@@ -13,6 +13,9 @@ url = environment === "live" ? "https://admin-socket-service-microservices.api.l
 path = environment === "live" ? null : "/admin-socket-service";
 const token = cookies.get("user_id");
 
+// console.log(path)
+
+
 const appSocket = {};
 appSocket.createConnection = () => {
   if (appSocket.io && appSocket.io.connected) return;
