@@ -1061,7 +1061,7 @@
     "core-js-pure" "^3.0.0"
     "regenerator-runtime" "^0.13.4"
 
-"@babel/runtime@^7.1.2", "@babel/runtime@^7.1.5", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.10", "@babel/runtime@^7.2.0", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.0", "@babel/runtime@^7.6.3", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.3", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.0", "@babel/runtime@^7.9.2", "@babel/runtime@>=7.0.0-beta.56":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.1.5", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.10", "@babel/runtime@^7.2.0", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.0", "@babel/runtime@^7.6.3", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.3", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.0", "@babel/runtime@^7.9.2", "@babel/runtime@>=7.0.0-beta.56":
   "integrity" "sha512-JELkvo/DlpNdJ7dlyw/eY7E0suy5i5GQH+Vlxaq1nsNJ+H7f4Vtv3jMeCEgRhZZQFXTjldYfQgv2qmM6M1v5wA=="
   "resolved" "https://registry.npmjs.org/@babel/runtime/-/runtime-7.14.0.tgz"
   "version" "7.14.0"
@@ -1694,6 +1694,23 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
+"@types/google-maps@*":
+  "integrity" "sha512-+GR/7sMvo2bENS26H4t2QqoCqE4FE5qhsG8aaDM9mJAlsorkLyaFdTQra8VkmS1RNE09fx9c1kac+GKG0RtA2A=="
+  "resolved" "https://registry.npmjs.org/@types/google-maps/-/google-maps-3.2.3.tgz"
+  "version" "3.2.3"
+  dependencies:
+    "@types/google.maps" "*"
+
+"@types/google.maps@*":
+  "integrity" "sha512-wgNs0Cb0SpWMBmD5WV560bQ++sdtAOqR6V6qQIA5jZFORLsxat4kVkXOOg7KDFqHwNgYpg36Vai2zXUCTmbtnQ=="
+  "resolved" "https://registry.npmjs.org/@types/google.maps/-/google.maps-3.47.4.tgz"
+  "version" "3.47.4"
+
+"@types/googlemaps@^3.0.0":
+  "integrity" "sha512-ZWNoz/O8MPEpiajvj7QiqCY8tTLFNqNZ/a+s+zTV58wFVNAvvqV4bdGfnsjTb5Cs4V6wEsLrX8XRhmnyYJ2Tdg=="
+  "resolved" "https://registry.npmjs.org/@types/googlemaps/-/googlemaps-3.43.3.tgz"
+  "version" "3.43.3"
+
 "@types/hoist-non-react-statics@^3.0.1", "@types/hoist-non-react-statics@^3.3.0", "@types/hoist-non-react-statics@^3.3.1":
   "integrity" "sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA=="
   "resolved" "https://registry.npmjs.org/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.1.tgz"
@@ -1716,6 +1733,13 @@
   "integrity" "sha512-5tXH6Bx/kNGd3MgffdmP4dy2Z+G4eaXw0SE81Tq3BNadtnMR5/ySMzX4SLEzHJzSmPNn4HIdpQsBvXMUykr58w=="
   "resolved" "https://registry.npmjs.org/@types/long/-/long-4.0.1.tgz"
   "version" "4.0.1"
+
+"@types/markerclustererplus@^2.1.29":
+  "integrity" "sha512-ZDxsLUp8BmK9MVZZeQVDDzVrEXgRL0021AQcfXqfreFhdfZ9+PS0P6o4nZBvoIVYTmGSBemdCdI6mL6hf9yWvg=="
+  "resolved" "https://registry.npmjs.org/@types/markerclustererplus/-/markerclustererplus-2.1.33.tgz"
+  "version" "2.1.33"
+  dependencies:
+    "@types/google-maps" "*"
 
 "@types/minimatch@*":
   "integrity" "sha512-1z8k4wzFnNjVK/tlxvrWuK5WMt6mydWWP7+zvH5eFep4oj+UkrfiJTRtjCeBXNpwaA/FYqqtb4/QS4ianFpIRA=="
@@ -1769,9 +1793,9 @@
     "@types/react" "*"
 
 "@types/react@*", "@types/react@^15.0.0 || ^16.0.0", "@types/react@^15.0.0 || ^16.0.0 || ^17.0.0 ", "@types/react@^16.8.6 || ^17.0.0", "@types/react@>=16.9.11":
-  "integrity" "sha512-bj4biDB9ZJmGAYTWSKJly6bMr4BLUiBrx9ujiJEoP9XIDY9CTaPGxE5QWN/1WjpPLzYF7/jRNnV2nNxNe970sw=="
-  "resolved" "https://registry.npmjs.org/@types/react/-/react-17.0.5.tgz"
-  "version" "17.0.5"
+  "integrity" "sha512-WngBZLuSkP4IAgPi0HOsGCHo6dn3CcuLQnCfC17VbA7YBgipZiZoTOhObwl/93DsFW0Y2a/ZXeonpW4DxirEJg=="
+  "resolved" "https://registry.npmjs.org/@types/react/-/react-16.14.23.tgz"
+  "version" "16.14.23"
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -6824,7 +6848,7 @@
   "resolved" "https://registry.npmjs.org/lodash.throttle/-/lodash.throttle-4.1.1.tgz"
   "version" "4.1.1"
 
-"lodash@^4.16.2", "lodash@^4.17.11", "lodash@^4.17.14", "lodash@^4.17.19", "lodash@^4.17.20", "lodash@^4.17.4", "lodash@^4.17.5", "lodash@~4.17.4":
+"lodash@^4.16.2", "lodash@^4.17.11", "lodash@^4.17.14", "lodash@^4.17.19", "lodash@^4.17.20", "lodash@^4.17.21", "lodash@^4.17.4", "lodash@^4.17.5", "lodash@~4.17.4":
   "integrity" "sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg=="
   "resolved" "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
   "version" "4.17.21"
@@ -9021,7 +9045,7 @@
     "hoist-non-react-statics" "^3.3.2"
     "warning" "^4.0.3"
 
-"react-lifecycles-compat@^3.0.4":
+"react-lifecycles-compat@^3.0.2", "react-lifecycles-compat@^3.0.4":
   "integrity" "sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA=="
   "resolved" "https://registry.npmjs.org/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz"
   "version" "3.0.4"
@@ -9495,6 +9519,18 @@
     "change-emitter" "^0.1.2"
     "fbjs" "^0.8.1"
     "hoist-non-react-statics" "^2.3.1"
+    "symbol-observable" "^1.0.4"
+
+"recompose@^0.30.0":
+  "integrity" "sha512-ZTrzzUDa9AqUIhRk4KmVFihH0rapdCSMFXjhHbNrjAWxBuUD/guYlyysMnuHjlZC/KRiOKRtB4jf96yYSkKE8w=="
+  "resolved" "https://registry.npmjs.org/recompose/-/recompose-0.30.0.tgz"
+  "version" "0.30.0"
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+    "change-emitter" "^0.1.2"
+    "fbjs" "^0.8.1"
+    "hoist-non-react-statics" "^2.3.1"
+    "react-lifecycles-compat" "^3.0.2"
     "symbol-observable" "^1.0.4"
 
 "reduce-css-calc@^1.3.0":
