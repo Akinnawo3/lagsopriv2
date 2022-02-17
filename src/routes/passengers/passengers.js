@@ -16,14 +16,20 @@ import {Link} from "react-router-dom";
 import {calculatePostDate} from "Helpers/helpers";
 import EmptyData from "Components/EmptyData/EmptyData";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
+const qs = require("qs");
 
-const Passengers = ({match, getPassengers, passengers, loading, passengerCount, getPassengerCount, searchPassenger}) => {
-  const [currentPage, setCurrentPage] = useState(1);
+const Passengers = ({history, match, getPassengers, passengers, loading, passengerCount, getPassengerCount, searchPassenger}) => {
+  const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
+  const [currentPage, setCurrentPage] = useState(() => {
+    return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
+  });
   const [excelExport, setExcelExport] = useState([]);
 
   useEffect(() => {
-    getPassengers(1, true);
-    getPassengerCount();
+    if (history.location.search === "") {
+      getPassengers(1, true);
+      getPassengerCount();
+    }
   }, []);
 
   useEffect(() => {
@@ -44,6 +50,7 @@ const Passengers = ({match, getPassengers, passengers, loading, passengerCount, 
   }, [passengers]);
 
   const paginate = (pageNumber) => {
+    history.push(`${history.location.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
     getPassengers(pageNumber);
     window.scrollTo(0, 0);
