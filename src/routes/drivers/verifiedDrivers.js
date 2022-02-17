@@ -1,13 +1,15 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { getDrivers, getDriversCount } from "Actions/driverAction";
+import React, {useEffect} from "react";
+import {connect} from "react-redux";
+import {getDrivers, getDriversCount} from "Actions/driverAction";
 import DriverTable from "Routes/drivers/components/driverTable";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
-const VerifiedDrivers = ({ getDrivers, match, getDriversCount }) => {
+const VerifiedDrivers = ({history, getDrivers, match, getDriversCount}) => {
   useEffect(() => {
-    getDrivers(2, 1, true);
-    getDriversCount(2);
+    if (history.location.search === "") {
+      getDrivers(2, 1, true);
+      getDriversCount(2);
+    }
   }, []);
 
   return (
@@ -20,8 +22,7 @@ const VerifiedDrivers = ({ getDrivers, match, getDriversCount }) => {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getDrivers: (status, page_no, spinner) =>
-      dispatch(getDrivers(status, page_no, spinner)),
+    getDrivers: (status, page_no, spinner) => dispatch(getDrivers(status, page_no, spinner)),
     getDriversCount: (status) => dispatch(getDriversCount(status)),
   };
 }

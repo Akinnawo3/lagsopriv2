@@ -4,10 +4,12 @@ import {getDrivers, getDriversCount} from "Actions/driverAction";
 import DriverTable from "Routes/drivers/components/driverTable";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
-const AcceptedDrivers = ({getDrivers, match, getDriversCount}) => {
+const AcceptedDrivers = ({history, getDrivers, match, getDriversCount}) => {
   useEffect(() => {
-    getDrivers(1, 1, true);
-    getDriversCount(1);
+    if (history.location.search === "") {
+      getDrivers(1, 1, true);
+      getDriversCount(1);
+    }
   }, []);
 
   return (

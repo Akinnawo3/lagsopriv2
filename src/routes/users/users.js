@@ -18,10 +18,14 @@ import {Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 import {Form, FormGroup, Label, Input} from "reactstrap";
 import Button from "@material-ui/core/Button";
 import emailMessages from "Assets/data/email-messages/emailMessages";
+const qs = require("qs");
 export let onUserDetailsResetModalClose;
 
-const Users = ({match, getUsers, loading, users, userCount, getUserCount, deleteUser, searchUsers, ResetUserDetails}) => {
-  const [currentPage, setCurrentPage] = useState(1);
+const Users = ({history, match, getUsers, loading, users, userCount, getUserCount, deleteUser, searchUsers, ResetUserDetails}) => {
+  const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
+  const [currentPage, setCurrentPage] = useState(() => {
+    return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
+  });
   const [deleteId, setDeleteId] = useState(null);
   const [openedDropdownID, setOpenedDropdownID] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
@@ -33,12 +37,16 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
   const [password, setPassword] = useState("");
   const [userFirstName, setUserFirstName] = useState("");
   const inputEl = useRef(null);
+
   useEffect(() => {
-    getUsers(1, true);
-    getUserCount();
+    if (history.location.search === "") {
+      getUsers(1, true);
+      getUserCount();
+    }
   }, []);
 
   const paginate = (pageNumber) => {
+    history.push(`${history.location.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
     getUsers(pageNumber);
     window.scrollTo(0, 0);
