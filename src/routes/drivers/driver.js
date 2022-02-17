@@ -144,12 +144,12 @@ const Driver = (props) => {
             )} */}
             {activeTab === 4 && (
               <TabContainer>
-                {/* <PaymentsServiceComponent
-                //  auth_id={match.params.id}
+                <PaymentsServiceComponent
+                 auth_id={match.params.id}
                 //   payments={payments}
                 //    paymentsCount={paymentsCount}
                 //     paymentsServiceBalance={paymentsServiceBalance}
-                     /> */}
+                     />
               </TabContainer>
             )}
           </div>

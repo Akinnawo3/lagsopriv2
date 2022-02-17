@@ -13,11 +13,12 @@ import {calculatePostDate, getStatus, getStatusColor} from "Helpers/helpers";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {Link} from "react-router-dom";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
-import {getChartRevenueData} from "../../actions/revenueSplitAction";
+import {getDriverRevenueSPlit} from "../../actions/revenueSplitAction";
 import moment from "moment";
 import {getFirstDayOfMonth, getTodayDate} from "../../helpers/helpers";
 
-const PaymentsServiceComponent = ({getChartRevenueData, revenueChartData, loading}) => {
+//driver debt service
+const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenueSplit, loading}) => {
   const [dateType, setDateType] = useState("daily");
   const [startDate, setStartDate] = useState(getFirstDayOfMonth());
   const [endDate, setEndDate] = useState(getTodayDate());
@@ -33,12 +34,14 @@ const PaymentsServiceComponent = ({getChartRevenueData, revenueChartData, loadin
   };
 
   useEffect(() => {
-    getChartRevenueData(false, startDate, endDate, dateType);
+    getDriverRevenueSPlit(false, auth_id, startDate, endDate, dateType);
   }, [dateType, startDate, endDate]);
 
   const handleChange = (e) => {
     setDateType(e.target.value);
   };
+
+  console.log(driverRevenueSplit);
 
   const dateTypeFilter = [
     {value: "", label: "- - Filter by Date Type- -"},
@@ -48,7 +51,7 @@ const PaymentsServiceComponent = ({getChartRevenueData, revenueChartData, loadin
   ];
   return (
     <div>
-      <RctCollapsibleCard heading={"Revenues Table"} fullBlock style={{minHeight: "70vh"}}>
+      <RctCollapsibleCard heading={"Debt Service History"} fullBlock style={{minHeight: "70vh"}}>
         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
           {/* <small className="fw-bold">Date Type Filter</small> */}
           <select name="fiter-dropdown" onChange={handleChange} className="p-1 px-4">
@@ -67,7 +70,7 @@ const PaymentsServiceComponent = ({getChartRevenueData, revenueChartData, loadin
           <small className="fw-bold mr-2">To</small>
           <input type="date" id="start" name="trip-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setEndDate(e.target.value)} />
         </li>
-        {!loading && revenueChartData.length > 0 && (
+        {!loading && driverRevenueSplit.length > 0 && (
           <>
             <div className="table-responsive" style={{minHeight: "50vh"}}>
               <Table>
@@ -84,8 +87,8 @@ const PaymentsServiceComponent = ({getChartRevenueData, revenueChartData, loadin
                 </TableHead>
                 <TableBody>
                   <Fragment>
-                    {revenueChartData.length > 0 &&
-                      revenueChartData.map((item, index) => (
+                    {driverRevenueSplit.length > 0 &&
+                      driverRevenueSplit.map((item, index) => (
                         <TableRow hover key={index}>
                           <TableCell>{`${formatByDateType(item?.rev_date)}`}</TableCell>
                           <TableCell>{`₦${item?.asset_co.toLocaleString()}`}</TableCell>
@@ -105,20 +108,20 @@ const PaymentsServiceComponent = ({getChartRevenueData, revenueChartData, loadin
             </div>
           </>
         )}
-        {revenueChartData.length === 0 && !loading && <EmptyData />}
+        {driverRevenueSplit.length === 0 && !loading && <EmptyData />}
       </RctCollapsibleCard>
     </div>
   );
 };
 function mapDispatchToProps(dispatch) {
   return {
-    getChartRevenueData: (spinner, startDate, endDate, dateType) => dispatch(getChartRevenueData(spinner, startDate, endDate, dateType)),
+    getDriverRevenueSPlit: (spinner, driverID, startDate, endDate, dateType) => dispatch(getDriverRevenueSPlit(spinner, driverID, startDate, endDate, dateType)),
   };
 }
 const mapStateToProps = (state) => ({
   loading: state.loading.loading,
   loadingStatus: state.loading.loadingStatus,
-  revenueChartData: state.revenueSplit.chartRevenueData,
+  driverRevenueSplit: state.revenueSplit.driverRevenueSplit,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentsServiceComponent);
