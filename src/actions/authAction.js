@@ -11,8 +11,8 @@ export const loginUser = (phone_number, password) => async (dispatch) => {
   const body = {phone_number, password, user_type: "admin"};
   try {
     dispatch(startLoading());
-    // const res = await axios.post(`https://users-service-microservices.api.lagosride.com/v1.1/auth/login`, body);
-    const res = await axios.post(`https://staging-server.lagosride.com/user-service/v1.1/auth/login`, body);
+    const res = await axios.post(`https://users-service-microservices.api.lagosride.com/v1.1/auth/login`, body);
+    // const res = await axios.post(`https://staging-server.lagosride.com/user-service/v1.1/auth/login`, body);
     console.log(res.data.status);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
