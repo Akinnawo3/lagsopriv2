@@ -18,8 +18,15 @@ import {Link} from "react-router-dom";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {verifyUserPermssion} from "../../../container/DefaultLayout";
+import {useHistory} from "react-router-dom";
+const qs = require("qs");
 
 const VehicleTable = ({getVehicles, vehicles, loading, createVehicles, updateVehicle, vehiclesCount, assign, header, deleteVehicle, getVehiclesCount, searchVehicles}) => {
+  const history = useHistory();
+  const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
+  const [currentPage, setCurrentPage] = useState(() => {
+    return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
+  });
   const [addNewUserModal, setAddNewUserModal] = useState(false);
   const [editUser, setEditUser] = useState(false);
   const [updateId, setUpdateId] = useState(null);
@@ -27,8 +34,6 @@ const VehicleTable = ({getVehicles, vehicles, loading, createVehicles, updateVeh
   const [addNewUserModal1, setAddNewUserModal1] = useState(false);
   const [searchData, setSearchData] = useState("");
   const inputEl = useRef(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(10);
   const [excelExport, setExcelExport] = useState([]);
   const [deleteId, setDeleteId] = useState(null);
 
@@ -54,8 +59,10 @@ const VehicleTable = ({getVehicles, vehicles, loading, createVehicles, updateVeh
   }, [vehicles]);
 
   const paginate = (pageNumber) => {
+    history.push(`${history.location.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
     getVehicles(pageNumber, assign);
+    window.scrollTo(0, 0);
   };
 
   const getPreviousData = () => {
@@ -200,7 +207,7 @@ const VehicleTable = ({getVehicles, vehicles, loading, createVehicles, updateVeh
 
           {!loading && vehicles.length > 0 && (
             <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
-              <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={postsPerPage} totalItemsCount={vehiclesCount} onChange={paginate} />
+              <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={vehiclesCount} onChange={paginate} />
             </div>
           )}
           {vehicles.length < 1 && <EmptyData />}

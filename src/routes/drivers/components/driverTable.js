@@ -17,7 +17,7 @@ import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {useHistory} from "react-router-dom";
 const qs = require("qs");
 
-const DriverTable = ({match, drivers, isLoading, driversCount, getDrivers, status, searchDrivers, header, getDriversCount}) => {
+const DriverTable = ({ drivers, isLoading, driversCount, getDrivers, status, searchDrivers, header, getDriversCount}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {

@@ -26,8 +26,8 @@ const Passengers = ({history, match, getPassengers, passengers, loading, passeng
   const [excelExport, setExcelExport] = useState([]);
 
   useEffect(() => {
-    if (history.location.search === "") {
-      getPassengers(1, true);
+    if (pageFromQuery === undefined || passengers.length < 1) {
+      getPassengers(currentPage, true);
       getPassengerCount();
     }
   }, []);

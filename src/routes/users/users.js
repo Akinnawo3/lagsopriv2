@@ -39,8 +39,8 @@ const Users = ({history, match, getUsers, loading, users, userCount, getUserCoun
   const inputEl = useRef(null);
 
   useEffect(() => {
-    if (history.location.search === "") {
-      getUsers(1, true);
+    if (pageFromQuery === undefined || users.length < 1) {
+      getUsers(currentPage, true);
       getUserCount();
     }
   }, []);
@@ -78,7 +78,6 @@ const Users = ({history, match, getUsers, loading, users, userCount, getUserCoun
       email: oldEmail,
     };
 
-    console.log(emailData);
     component === "email" && ResetUserDetails({component, old_email: oldEmail, new_email: newEmail}, emailData);
     component === "phone_number" && ResetUserDetails({component, old_phone_number: phoneNumber, new_phone_number: newPhoneNumber}, emailData);
     component === "password" && ResetUserDetails({component, phone_number: phoneNumber, password}, emailData);

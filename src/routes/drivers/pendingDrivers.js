@@ -1,13 +1,18 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
 import {getDrivers, getDriversCount} from "Actions/driverAction";
 import DriverTable from "Routes/drivers/components/driverTable";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+const qs = require("qs");
 
-const PendingDrivers = ({history, getDrivers, match, getDriversCount}) => {
+const PendingDrivers = ({history, getDrivers, drivers, match, getDriversCount}) => {
+  const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
+  const [currentPage, setCurrentPage] = useState(() => {
+    return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
+  });
   useEffect(() => {
-    if (history.location.search === "") {
-      getDrivers(0, 1, true);
+    if (pageFromQuery === undefined || drivers.length < 1) {
+      getDrivers(0, currentPage, true);
       getDriversCount(0);
     }
   }, []);
