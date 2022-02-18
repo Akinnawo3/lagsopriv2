@@ -14,7 +14,7 @@ import {getPayments} from "Actions/paymentAction";
 import {Link} from "react-router-dom";
 import {useHistory} from "react-router-dom";
 const qs = require("qs");
-const PaymentTable = ({payments, paymentsCount, auth_id, getPayments, header, loading}) => {
+const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, header, loading}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -23,7 +23,7 @@ const PaymentTable = ({payments, paymentsCount, auth_id, getPayments, header, lo
   const paginate = (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
-    getPayments(pageNumber, "", auth_id);
+    getPayments(pageNumber, status, auth_id);
     window.scrollTo(0, 0);
   };
 

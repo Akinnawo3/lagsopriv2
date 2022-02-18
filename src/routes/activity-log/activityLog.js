@@ -14,13 +14,23 @@ import {connect} from "react-redux";
 import moment from "moment";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {calculatePostDate} from "Helpers/helpers";
-const ActivityLog = ({loading, getAdminLogs, AdminActivityLog, getAdminLogsCount, AdminActivityLogCount, match}) => {
-  const [currentPage, setCurrentPage] = useState(1);
+const qs = require("qs");
+
+const ActivityLog = ({history,loading, getAdminLogs, AdminActivityLog, getAdminLogsCount, AdminActivityLogCount, match}) => {
+  const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
+  const [currentPage, setCurrentPage] = useState(() => {
+    return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
+  });
   useEffect(() => {
-    getAdminLogs(1, true);
-    getAdminLogsCount(true);
+    // if (pageFromQuery === undefined || AdminActivityLog.length < 1) {
+      getAdminLogs(currentPage, true);
+      getAdminLogsCount(true);
+    // }
   }, []);
+
+  console.log(pageFromQuery)
   const paginate = (pageNumber) => {
+    history.push(`${history.location.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
     getAdminLogs(pageNumber);
     window.scrollTo(0, 0);
@@ -62,14 +72,7 @@ const ActivityLog = ({loading, getAdminLogs, AdminActivityLog, getAdminLogsCount
 
           {!loading && AdminActivityLog?.length > 0 && (
             <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
-              <Pagination
-                activePage={currentPage}
-                itemClass="page-item"
-                linkClass="page-link"
-                itemsCountPerPage={20}
-                totalItemsCount={AdminActivityLogCount?.total}
-                onChange={paginate}
-              />
+              <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={AdminActivityLogCount?.total} onChange={paginate} />
             </div>
           )}
         </RctCollapsibleCard>

@@ -16,22 +16,27 @@ import EmptyData from "Components/EmptyData/EmptyData";
 import Pagination from "react-js-pagination";
 import {Badge} from "reactstrap";
 import moment from "moment";
+const qs = require("qs");
 
-const Emergency = ({match, getSOS, sos, loading, getSOSCount, sosCount}) => {
-  const [currentPage, setCurrentPage] = useState(1);
-
+const Emergency = ({history, match, getSOS, sos, loading, getSOSCount, sosCount}) => {
+  const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
+  const [currentPage, setCurrentPage] = useState(() => {
+    return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
+  });
   useEffect(() => {
-    getSOS(1, true);
-    getSOSCount();
+    if (pageFromQuery === undefined || sos.length < 1) {
+      getSOS(1, true);
+      getSOSCount();
+    }
   }, []);
 
   const paginate = (pageNumber) => {
+    history.push(`${history.location.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
     getSOS(pageNumber);
     window.scrollTo(0, 0);
   };
 
-  console.log(sos);
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Emergency"} match={match} />
