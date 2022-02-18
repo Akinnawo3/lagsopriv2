@@ -20,8 +20,20 @@ import {verifyUserPermssion} from "../../container/DefaultLayout";
 const qs = require("qs");
 export let onAddUpdateUserModalClose;
 const PromoDiscounts = (props) => {
-  const {match, getPromoDiscounts, promoDiscountsCount, promoDiscounts, searchPromo, createPromoDiscount, updatePromoDiscount, getPromoDiscountCount, loading, deletePromoDiscount, loadingStatus} =
-    props;
+  const {
+    history,
+    match,
+    getPromoDiscounts,
+    promoDiscountsCount,
+    promoDiscounts,
+    searchPromo,
+    createPromoDiscount,
+    updatePromoDiscount,
+    getPromoDiscountCount,
+    loading,
+    deletePromoDiscount,
+    loadingStatus,
+  } = props;
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
