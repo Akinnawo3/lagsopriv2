@@ -95,7 +95,7 @@ const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenue
                     {driverRevenueSplit.length > 0 &&
                       driverRevenueSplit.map((item, index) => (
                         <TableRow hover key={index}>
-                          <TableCell>{`${formatByDateType(item?.rev_date)}`}</TableCell>
+                          <TableCell>{`${formatByDateType(item?.created)}`}</TableCell>
                           <TableCell>{`₦${item?.asset_co.toLocaleString()}`}</TableCell>
                           <TableCell>{`₦${item?.comms.toLocaleString()}`}</TableCell>
                           <TableCell>{`₦${item?.daily_tax.toLocaleString()}`}</TableCell>
