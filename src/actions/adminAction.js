@@ -95,7 +95,6 @@ export const updateAdmin = (adminData, auth_id) => async (dispatch) => {
     }
     dispatch(endStatusLoading());
   } catch (e) {
-    console.log(e);
     dispatch(endStatusLoading());
     NotificationManager.error("Network error");
   }
