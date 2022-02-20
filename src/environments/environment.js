@@ -22,6 +22,7 @@ const api =
         messageSending: "https://staging-server.lagosride.com/message-service",
         fees: "https://staging-server.lagosride.com/fees-service",
         socket: "https://staging-server.lagosride.com/admin-socket",
+        oem: "https://staging-server.lagosride.com/oem-service",
       }
     : {
         bookingTypes: "https://taxitriptypebackend-microservices.api.lagosride.com",

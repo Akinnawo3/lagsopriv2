@@ -175,3 +175,7 @@ export const CLEAR_COUNTER = "CLEAR_COUNTER";
 //geo-fencing
 export const GEOFENCES = "GEOFENCES";
 export const FENCES_COUNT = "FENCES_COUNT";
+
+//oem
+export const OEMS = "OEMS";
+export const OEMS_COUNT = "OEMS_COUNT";
