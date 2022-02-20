@@ -10,7 +10,7 @@ import {CSVLink} from "react-csv";
 import Pagination from "react-js-pagination";
 import {createVehicles, deleteVehicle, getVehicles, searchVehicles, updateVehicle} from "Actions/vehicleAction";
 import Button from "@material-ui/core/Button";
-import Upload from "./upload";
+// import Upload from "./upload";
 import {Form, FormGroup, Label, Input, Badge, Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {getVehiclesCount} from "Actions/vehicleAction";
@@ -248,7 +248,7 @@ const OemTable = ({getVehicles, vehicles, loading, createVehicles, updateVehicle
       <Modal isOpen={addNewUserModal1} toggle={() => onAddUpdateUserModalClose1()}>
         <ModalHeader toggle={() => onAddUpdateUserModalClose1()}>Upload Vehicle</ModalHeader>
         <ModalBody>
-          <Upload oncloseModal={onAddUpdateUserModalClose1} />
+          {/* <Upload oncloseModal={onAddUpdateUserModalClose1} /> */}
         </ModalBody>
       </Modal>
       <DeleteConfirmationDialog

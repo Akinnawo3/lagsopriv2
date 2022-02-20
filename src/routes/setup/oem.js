@@ -1,26 +1,26 @@
 import React, {useEffect, useState} from "react";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {connect} from "react-redux";
-import {getVehiclesCount, getVehicles} from "Actions/vehicleAction";
-import oemTable from "./component/oemTable";
+import {getOems} from "Actions/oemActions";
+import OemTable from "./component/oemTable";
 const qs = require("qs");
 
-const Oem = ({history, match, getVehicles, getVehiclesCount}) => {
+const Oem = ({history, match, getOems}) => {
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
   useEffect(() => {
     if (pageFromQuery === undefined || drivers.length < 1) {
-      getVehicles(currentPage, "", true);
+      getOems(currentPage, "", true);
       getVehiclesCount();
     }
   }, []);
 
   return (
     <div className="table-wrapper">
-      <PageTitleBar title={"Vehicles"} match={match} />
-      <oemTable assign={""} header="All Vehicles" />
+      <PageTitleBar title={"OEM"} match={match} />
+      <OemTable assign={""} header="All Vehicles" />
     </div>
   );
 };
@@ -28,7 +28,7 @@ const Oem = ({history, match, getVehicles, getVehiclesCount}) => {
 function mapDispatchToProps(dispatch) {
   return {
     getVehicles: (page_no, assign, spinner) => dispatch(getVehicles(page_no, assign, spinner)),
-    getVehiclesCount: (assign) => dispatch(getVehiclesCount(assign)),
+    getOems: (page_no, spinner) => dispatch(getOems(page_no, spinner)),
   };
 }
 

@@ -8,42 +8,42 @@ import api from "../environments/environment";
 // import {changeCurrentPage, onAddUpdateUserModalClose} from "Routes/admin/admins";
 import emailMessages from "Assets/data/email-messages/emailMessages";
 
-// export const getAdmins =
-//   (page_no = 1, spinner) =>
-//   async (dispatch) => {
-//     try {
-//       spinner && (await dispatch(startLoading()));
-//       !spinner && (await dispatch(startStatusLoading()));
-//       const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=admin&item_per_page=20&page=${page_no}`);
-//       if (res.data.status === "error") {
-//         NotificationManager.error(res.data.msg);
-//       } else {
-//         dispatch({
-//           type: ADMINS,
-//           payload: res.data.data,
-//         });
-//       }
-//       dispatch(endLoading());
-//       dispatch(endStatusLoading());
-//     } catch (err) {
-//       dispatch(endLoading());
-//       dispatch(endStatusLoading());
-//     }
-//   };
+export const getOems =
+  (page_no = 1, spinner) =>
+  async (dispatch) => {
+    try {
+      spinner && (await dispatch(startLoading()));
+      !spinner && (await dispatch(startStatusLoading()));
+      const res = await axios.get(`${api.oem}/v1.1/admin/users?user_type=oem&item_per_page=20&page=${page_no}`);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        dispatch({
+          type: OEMS_COUNT,
+          payload: res.data.data,
+        });
+      }
+      dispatch(endLoading());
+      dispatch(endStatusLoading());
+    } catch (err) {
+      dispatch(endLoading());
+      dispatch(endStatusLoading());
+    }
+  };
 
-// export const getAdminCount = () => async (dispatch) => {
-//   try {
-//     const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=admin&component=count`);
-//     if (res.data.status === "error") {
-//       NotificationManager.error(res.data.msg);
-//     } else {
-//       dispatch({
-//         type: ADMIN_COUNT,
-//         payload: res.data.data.total ? res.data.data.total : 0,
-//       });
-//     }
-//   } catch (err) {}
-// };
+export const getOemCount = () => async (dispatch) => {
+  try {
+    const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=oem&component=count`);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      dispatch({
+        type: ADMIN_COUNT,
+        payload: res.data.data.total ? res.data.data.total : 0,
+      });
+    }
+  } catch (err) {}
+};
 
 // export const createAdmin = (adminData) => async (dispatch) => {
 //   const body = {
