@@ -19,7 +19,7 @@ export const getOems =
         NotificationManager.error(res.data.msg);
       } else {
         dispatch({
-          type: OEMS_COUNT,
+          type: OEMS,
           payload: res.data.data,
         });
       }
@@ -38,7 +38,7 @@ export const getOemCount = () => async (dispatch) => {
       NotificationManager.error(res.data.msg);
     } else {
       dispatch({
-        type: ADMIN_COUNT,
+        type: OEMS_COUNT,
         payload: res.data.data.total ? res.data.data.total : 0,
       });
     }
