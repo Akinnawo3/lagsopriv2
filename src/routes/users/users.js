@@ -15,6 +15,7 @@ import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/Delete
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {verifyUserPermssion} from "../../container/DefaultLayout";
 import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from "reactstrap";
+import {sendVerificationRequest} from "Actions/idVerificationAction";
 import {Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 import {Form, FormGroup, Label, Input} from "reactstrap";
 import Button from "@material-ui/core/Button";
@@ -23,7 +24,7 @@ import {getStatusColorKYC} from "Helpers/helpers";
 const qs = require("qs");
 export let onUserDetailsResetModalClose;
 
-const Users = ({history, match, getUsers, loading, users, userCount, getUserCount, deleteUser, searchUsers, ResetUserDetails}) => {
+const Users = ({history, match, getUsers, loading, users, userCount, getUserCount, deleteUser, searchUsers, ResetUserDetails, dataMode, sendVerificationRequest}) => {
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
@@ -47,6 +48,8 @@ const Users = ({history, match, getUsers, loading, users, userCount, getUserCoun
     }
   }, []);
 
+  const isTest = dataMode === "test" ? true : false;
+
   const paginate = (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
@@ -57,6 +60,14 @@ const Users = ({history, match, getUsers, loading, users, userCount, getUserCoun
   onUserDetailsResetModalClose = () => {
     setModalOpen(false);
   };
+
+  // const triggerIdVerifcation = (type, value, firstName, lastName) => {
+  //   setIdType(type);
+  //   !isTest && sendVerificationRequest(type, value, firstName, lastName);
+  //   setIdVerificationModalOpen(true);
+  // };
+
+  // triggerIdVerifcation("nin", driver?.driver_data?.nin_id?.value, driver?.first_name, driver?.last_name)
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -245,6 +256,7 @@ function mapDispatchToProps(dispatch) {
     getUserCount: () => dispatch(getUserCount()),
     searchUsers: (searchData) => dispatch(searchUsers(searchData)),
     ResetUserDetails: (body, emailData) => dispatch(ResetUserDetails(body, emailData)),
+    sendVerificationRequest: (id_type, id_value, first_name, last_name) => dispatch(sendVerificationRequest(id_type, id_value, first_name, last_name)),
   };
 }
 
@@ -252,6 +264,7 @@ const mapStateToProps = (state) => ({
   users: state.users.users,
   userCount: state.users.userCount,
   loading: state.loading.loading,
+  dataMode: state.authUser.userProfile.data_mode,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Users);

@@ -29,7 +29,7 @@ const DriverProfile = ({
   getCustomerCare,
   customerCareNumbers,
   verifyID,
-  isTest,
+  dataMode,
 }) => {
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const [addVehicleModal, setAddVehicleModal] = useState(false);
@@ -53,6 +53,8 @@ const DriverProfile = ({
   const onChange = (e) => setFormData({...formData, [e.target.name]: e.target.value});
 
   const {vehicle} = formData;
+
+  const isTest = dataMode === "test" ? true : false;
 
   useEffect(() => {
     getCustomerCare();
@@ -150,7 +152,6 @@ const DriverProfile = ({
     inputEl.current.open();
   };
 
-  console.log(driver);
 
   const triggerIdVerifcation = (type, value, firstName, lastName) => {
     setIdType(type);
@@ -918,6 +919,6 @@ const mapStateToProps = (state) => ({
   vehicleDetails: state.vehicle.vehicleDetails,
   customerCareNumbers: state.customerCare.customerCareNumbers,
   verificationResult: state.idVerification.verificationResult,
-  isTest: state.environment.isTest,
+  dataMode: state.authUser.userProfile.data_mode,
 });
 export default connect(mapStateToProps, mapDispatchToProps)(DriverProfile);
