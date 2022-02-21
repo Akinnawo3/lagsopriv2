@@ -94,7 +94,7 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header}) =>
   const opnAddNewUserEditModal = (id) => {
     oems.map((oem) => {
       if (oem.auth_id === id) {
-        setFormData({...formData, name: oem.name, email: oem.email, password: oem.password, phoneNumber: oem.phone_number, address: oem.addressF});
+        setFormData({...formData, name: oem.name, email: oem.email, password: oem.password, phoneNumber: oem.phone_number, address: oem.address});
         setUpdateId(oem.auth_id);
       }
     });
@@ -114,7 +114,7 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header}) =>
   const onSubmit = async (e) => {
     e.preventDefault();
     onAddUpdateUserModalClose();
-    !editUser ? await createVehicles(plateNo, make, model, desc, color) : await updateVehicle(updateId, plateNo, make, model, desc, color, currentPage, assign);
+!editUser ? await createVehicles(plateNo, make, model, desc, color) : await updateVehicle(updateId, plateNo, make, model, desc, color, currentPage, assign);
   };
 
   // const sampleData = [

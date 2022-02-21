@@ -45,39 +45,39 @@ export const getOemCount = () => async (dispatch) => {
   } catch (err) {}
 };
 
-// export const createAdmin = (adminData) => async (dispatch) => {
-//   const body = {
-//     ...adminData,
-//     password: "Password123",
-//   };
-//   try {
-//     dispatch(startStatusLoading());
-//     const res = await axios.post(`${api.user}/v1.1/admin`, body);
-//     if (res.data.status === "error") {
-//       NotificationManager.error(res.data.msg);
-//     } else {
-//       // await changeCurrentPage();
-//       await NotificationManager.success("Admin Created Successfully!");
-//       await dispatch(
-//         sendMessage({
-//           type: "generic",
-//           subject: "Admin Login Details",
-//           message: emailMessages.newAdminMsg(`${adminData.first_name}`, adminData.phone_number, "Password123"),
-//           // message: "the messagejnrjtnjrn",
-//           name: adminData.first_name,
-//           email: adminData.email,
-//         })
-//       );
-//       await dispatch(getAdmins());
-//       await dispatch(getAdminCount());
-//     }
-//     dispatch(endStatusLoading());
-//   } catch (e) {
-//     console.log(e.message);
-//     dispatch(endStatusLoading());
-//     NotificationManager.error("Network error");
-//   }
-// };
+export const creatOEM = (adminData) => async (dispatch) => {
+  const body = {
+    ...adminData, 
+    password: "Password123",
+  };
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.post(`${api.user}/v1.1/admin`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      // await changeCurrentPage();
+      await NotificationManager.success("Admin Created Successfully!");
+      await dispatch(
+        sendMessage({
+          type: "generic",
+          subject: "Admin Login Details",
+          message: emailMessages.newAdminMsg(`${adminData.first_name}`, adminData.phone_number, "Password123"),
+          // message: "the messagejnrjtnjrn",
+          name: adminData.first_name,
+          email: adminData.email,
+        })
+      );
+      await dispatch(getAdmins());
+      await dispatch(getAdminCount());
+    }
+    dispatch(endStatusLoading());
+  } catch (e) {
+    console.log(e.message);
+    dispatch(endStatusLoading());
+    NotificationManager.error("Network error");
+  }
+};
 
 // export const updateAdmin = (adminData, auth_id) => async (dispatch) => {
 //   const body = {

@@ -129,6 +129,15 @@ export function getStatusColor(status) {
     return "danger";
   }
 }
+export function getStatusColorKYC(status) {
+  if (status === 0) {
+    return "secondary";
+  } else if (status === 1) {
+    return "success";
+  } else {
+    return "danger";
+  }
+}
 
 export function getStatus2(status) {
   if (status === 0) {

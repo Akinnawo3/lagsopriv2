@@ -4,6 +4,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import {Badge} from "reactstrap";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import Pagination from "react-js-pagination";
@@ -18,6 +19,7 @@ import {Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 import {Form, FormGroup, Label, Input} from "reactstrap";
 import Button from "@material-ui/core/Button";
 import emailMessages from "Assets/data/email-messages/emailMessages";
+import {getStatusColorKYC} from "Helpers/helpers";
 const qs = require("qs");
 export let onUserDetailsResetModalClose;
 
@@ -119,6 +121,8 @@ const Users = ({history, match, getUsers, loading, users, userCount, getUserCoun
                     <TableCell>Phone No</TableCell>
                     <TableCell>Email</TableCell>
                     <TableCell>Type</TableCell>
+                    <TableCell>NIN status</TableCell>
+                    <TableCell>KYC status</TableCell>
                     <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
@@ -131,6 +135,17 @@ const Users = ({history, match, getUsers, loading, users, userCount, getUserCoun
                         <TableCell>{user.phone_number}</TableCell>
                         <TableCell>{user.email}</TableCell>
                         <TableCell>{user.user_type}</TableCell>
+                        <TableCell className={`fw-bold text-${user?.nin_id?.status ? "success" : "danger"}`}>{user?.nin_id?.status ? "Verified" : "Unverified"}</TableCell>
+                        <TableCell>
+                          <Badge color={getStatusColorKYC(user.kyc_status)}>
+                            {user.kyc_status === 0 && "Pending"}
+                            {user.kyc_status === 1 && "Verified"}
+                            {user.kyc_status === 2 && "Suspended"}
+                          </Badge>
+                          {user.kyc_status === 0 && <span className="fw-bold text muted ml-1 ">Verify </span>}
+                          {user.kyc_status === 1 && <span className="fw-bold text muted ml-1 text-danger">Suspend </span>}
+                          {user.kyc_status === 2 && <span className="fw-bold text muted ml-1 text-info ">Re-activate </span>}
+                        </TableCell>
                         <TableCell>
                           <span className="d-flex">
                             <Dropdown isOpen={openedDropdownID === user?.auth_id} toggle={() => toggle(user.auth_id, user.first_name)}>
