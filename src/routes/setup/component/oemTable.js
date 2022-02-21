@@ -80,9 +80,8 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header}) =>
   //   getVehiclesCount(assign);
   // };
 
-  // const onChange = (e) => setFormData({...formData, [e.target.name]: e.target.value});
-  // const {plateNo, model, make, desc, color} = formData;
-
+  const onChange = (e) => setFormData({...formData, [e.target.name]: e.target.value});
+  const {name, email, password, phoneNumber, address} = formData;
   const opnAddNewUserModal = (e) => {
     e.preventDefault();
     setAddNewUserModal(true);
@@ -93,10 +92,10 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header}) =>
   };
 
   const opnAddNewUserEditModal = (id) => {
-    vehicles.map((vehicle) => {
-      if (vehicle.vehicle_id === id) {
-        setFormData({...formData, plateNo: vehicle.car_number_plate, model: vehicle.car_model, make: vehicle.car_make, desc: vehicle.car_desc, color: vehicle.car_color});
-        setUpdateId(vehicle.vehicle_id);
+    oems.map((oem) => {
+      if (oem.auth_id === id) {
+        setFormData({...formData, name: oem.name, email: oem.email, password: oem.password, phoneNumber: oem.phone_number, address: oem.addressF});
+        setUpdateId(oem.auth_id);
       }
     });
     setAddNewUserModal(true);
@@ -105,7 +104,7 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header}) =>
 
   const onAddUpdateUserModalClose = () => {
     if (editUser) {
-      setFormData({...formData, plateNo: "", type: "", model: "", desc: "", make: "", color: ""});
+      setFormData({...formData, name: "", email: "", password: "", phoneNumber: "", address: ""});
     }
     setUpdateId(null);
     setAddNewUserModal(false);
@@ -118,15 +117,15 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header}) =>
     !editUser ? await createVehicles(plateNo, make, model, desc, color) : await updateVehicle(updateId, plateNo, make, model, desc, color, currentPage, assign);
   };
 
-  const sampleData = [
-    {
-      plateNo: "DVFGR9o",
-      type: "sedan",
-      model: "2013",
-      make: "toyota",
-      desc: "A vehicle",
-    },
-  ];
+  // const sampleData = [
+  //   {
+  //     plateNo: "DVFGR9o",
+  //     type: "sedan",
+  //     model: "2013",
+  //     make: "toyota",
+  //     desc: "A vehicle",
+  //   },
+  // ];
 
   const onDelete = (id) => {
     inputEl.current.open();
@@ -155,13 +154,15 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header}) =>
             {/*	target="_blank"*/}
             {/*>*/}
             {/*	<i className="zmdi zmdi-download mr-2"></i>*/}
-
             {/*	Sample excel to upload*/}
             {/*</CSVLink>*/}
-            {/*<a href="#" onClick={(e) => opnAddNewUserModal1(e)} color="primary" className="btn-sm btn-outline-default mr-10 bg-danger text-white"><i className="zmdi zmdi-upload mr-2"></i>Upload</a>*/}
-            {/* <a href="#" onClick={(e) => verifyUserPermssion("create_vehicle", () => opnAddNewUserModal(e))} color="primary" className="caret btn-sm mr-10">
-              Add New Vehicle <i className="zmdi zmdi-plus"></i>
+            {/* <a href="#" onClick={(e) => opnAddNewUserModal1(e)} color="primary" className="btn-sm btn-outline-default mr-10 bg-danger text-white">
+              <i className="zmdi zmdi-upload mr-2"></i>Upload
             </a> */}
+
+            <a href="#" onClick={(e) => verifyUserPermssion("create_vehicle", () => opnAddNewUserModal(e))} color="primary" className="caret btn-sm mr-10">
+              Add New OEM <i className="zmdi zmdi-plus"></i>
+            </a>
           </div>
           {!loading && oems.length > 0 && (
             <div className="table-responsive" style={{minHeight: "50vh"}}>
@@ -172,6 +173,7 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header}) =>
                     <TableCell>Address</TableCell>
                     <TableCell>Phone Number </TableCell>
                     <TableCell>Email </TableCell>
+                    <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -182,6 +184,19 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header}) =>
                         <TableCell>{oem.address}</TableCell>
                         <TableCell>{oem.phone_number}</TableCell>
                         <TableCell>{oem.email}</TableCell>
+                        <TableCell>
+                          <button type="button" className="rct-link-btn" onClick={(e) => opnAddNewUserEditModal(oem.auth_id)}>
+                            <i className="ti-pencil"></i>
+                          </button>
+                          <button type="button" className="rct-link-btn ml-lg-3 text-danger ml-2" onClick={() => onDelete(oem.auth_id)}>
+                            <i className="ti-trash"></i>
+                          </button>
+                          {/* <button type="button" className="rct-link-btn text-primary ml-3" title="view details">
+                            <Link to={`/admin/vehicles/${vehicle.vehicle_id}`}>
+                              <i className="ti-eye" />
+                            </Link>
+                          </button> */}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </Fragment>
@@ -199,29 +214,31 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header}) =>
         </RctCollapsibleCard>
       )}
       <Modal isOpen={addNewUserModal} toggle={() => onAddUpdateUserModalClose()}>
-        <ModalHeader toggle={() => onAddUpdateUserModalClose()}>{editUser ? "Update Vehicle" : "Add New Vehicle"}</ModalHeader>
+        <ModalHeader toggle={() => onAddUpdateUserModalClose()}>{editUser ? "Update OEM" : "Add New OEM"}</ModalHeader>
         <Form onSubmit={onSubmit}>
           <ModalBody>
             <FormGroup>
-              <Label for="firstName">Plate No</Label>
-              <Input type="text" name="plateNo" value={plateNo} onChange={onChange} required />
+              <Label for="name">OEM Name</Label>
+              <Input type="text" name="name" value={name} onChange={onChange} required />
             </FormGroup>
             <FormGroup>
-              <Label for="phoneNumber">Model</Label>
-              <Input type="text" name="make" value={make} onChange={onChange} required />
+              <Label for="address">Address</Label>
+              <Input type="text" name="address" value={address} onChange={onChange} required />
             </FormGroup>
             <FormGroup>
-              <Label for="text">Year</Label>
-              <Input type="number" name="model" value={model} onChange={onChange} required max={year} />
+              <Label for="email">Email</Label>
+              <Input type="text" name="email" value={email} onChange={onChange} required />
             </FormGroup>
             <FormGroup>
-              <Label for="text">Colour</Label>
-              <Input type="text" name="color" value={color} onChange={onChange} required />
-            </FormGroup>{" "}
-            <FormGroup>
-              <Label for="text">Description</Label>
-              <Input type="textarea" name="desc" value={desc} onChange={onChange} required />
+              <Label for="phoneNumber">Phone Number</Label>
+              <Input type="tel" name="phoneNumber" value={phoneNumber} onChange={onChange} required />
             </FormGroup>
+            {!updateId && (
+              <FormGroup>
+                <Label for="password">Password</Label>
+                <Input type="text" name="password" value={password} onChange={onChange} required max={year} />
+              </FormGroup>
+            )}
           </ModalBody>
           <ModalFooter>
             <Button type="submit" variant="contained" className="text-white btn-success">
@@ -230,14 +247,14 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header}) =>
           </ModalFooter>
         </Form>
       </Modal>
-      <Modal isOpen={addNewUserModal1} toggle={() => onAddUpdateUserModalClose1()}>
+      {/* <Modal isOpen={addNewUserModal1} toggle={() => onAddUpdateUserModalClose1()}>
         <ModalHeader toggle={() => onAddUpdateUserModalClose1()}>Upload Vehicle</ModalHeader>
         <ModalBody></ModalBody>
-      </Modal>
+      </Modal> */}
       <DeleteConfirmationDialog
         ref={inputEl}
         title="Are You Sure You Want To Delete?'"
-        message="This will delete Vehicle permanently."
+        message="This will delete OEM permanently."
         onConfirm={() => {
           deleteVehicle(deleteId, vehicles);
           inputEl.current.close();
