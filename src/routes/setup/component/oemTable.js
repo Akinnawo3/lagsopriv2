@@ -137,9 +137,9 @@ const OemTable = ({oems, oemsCount, loadingStatus, loading, header}) => {
     <div>
       {!loading && (
         <RctCollapsibleCard heading={header} fullBlock>
-          <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+          {/* <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
             <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={"Plate No"} />
-          </li>
+          </li> */}
           <div className="float-right">
             {/* {oems.length > 0 && (
               <CSVLink data={excelExport} filename={"vehicles.csv"} className="btn-sm btn-outline-default mr-10 bg-primary text-white" target="_blank">
@@ -168,12 +168,10 @@ const OemTable = ({oems, oemsCount, loadingStatus, loading, header}) => {
               <Table>
                 <TableHead>
                   <TableRow hover>
-                    <TableCell>Plate No</TableCell>
-                    <TableCell>Serial No</TableCell>
-                    <TableCell>Model</TableCell>
-                    <TableCell>Year</TableCell>
-                    <TableCell>status</TableCell>
-                    <TableCell>Action</TableCell>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Address</TableCell>
+                    <TableCell>Phone Number </TableCell>
+                    <TableCell>Email </TableCell>
                   </TableRow>
                 </TableHead>
                 {/* <TableBody>
@@ -219,7 +217,7 @@ const OemTable = ({oems, oemsCount, loadingStatus, loading, header}) => {
       <Modal isOpen={addNewUserModal} toggle={() => onAddUpdateUserModalClose()}>
         <ModalHeader toggle={() => onAddUpdateUserModalClose()}>{editUser ? "Update Vehicle" : "Add New Vehicle"}</ModalHeader>
         <Form onSubmit={onSubmit}>
-          <ModalBody>
+          {/* <ModalBody>
             <FormGroup>
               <Label for="firstName">Plate No</Label>
               <Input type="text" name="plateNo" value={plateNo} onChange={onChange} required />
@@ -235,17 +233,17 @@ const OemTable = ({oems, oemsCount, loadingStatus, loading, header}) => {
             <FormGroup>
               <Label for="text">Colour</Label>
               <Input type="text" name="color" value={color} onChange={onChange} required />
-            </FormGroup>
-            {/*<FormGroup>*/}
-            {/*    <Label for="text">Description</Label>*/}
-            {/*    <Input type="textarea" name="desc" value={desc} onChange={onChange} required />*/}
-            {/*</FormGroup>*/}
-          </ModalBody>
-          <ModalFooter>
+            </FormGroup> */}
+          {/*<FormGroup>*/}
+          {/*    <Label for="text">Description</Label>*/}
+          {/*    <Input type="textarea" name="desc" value={desc} onChange={onChange} required />*/}
+          {/*</FormGroup>*/}
+          {/* </ModalBody> */}
+          {/* <ModalFooter>
             <Button type="submit" variant="contained" className="text-white btn-success">
               Submit
             </Button>
-          </ModalFooter>
+          </ModalFooter> */}
         </Form>
       </Modal>
       <Modal isOpen={addNewUserModal1} toggle={() => onAddUpdateUserModalClose1()}>
