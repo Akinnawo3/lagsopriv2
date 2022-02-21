@@ -21,7 +21,7 @@ import {useHistory} from "react-router-dom";
 import {getOems, getOemCount} from "Actions/oemAction";
 const qs = require("qs");
 
-const OemTable = ({oems, oemsCount, loadingStatus, loading, header}) => {
+const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -30,7 +30,7 @@ const OemTable = ({oems, oemsCount, loadingStatus, loading, header}) => {
   const [addNewUserModal, setAddNewUserModal] = useState(false);
   const [editUser, setEditUser] = useState(false);
   const [updateId, setUpdateId] = useState(null);
-  const [formData, setFormData] = useState({plateNo: "", make: "", model: "", desc: "", color: ""});
+  const [formData, setFormData] = useState({name: "", email: "", password: "", phoneNumber: "", address: ""});
   const [addNewUserModal1, setAddNewUserModal1] = useState(false);
   const [searchData, setSearchData] = useState("");
   const inputEl = useRef(null);
@@ -61,12 +61,12 @@ const OemTable = ({oems, oemsCount, loadingStatus, loading, header}) => {
   console.log(oems);
   console.log(oemsCount);
 
-  // const paginate = (pageNumber) => {
-  //   history.push(`${history.location.pathname}?page=${pageNumber}`);
-  //   setCurrentPage(pageNumber);
-  //   getVehicles(pageNumber, assign);
-  //   window.scrollTo(0, 0);
-  // };
+  const paginate = (pageNumber) => {
+    history.push(`${history.location.pathname}?page=${pageNumber}`);
+    setCurrentPage(pageNumber);
+    getOems(pageNumber);
+    window.scrollTo(0, 0);
+  };
 
   // const getPreviousData = () => {
   //   getVehicles(1, assign);
@@ -174,50 +174,34 @@ const OemTable = ({oems, oemsCount, loadingStatus, loading, header}) => {
                     <TableCell>Email </TableCell>
                   </TableRow>
                 </TableHead>
-                {/* <TableBody>
+                <TableBody>
                   <Fragment>
                     {oems.map((oem, key) => (
                       <TableRow hover key={key}>
-                        <TableCell>{oem.car_number_plate}</TableCell>
-                        <TableCell>{oem.car_number}</TableCell>
-                        <TableCell>{oem.car_make}</TableCell>
-                        <TableCell>{oem.car_model}</TableCell>
-                        <TableCell>
-                          <Badge color={oem.assigned ? "success" : "danger"}>{oem.assigned ? "Assigned" : "Unassigned"}</Badge>
-                        </TableCell>
-                        <TableCell>
-                          <button type="button" className="rct-link-btn" onClick={(e) => opnAddNewUserEditModal(oem.vehicle_id)}>
-                            <i className="ti-pencil"></i>
-                          </button>
-                          <button type="button" className="rct-link-btn ml-lg-3 text-danger ml-2" onClick={() => onDelete(oem.vehicle_id)}>
-                            <i className="ti-trash"></i>
-                          </button>
-                          <button type="button" className="rct-link-btn text-primary ml-3" title="view details">
-                            <Link to={`/admin/vehicles/${vehicle.vehicle_id}`}>
-                              <i className="ti-eye" />
-                            </Link>
-                          </button>
-                        </TableCell>
+                        <TableCell>{oem.name}</TableCell>
+                        <TableCell>{oem.address}</TableCell>
+                        <TableCell>{oem.phone_number}</TableCell>
+                        <TableCell>{oem.email}</TableCell>
                       </TableRow>
                     ))}
                   </Fragment>
-                </TableBody> */}
+                </TableBody>
               </Table>
             </div>
           )}
 
-          {/* {!loading && vehicles.length > 0 && (
+          {!loading && oems.length > 0 && (
             <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
-              <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={vehiclesCount} onChange={paginate} />
+              <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={oemsCount} onChange={paginate} />
             </div>
-          )} */}
+          )}
           {oems.length < 1 && <EmptyData />}
         </RctCollapsibleCard>
       )}
       <Modal isOpen={addNewUserModal} toggle={() => onAddUpdateUserModalClose()}>
         <ModalHeader toggle={() => onAddUpdateUserModalClose()}>{editUser ? "Update Vehicle" : "Add New Vehicle"}</ModalHeader>
         <Form onSubmit={onSubmit}>
-          {/* <ModalBody>
+          <ModalBody>
             <FormGroup>
               <Label for="firstName">Plate No</Label>
               <Input type="text" name="plateNo" value={plateNo} onChange={onChange} required />
@@ -233,22 +217,22 @@ const OemTable = ({oems, oemsCount, loadingStatus, loading, header}) => {
             <FormGroup>
               <Label for="text">Colour</Label>
               <Input type="text" name="color" value={color} onChange={onChange} required />
-            </FormGroup> */}
-          {/*<FormGroup>*/}
-          {/*    <Label for="text">Description</Label>*/}
-          {/*    <Input type="textarea" name="desc" value={desc} onChange={onChange} required />*/}
-          {/*</FormGroup>*/}
-          {/* </ModalBody> */}
-          {/* <ModalFooter>
+            </FormGroup>{" "}
+            <FormGroup>
+              <Label for="text">Description</Label>
+              <Input type="textarea" name="desc" value={desc} onChange={onChange} required />
+            </FormGroup>
+          </ModalBody>
+          <ModalFooter>
             <Button type="submit" variant="contained" className="text-white btn-success">
               Submit
             </Button>
-          </ModalFooter> */}
+          </ModalFooter>
         </Form>
       </Modal>
       <Modal isOpen={addNewUserModal1} toggle={() => onAddUpdateUserModalClose1()}>
         <ModalHeader toggle={() => onAddUpdateUserModalClose1()}>Upload Vehicle</ModalHeader>
-        <ModalBody>{/* <Upload oncloseModal={onAddUpdateUserModalClose1} /> */}</ModalBody>
+        <ModalBody></ModalBody>
       </Modal>
       <DeleteConfirmationDialog
         ref={inputEl}

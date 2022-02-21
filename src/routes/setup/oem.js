@@ -12,7 +12,7 @@ const Oem = ({history, match, getOems, getOemCount, oems, oemsCount}) => {
   });
   useEffect(() => {
     if (pageFromQuery === undefined || drivers.length < 1) {
-      getOems(currentPage, "", true);
+      getOems(currentPage, true);
       getOemCount();
     }
   }, []);
