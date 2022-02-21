@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {connect} from "react-redux";
-import {getOems, getOemCount} from "Actions/oemActions";
+import {getOems, getOemCount} from "Actions/oemAction";
 import OemTable from "./component/oemTable";
 const qs = require("qs");
 
@@ -20,7 +20,7 @@ const Oem = ({history, match, getOems, getOemCount, oems, oemsCount}) => {
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"OEM"} match={match} />
-      <OemTable assign={""} header="All Vehicles" />
+      <OemTable header="OEM" />
     </div>
   );
 };
