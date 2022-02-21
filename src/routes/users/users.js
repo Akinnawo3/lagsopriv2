@@ -9,7 +9,7 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import Pagination from "react-js-pagination";
 import {connect} from "react-redux";
-import {deleteUser, getUserCount, getUsers, searchUsers, ResetUserDetails} from "Actions/userAction";
+import {deleteUser, getUserCount, getUsers, searchUsers, ResetUserDetails, changeKycStatus} from "Actions/userAction";
 import EmptyData from "Components/EmptyData/EmptyData";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
@@ -19,12 +19,29 @@ import {sendVerificationRequest} from "Actions/idVerificationAction";
 import {Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 import {Form, FormGroup, Label, Input} from "reactstrap";
 import Button from "@material-ui/core/Button";
+import Spinner from "Components/spinner/Spinner";
 import emailMessages from "Assets/data/email-messages/emailMessages";
 import {getStatusColorKYC} from "Helpers/helpers";
 const qs = require("qs");
 export let onUserDetailsResetModalClose;
 
-const Users = ({history, match, getUsers, loading, users, userCount, getUserCount, deleteUser, searchUsers, ResetUserDetails, dataMode, sendVerificationRequest}) => {
+const Users = ({
+  history,
+  match,
+  getUsers,
+  loading,
+  loadingStatus,
+  users,
+  userCount,
+  getUserCount,
+  deleteUser,
+  searchUsers,
+  ResetUserDetails,
+  dataMode,
+  sendVerificationRequest,
+  verificationResult,
+  changeKycStatus,
+}) => {
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
@@ -40,6 +57,8 @@ const Users = ({history, match, getUsers, loading, users, userCount, getUserCoun
   const [password, setPassword] = useState("");
   const [userFirstName, setUserFirstName] = useState("");
   const [idVerificationModalOpen, setIdVerificationModalOpen] = useState(false);
+  const [authId, setAuthId] = useState("");
+  const [kycStatus, setKycStatus] = useState("");
   const inputEl = useRef(null);
 
   useEffect(() => {
@@ -62,18 +81,20 @@ const Users = ({history, match, getUsers, loading, users, userCount, getUserCoun
     setModalOpen(false);
   };
 
-  const triggerIdVerifcation = (type, value, firstName, lastName) => {
-    setIdType(type);
-    !isTest && sendVerificationRequest(type, value, firstName, lastName);
+  const triggerIdVerifcation = (type, value, firstName, lastName, authId, kycStatus) => {
+    // !isTest &&
+    setAuthId(authId);
+    setKycStatus(kycStatus);
+    sendVerificationRequest(type, value, firstName, lastName);
     setIdVerificationModalOpen(true);
   };
   // triggerIdVerifcation("nin", driver?.driver_data?.nin_id?.value, driver?.first_name, driver?.last_name)
 
   const verifyId = () => {
     setIdVerificationModalOpen(false);
-    setTitle(`Are you sure you want to verify this User's NIN`);
-    setMessage(`The User's NIN will be verified`);
-    setArgument(7);
+    // setTitle(`Are you sure you want to verify this User's NIN`);
+    // setMessage(`The User's NIN will be verified`);
+    // setArgument(7);
     inputEl.current.open();
   };
 
@@ -154,14 +175,21 @@ const Users = ({history, match, getUsers, loading, users, userCount, getUserCoun
                         <TableCell>{user.phone_number}</TableCell>
                         <TableCell>{user.email}</TableCell>
                         <TableCell>{user.user_type}</TableCell>
-                        <TableCell className={`fw-bold text-${user?.nin_id?.status ? "success" : "danger"}`}>{user?.nin_id?.status ? "Verified" : "Unverified"}</TableCell>
+                        <TableCell className={`fw-bold text-${user?.nin_id?.status ? "success" : "danger"}`}>
+                          {user?.nin_id?.status === true && "Verified"}
+                          {user?.nin_id?.status === false && "Unverified"}
+                        </TableCell>
                         <TableCell>
                           <Badge color={getStatusColorKYC(user.kyc_status)}>
                             {user.kyc_status === 0 && "Pending"}
                             {user.kyc_status === 1 && "Verified"}
                             {user.kyc_status === 2 && "Suspended"}
                           </Badge>
-                          {user.kyc_status === 0 && <span className="fw-bold text muted ml-1 ">Verify </span>}
+                          {user.kyc_status === 0 && (
+                            <span className="fw-bold text muted ml-1 " onClick={() => triggerIdVerifcation("nin", user?.nin_id?.value, user.first_name, user?.last_name, user?.auth_id, 0)}>
+                              Verify
+                            </span>
+                          )}
                           {user.kyc_status === 1 && <span className="fw-bold text muted ml-1 text-danger">Suspend </span>}
                           {user.kyc_status === 2 && <span className="fw-bold text muted ml-1 text-info ">Re-activate </span>}
                         </TableCell>
@@ -216,7 +244,7 @@ const Users = ({history, match, getUsers, loading, users, userCount, getUserCoun
                     <div className="fw-bold text-danger">This is test enironment so there is no verification API call </div>
                   </div>
                   <div className="mt-2 text-right">
-                    <button className=" btn rounded btn-primary" onClick={() => verifyId()}>
+                    <button className=" btn rounded btn-primary" onClick={() => verifyId("nin")}>
                       Verify NIN
                     </button>
                   </div>
@@ -276,7 +304,7 @@ const Users = ({history, match, getUsers, loading, users, userCount, getUserCoun
                       {`${verificationResult?.data?.gender} `}
                     </li>
                     <div className="mt-2 text-right">
-                      <button className=" btn rounded btn-primary" onClick={() => verifyId(idType)}>
+                      <button className=" btn rounded btn-primary" onClick={() => verifyId("nin")}>
                         Verify NIN
                       </button>
                     </div>
@@ -335,10 +363,10 @@ const Users = ({history, match, getUsers, loading, users, userCount, getUserCoun
 
       <DeleteConfirmationDialog
         ref={inputEl}
-        title="Are You Sure You Want To Delete?"
-        message="This will delete User permanently."
+        title="Are You Sure You Want To Update status?"
+        message="This will update User kyc status."
         onConfirm={() => {
-          deleteUser(deleteId, users);
+          changeKycStatus(authId, parseInt(kycStatus, 10));
           inputEl.current.close();
         }}
       />
@@ -353,6 +381,7 @@ function mapDispatchToProps(dispatch) {
     getUserCount: () => dispatch(getUserCount()),
     searchUsers: (searchData) => dispatch(searchUsers(searchData)),
     ResetUserDetails: (body, emailData) => dispatch(ResetUserDetails(body, emailData)),
+    changeKycStatus: (auth_id, kyc_status) => dispatch(changeKycStatus(auth_id, kyc_status)),
     sendVerificationRequest: (id_type, id_value, first_name, last_name) => dispatch(sendVerificationRequest(id_type, id_value, first_name, last_name)),
   };
 }

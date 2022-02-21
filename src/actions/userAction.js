@@ -61,6 +61,24 @@ export const ResetUserDetails = (body, emailData) => async (dispatch) => {
   }
 };
 
+export const changeKycStatus = (auth_id, kyc_status) => async (dispatch) => {
+  const body = {auth_id, kyc_status};
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.post(`${api.user}/v1.1/admin/user-kyc-status`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success("User KYC status Updated Successfully!");
+      await dispatch(getUsers(1, false));
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+    NotificationManager.error(err.response.data.message);
+  }
+};
+
 export const deleteUser = (auth_id, users) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
