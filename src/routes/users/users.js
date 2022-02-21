@@ -90,11 +90,10 @@ const Users = ({
   };
   // triggerIdVerifcation("nin", driver?.driver_data?.nin_id?.value, driver?.first_name, driver?.last_name)
 
-  const verifyId = () => {
+  const verifyId = (auth_id, kyc_Status) => {
     setIdVerificationModalOpen(false);
-    // setTitle(`Are you sure you want to verify this User's NIN`);
-    // setMessage(`The User's NIN will be verified`);
-    // setArgument(7);
+    auth_id && setAuthId(auth_id);
+    kyc_Status && setKycStatus(kyc_Status); 
     inputEl.current.open();
   };
 
@@ -186,11 +185,15 @@ const Users = ({
                             {user.kyc_status === 2 && "Suspended"}
                           </Badge>
                           {user.kyc_status === 0 && (
-                            <span className="fw-bold text muted ml-1 " onClick={() => triggerIdVerifcation("nin", user?.nin_id?.value, user.first_name, user?.last_name, user?.auth_id, 0)}>
+                            <span className="fw-bold text muted ml-1 " onClick={() => triggerIdVerifcation("nin", user?.nin_id?.value, user.first_name, user?.last_name, user?.auth_id, 1)}>
                               Verify
                             </span>
                           )}
-                          {user.kyc_status === 1 && <span className="fw-bold text muted ml-1 text-danger">Suspend </span>}
+                          {user.kyc_status === 1 && (
+                            <span className="fw-bold text muted ml-1 text-danger" onClick={() => triggerIdVerifcation("nin", user?.nin_id?.value, user.first_name, user?.last_name, user?.auth_id, 0)}>
+                              Suspend{" "}
+                            </span>
+                          )}
                           {user.kyc_status === 2 && <span className="fw-bold text muted ml-1 text-info ">Re-activate </span>}
                         </TableCell>
                         <TableCell>
