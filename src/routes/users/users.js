@@ -39,6 +39,7 @@ const Users = ({history, match, getUsers, loading, users, userCount, getUserCoun
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [userFirstName, setUserFirstName] = useState("");
+  const [idVerificationModalOpen, setIdVerificationModalOpen] = useState(false);
   const inputEl = useRef(null);
 
   useEffect(() => {
@@ -61,13 +62,20 @@ const Users = ({history, match, getUsers, loading, users, userCount, getUserCoun
     setModalOpen(false);
   };
 
-  // const triggerIdVerifcation = (type, value, firstName, lastName) => {
-  //   setIdType(type);
-  //   !isTest && sendVerificationRequest(type, value, firstName, lastName);
-  //   setIdVerificationModalOpen(true);
-  // };
-
+  const triggerIdVerifcation = (type, value, firstName, lastName) => {
+    setIdType(type);
+    !isTest && sendVerificationRequest(type, value, firstName, lastName);
+    setIdVerificationModalOpen(true);
+  };
   // triggerIdVerifcation("nin", driver?.driver_data?.nin_id?.value, driver?.first_name, driver?.last_name)
+
+  const verifyId = () => {
+    setIdVerificationModalOpen(false);
+    setTitle(`Are you sure you want to verify this User's NIN`);
+    setMessage(`The User's NIN will be verified`);
+    setArgument(7);
+    inputEl.current.open();
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -191,6 +199,95 @@ const Users = ({history, match, getUsers, loading, users, userCount, getUserCoun
         {users.length < 1 && <EmptyData />}
       </RctCollapsibleCard>
 
+      <Modal size="md" isOpen={idVerificationModalOpen} toggle={() => setIdVerificationModalOpen(!idVerificationModalOpen)}>
+        <ModalHeader toggle={() => setIdVerificationModalOpen(!idVerificationModalOpen)}>Verify NIN</ModalHeader>
+        <ModalBody style={{minHeight: 100}}>
+          {loadingStatus && (
+            <div className="d-flex flex-column justify-content-center align-items-center">
+              <Spinner />
+              <h3 className="fw-bold mt-3">verifying id </h3>
+            </div>
+          )}
+          {!loadingStatus && (
+            <div>
+              {isTest && (
+                <div>
+                  <div className="d-flex flex-column justify-content-center align-items-center">
+                    <div className="fw-bold text-danger">This is test enironment so there is no verification API call </div>
+                  </div>
+                  <div className="mt-2 text-right">
+                    <button className=" btn rounded btn-primary" onClick={() => verifyId()}>
+                      Verify NIN
+                    </button>
+                  </div>
+                </div>
+              )}
+              {verificationResult?.status === "error" && (
+                <div className="d-flex flex-column justify-content-center align-items-center">
+                  <div className="fw-bold text-danger">{verificationResult?.msg} </div>
+                </div>
+              )}
+              {verificationResult?.status === "error" && (
+                <div className="d-flex flex-column justify-content-center align-items-center">
+                  <div className="fw-bold text-danger">{verificationResult?.message} </div>
+                </div>
+              )}
+              {verificationResult?.status === "success" && (
+                <div>
+                  <ul className="list-group">
+                    <div className="rounded rounded-circle">
+                      <img alt="" src={verificationResult?.data?.photo} />
+                    </div>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Name</strong>
+                      </span>
+                      {`${verificationResult?.data?.firstname} ${verificationResult?.data?.middlename} ${verificationResult?.data?.lastname}`}
+                    </li>
+
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>First Name Matches Reg. Details</strong>
+                      </span>
+                      {`${verificationResult?.data?.firstname?.toUpperCase() === driver?.first_name?.toUpperCase() ? "Yes" : "No"} `}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Last Name Matches Reg. Details</strong>
+                      </span>
+                      {`${verificationResult?.data?.lastname?.toUpperCase() === driver?.last_name?.toUpperCase() ? "Yes" : "No"} `}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Phone Number Matches Reg. Details</strong>
+                      </span>
+                      {`${verificationResult?.data?.phone === driver?.phone_number ? "Yes" : "No"} `}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Birth Date</strong>
+                      </span>
+                      {`${verificationResult?.data?.birthdate} `}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Gender</strong>
+                      </span>
+                      {`${verificationResult?.data?.gender} `}
+                    </li>
+                    <div className="mt-2 text-right">
+                      <button className=" btn rounded btn-primary" onClick={() => verifyId(idType)}>
+                        Verify NIN
+                      </button>
+                    </div>
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+        </ModalBody>
+      </Modal>
+
       <Modal isOpen={modalOpen} toggle={() => onUserDetailsResetModalClose()}>
         <ModalHeader toggle={() => onUserDetailsResetModalClose()}>
           Reset {component === "email" && "Email"} {component === "phone_number" && "Phone Number"} {component === "password" && "Password"}
@@ -264,7 +361,9 @@ const mapStateToProps = (state) => ({
   users: state.users.users,
   userCount: state.users.userCount,
   loading: state.loading.loading,
+  loadingStatus: state.loading.loadingStatus,
   dataMode: state.authUser.userProfile.data_mode,
+  verificationResult: state.idVerification.verificationResult,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Users);
