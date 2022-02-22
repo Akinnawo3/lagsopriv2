@@ -6,28 +6,35 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import {connect} from "react-redux";
+import EmptyData from "Components/EmptyData/EmptyData";
 import {getDownloadsByArea} from "Actions/userAction";
 
-const DownloadsTable = ({getDownloadsByArea}) => {
+const DownloadsTable = ({getDownloadsByArea, downloadsByArea, loading}) => {
   useEffect(() => {
     getDownloadsByArea(true);
   }, []);
+  console.log(downloadsByArea);
   return (
     <RctCollapsibleCard heading="Updates">
-      <Table>
-        <TableHead>
-          <TableRow hover>
-            <TableCell>Area</TableCell>
-            <TableCell className="text-right">Number</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableRow hover>
-            <TableCell>area 1</TableCell>
-            <TableCell className="text-right">2000</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+      {!loading && downloadsByArea.length > 0 && (
+        <Table>
+          <TableHead>
+            <TableRow hover>
+              <TableCell>Area</TableCell>
+              <TableCell className="text-right">Number</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {downloadsByArea.map((item) => (
+              <TableRow hover>
+                <TableCell>{item._id}</TableCell>
+                <TableCell className="text-right">{item.total}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
+      {downloadsByArea.length < 1 && <EmptyData />}
     </RctCollapsibleCard>
   );
 };
@@ -37,6 +44,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 const mapStateToProps = (state) => ({
   downloadsByArea: state.users.downloadsByArea,
+  loading: state.loading.loading,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DownloadsTable);
