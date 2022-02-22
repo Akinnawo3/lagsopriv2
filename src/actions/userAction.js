@@ -181,7 +181,7 @@ export const getAdminLogsCount = (loading) => async (dispatch) => {
   }
 };
 
-export const getDownloadsByArea = () => async (dispatch) => {
+export const getDownloadsByArea = (spinner) => async (dispatch) => {
   try {
     spinner && (await dispatch(startLoading()));
     !spinner && dispatch(startStatusLoading());
