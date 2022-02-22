@@ -129,14 +129,14 @@ const GoogleMapComponent = ({
         </div>
       </div>
 
-      <div className="map-wrapper">
+      {/* <div className="map-wrapper">
         <Helmet>
           <title>Map</title>
           <meta name="description" content="Driver Location on Map" />
         </Helmet>
         <RctCollapsibleCard heading="Google Maps">
           <FormGroup>
-            {/*<Label  htmlFor="browser">Search Driver on Map</Label>*/}
+            <Label  htmlFor="browser">Search Driver on Map</Label>
             <Input
               onFocus={onFocus}
               onBlur={onBlur}
@@ -167,7 +167,7 @@ const GoogleMapComponent = ({
               </div>
             )}
           </FormGroup>
-          {/*<SelectSearch autoComplete="on" search={true} options={options} placeholder="Search Vehicle" onChange={onChangeSearch}  />*/}
+          <SelectSearch autoComplete="on" search={true} options={options} placeholder="Search Vehicle" onChange={onChangeSearch}  />
 
           <GoogleMap
             bootstrapURLKeys={{key: "AIzaSyCw_5YoOp78lvq1Dgfri-TnDjRSf1cguf0"}}
@@ -177,20 +177,20 @@ const GoogleMapComponent = ({
             style={{position: "relative", width: "100%", height: "70vh"}}
             options={MAP_OPTIONS}
             hoverDistance={40 / 2}
-            // onClick={_onClick}
+            onClick={_onClick}
           >
             {driverLocation.map((m, index) => (
               <AnyReactComponent lat={m.lat} lng={m.lng} key={index} text={m.plate_no} cord={m} />
             ))}
           </GoogleMap>
         </RctCollapsibleCard>
-      </div>
+      </div> */}
       {/* //downloads chart and table row */}
       <div className="row">
         <div className="col-sm-12 col-md-8 w-xs-half-block">
           <DownloadsChart />
         </div>
-        <div className="col-sm-12 col-md-4 w-xs-half-block">
+        <div className="col-sm-12 col-md-4 w-xs-half-block" style={{maxHeight: 450, overflowY: "scroll"}}>
           <DownloadsTable />
         </div>
       </div>
