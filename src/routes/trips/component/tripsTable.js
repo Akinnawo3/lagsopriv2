@@ -16,12 +16,18 @@ import Pagination from "react-js-pagination";
 import EmptyData from "Components/EmptyData/EmptyData";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {getCancelledTripCount, getCancelledTrips} from "../../../actions/tripAction";
+import {useHistory} from "react-router-dom";
+const qs = require("qs");
 
 const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, searchTrips, getTripCount, getCancelledTrips, getCancelledTripCount}) => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const history = useHistory();
+  const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
+  const [currentPage, setCurrentPage] = useState(() => {
+    return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
+  });
   const [postsPerPage] = useState(20);
-
   const paginate = async (pageNumber) => {
+    history.push(`${history.location.pathname}?page=${pageNumber}`);
     await setCurrentPage(pageNumber);
     status === "cancel" ? await getCancelledTrips(pageNumber, true) : await getTrips(pageNumber, status);
     window.scrollTo(0, 0);

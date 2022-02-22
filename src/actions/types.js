@@ -82,6 +82,7 @@ export const FEE_TYPE = "FEE_TYPE";
 
 export const AREAS = "AREAS";
 export const AREA_COUNT = "AREA_COUNT";
+export const DOWNLOADS_BY_AREA = "DOWNLOADS_BY_AREA";
 
 export const CANCELLATION_REASONS = "CANCELLATION_REASONS";
 
@@ -175,3 +176,7 @@ export const CLEAR_COUNTER = "CLEAR_COUNTER";
 //geo-fencing
 export const GEOFENCES = "GEOFENCES";
 export const FENCES_COUNT = "FENCES_COUNT";
+
+//oem
+export const OEMS = "OEMS";
+export const OEMS_COUNT = "OEMS_COUNT";

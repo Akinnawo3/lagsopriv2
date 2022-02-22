@@ -1,19 +1,24 @@
 /**
  * Payments
  */
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {connect} from "react-redux";
-import {getTripCount, getTrips} from "Actions/tripAction";
-import TripsTable from "Routes/trips/component/tripsTable";
 import {getPayments, getPaymentsCount} from "Actions/paymentAction";
 import PaymentTable from "Routes/payments/component/paymentTable";
+const qs = require("qs");
 
-const Payments = ({match, getPayments, getPaymentsCount, payments, paymentsCount}) => {
+const Payments = ({history, match, getPayments, getPaymentsCount, payments, paymentsCount}) => {
+  const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
+  const [currentPage, setCurrentPage] = useState(() => {
+    return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
+  });
   useEffect(() => {
     // pageNo, transaction_status, auth_id, loading
-    getPayments(1, "", "", true);
-    getPaymentsCount();
+    if (pageFromQuery === undefined || payments.length < 1) {
+      getPayments(currentPage, "", "", true);
+      getPaymentsCount();
+    }
   }, []);
 
   return (

@@ -32,6 +32,7 @@ import idVerificationReducer from "./idVerificationReducer";
 import environmentReducer from "./environmentReducer";
 import notificationReducer from "./notificationReducer";
 import geoFenceReducer from "./geoFenceReducer";
+import oemReducer from "./oemReducer";
 
 const reducers = combineReducers({
   settings,
@@ -64,6 +65,7 @@ const reducers = combineReducers({
   environment: environmentReducer,
   notification: notificationReducer,
   geoFence: geoFenceReducer,
+  oem: oemReducer,
 });
 
 export default reducers;

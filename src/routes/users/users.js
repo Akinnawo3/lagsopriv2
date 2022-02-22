@@ -4,24 +4,48 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import {Badge} from "reactstrap";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import Pagination from "react-js-pagination";
 import {connect} from "react-redux";
-import {deleteUser, getUserCount, getUsers, searchUsers, ResetUserDetails} from "Actions/userAction";
+import {deleteUser, getUserCount, getUsers, searchUsers, ResetUserDetails, changeKycStatus} from "Actions/userAction";
 import EmptyData from "Components/EmptyData/EmptyData";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {verifyUserPermssion} from "../../container/DefaultLayout";
 import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from "reactstrap";
+import {sendVerificationRequest} from "Actions/idVerificationAction";
 import {Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 import {Form, FormGroup, Label, Input} from "reactstrap";
 import Button from "@material-ui/core/Button";
+import Spinner from "Components/spinner/Spinner";
 import emailMessages from "Assets/data/email-messages/emailMessages";
+import {getStatusColorKYC} from "Helpers/helpers";
+const qs = require("qs");
 export let onUserDetailsResetModalClose;
 
-const Users = ({match, getUsers, loading, users, userCount, getUserCount, deleteUser, searchUsers, ResetUserDetails}) => {
-  const [currentPage, setCurrentPage] = useState(1);
+const Users = ({
+  history,
+  match,
+  getUsers,
+  loading,
+  loadingStatus,
+  users,
+  userCount,
+  getUserCount,
+  deleteUser,
+  searchUsers,
+  ResetUserDetails,
+  dataMode,
+  sendVerificationRequest,
+  verificationResult,
+  changeKycStatus,
+}) => {
+  const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
+  const [currentPage, setCurrentPage] = useState(() => {
+    return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
+  });
   const [deleteId, setDeleteId] = useState(null);
   const [openedDropdownID, setOpenedDropdownID] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
@@ -32,13 +56,26 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [userFirstName, setUserFirstName] = useState("");
+  const [idVerificationModalOpen, setIdVerificationModalOpen] = useState(false);
+  const [authId, setAuthId] = useState("");
+  const [kycStatus, setKycStatus] = useState("");
+  const [argument, setArgument] = useState(null);
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
+
   const inputEl = useRef(null);
+
   useEffect(() => {
-    getUsers(1, true);
-    getUserCount();
+    if (pageFromQuery === undefined || users.length < 1) {
+      getUsers(currentPage, true);
+      getUserCount();
+    }
   }, []);
 
+  const isTest = dataMode === "test" ? true : false;
+
   const paginate = (pageNumber) => {
+    history.push(`${history.location.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
     getUsers(pageNumber);
     window.scrollTo(0, 0);
@@ -46,6 +83,30 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
 
   onUserDetailsResetModalClose = () => {
     setModalOpen(false);
+  };
+
+  const triggerIdVerifcation = (type, value, firstName, lastName, authId, kycStatus) => {
+    setAuthId(authId);
+    setKycStatus(kycStatus);
+    !isTest && sendVerificationRequest(type, value, firstName, lastName);
+    setIdVerificationModalOpen(true);
+  };
+
+  const onDelete = (id) => {
+    setArgument(1);
+    setTitle("Are you sure you want to delete this user?");
+    setMessage("This user will be deleted permanently.");
+    inputEl.current.open();
+    setDeleteId(id);
+  };
+  const verifyId = (auth_id, kyc_Status) => {
+    setArgument(2);
+    setTitle("Are you sure you want to update KYC status?");
+    setMessage("This user's KYC status will be updated permanently.");
+    setIdVerificationModalOpen(false);
+    auth_id && setAuthId(auth_id);
+    kyc_Status && setKycStatus(kyc_Status);
+    inputEl.current.open();
   };
 
   const onSubmit = (e) => {
@@ -69,17 +130,11 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
       name: userFirstName,
       email: oldEmail,
     };
-
-    console.log(emailData);
     component === "email" && ResetUserDetails({component, old_email: oldEmail, new_email: newEmail}, emailData);
     component === "phone_number" && ResetUserDetails({component, old_phone_number: phoneNumber, new_phone_number: newPhoneNumber}, emailData);
     component === "password" && ResetUserDetails({component, phone_number: phoneNumber, password}, emailData);
   };
 
-  const onDelete = (id) => {
-    inputEl.current.open();
-    setDeleteId(id);
-  };
   const toggle = (id, name) => {
     setNewEmail("");
     setNewPhoneNumber("");
@@ -92,6 +147,16 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
     setOldEmail(oldEmail);
     setPhoneNumber(OldPhoneNumber);
     setModalOpen(true);
+  };
+
+  const onConfirm = () => {
+    if (argument === 1) {
+      deleteUser(deleteId, users);
+    } else if (argument === 2) {
+      changeKycStatus(authId, kycStatus);
+    }
+    console.log(argument);
+    inputEl.current.close();
   };
 
   return (
@@ -112,6 +177,8 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
                     <TableCell>Phone No</TableCell>
                     <TableCell>Email</TableCell>
                     <TableCell>Type</TableCell>
+                    <TableCell>NIN status</TableCell>
+                    <TableCell>KYC status</TableCell>
                     <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
@@ -124,6 +191,32 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
                         <TableCell>{user.phone_number}</TableCell>
                         <TableCell>{user.email}</TableCell>
                         <TableCell>{user.user_type}</TableCell>
+                        <TableCell className={`fw-bold text-${user?.nin_id?.status ? "success" : "danger"}`}>
+                          {user?.nin_id?.status === true && "Verified"}
+                          {user?.nin_id?.status === false && "Unverified"}
+                        </TableCell>
+                        <TableCell>
+                          <Badge color={getStatusColorKYC(user.kyc_status)}>
+                            {user.kyc_status === 0 && "Pending"}
+                            {user.kyc_status === 1 && "Verified"}
+                            {user.kyc_status === 2 && "Suspended"}
+                          </Badge>
+                          {user.kyc_status === 0 && (
+                            <span className="fw-bold text muted ml-1 " onClick={() => triggerIdVerifcation("nin", user?.nin_id?.value, user.first_name, user?.last_name, user?.auth_id, "1")}>
+                              Verify
+                            </span>
+                          )}
+                          {user.kyc_status === 1 && (
+                            <span className="fw-bold text muted ml-1 text-danger" onClick={() => verifyId(user?.auth_id, "2")}>
+                              Suspend
+                            </span>
+                          )}
+                          {user.kyc_status === 2 && (
+                            <span className="fw-bold text muted ml-1 text-info " onClick={() => verifyId(user?.auth_id, "1")}>
+                              Re-activate
+                            </span>
+                          )}
+                        </TableCell>
                         <TableCell>
                           <span className="d-flex">
                             <Dropdown isOpen={openedDropdownID === user?.auth_id} toggle={() => toggle(user.auth_id, user.first_name)}>
@@ -157,6 +250,95 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
         )}
         {users.length < 1 && <EmptyData />}
       </RctCollapsibleCard>
+
+      <Modal size="md" isOpen={idVerificationModalOpen} toggle={() => setIdVerificationModalOpen(!idVerificationModalOpen)}>
+        <ModalHeader toggle={() => setIdVerificationModalOpen(!idVerificationModalOpen)}>Verify NIN</ModalHeader>
+        <ModalBody style={{minHeight: 100}}>
+          {loadingStatus && (
+            <div className="d-flex flex-column justify-content-center align-items-center">
+              <Spinner />
+              <h3 className="fw-bold mt-3">verifying id </h3>
+            </div>
+          )}
+          {!loadingStatus && (
+            <div>
+              {isTest && (
+                <div>
+                  <div className="d-flex flex-column justify-content-center align-items-center">
+                    <div className="fw-bold text-danger">This is test enironment so there is no verification API call </div>
+                  </div>
+                  <div className="mt-2 text-right">
+                    <button className=" btn rounded btn-primary" onClick={() => verifyId()}>
+                      Verify NIN
+                    </button>
+                  </div>
+                </div>
+              )}
+              {verificationResult?.status === "error" && (
+                <div className="d-flex flex-column justify-content-center align-items-center">
+                  <div className="fw-bold text-danger">{verificationResult?.msg} </div>
+                </div>
+              )}
+              {verificationResult?.status === "error" && (
+                <div className="d-flex flex-column justify-content-center align-items-center">
+                  <div className="fw-bold text-danger">{verificationResult?.message} </div>
+                </div>
+              )}
+              {verificationResult?.status === "success" && (
+                <div>
+                  <ul className="list-group">
+                    <div className="rounded rounded-circle">
+                      <img alt="" src={verificationResult?.data?.photo} />
+                    </div>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Name</strong>
+                      </span>
+                      {`${verificationResult?.data?.firstname} ${verificationResult?.data?.middlename} ${verificationResult?.data?.lastname}`}
+                    </li>
+
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>First Name Matches Reg. Details</strong>
+                      </span>
+                      {`${verificationResult?.data?.firstname?.toUpperCase() === driver?.first_name?.toUpperCase() ? "Yes" : "No"} `}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Last Name Matches Reg. Details</strong>
+                      </span>
+                      {`${verificationResult?.data?.lastname?.toUpperCase() === driver?.last_name?.toUpperCase() ? "Yes" : "No"} `}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Phone Number Matches Reg. Details</strong>
+                      </span>
+                      {`${verificationResult?.data?.phone === driver?.phone_number ? "Yes" : "No"} `}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Birth Date</strong>
+                      </span>
+                      {`${verificationResult?.data?.birthdate} `}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Gender</strong>
+                      </span>
+                      {`${verificationResult?.data?.gender} `}
+                    </li>
+                    <div className="mt-2 text-right">
+                      <button className=" btn rounded btn-primary" onClick={() => verifyId("nin")}>
+                        Verify NIN
+                      </button>
+                    </div>
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+        </ModalBody>
+      </Modal>
 
       <Modal isOpen={modalOpen} toggle={() => onUserDetailsResetModalClose()}>
         <ModalHeader toggle={() => onUserDetailsResetModalClose()}>
@@ -202,16 +384,7 @@ const Users = ({match, getUsers, loading, users, userCount, getUserCount, delete
           </ModalFooter>
         </Form>
       </Modal>
-
-      <DeleteConfirmationDialog
-        ref={inputEl}
-        title="Are You Sure You Want To Delete?"
-        message="This will delete User permanently."
-        onConfirm={() => {
-          deleteUser(deleteId, users);
-          inputEl.current.close();
-        }}
-      />
+      <DeleteConfirmationDialog ref={inputEl} title={title} message={message} onConfirm={onConfirm} />
     </div>
   );
 };
@@ -223,6 +396,8 @@ function mapDispatchToProps(dispatch) {
     getUserCount: () => dispatch(getUserCount()),
     searchUsers: (searchData) => dispatch(searchUsers(searchData)),
     ResetUserDetails: (body, emailData) => dispatch(ResetUserDetails(body, emailData)),
+    changeKycStatus: (auth_id, kyc_status) => dispatch(changeKycStatus(auth_id, kyc_status)),
+    sendVerificationRequest: (id_type, id_value, first_name, last_name) => dispatch(sendVerificationRequest(id_type, id_value, first_name, last_name)),
   };
 }
 
@@ -230,6 +405,9 @@ const mapStateToProps = (state) => ({
   users: state.users.users,
   userCount: state.users.userCount,
   loading: state.loading.loading,
+  loadingStatus: state.loading.loadingStatus,
+  dataMode: state.authUser.userProfile.data_mode,
+  verificationResult: state.idVerification.verificationResult,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Users);

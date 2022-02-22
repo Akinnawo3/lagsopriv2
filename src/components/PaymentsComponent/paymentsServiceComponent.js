@@ -83,6 +83,11 @@ const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenue
                     <TableCell>Maintenance</TableCell>
                     <TableCell>Refleeting</TableCell>
                     <TableCell>Tech Co</TableCell>
+                    <TableCell>Asset Repayment</TableCell>
+                    <TableCell>Dashcam Repayment</TableCell>
+                    <TableCell>Mobile Phone Repayment</TableCell>
+                    {/* <TableCell>Gross Balance</TableCell>
+                    <TableCell> Balance</TableCell> */}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -90,13 +95,18 @@ const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenue
                     {driverRevenueSplit.length > 0 &&
                       driverRevenueSplit.map((item, index) => (
                         <TableRow hover key={index}>
-                          <TableCell>{`${formatByDateType(item?.rev_date)}`}</TableCell>
+                          <TableCell>{`${formatByDateType(item?.created)}`}</TableCell>
                           <TableCell>{`₦${item?.asset_co.toLocaleString()}`}</TableCell>
                           <TableCell>{`₦${item?.comms.toLocaleString()}`}</TableCell>
                           <TableCell>{`₦${item?.daily_tax.toLocaleString()}`}</TableCell>
                           <TableCell>{`₦${item?.maintenance.toLocaleString()}`}</TableCell>
                           <TableCell>{`₦${item?.refleeting.toLocaleString()}`}</TableCell>
                           <TableCell>{`₦${item?.tech_co.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.asset_repayment.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.dashcam_repayment.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.mobile_phone_repayment.toLocaleString()}`}</TableCell>
+                          {/* <TableCell>{`₦${item?.gross_balance.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.balance.toLocaleString()}`}</TableCell> */}
                         </TableRow>
                       ))}
                   </Fragment>

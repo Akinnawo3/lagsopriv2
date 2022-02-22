@@ -17,6 +17,8 @@ import GoogleMapComponent1 from "Components/Maps/GoogleMapComponent1";
 import {getUsersLocation} from "Actions/userAction";
 import {getDriversLocation} from "Actions/driverAction";
 import {getTripCountMovingDrivers, getTripCountMovingUsers, getTripCountWaitingDrivers, getTripCountWaitingUsers} from "Actions/tripAction";
+import DownloadsChart from "./component/downloadsChart";
+import DownloadsTable from "./component/downloadsTable";
 
 const GoogleMapComponent = ({
   match,
@@ -115,12 +117,13 @@ const GoogleMapComponent = ({
 
   return (
     <div>
+      <PageTitleBar title="Map" match={match} />
       <div className="row">
         <div className="col-sm-12 col-md-6 w-xs-half-block">
-          <GoogleMapComponent1 getUsersLocation={getDriversLocation} userLocation={driversLocation} waiting={tripCountWaitingDrivers} moving={tripCountMovingDrivers} title={'Drivers Map'} />
+          <GoogleMapComponent1 getUsersLocation={getDriversLocation} userLocation={driversLocation} waiting={tripCountWaitingDrivers} moving={tripCountMovingDrivers} title={"Drivers Map"} />
         </div>
         <div className="col-sm-12 col-md-6 w-xs-half-block">
-          <GoogleMapComponent1 getUsersLocation={getUsersLocation} userLocation={userLocation} waiting={tripCountWaitingUsers} moving={tripCountMovingUsers} title={'Riders Map'} />
+          <GoogleMapComponent1 getUsersLocation={getUsersLocation} userLocation={userLocation} waiting={tripCountWaitingUsers} moving={tripCountMovingUsers} title={"Riders Map"} />
 
           {/*<GoogleMapComponentUser getUsersLocation={getUsersLocation} userLocation={userLocation} waiting={tripCountWaitingUsers} moving={tripCountMovingUsers} />*/}
         </div>
@@ -131,7 +134,6 @@ const GoogleMapComponent = ({
           <title>Map</title>
           <meta name="description" content="Driver Location on Map" />
         </Helmet>
-        <PageTitleBar title="Map" match={match} />
         <RctCollapsibleCard heading="Google Maps">
           <FormGroup>
             {/*<Label  htmlFor="browser">Search Driver on Map</Label>*/}
@@ -182,6 +184,15 @@ const GoogleMapComponent = ({
             ))}
           </GoogleMap>
         </RctCollapsibleCard>
+      </div>
+      {/* //downloads chart and table row */}
+      <div className="row">
+        <div className="col-sm-12 col-md-8 w-xs-half-block">
+          <DownloadsChart />
+        </div>
+        <div className="col-sm-12 col-md-4 w-xs-half-block">
+          <DownloadsTable />
+        </div>
       </div>
     </div>
   );

@@ -18,10 +18,11 @@ const api =
         vehicles: "https://staging-server.lagosride.com/vehicle-service",
         area: "https://staging-server.lagosride.com/area-service",
         revenueSplit: "https://staging-server.lagosride.com/revenue-service",
-        idVerification: "https://staging-server.lagosride.com/verify-service ",
+        idVerification: "https://staging-server.lagosride.com/verify-service",
         messageSending: "https://staging-server.lagosride.com/message-service",
         fees: "https://staging-server.lagosride.com/fees-service",
         socket: "https://staging-server.lagosride.com/admin-socket",
+        oem: "https://staging-server.lagosride.com/oem-service",
       }
     : {
         bookingTypes: "https://taxitriptypebackend-microservices.api.lagosride.com",

@@ -9,27 +9,35 @@ import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard
 import {Form, FormGroup, Label, Input} from "reactstrap";
 import Button from "@material-ui/core/Button";
 import Pagination from "react-js-pagination";
-
 import {Modal, ModalHeader, ModalBody, ModalFooter, Row, Col} from "reactstrap";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import {connect} from "react-redux";
-import Spinner from "../../components/spinner/Spinner";
-import IconButton from "@material-ui/core/IconButton";
-import MobileSearchForm from "Components/Header/MobileSearchForm";
-import {CSVLink} from "react-csv";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import {calculatePostDate} from "Helpers/helpers";
 import {createPromoDiscount, deletePromoDiscount, getPromoDiscount, getPromoDiscountCount, updatePromoDiscount, searchPromo} from "../../actions/promoDiscountsAction";
 import {Link} from "react-router-dom";
 import moment from "moment";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
-import {getTodayDate} from "Helpers/helpers";
 import {verifyUserPermssion} from "../../container/DefaultLayout";
+const qs = require("qs");
 export let onAddUpdateUserModalClose;
 const PromoDiscounts = (props) => {
-  console.log(process.env.REACT_APP_MEASUREMENT_ID);
-  const {match, getPromoDiscounts, promoDiscountsCount, promoDiscounts, searchPromo, createPromoDiscount, updatePromoDiscount, getPromoDiscountCount, loading, deletePromoDiscount, loadingStatus} =
-    props;
+  const {
+    history,
+    match,
+    getPromoDiscounts,
+    promoDiscountsCount,
+    promoDiscounts,
+    searchPromo,
+    createPromoDiscount,
+    updatePromoDiscount,
+    getPromoDiscountCount,
+    loading,
+    deletePromoDiscount,
+    loadingStatus,
+  } = props;
+  const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
+  const [currentPage, setCurrentPage] = useState(() => {
+    return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
+  });
   const [addNewUserModal, setAddNewUserModal] = useState(false);
   const [editUser, setEditUser] = useState(false);
   const [updateId, setUpdateId] = useState(null);
@@ -49,7 +57,6 @@ const PromoDiscounts = (props) => {
   const [searchData, setSearchData] = useState("");
   const inputEl = useRef(null);
   const [posts, setPosts] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(10);
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -57,16 +64,14 @@ const PromoDiscounts = (props) => {
   const [excelExport, setExcelExport] = useState([]);
 
   useEffect(() => {
-    getPromoDiscounts(1);
-    getPromoDiscountCount();
+    if (pageFromQuery === undefined || promoDiscounts.length < 1) {
+      getPromoDiscounts(currentPage);
+      getPromoDiscountCount();
+    }
   }, []);
 
-  // const paginate = (pageNumber) => {
-  //   setCurrentPage(pageNumber);
-  //   window.scrollTo(0, 0);
-  // };
-
   const paginate = (pageNumber) => {
+    history.push(`${history.location.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
     getPromoDiscounts(pageNumber);
     window.scrollTo(0, 0);

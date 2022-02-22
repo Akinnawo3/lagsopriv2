@@ -1,6 +1,6 @@
 import axios from "axios";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
-import {USERS, USER_COUNT, USERS_LOCATION, ACTIVITY_LOGS, ACTIVITY_LOGS_COUNT} from "./types";
+import {USERS, USER_COUNT, USERS_LOCATION, ACTIVITY_LOGS, ACTIVITY_LOGS_COUNT, DOWNLOADS_BY_AREA} from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 import {sendMessage} from "./messagesAction";
@@ -52,6 +52,25 @@ export const ResetUserDetails = (body, emailData) => async (dispatch) => {
       await NotificationManager.success("User Detail Updated Successfully!");
       await dispatch(sendMessage(emailData));
       onUserDetailsResetModalClose();
+      await dispatch(getUsers(1, false));
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+    NotificationManager.error(err.response.data.message);
+  }
+};
+
+export const changeKycStatus = (auth_id, kyc_status) => async (dispatch) => {
+  console.log(typeof kyc_status);
+  const body = {auth_id, kyc_status};
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.post(`${api.user}/v1.1/admin/user-kyc-status`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success("User KYC status Updated Successfully!");
       await dispatch(getUsers(1, false));
     }
     dispatch(endStatusLoading());
@@ -159,5 +178,27 @@ export const getAdminLogsCount = (loading) => async (dispatch) => {
   } catch (err) {
     dispatch(endLoading());
     dispatch(endStatusLoading());
+  }
+};
+
+export const getDownloadsByArea = (spinner) => async (dispatch) => {
+  try {
+    spinner && (await dispatch(startLoading()));
+    !spinner && dispatch(startStatusLoading());
+    const res = await axios.get(`${api.user}/v1.1/admin/download-stat`);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      dispatch({
+        type: DOWNLOADS_BY_AREA,
+        payload: res.data.data,
+      });
+    }
+    dispatch(endLoading());
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endLoading());
+    dispatch(endStatusLoading());
+    NotificationManager.error(err.response.data.error);
   }
 };

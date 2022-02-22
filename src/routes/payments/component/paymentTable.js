@@ -12,13 +12,18 @@ import {calculatePostDate, getStatus4, getStatusColor4} from "Helpers/helpers";
 import {Badge} from "reactstrap";
 import {getPayments} from "Actions/paymentAction";
 import {Link} from "react-router-dom";
-
-const PaymentTable = ({payments, paymentsCount, auth_id, getPayments, header, loading}) => {
-  const [currentPage, setCurrentPage] = useState(1);
-
+import {useHistory} from "react-router-dom";
+const qs = require("qs");
+const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, header, loading}) => {
+  const history = useHistory();
+  const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
+  const [currentPage, setCurrentPage] = useState(() => {
+    return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
+  });
   const paginate = (pageNumber) => {
+    history.push(`${history.location.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
-    getPayments(pageNumber, "", auth_id);
+    getPayments(pageNumber, status, auth_id);
     window.scrollTo(0, 0);
   };
 

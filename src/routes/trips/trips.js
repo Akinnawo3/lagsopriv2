@@ -1,16 +1,23 @@
 /**
  * Trips
  */
-import React, { useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import { connect } from "react-redux";
-import { getTripCount, getTrips } from "Actions/tripAction";
+import {connect} from "react-redux";
+import {getTripCount, getTrips} from "Actions/tripAction";
 import TripsTable from "Routes/trips/component/tripsTable";
+const qs = require("qs");
 
-const Trips = ({ match, getTrips, getTripCount }) => {
+const Trips = ({history, match, getTrips, getTripCount, trips}) => {
+  const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
+  const [currentPage, setCurrentPage] = useState(() => {
+    return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
+  });
   useEffect(() => {
-    getTrips(1, "", true);
-    getTripCount();
+    if (pageFromQuery === undefined || trips.length < 1) {
+      getTrips(1, "", true);
+      getTripCount();
+    }
   }, []);
 
   return (
@@ -23,8 +30,7 @@ const Trips = ({ match, getTrips, getTripCount }) => {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getTrips: (pageNo, status, spinner) =>
-      dispatch(getTrips(pageNo, status, spinner)),
+    getTrips: (pageNo, status, spinner) => dispatch(getTrips(pageNo, status, spinner)),
     getTripCount: (status) => dispatch(getTripCount(status)),
   };
 }

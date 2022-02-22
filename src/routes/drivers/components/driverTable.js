@@ -14,15 +14,22 @@ import {calculatePostDate, getStatus, getStatusColor} from "Helpers/helpers";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {Link} from "react-router-dom";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
+import {useHistory} from "react-router-dom";
+const qs = require("qs");
 
 const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, searchDrivers, header, getDriversCount}) => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const history = useHistory();
+  const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
+  const [currentPage, setCurrentPage] = useState(() => {
+    return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
+  });
   const [excelExport, setExcelExport] = useState([]);
   const [appStatus, setAppStatus] = useState("");
   const [paymentStatus, setPaymentStatus] = useState("");
   const [driverCategory, setDriverCategory] = useState("");
 
   const paginate = (pageNumber) => {
+    history.push(`${history.location.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
     getDrivers(status, pageNumber, 1, appStatus);
     window.scrollTo(0, 0);
@@ -92,7 +99,7 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
     }
   }, [drivers]);
 
-  console.log(drivers);
+  console.log(currentPage);
 
   return (
     <div>
