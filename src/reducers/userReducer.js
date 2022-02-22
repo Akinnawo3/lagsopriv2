@@ -1,19 +1,14 @@
-import {
-  USER_COUNT,
-  USERS,
-  USERS_LOCATION,
-  ACTIVITY_LOGS,
-  ACTIVITY_LOGS_COUNT,
-} from "Actions/types";
+import {USER_COUNT, USERS, USERS_LOCATION, ACTIVITY_LOGS, ACTIVITY_LOGS_COUNT, DOWNLOADS_BY_AREA} from "Actions/types";
 
 const initialState = {
   users: [],
   userCount: 0,
   userLocation: [],
+  downloadsByArea: [],
 };
 
 function usersReducer(state = initialState, action) {
-  const { type, payload } = action;
+  const {type, payload} = action;
   switch (type) {
     case USERS: {
       return {
@@ -43,6 +38,12 @@ function usersReducer(state = initialState, action) {
       return {
         ...state,
         AdminActivityLogCount: payload,
+      };
+    }
+    case DOWNLOADS_BY_AREA: {
+      return {
+        ...state,
+        downloadsByArea: payload,
       };
     }
     default:

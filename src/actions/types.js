@@ -82,6 +82,7 @@ export const FEE_TYPE = "FEE_TYPE";
 
 export const AREAS = "AREAS";
 export const AREA_COUNT = "AREA_COUNT";
+export const DOWNLOADS_BY_AREA = "DOWNLOADS_BY_AREA";
 
 export const CANCELLATION_REASONS = "CANCELLATION_REASONS";
 

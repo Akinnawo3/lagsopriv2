@@ -86,13 +86,11 @@ const Users = ({
   };
 
   const triggerIdVerifcation = (type, value, firstName, lastName, authId, kycStatus) => {
-    // !isTest &&
     setAuthId(authId);
     setKycStatus(kycStatus);
-    // sendVerificationRequest(type, value, firstName, lastName);
+    !isTest && sendVerificationRequest(type, value, firstName, lastName);
     setIdVerificationModalOpen(true);
   };
-  // triggerIdVerifcation("nin", driver?.driver_data?.nin_id?.value, driver?.first_name, driver?.last_name)
 
   const onDelete = (id) => {
     setArgument(1);
@@ -152,11 +150,11 @@ const Users = ({
   };
 
   const onConfirm = () => {
-    // if (argument === 1) {
-    //   changeKycStatus(authId, parseInt(kycStatus, 10));
-    // } else if (argument === 2) {
-    //   deleteUser(deleteId, users);
-    // }
+    if (argument === 1) {
+      deleteUser(deleteId, users);
+    } else if (argument === 2) {
+      changeKycStatus(authId, kycStatus);
+    }
     console.log(argument);
     inputEl.current.close();
   };
@@ -204,17 +202,17 @@ const Users = ({
                             {user.kyc_status === 2 && "Suspended"}
                           </Badge>
                           {user.kyc_status === 0 && (
-                            <span className="fw-bold text muted ml-1 " onClick={() => triggerIdVerifcation("nin", user?.nin_id?.value, user.first_name, user?.last_name, user?.auth_id, 1)}>
+                            <span className="fw-bold text muted ml-1 " onClick={() => triggerIdVerifcation("nin", user?.nin_id?.value, user.first_name, user?.last_name, user?.auth_id, "1")}>
                               Verify
                             </span>
                           )}
                           {user.kyc_status === 1 && (
-                            <span className="fw-bold text muted ml-1 text-danger" onClick={() => verifyId(user?.auth_id, 2)}>
+                            <span className="fw-bold text muted ml-1 text-danger" onClick={() => verifyId(user?.auth_id, "2")}>
                               Suspend
                             </span>
                           )}
                           {user.kyc_status === 2 && (
-                            <span className="fw-bold text muted ml-1 text-info " onClick={() => verifyId(user?.auth_id, 1)}>
+                            <span className="fw-bold text muted ml-1 text-info " onClick={() => verifyId(user?.auth_id, "1")}>
                               Re-activate
                             </span>
                           )}
