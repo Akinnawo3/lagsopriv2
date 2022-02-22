@@ -59,6 +59,10 @@ const Users = ({
   const [idVerificationModalOpen, setIdVerificationModalOpen] = useState(false);
   const [authId, setAuthId] = useState("");
   const [kycStatus, setKycStatus] = useState("");
+  const [argument, setArgument] = useState(null);
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
+
   const inputEl = useRef(null);
 
   useEffect(() => {
@@ -85,15 +89,25 @@ const Users = ({
     // !isTest &&
     setAuthId(authId);
     setKycStatus(kycStatus);
-    sendVerificationRequest(type, value, firstName, lastName);
+    // sendVerificationRequest(type, value, firstName, lastName);
     setIdVerificationModalOpen(true);
   };
   // triggerIdVerifcation("nin", driver?.driver_data?.nin_id?.value, driver?.first_name, driver?.last_name)
 
+  const onDelete = (id) => {
+    setArgument(1);
+    setTitle("Are you sure you want to delete this user?");
+    setMessage("This user will be deleted permanently.");
+    inputEl.current.open();
+    setDeleteId(id);
+  };
   const verifyId = (auth_id, kyc_Status) => {
+    setArgument(2);
+    setTitle("Are you sure you want to update KYC status?");
+    setMessage("This user's KYC status will be updated permanently.");
     setIdVerificationModalOpen(false);
     auth_id && setAuthId(auth_id);
-    kyc_Status && setKycStatus(kyc_Status); 
+    kyc_Status && setKycStatus(kyc_Status);
     inputEl.current.open();
   };
 
@@ -118,16 +132,11 @@ const Users = ({
       name: userFirstName,
       email: oldEmail,
     };
-
     component === "email" && ResetUserDetails({component, old_email: oldEmail, new_email: newEmail}, emailData);
     component === "phone_number" && ResetUserDetails({component, old_phone_number: phoneNumber, new_phone_number: newPhoneNumber}, emailData);
     component === "password" && ResetUserDetails({component, phone_number: phoneNumber, password}, emailData);
   };
 
-  const onDelete = (id) => {
-    inputEl.current.open();
-    setDeleteId(id);
-  };
   const toggle = (id, name) => {
     setNewEmail("");
     setNewPhoneNumber("");
@@ -140,6 +149,16 @@ const Users = ({
     setOldEmail(oldEmail);
     setPhoneNumber(OldPhoneNumber);
     setModalOpen(true);
+  };
+
+  const onConfirm = () => {
+    // if (argument === 1) {
+    //   changeKycStatus(authId, parseInt(kycStatus, 10));
+    // } else if (argument === 2) {
+    //   deleteUser(deleteId, users);
+    // }
+    console.log(argument);
+    inputEl.current.close();
   };
 
   return (
@@ -190,11 +209,15 @@ const Users = ({
                             </span>
                           )}
                           {user.kyc_status === 1 && (
-                            <span className="fw-bold text muted ml-1 text-danger" onClick={() => triggerIdVerifcation("nin", user?.nin_id?.value, user.first_name, user?.last_name, user?.auth_id, 0)}>
-                              Suspend{" "}
+                            <span className="fw-bold text muted ml-1 text-danger" onClick={() => verifyId(user?.auth_id, 2)}>
+                              Suspend
                             </span>
                           )}
-                          {user.kyc_status === 2 && <span className="fw-bold text muted ml-1 text-info ">Re-activate </span>}
+                          {user.kyc_status === 2 && (
+                            <span className="fw-bold text muted ml-1 text-info " onClick={() => verifyId(user?.auth_id, 1)}>
+                              Re-activate
+                            </span>
+                          )}
                         </TableCell>
                         <TableCell>
                           <span className="d-flex">
@@ -247,7 +270,7 @@ const Users = ({
                     <div className="fw-bold text-danger">This is test enironment so there is no verification API call </div>
                   </div>
                   <div className="mt-2 text-right">
-                    <button className=" btn rounded btn-primary" onClick={() => verifyId("nin")}>
+                    <button className=" btn rounded btn-primary" onClick={() => verifyId()}>
                       Verify NIN
                     </button>
                   </div>
@@ -363,16 +386,7 @@ const Users = ({
           </ModalFooter>
         </Form>
       </Modal>
-
-      <DeleteConfirmationDialog
-        ref={inputEl}
-        title="Are You Sure You Want To Update status?"
-        message="This will update User kyc status."
-        onConfirm={() => {
-          changeKycStatus(authId, parseInt(kycStatus, 10));
-          inputEl.current.close();
-        }}
-      />
+      <DeleteConfirmationDialog ref={inputEl} title={title} message={message} onConfirm={onConfirm} />
     </div>
   );
 };
