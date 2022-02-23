@@ -53,7 +53,7 @@ const DownloadsTable = ({getDownloadsByArea, downloadsByArea, loading}) => {
               {requestByArea.map((item) => (
                 <TableRow hover>
                   <TableCell>{item.area}</TableCell>
-                  <TableCell className="text-right">{item.name}</TableCell>
+                  <TableCell className="text-right">{item.number}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
