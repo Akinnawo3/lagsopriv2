@@ -58,9 +58,9 @@ export const creatOEM = (body) => async (dispatch) => {
         sendMessage({
           type: "generic",
           subject: "OEM Login Details",
-          message: emailMessages.newOemMsg(`${body.first_name}`, body.phone_number, body.password),
-          name: adminData.first_name,
-          email: adminData.email,
+          message: emailMessages.newOemMsg(`${body.name}`, body.phone_number, body.password),
+          name: body.name,
+          email: body.email,
         })
       );
       await dispatch(getOems());
@@ -68,7 +68,7 @@ export const creatOEM = (body) => async (dispatch) => {
     }
     dispatch(endStatusLoading());
   } catch (e) {
-    console.log(e.message);
+    console.log(e);
     dispatch(endStatusLoading());
     NotificationManager.error("Network error");
   }
@@ -92,14 +92,15 @@ export const updateOEM = (body, auth_id) => async (dispatch) => {
   }
 };
 
-export const deleteOEM = (auth_id, oemData) => async (dispatch) => {
+export const deleteOEM = (authId, oemData) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
-    const res = await axios.delete(`${api.user}/v1.1/admin/users/${auth_id}`);
+    const res = await axios.delete(`${api.oem}/v1.1/admin/users/${authId}`);
+    console.log(res.data.status);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      const oems = oemData.filter((item) => item.auth_id !== auth_id);
+      const oems = oemData.filter((item) => item.auth_id !== authId);
       dispatch({
         type: OEMS,
         payload: oems,
@@ -108,7 +109,8 @@ export const deleteOEM = (auth_id, oemData) => async (dispatch) => {
     }
     dispatch(endStatusLoading());
   } catch (err) {
-    NotificationManager.error(err.response.data.error);
+    console.log(err.message);
+    NotificationManager.error("Network error");
     dispatch(endStatusLoading());
   }
 };

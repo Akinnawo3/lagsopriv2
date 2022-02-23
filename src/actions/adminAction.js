@@ -73,7 +73,6 @@ export const createAdmin = (adminData) => async (dispatch) => {
     }
     dispatch(endStatusLoading());
   } catch (e) {
-    console.log(e.message);
     dispatch(endStatusLoading());
     NotificationManager.error("Network error");
   }

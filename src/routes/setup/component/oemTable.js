@@ -18,10 +18,10 @@ import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/Delete
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {verifyUserPermssion} from "../../../container/DefaultLayout";
 import {useHistory} from "react-router-dom";
-import {getOems, getOemCount, creatOEM, updateOEM} from "Actions/oemAction";
+import {getOems, getOemCount, creatOEM, updateOEM, deleteOEM} from "Actions/oemAction";
 const qs = require("qs");
 
-const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header, creatOEM, updateOEM}) => {
+const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header, creatOEM, updateOEM, deleteOEM}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -256,7 +256,7 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header, cre
         title="Are You Sure You Want To Delete?'"
         message="This will delete OEM permanently."
         onConfirm={() => {
-          deleteVehicle(deleteId, vehicles);
+          deleteOEM(deleteId, oems);
           inputEl.current.close();
         }}
       />
@@ -269,6 +269,7 @@ const mapDispatchToProps = (dispatch) => ({
   getOemCount: () => dispatch(getOemCount()),
   creatOEM: (body) => dispatch(creatOEM(body)),
   updateOEM: (body, authID) => dispatch(updateOEM(body, authID)),
+  deleteOEM: (authID, oemData) => dispatch(deleteOEM(authID, oemData)),
 });
 const mapStateToProps = (state) => ({
   oems: state.oem.oems,
