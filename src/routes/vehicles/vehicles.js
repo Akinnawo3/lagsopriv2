@@ -29,6 +29,8 @@ function mapDispatchToProps(dispatch) {
   return {
     getVehicles: (page_no, assign, spinner) => dispatch(getVehicles(page_no, assign, spinner)),
     getVehiclesCount: (assign) => dispatch(getVehiclesCount(assign)),
+    getOems: (page_no, spinner) => dispatch(getOems(page_no, spinner)),
+    getOemCount: () => dispatch(getOemCount()),
   };
 }
 
@@ -36,6 +38,8 @@ const mapStateToProps = (state) => ({
   vehicles: state.vehicle.vehicles,
   vehiclesCount: state.vehicle.vehiclesCount,
   drivers: state.driver.drivers,
+  oems: state.oem.oems,
+  oemsCount: state.oem.oemsCount,
   loading: state.loading.loading,
   loadingStatus: state.loading.loadingStatus,
 });

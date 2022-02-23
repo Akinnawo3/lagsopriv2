@@ -273,8 +273,6 @@ function mapDispatchToProps(dispatch) {
     createVehicles: (car_number_plate, car_make, car_model, car_desc, car_color) => dispatch(createVehicles(car_number_plate, car_make, car_model, car_desc, car_color)),
     updateVehicle: (vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign) =>
       dispatch(updateVehicle(vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign)),
-    getOems: (page_no, spinner) => dispatch(getOems(page_no, spinner)),
-    getOemCount: () => dispatch(getOemCount()),
   };
 }
 
@@ -284,8 +282,6 @@ const mapStateToProps = (state) => ({
   drivers: state.driver.drivers,
   loading: state.loading.loading,
   loadingStatus: state.loading.loadingStatus,
-  oems: state.oem.oems,
-  oemsCount: state.oem.oemsCount,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(VehicleTable);
