@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -10,12 +10,26 @@ import EmptyData from "Components/EmptyData/EmptyData";
 import {getDownloadsByArea} from "Actions/userAction";
 
 const DownloadsTable = ({getDownloadsByArea, downloadsByArea, loading}) => {
+  const [infoType, setInfoType] = useState("downloads");
   useEffect(() => {
     getDownloadsByArea(true);
   }, []);
-  console.log(downloadsByArea);
+
+  const requestByArea = [
+    {area: "lekki", number: 2},
+    {area: "gbagada", number: 5},
+    {area: "ikorodu", number: 12},
+    {area: "ajah", number: 12},
+    {area: "ikoyi", number: 7},
+  ];
   return (
     <RctCollapsibleCard heading="Updates">
+      <div className="mb-2">
+        <select id="filter-dropdown" name="fiter-dropdown" onChange={(e) => setInfoType(e.target.value)} className="p-1 px-4">
+          <option value="downloads">Downloads</option>
+          <option value="requests">Requests</option>
+        </select>
+      </div>
       {!loading && downloadsByArea.length > 0 && (
         <Table>
           <TableHead>
@@ -24,14 +38,26 @@ const DownloadsTable = ({getDownloadsByArea, downloadsByArea, loading}) => {
               <TableCell className="text-right">Number</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            {downloadsByArea.map((item) => (
-              <TableRow hover>
-                <TableCell>{item._id}</TableCell>
-                <TableCell className="text-right">{item.total}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
+          {infoType === "downloads" && (
+            <TableBody>
+              {downloadsByArea.map((item) => (
+                <TableRow hover>
+                  <TableCell>{item._id}</TableCell>
+                  <TableCell className="text-right">{item.total}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          )}
+          {infoType === "requests" && (
+            <TableBody>
+              {requestByArea.map((item) => (
+                <TableRow hover>
+                  <TableCell>{item.area}</TableCell>
+                  <TableCell className="text-right">{item.name}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          )}
         </Table>
       )}
       {downloadsByArea.length < 1 && <EmptyData />}

@@ -185,7 +185,7 @@ export const getDownloadsByArea = (spinner) => async (dispatch) => {
   try {
     spinner && (await dispatch(startLoading()));
     !spinner && dispatch(startStatusLoading());
-    const res = await axios.get(`${api.user}/v1.1/admin/download-stat`);
+    const res = await axios.get(`${api.user}/v1.1/admin/download-stat?component=area`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
