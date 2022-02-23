@@ -21,7 +21,7 @@ import {verifyUserPermssion} from "../../../container/DefaultLayout";
 import {useHistory} from "react-router-dom";
 const qs = require("qs");
 
-const VehicleTable = ({getVehicles, vehicles, loading, createVehicles, updateVehicle, vehiclesCount, assign, header, deleteVehicle, getVehiclesCount, searchVehicles}) => {
+const VehicleTable = ({getVehicles, vehicles, loading, createVehicles, updateVehicle, vehiclesCount, assign, header, deleteVehicle, getVehiclesCount, searchVehicles, oems}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -40,6 +40,8 @@ const VehicleTable = ({getVehicles, vehicles, loading, createVehicles, updateVeh
   const d = new Date();
   let year = d.getFullYear();
 
+  console.log(oems);
+  
   useEffect(() => {
     if (vehicles) {
       let result = vehicles.map((vehicle) => {
@@ -280,6 +282,7 @@ const mapStateToProps = (state) => ({
   vehicles: state.vehicle.vehicles,
   vehiclesCount: state.vehicle.vehiclesCount,
   drivers: state.driver.drivers,
+  oems: state.oem.oems,
   loading: state.loading.loading,
   loadingStatus: state.loading.loadingStatus,
 });
