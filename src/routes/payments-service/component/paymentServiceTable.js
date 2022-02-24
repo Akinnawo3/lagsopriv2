@@ -32,6 +32,16 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
     window.scrollTo(0, 0);
   };
 
+  const paymentTypeOptions = [
+    {label: "Driver Asset", value: "driver-assets"},
+    {label: "Add Card", value: "add-card"},
+    {label: "Driver Verification", value: "driver-verification"},
+  ];
+
+  const handleChange = (e) => {
+    console.log(e.target.value);
+  };
+
   useEffect(() => {
     if (payments.length > 0) {
       let result = payments.map((payment) => {
@@ -65,6 +75,13 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
   return (
     <div>
       <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}}>
+        <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
+          <select id="filter-dropdown" name="fiter-dropdown" onChange={handleChange} className="p-1 px-4">
+            {paymentTypeOptions.map((item) => (
+              <option value={item.value}>{item.label}</option>
+            ))}
+          </select>
+        </li>
         <div className="float-right">
           {!loading && payments.length > 0 && (
             <CSVLink data={excelExport} filename={"drivers.csv"} className="btn-sm btn-outline-default mr-10 bg-primary text-white" target="_blank">
@@ -73,6 +90,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
             </CSVLink>
           )}
         </div>
+
         {!loading && payments?.length > 0 && (
           <div>
             <div className="table-responsive" style={{minHeight: "50vh"}}>
