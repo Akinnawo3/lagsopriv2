@@ -2,14 +2,11 @@
 /**
  * Google Map
  */
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import {compose, withHandlers, withProps} from "recompose"
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
-import MarkerWithLabel from "react-google-maps/lib/components/addons/MarkerWithLabel";
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import { m } from "Helpers/helpers";
-const labelSize = { width: 220};
-const labelPadding = 8;
 
 const MyMapComponent = compose(
     withProps({
@@ -60,8 +57,6 @@ const MyMapComponent = compose(
 ))
 
 const  GoogleMapComponent1 = ({userLocation, getUsersLocation, waiting, moving, title, center, setCenter}) => {
-    // const [center, setCenter] = useState({ lat: 6.4478954861952404, lng: 3.4742776645841493})
-    // console.log(center, 'qqqqqq')
 
     const getUsersNewLocations = (centerValue) => {
         const geoCode = m({
