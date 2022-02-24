@@ -288,7 +288,8 @@ const Users = ({
                 <div>
                   <ul className="list-group">
                     <div className="rounded rounded-circle">
-                      <img alt="" src={verificationResult?.data?.photo} />
+                      <img src={`data:image/png;base64, ${verificationResult?.data?.photo}`} alt="Red dot" />
+                      {/* <img alt="" src={verificationResult?.data?.photo} /> */}
                     </div>
                     <li className="list-group-item text-right">
                       <span className="pull-left">
