@@ -116,17 +116,17 @@ export const deleteOEM = (authId, oemData) => async (dispatch) => {
 };
 
 export const getVehiclesByOem =
-  (page_no = 1, spinner) =>
+  (page_no = 1, spinner, oem_id) =>
   async (dispatch) => {
     try {
       spinner && (await dispatch(startLoading()));
       !spinner && (await dispatch(startStatusLoading()));
-      const res = await axios.get(`${api.oem}/v1.1/admin/users?user_type=oem&item_per_page=20&page=${page_no}`);
+      const res = await axios.get(`${api.oem}/v1.1/vehicles/?oem_id=${oem_id}&item_per_page=20&page=${page_no}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
         dispatch({
-          type: OEMS,
+          type: OEMS_VEHICLES,
           payload: res.data.data,
         });
       }
