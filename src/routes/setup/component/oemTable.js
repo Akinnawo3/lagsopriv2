@@ -18,10 +18,10 @@ import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/Delete
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {verifyUserPermssion} from "../../../container/DefaultLayout";
 import {useHistory} from "react-router-dom";
-import {getOems, getOemCount} from "Actions/oemAction";
+import {getOems, getOemCount, creatOEM, updateOEM, deleteOEM} from "Actions/oemAction";
 const qs = require("qs");
 
-const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header}) => {
+const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header, creatOEM, updateOEM, deleteOEM}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -114,7 +114,7 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header}) =>
   const onSubmit = async (e) => {
     e.preventDefault();
     onAddUpdateUserModalClose();
-!editUser ? await createVehicles(plateNo, make, model, desc, color) : await updateVehicle(updateId, plateNo, make, model, desc, color, currentPage, assign);
+    !editUser ? await creatOEM({name, email, password, phone_number: phoneNumber, address}) : await updateOEM({name, email, phone_number: phoneNumber, address}, updateId);
   };
 
   // const sampleData = [
@@ -256,7 +256,7 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header}) =>
         title="Are You Sure You Want To Delete?'"
         message="This will delete OEM permanently."
         onConfirm={() => {
-          deleteVehicle(deleteId, vehicles);
+          deleteOEM(deleteId, oems);
           inputEl.current.close();
         }}
       />
@@ -267,6 +267,9 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header}) =>
 const mapDispatchToProps = (dispatch) => ({
   getOems: (page_no, spinner) => dispatch(getOems(page_no, spinner)),
   getOemCount: () => dispatch(getOemCount()),
+  creatOEM: (body) => dispatch(creatOEM(body)),
+  updateOEM: (body, authID) => dispatch(updateOEM(body, authID)),
+  deleteOEM: (authID, oemData) => dispatch(deleteOEM(authID, oemData)),
 });
 const mapStateToProps = (state) => ({
   oems: state.oem.oems,

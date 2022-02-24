@@ -45,81 +45,75 @@ export const getOemCount = () => async (dispatch) => {
   } catch (err) {}
 };
 
-export const creatOEM = (adminData) => async (dispatch) => {
-  const body = {
-    ...adminData, 
-    password: "Password123",
-  };
+export const creatOEM = (body) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
-    const res = await axios.post(`${api.user}/v1.1/admin`, body);
+    const res = await axios.post(`${api.oem}/v1.1/admin/users`, body);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
       // await changeCurrentPage();
-      await NotificationManager.success("Admin Created Successfully!");
+      await NotificationManager.success("OEM Created Successfully!");
       await dispatch(
         sendMessage({
           type: "generic",
-          subject: "Admin Login Details",
-          message: emailMessages.newAdminMsg(`${adminData.first_name}`, adminData.phone_number, "Password123"),
-          // message: "the messagejnrjtnjrn",
-          name: adminData.first_name,
-          email: adminData.email,
+          subject: "OEM Login Details",
+          message: emailMessages.newOemMsg(`${body.name}`, body.phone_number, body.password),
+          name: body.name,
+          email: body.email,
         })
       );
-      await dispatch(getAdmins());
-      await dispatch(getAdminCount());
+      await dispatch(getOems());
+      await dispatch(getOemCount());
     }
     dispatch(endStatusLoading());
   } catch (e) {
-    console.log(e.message);
+    console.log(e);
     dispatch(endStatusLoading());
     NotificationManager.error("Network error");
   }
 };
 
-// export const updateAdmin = (adminData, auth_id) => async (dispatch) => {
-//   const body = {
-//     ...adminData,
-//     password: "Password123",
-//   };
-//   try {
-//     dispatch(startStatusLoading());
-//     const res = await axios.put(`${api.user}/v1.1/admin/${auth_id}`, body);
-//     if (res.data.status === "error") {
-//       NotificationManager.error(res.data.msg);
-//     } else {
-//       await NotificationManager.success("Admin Updated Successfully!");
-//       await dispatch(getAdmins());
-//     }
-//     dispatch(endStatusLoading());
-//   } catch (e) {
-//     dispatch(endStatusLoading());
-//     NotificationManager.error("Network error");
-//   }
-// };
+export const updateOEM = (body, auth_id) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.put(`${api.oem}/v1.1/admin/users/${auth_id}`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success("OEM Details Updated Successfully!");
+      await dispatch(getOems());
+      await dispatch(getOemCount());
+    }
+    dispatch(endStatusLoading());
+  } catch (e) {
+    dispatch(endStatusLoading());
+    NotificationManager.error("Network error");
+  }
+};
 
-// export const deleteAdmin = (auth_id, adminsData) => async (dispatch) => {
-//   try {
-//     dispatch(startStatusLoading());
-//     const res = await axios.delete(`${api.user}/v1.1/admin/users/${auth_id}`);
-//     if (res.data.status === "error") {
-//       NotificationManager.error(res.data.msg);
-//     } else {
-//       const admins = adminsData.filter((item) => item.auth_id !== auth_id);
-//       dispatch({
-//         type: ADMINS,
-//         payload: admins,
-//       });
-//       NotificationManager.success("Deleted successfully");
-//     }
-//     dispatch(endStatusLoading());
-//   } catch (err) {
-//     NotificationManager.error(err.response.data.error);
-//     dispatch(endStatusLoading());
-//   }
-// };
+export const deleteOEM = (authId, oemData) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.delete(`${api.oem}/v1.1/admin/users/${authId}`);
+    console.log(res.data.status);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      const oems = oemData.filter((item) => item.auth_id !== authId);
+      dispatch({
+        type: OEMS,
+        payload: oems,
+      });
+      NotificationManager.success("Deleted successfully");
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    console.log(err.message);
+    NotificationManager.error("Network error");
+    dispatch(endStatusLoading());
+  }
+};
 
 // export const searchAdmins = (searchData) => async (dispatch) => {
 //   try {
