@@ -1,6 +1,14 @@
 import axios from "axios";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
-import {USERS, USER_COUNT, USERS_LOCATION, ACTIVITY_LOGS, ACTIVITY_LOGS_COUNT, DOWNLOADS_BY_AREA} from "./types";
+import {
+  USERS,
+  USER_COUNT,
+  USERS_LOCATION,
+  ACTIVITY_LOGS,
+  ACTIVITY_LOGS_COUNT,
+  DOWNLOADS_BY_AREA,
+  DRIVERS_LOCATION
+} from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 import {sendMessage} from "./messagesAction";
@@ -134,6 +142,24 @@ export const getUsersLocation = (longitude, latitude) => async (dispatch) => {
         payload: res.data.data,
       });
     }
+  } catch (err) {}
+};
+
+export const searchUserLocation = (data) => async (dispatch) => {
+  try {
+      dispatch({
+        type: USERS_LOCATION,
+        payload: [data],
+      });
+  } catch (err) {}
+};
+
+export const searchDriverLocation = (data) => async (dispatch) => {
+  try {
+    dispatch({
+      type: DRIVERS_LOCATION,
+      payload: [data],
+    });
   } catch (err) {}
 };
 

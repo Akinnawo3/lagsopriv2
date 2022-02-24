@@ -2,14 +2,11 @@
 /**
  * Google Map
  */
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import {compose, withHandlers, withProps} from "recompose"
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
-import MarkerWithLabel from "react-google-maps/lib/components/addons/MarkerWithLabel";
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import { m } from "Helpers/helpers";
-const labelSize = { width: 220};
-const labelPadding = 8;
 
 const MyMapComponent = compose(
     withProps({
@@ -42,7 +39,7 @@ const MyMapComponent = compose(
 )((props) => (
     <GoogleMap
         defaultZoom={16}
-        defaultCenter={props.center}
+        center={props.center}
         onBoundsChanged={() => {
             const value = props.onBoundsChanged()
             props.getUsersNewLocations(value)
@@ -53,14 +50,13 @@ const MyMapComponent = compose(
             const riderData = `Name: ${m.first_name}  ${m.last_name}\nPhone: ${m.phone_number}`
             const driverData = m?.vehicle_data && m?.vehicle_data.length > 0  && `Name: ${m.first_name}  ${m.last_name}\nPhone: ${m.phone_number}\nPlate No: ${m?.vehicle_data[0].car_number_plate}\nSerial No: ${m?.vehicle_data[0].car_number}`
             return (
-                <Marker key={index} position={{ lat: m.coordinates[1], lng: m.coordinates[0] }} defaultTitle={`${m?.vehicle_data && m?.vehicle_data.length > 0 ? driverData : riderData}`}  />
+                <Marker key={index} position={{ lat: m.coordinates ?  m.coordinates[1] : m.home_coordinate?.latitude, lng: m.coordinates ? m.coordinates[0]:  m.home_coordinate?.longitude}} title={`${m?.vehicle_data && m?.vehicle_data.length > 0 ? driverData : riderData}`}  />
             )
         } )}
     </GoogleMap>
 ))
 
-const  GoogleMapComponent1 = ({userLocation, getUsersLocation, waiting, moving, title}) => {
-    const [center, setCenter] = useState({ lat: 6.4478954861952404, lng: 3.4742776645841493})
+const  GoogleMapComponent1 = ({userLocation, getUsersLocation, waiting, moving, title, center, setCenter}) => {
 
     const getUsersNewLocations = (centerValue) => {
         const geoCode = m({
