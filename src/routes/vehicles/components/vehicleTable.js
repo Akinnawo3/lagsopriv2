@@ -14,7 +14,7 @@ import Upload from "./upload";
 import {Form, FormGroup, Label, Input, Badge, Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {getVehiclesCount} from "Actions/vehicleAction";
-import {getVehiclesByOem} from "Actions/oem.Action";
+import {getVehiclesByOem} from "Actions/oemAction";
 import {Link} from "react-router-dom";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
