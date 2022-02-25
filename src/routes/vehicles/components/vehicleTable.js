@@ -311,6 +311,7 @@ const mapStateToProps = (state) => ({
   vehiclesCount: state.vehicle.vehiclesCount,
   drivers: state.driver.drivers,
   oems: state.oem.oems,
+  oems: state.oem.oemVehicles,
   loading: state.loading.loading,
   loadingStatus: state.loading.loadingStatus,
 });
