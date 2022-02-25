@@ -180,3 +180,4 @@ export const FENCES_COUNT = "FENCES_COUNT";
 //oem
 export const OEMS = "OEMS";
 export const OEMS_COUNT = "OEMS_COUNT";
+export const OEMS_VEHICLES = "OEMS_VEHICLES";

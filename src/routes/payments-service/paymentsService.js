@@ -30,7 +30,7 @@ const PaymentsService = ({history, match, getPayments, getPaymentsCount, payment
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPayments: (pageNo, transaction_status, auth_id, loading) => dispatch(getPaymentsService(pageNo, transaction_status, auth_id, loading)),
+    getPayments: (pageNo, transaction_status, auth_id, loading, payment_type) => dispatch(getPaymentsService(pageNo, transaction_status, auth_id, loading, payment_type)),
     getPaymentsCount: (transaction_status, auth_id) => dispatch(getPaymentsServiceCount(transaction_status, auth_id)),
   };
 }

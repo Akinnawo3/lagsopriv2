@@ -62,6 +62,7 @@ const Users = ({
   const [argument, setArgument] = useState(null);
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
+  const [user, setUser] = useState("");
 
   const inputEl = useRef(null);
 
@@ -85,10 +86,12 @@ const Users = ({
     setModalOpen(false);
   };
 
-  const triggerIdVerifcation = (type, value, firstName, lastName, authId, kycStatus) => {
-    setAuthId(authId);
+  const triggerIdVerifcation = (type, user, kycStatus) => {
+    setUser(user);
+    setAuthId(user?.auth_id);
     setKycStatus(kycStatus);
-    !isTest && sendVerificationRequest(type, value, firstName, lastName);
+    // !isTest &&
+    sendVerificationRequest(type, user?.nin_id?.value, user.first_name, user?.last_name);
     setIdVerificationModalOpen(true);
   };
 
@@ -177,7 +180,7 @@ const Users = ({
                     <TableCell>Phone No</TableCell>
                     <TableCell>Email</TableCell>
                     <TableCell>Type</TableCell>
-                    <TableCell>NIN status</TableCell>
+                    <TableCell>NIN </TableCell>
                     <TableCell>KYC status</TableCell>
                     <TableCell>Action</TableCell>
                   </TableRow>
@@ -191,10 +194,7 @@ const Users = ({
                         <TableCell>{user.phone_number}</TableCell>
                         <TableCell>{user.email}</TableCell>
                         <TableCell>{user.user_type}</TableCell>
-                        <TableCell className={`fw-bold text-${user?.nin_id?.status ? "success" : "danger"}`}>
-                          {user?.nin_id?.status === true && "Verified"}
-                          {user?.nin_id?.status === false && "Unverified"}
-                        </TableCell>
+                        <TableCell className="fw-bold text"> {user?.nin_id?.value}</TableCell>
                         <TableCell>
                           <Badge color={getStatusColorKYC(user.kyc_status)}>
                             {user.kyc_status === 0 && "Pending"}
@@ -202,7 +202,7 @@ const Users = ({
                             {user.kyc_status === 2 && "Suspended"}
                           </Badge>
                           {user.kyc_status === 0 && (
-                            <span className="fw-bold text muted ml-1 " onClick={() => triggerIdVerifcation("nin", user?.nin_id?.value, user.first_name, user?.last_name, user?.auth_id, "1")}>
+                            <span className="fw-bold text muted ml-1 " onClick={() => triggerIdVerifcation("nin", user, "1")}>
                               Verify
                             </span>
                           )}
@@ -288,7 +288,8 @@ const Users = ({
                 <div>
                   <ul className="list-group">
                     <div className="rounded rounded-circle">
-                      <img alt="" src={verificationResult?.data?.photo} />
+                      <img src={`data:image/png;base64, ${verificationResult?.data?.photo}`} alt="Red dot" />
+                      {/* <img alt="" src={verificationResult?.data?.photo} /> */}
                     </div>
                     <li className="list-group-item text-right">
                       <span className="pull-left">
@@ -301,19 +302,19 @@ const Users = ({
                       <span className="pull-left">
                         <strong>First Name Matches Reg. Details</strong>
                       </span>
-                      {`${verificationResult?.data?.firstname?.toUpperCase() === driver?.first_name?.toUpperCase() ? "Yes" : "No"} `}
+                      {`${verificationResult?.data?.firstname?.toUpperCase() === user?.first_name?.toUpperCase() ? "Yes" : "No"} `}
                     </li>
                     <li className="list-group-item text-right">
                       <span className="pull-left">
                         <strong>Last Name Matches Reg. Details</strong>
                       </span>
-                      {`${verificationResult?.data?.lastname?.toUpperCase() === driver?.last_name?.toUpperCase() ? "Yes" : "No"} `}
+                      {`${verificationResult?.data?.lastname?.toUpperCase() === user?.last_name?.toUpperCase() ? "Yes" : "No"} `}
                     </li>
                     <li className="list-group-item text-right">
                       <span className="pull-left">
                         <strong>Phone Number Matches Reg. Details</strong>
                       </span>
-                      {`${verificationResult?.data?.phone === driver?.phone_number ? "Yes" : "No"} `}
+                      {`${verificationResult?.data?.phone === user?.phone_number ? "Yes" : "No"} `}
                     </li>
                     <li className="list-group-item text-right">
                       <span className="pull-left">

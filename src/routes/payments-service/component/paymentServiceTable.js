@@ -32,6 +32,17 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
     window.scrollTo(0, 0);
   };
 
+  const paymentTypeOptions = [
+    {value: "", label: "- - Filter by Payment Type - -"},
+    {label: "Driver Asset", value: "driver-assets"},
+    {label: "Add Card", value: "add-card"},
+    {label: "Driver Verification", value: "driver-verification"},
+  ];
+
+  const handleChange = (e) => {
+    getPayments(currentPage, status, auth_id, false, e.target.value);
+  };
+
   useEffect(() => {
     if (payments.length > 0) {
       let result = payments.map((payment) => {
@@ -65,6 +76,13 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
   return (
     <div>
       <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}}>
+        <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
+          <select id="filter-dropdown" name="fiter-dropdown" onChange={handleChange} className="p-1 px-4">
+            {paymentTypeOptions.map((item) => (
+              <option value={item.value}>{item.label}</option>
+            ))}
+          </select>
+        </li>
         <div className="float-right">
           {!loading && payments.length > 0 && (
             <CSVLink data={excelExport} filename={"drivers.csv"} className="btn-sm btn-outline-default mr-10 bg-primary text-white" target="_blank">
@@ -73,6 +91,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
             </CSVLink>
           )}
         </div>
+
         {!loading && payments?.length > 0 && (
           <div>
             <div className="table-responsive" style={{minHeight: "50vh"}}>
@@ -83,8 +102,8 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
                     <TableCell>Date / Time</TableCell>
                     <TableCell>Payment Method</TableCell>
                     <TableCell>Payment Type</TableCell>
+                    <TableCell>Acual Amount</TableCell>
                     <TableCell>Status</TableCell>
-
                     <TableCell>User Name</TableCell>
                     <TableCell>User Phn No.</TableCell>
                     <TableCell> User Email</TableCell>
@@ -101,6 +120,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
                         <TableCell>{calculatePostDate(user.createdAt)}</TableCell>
                         <TableCell>{user.payment_method}</TableCell>
                         <TableCell>{user.payment_type}</TableCell>
+                        <TableCell>₦{user?.actual_amount?.toLocaleString()}</TableCell>
                         <TableCell>
                           <Badge color={getStatusColor4(user.status)}>{getStatus4(user.status)} </Badge>
                         </TableCell>
@@ -136,7 +156,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPayments: (pageNo, transaction_status, auth_id) => dispatch(getPaymentsService(pageNo, transaction_status, auth_id)),
+    getPayments: (pageNo, transaction_status, auth_id,loading,payment_type) => dispatch(getPaymentsService(pageNo, transaction_status, auth_id,loading,payment_type)),
   };
 }
 

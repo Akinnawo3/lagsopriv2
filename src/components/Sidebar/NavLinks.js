@@ -45,6 +45,13 @@ export default {
       ],
     },
     {
+      menu_title: "sidebar.maps",
+      menu_icon: "zmdi zmdi-map",
+      type_multi: null,
+      new_item: false,
+      path: "/admin/map",
+    },
+    {
       menu_title: "sidebar.users",
       menu_icon: "icon-user",
       type_multi: null,
@@ -197,11 +204,6 @@ export default {
       new_item: false,
       child_routes: [
         {
-          path: "/admin/payments",
-          new_item: false,
-          menu_title: "sidebar.all",
-        },
-        {
           path: "/admin/payments/successful",
           new_item: false,
           menu_title: "sidebar.successful",
@@ -210,6 +212,11 @@ export default {
           path: "/admin/payments/unsuccessful",
           new_item: false,
           menu_title: "sidebar.unsuccessful",
+        },
+        {
+          path: "/admin/payments",
+          new_item: false,
+          menu_title: "sidebar.all",
         },
       ],
     },
@@ -234,11 +241,6 @@ export default {
       new_item: false,
       child_routes: [
         {
-          path: "/admin/payments-service",
-          new_item: false,
-          menu_title: "sidebar.all",
-        },
-        {
           path: "/admin/payments-service/successful",
           new_item: false,
           menu_title: "sidebar.successful",
@@ -247,6 +249,11 @@ export default {
           path: "/admin/payments-service/unsuccessful",
           new_item: false,
           menu_title: "sidebar.unsuccessful",
+        },
+        {
+          path: "/admin/payments-service",
+          new_item: false,
+          menu_title: "sidebar.all",
         },
       ],
     },
@@ -403,13 +410,7 @@ export default {
         },
       ],
     },
-    {
-      menu_title: "sidebar.maps",
-      menu_icon: "zmdi zmdi-map",
-      type_multi: null,
-      new_item: false,
-      path: "/admin/map",
-    },
+
     // {
     //   menu_title: "sidebar.settings",
     //   menu_icon: "zmdi zmdi-map",

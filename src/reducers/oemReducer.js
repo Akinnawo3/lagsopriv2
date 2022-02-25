@@ -1,8 +1,9 @@
-import {OEMS, OEMS_COUNT} from "Actions/types";
+import {OEMS, OEMS_COUNT, OEMS_VEHICLES} from "Actions/types";
 
 const initialState = {
   oems: [],
   oemsCount: 0,
+  oemVehicles: [],
 };
 
 function oemReducer(state = initialState, action) {
@@ -24,6 +25,12 @@ function oemReducer(state = initialState, action) {
       return {
         ...state,
         oemsCount: payload,
+      };
+    }
+    case OEMS_VEHICLES: {
+      return {
+        ...state,
+        oemVehicles: payload,
       };
     }
     default:

@@ -1,6 +1,14 @@
 import axios from "axios";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
-import {USERS, USER_COUNT, USERS_LOCATION, ACTIVITY_LOGS, ACTIVITY_LOGS_COUNT, DOWNLOADS_BY_AREA} from "./types";
+import {
+  USERS,
+  USER_COUNT,
+  USERS_LOCATION,
+  ACTIVITY_LOGS,
+  ACTIVITY_LOGS_COUNT,
+  DOWNLOADS_BY_AREA,
+  DRIVERS_LOCATION
+} from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 import {sendMessage} from "./messagesAction";
@@ -137,6 +145,24 @@ export const getUsersLocation = (longitude, latitude) => async (dispatch) => {
   } catch (err) {}
 };
 
+export const searchUserLocation = (data) => async (dispatch) => {
+  try {
+      dispatch({
+        type: USERS_LOCATION,
+        payload: [data],
+      });
+  } catch (err) {}
+};
+
+export const searchDriverLocation = (data) => async (dispatch) => {
+  try {
+    dispatch({
+      type: DRIVERS_LOCATION,
+      payload: [data],
+    });
+  } catch (err) {}
+};
+
 export const getAdminLogs =
   (page_no = 1, loading) =>
   async (dispatch) => {
@@ -185,7 +211,7 @@ export const getDownloadsByArea = (spinner) => async (dispatch) => {
   try {
     spinner && (await dispatch(startLoading()));
     !spinner && dispatch(startStatusLoading());
-    const res = await axios.get(`${api.user}/v1.1/admin/download-stat`);
+    const res = await axios.get(`${api.user}/v1.1/admin/download-stat?component=area`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {

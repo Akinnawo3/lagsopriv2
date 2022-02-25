@@ -17,6 +17,14 @@ export default {
     // ${role}
     return `Dear ${name}, you have been successfully set up as an admin on LagosRide with telephone number : ${phoneNumber}, here is your password -${Password}. Click on the link below to sign in. <a href="https://lrdash.lagosride.com/">lrdash.lagosride.com</a>`;
   },
+  newOemMsg: (name, phoneNumber, Password) => {
+    // ${role}
+    return `Dear ${name}, you have been successfully set up as an OEM on LagosRide with telephone number : ${phoneNumber}, here is your password -${Password}. Click on the link below to sign in.`;
+  },
+  updateOemMsg: (name, phoneNumber, Password) => {
+    // ${role}
+    return `Dear ${name}, your details have successfully updated on LagosRide. Your telephone number : ${phoneNumber} ,  password -${Password}. Click on the link below to sign in.`;
+  },
 
   userDetailResetMsg: (name, detailType, update) => {
     return `Dear ${name}, your ${detailType} has been changed to ${update}`;
