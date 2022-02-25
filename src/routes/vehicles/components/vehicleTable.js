@@ -21,7 +21,7 @@ import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {verifyUserPermssion} from "../../../container/DefaultLayout";
 import {useHistory} from "react-router-dom";
 const qs = require("qs");
-
+export let closeModalVehicle;
 const VehicleTable = ({
   getVehicles,
   vehicles,
@@ -129,9 +129,9 @@ const VehicleTable = ({
         setUpdateId(vehicle.vehicle_id);
       }
     });
-    await getVehiclesByOem(1, false, vehic.oem_id);
     setAddNewUserModal(true);
     setEditUser(true);
+    await getVehiclesByOem(1, false, vehic.oem_id);
   };
 
   const onAddUpdateUserModalClose = () => {
@@ -145,7 +145,7 @@ const VehicleTable = ({
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    // onAddUpdateUserModalClose();
+    onAddUpdateUserModalClose();
     !editUser ? await createVehicles(plateNo, make, model, desc, color, oem, oemVehicle) : await updateVehicle(updateId, plateNo, make, model, desc, color, currentPage, assign, oem, oemVehicle);
   };
 
@@ -334,8 +334,8 @@ function mapDispatchToProps(dispatch) {
     deleteVehicle: (vehicle_id, vehicles) => dispatch(deleteVehicle(vehicle_id, vehicles)),
     createVehicles: (car_number_plate, car_make, car_model, car_desc, car_color, oem, oemVehicle) =>
       dispatch(createVehicles(car_number_plate, car_make, car_model, car_desc, car_color, oem, oemVehicle)),
-    updateVehicle: (vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign,oem, oemVehicle) =>
-      dispatch(updateVehicle(vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign,oem, oemVehicle)),
+    updateVehicle: (vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign, oem, oemVehicle) =>
+      dispatch(updateVehicle(vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign, oem, oemVehicle)),
     getVehiclesByOem: (page_no, spinner, oem_id) => dispatch(getVehiclesByOem(page_no, spinner, oem_id)),
   };
 }
