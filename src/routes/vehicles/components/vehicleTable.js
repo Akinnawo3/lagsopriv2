@@ -81,8 +81,7 @@ const VehicleTable = ({getVehicles, vehicles, loading, createVehicles, updateVeh
   const onChange = (e) => setFormData({...formData, [e.target.name]: e.target.value});
 
   const onOemSelect = async (e) => {
-    console.log(e.target.value)
-    // await getVehiclesByOem(1, false, e.target.value);
+    await getVehiclesByOem(1, false, e.target.value);
     setFormData({...formData, [e.target.name]: e.target.value});
   };
   const {plateNo, model, make, desc, color, oem} = formData;
@@ -254,7 +253,7 @@ const VehicleTable = ({getVehicles, vehicles, loading, createVehicles, updateVeh
               </Input>
             </FormGroup>
 
-            <FormGroup>
+            {/* <FormGroup>
               <Label>OEM</Label>
               <Input type="select" name="oem" value={oem} onChange={onChange} required>
                 <option value="" selected hidden>
@@ -266,7 +265,7 @@ const VehicleTable = ({getVehicles, vehicles, loading, createVehicles, updateVeh
                   </option>
                 ))}
               </Input>{" "}
-            </FormGroup>
+            </FormGroup> */}
           </ModalBody>
           <ModalFooter>
             <Button type="submit" variant="contained" className="text-white btn-success">
