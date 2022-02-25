@@ -81,7 +81,8 @@ const VehicleTable = ({getVehicles, vehicles, loading, createVehicles, updateVeh
   const onChange = (e) => setFormData({...formData, [e.target.name]: e.target.value});
 
   const onOemSelect = async (e) => {
-    await getVehiclesByOem();
+    console.log(e.target.value)
+    // await getVehiclesByOem(1, false, e.target.value);
     setFormData({...formData, [e.target.name]: e.target.value});
   };
   const {plateNo, model, make, desc, color, oem} = formData;
