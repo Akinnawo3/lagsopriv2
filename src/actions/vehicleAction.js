@@ -90,8 +90,8 @@ export const createVehicles = (car_number_plate, car_make, car_model, car_desc, 
   }
 };
 
-export const updateVehicle = (vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign) => async (dispatch) => {
-  const body = {car_number_plate, car_make, car_model, car_desc, car_color};
+export const updateVehicle = (vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign, oem_id, oem_vehicle_id) => async (dispatch) => {
+  const body = {car_number_plate, car_make, car_model, car_desc, car_color, oem_id, oem_vehicle_id};
   try {
     dispatch(startStatusLoading());
     const res = await axios.put(`${api.vehicles}/v1.1/vehicles/${vehicle_id}`, body);

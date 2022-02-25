@@ -112,8 +112,10 @@ const VehicleTable = ({
   };
 
   const opnAddNewUserEditModal = async (id) => {
+    let vehic;
     vehicles.map((vehicle) => {
       if (vehicle.vehicle_id === id) {
+        vehic = vehicle;
         setFormData({
           ...formData,
           plateNo: vehicle.car_number_plate,
@@ -126,8 +128,8 @@ const VehicleTable = ({
         });
         setUpdateId(vehicle.vehicle_id);
       }
-      await getVehiclesByOem(1, false, vehicle.oem_id);
     });
+    await getVehiclesByOem(1, false, vehic.oem_id);
     setAddNewUserModal(true);
     setEditUser(true);
   };
@@ -144,7 +146,7 @@ const VehicleTable = ({
   const onSubmit = async (e) => {
     e.preventDefault();
     // onAddUpdateUserModalClose();
-    !editUser ? await createVehicles(plateNo, make, model, desc, color, oem, oemVehicle) : await updateVehicle(updateId, plateNo, make, model, desc, color, currentPage, assign);
+    !editUser ? await createVehicles(plateNo, make, model, desc, color, oem, oemVehicle) : await updateVehicle(updateId, plateNo, make, model, desc, color, currentPage, assign, oem, oemVehicle);
   };
 
   const sampleData = [
@@ -332,8 +334,8 @@ function mapDispatchToProps(dispatch) {
     deleteVehicle: (vehicle_id, vehicles) => dispatch(deleteVehicle(vehicle_id, vehicles)),
     createVehicles: (car_number_plate, car_make, car_model, car_desc, car_color, oem, oemVehicle) =>
       dispatch(createVehicles(car_number_plate, car_make, car_model, car_desc, car_color, oem, oemVehicle)),
-    updateVehicle: (vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign) =>
-      dispatch(updateVehicle(vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign)),
+    updateVehicle: (vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign,oem, oemVehicle) =>
+      dispatch(updateVehicle(vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign,oem, oemVehicle)),
     getVehiclesByOem: (page_no, spinner, oem_id) => dispatch(getVehiclesByOem(page_no, spinner, oem_id)),
   };
 }
