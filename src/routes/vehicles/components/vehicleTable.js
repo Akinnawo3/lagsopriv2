@@ -37,6 +37,7 @@ const VehicleTable = ({
   oems,
   getVehiclesByOem,
   oemVehicles,
+  loadingStatus,
 }) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
@@ -46,7 +47,7 @@ const VehicleTable = ({
   const [addNewUserModal, setAddNewUserModal] = useState(false);
   const [editUser, setEditUser] = useState(false);
   const [updateId, setUpdateId] = useState(null);
-  const [formData, setFormData] = useState({plateNo: "", make: "", model: "", desc: "", color: "", oem: ""});
+  const [formData, setFormData] = useState({plateNo: "", make: "", model: "", desc: "", color: "", oem: "", oemVehicle: ""});
   const [addNewUserModal1, setAddNewUserModal1] = useState(false);
   const [searchData, setSearchData] = useState("");
   const inputEl = useRef(null);
@@ -95,13 +96,11 @@ const VehicleTable = ({
 
   const onChange = (e) => setFormData({...formData, [e.target.name]: e.target.value});
 
-  console.log(oemVehicles);
-
   const onOemSelect = async (e) => {
+    setFormData({...formData, oem: e.target.value});
     await getVehiclesByOem(1, false, e.target.value);
-    setFormData({...formData, [e.target.name]: e.target.value});
   };
-  const {plateNo, model, make, desc, color, oem} = formData;
+  const {plateNo, model, make, desc, color, oem, oemVehicle} = formData;
 
   const opnAddNewUserModal = (e) => {
     e.preventDefault();
@@ -112,12 +111,22 @@ const VehicleTable = ({
     setAddNewUserModal1(false);
   };
 
-  const opnAddNewUserEditModal = (id) => {
+  const opnAddNewUserEditModal = async (id) => {
     vehicles.map((vehicle) => {
       if (vehicle.vehicle_id === id) {
-        setFormData({...formData, plateNo: vehicle.car_number_plate, model: vehicle.car_model, make: vehicle.car_make, desc: vehicle.car_desc, color: vehicle.car_color, oem: oem_id});
+        setFormData({
+          ...formData,
+          plateNo: vehicle.car_number_plate,
+          model: vehicle.car_model,
+          make: vehicle.car_make,
+          desc: vehicle.car_desc,
+          color: vehicle.car_color,
+          oem: vehicle.oem_id,
+          oemVehicle: vehicle.oem_vehicle_id,
+        });
         setUpdateId(vehicle.vehicle_id);
       }
+      await getVehiclesByOem(1, false, vehicle.oem_id);
     });
     setAddNewUserModal(true);
     setEditUser(true);
@@ -135,7 +144,7 @@ const VehicleTable = ({
   const onSubmit = async (e) => {
     e.preventDefault();
     // onAddUpdateUserModalClose();
-    !editUser ? await createVehicles(plateNo, make, model, desc, color, oem) : await updateVehicle(updateId, plateNo, make, model, desc, color, currentPage, assign);
+    !editUser ? await createVehicles(plateNo, make, model, desc, color, oem, oemVehicle) : await updateVehicle(updateId, plateNo, make, model, desc, color, currentPage, assign);
   };
 
   const sampleData = [
@@ -270,19 +279,24 @@ const VehicleTable = ({
               </Input>
             </FormGroup>
 
-            {/* <FormGroup>
-              <Label>OEM</Label>
-              <Input type="select" name="oem" value={oem} onChange={onChange} required>
-                <option value="" selected hidden>
-                  --Select OEM --
-                </option>
-                {oems.map((item) => (
-                  <option value={item.auth_id} selected={oem === item.auth_id}>
-                    {item.name}
+            {formData.oem && (
+              <FormGroup>
+                <Label>
+                  VEHICLE <small className="text-danger">{loadingStatus && "loading vehicles ..."}</small>
+                </Label>
+                <Input type="select" name="oemVehicle" value={oemVehicle} onChange={onChange} required>
+                  <option value="" selected hidden>
+                    --Select Vehicle --
                   </option>
-                ))}
-              </Input>{" "}
-            </FormGroup> */}
+                  {oemVehicles.length > 0 &&
+                    oemVehicles.map((item) => (
+                      <option value={item.vehicle_id} selected={oemVehicle === item.vehicle_id}>
+                        {`${item.brand_name} - ${item.model} ${item.year} `}
+                      </option>
+                    ))}
+                </Input>
+              </FormGroup>
+            )}
           </ModalBody>
           <ModalFooter>
             <Button type="submit" variant="contained" className="text-white btn-success">
@@ -316,7 +330,8 @@ function mapDispatchToProps(dispatch) {
     getVehiclesCount: (assign, car_number_plate) => dispatch(getVehiclesCount(assign, car_number_plate)),
     searchVehicles: (data, assign) => dispatch(searchVehicles(data, assign)),
     deleteVehicle: (vehicle_id, vehicles) => dispatch(deleteVehicle(vehicle_id, vehicles)),
-    createVehicles: (car_number_plate, car_make, car_model, car_desc, car_color, oem) => dispatch(createVehicles(car_number_plate, car_make, car_model, car_desc, car_color, oem)),
+    createVehicles: (car_number_plate, car_make, car_model, car_desc, car_color, oem, oemVehicle) =>
+      dispatch(createVehicles(car_number_plate, car_make, car_model, car_desc, car_color, oem, oemVehicle)),
     updateVehicle: (vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign) =>
       dispatch(updateVehicle(vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign)),
     getVehiclesByOem: (page_no, spinner, oem_id) => dispatch(getVehiclesByOem(page_no, spinner, oem_id)),

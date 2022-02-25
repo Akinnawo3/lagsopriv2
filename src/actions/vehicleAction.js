@@ -71,10 +71,10 @@ export const getVehiclesCount =
     }
   };
 
-export const createVehicles = (car_number_plate, car_make, car_model, car_desc, car_color, oem_id) => async (dispatch) => {
+export const createVehicles = (car_number_plate, car_make, car_model, car_desc, car_color, oem_id, oem_vehicle_id) => async (dispatch) => {
   dispatch(startStatusLoading());
   console.log(oem_id);
-  const body = {car_number_plate, car_make, car_model, car_desc, car_color, oem_id};
+  const body = {car_number_plate, car_make, car_model, car_desc, car_color, oem_id, oem_vehicle_id};
   try {
     const res = await axios.post(`${api.vehicles}/v1.1/vehicles`, body);
     if (res.data.status === "error") {
