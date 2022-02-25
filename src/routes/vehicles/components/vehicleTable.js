@@ -22,7 +22,22 @@ import {verifyUserPermssion} from "../../../container/DefaultLayout";
 import {useHistory} from "react-router-dom";
 const qs = require("qs");
 
-const VehicleTable = ({getVehicles, vehicles, loading, createVehicles, updateVehicle, vehiclesCount, assign, header, deleteVehicle, getVehiclesCount, searchVehicles, oems, getVehiclesByOem}) => {
+const VehicleTable = ({
+  getVehicles,
+  vehicles,
+  loading,
+  createVehicles,
+  updateVehicle,
+  vehiclesCount,
+  assign,
+  header,
+  deleteVehicle,
+  getVehiclesCount,
+  searchVehicles,
+  oems,
+  getVehiclesByOem,
+  oemVehicles,
+}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -79,6 +94,8 @@ const VehicleTable = ({getVehicles, vehicles, loading, createVehicles, updateVeh
   };
 
   const onChange = (e) => setFormData({...formData, [e.target.name]: e.target.value});
+
+  console.log(oemVehicles);
 
   const onOemSelect = async (e) => {
     await getVehiclesByOem(1, false, e.target.value);
@@ -311,7 +328,7 @@ const mapStateToProps = (state) => ({
   vehiclesCount: state.vehicle.vehiclesCount,
   drivers: state.driver.drivers,
   oems: state.oem.oems,
-  oems: state.oem.oemVehicles,
+  oemVehicles: state.oem.oemVehicles,
   loading: state.loading.loading,
   loadingStatus: state.loading.loadingStatus,
 });
