@@ -16,11 +16,11 @@ const DownloadsTable = ({getDownloadsByArea, downloadsByArea, loading}) => {
   }, []);
 
   const requestByArea = [
-    {area: "lekki", number: 2},
-    {area: "gbagada", number: 5},
-    {area: "ikorodu", number: 12},
-    {area: "ajah", number: 12},
-    {area: "ikoyi", number: 7},
+    {area: "Area", number: 0},
+    {area: "Area", number: 0},
+    {area: "Area", number: 0},
+    {area: "Area", number: 0},
+    {area: "Area", number: 0},
   ];
   return (
     <RctCollapsibleCard heading="Updates">

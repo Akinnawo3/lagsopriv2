@@ -14,6 +14,7 @@ import Upload from "./upload";
 import {Form, FormGroup, Label, Input, Badge, Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {getVehiclesCount} from "Actions/vehicleAction";
+import {getVehiclesByOem} from "Actions/oem.Action";
 import {Link} from "react-router-dom";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
@@ -21,7 +22,7 @@ import {verifyUserPermssion} from "../../../container/DefaultLayout";
 import {useHistory} from "react-router-dom";
 const qs = require("qs");
 
-const VehicleTable = ({getVehicles, vehicles, loading, createVehicles, updateVehicle, vehiclesCount, assign, header, deleteVehicle, getVehiclesCount, searchVehicles, oems}) => {
+const VehicleTable = ({getVehicles, vehicles, loading, createVehicles, updateVehicle, vehiclesCount, assign, header, deleteVehicle, getVehiclesCount, searchVehicles, oems, getVehiclesByOem}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -78,6 +79,11 @@ const VehicleTable = ({getVehicles, vehicles, loading, createVehicles, updateVeh
   };
 
   const onChange = (e) => setFormData({...formData, [e.target.name]: e.target.value});
+
+  const onOemSelect = async (e) => {
+    await getVehiclesByOem();
+    setFormData({...formData, [e.target.name]: e.target.value});
+  };
   const {plateNo, model, make, desc, color, oem} = formData;
 
   const opnAddNewUserModal = (e) => {
@@ -235,6 +241,20 @@ const VehicleTable = ({getVehicles, vehicles, loading, createVehicles, updateVeh
 
             <FormGroup>
               <Label>OEM</Label>
+              <Input type="select" name="oem" value={oem} onChange={(e) => onOemSelect(e)} required>
+                <option value="" selected hidden>
+                  --Select OEM --
+                </option>
+                {oems.map((item) => (
+                  <option value={item.auth_id} selected={oem === item.auth_id}>
+                    {item.name}
+                  </option>
+                ))}
+              </Input>
+            </FormGroup>
+
+            <FormGroup>
+              <Label>OEM</Label>
               <Input type="select" name="oem" value={oem} onChange={onChange} required>
                 <option value="" selected hidden>
                   --Select OEM --
@@ -282,6 +302,7 @@ function mapDispatchToProps(dispatch) {
     createVehicles: (car_number_plate, car_make, car_model, car_desc, car_color, oem) => dispatch(createVehicles(car_number_plate, car_make, car_model, car_desc, car_color, oem)),
     updateVehicle: (vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign) =>
       dispatch(updateVehicle(vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign)),
+    getVehiclesByOem: (page_no, spinner, oem_id) => dispatch(getVehiclesByOem(page_no, spinner, oem_id)),
   };
 }
 
