@@ -131,7 +131,7 @@ const VehicleTable = ({
     });
     setAddNewUserModal(true);
     setEditUser(true);
-    // await getVehiclesByOem(1, false, vehic.oem_id);
+    await getVehiclesByOem(1, false, vehic.oem_id);
   };
 
   const onAddUpdateUserModalClose = () => {
