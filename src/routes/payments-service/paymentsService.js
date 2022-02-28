@@ -16,7 +16,7 @@ const PaymentsService = ({history, match, getPayments, getPaymentsCount, payment
   useEffect(() => {
     if (pageFromQuery === undefined || payments.length < 1) {
       getPayments(currentPage, "", "", true);
-      getPaymentsCount();
+      getPaymentsCount("");
     }
   }, []);
 
@@ -31,7 +31,7 @@ const PaymentsService = ({history, match, getPayments, getPaymentsCount, payment
 function mapDispatchToProps(dispatch) {
   return {
     getPayments: (pageNo, transaction_status, auth_id, loading, payment_type) => dispatch(getPaymentsService(pageNo, transaction_status, auth_id, loading, payment_type)),
-    getPaymentsCount: (transaction_status, auth_id) => dispatch(getPaymentsServiceCount(transaction_status, auth_id)),
+    getPaymentsCount: (transaction_status, auth_id, payment_type) => dispatch(getPaymentsServiceCount(transaction_status, auth_id, payment_type)),
   };
 }
 

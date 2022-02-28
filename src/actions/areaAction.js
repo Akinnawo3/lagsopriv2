@@ -83,8 +83,8 @@ export const searchAreas = (searchData) => async (dispatch) => {
   }
 };
 
-export const updateArea = (area_id, area_name, lga, lat, lon, old_home_area, old_work_area) => async (dispatch) => {
-  const body = {area_name, lga, lat, lon, old_home_area, old_work_area};
+export const updateArea = (area_id, area_name, lga, lat, lon, old_area) => async (dispatch) => {
+  const body = {area_name, lga, lat, lon, old_area};
   try {
     dispatch(startStatusLoading());
     const res = await axios.put(`${api.area}/v1.1/areas/${area_id}`, body);

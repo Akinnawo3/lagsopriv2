@@ -99,7 +99,6 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
     }
   }, [drivers]);
 
-  console.log(currentPage);
 
   return (
     <div>
