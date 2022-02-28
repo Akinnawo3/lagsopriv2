@@ -43,6 +43,8 @@ export const DRIVER_LOCATION = "DRIVER_LOCATION";
 export const VEHICLES = "VEHICLES";
 export const VEHICLES_COUNT = "VEHICLES_COUNT";
 export const VEHICLE = "VEHICLE";
+export const VEHICLES_FEEDBACK = 'VEHICLES_FEEDBACK';
+export const VEHICLES_FEEDBACK_COUNT = 'VEHICLES_FEEDBACK_COUNT'
 
 //Admins
 export const ADMINS = "ADMINS";
