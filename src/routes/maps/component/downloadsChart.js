@@ -37,7 +37,7 @@ const mapDispatchToProps = (dispatch) => ({
   getDownloadsByArea: (spinner) => dispatch(getDownloadsByArea(spinner)),
 });
 const mapStateToProps = (state) => ({
-  downloadsByArea: state.users.downloadsByArea,
+  downloadsByDate: state.users.downloadsByDate,
   loading: state.loading.loading,
 });
 
