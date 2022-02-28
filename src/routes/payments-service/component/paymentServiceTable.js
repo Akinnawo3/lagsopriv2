@@ -17,7 +17,7 @@ import moment from "moment";
 import {useHistory} from "react-router-dom";
 const qs = require("qs");
 
-const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayments, header, loading, getPaymentsCount}) => {
+const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayments, header, loading, getPaymentsServiceCount}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -41,7 +41,9 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
   ];
 
   const handleChange = (e) => {
+    setPaymentOptionType(e.target.value);
     getPayments(currentPage, status, auth_id, false, e.target.value);
+    getPaymentsServiceCount(status, auth_id, e.target.value);
   };
 
   useEffect(() => {
@@ -157,7 +159,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
 function mapDispatchToProps(dispatch) {
   return {
     getPayments: (pageNo, transaction_status, auth_id, loading, payment_type) => dispatch(getPaymentsService(pageNo, transaction_status, auth_id, loading, payment_type)),
-    getPaymentsCount: (transaction_status, auth_id, payment_type) => dispatch(getPaymentsServiceCount(transaction_status, auth_id, payment_type)),
+    getPaymentsServiceCount: (transaction_status, auth_id, payment_type) => dispatch(getPaymentsServiceCount(transaction_status, auth_id, payment_type)),
   };
 }
 
