@@ -19,13 +19,14 @@ import EmptyData from "Components/EmptyData/EmptyData";
 import {CSVLink} from "react-csv";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {verifyUserPermssion} from "../../container/DefaultLayout";
+import {lgaList} from "./lgaList";
 
 const Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteArea, getAreaCount, areaCount, searchArea}) => {
   const [addNewAreaModal, setAddNewAreaModal] = useState(false);
   const [editArea, setEditArea] = useState(false);
   const [updateId, setUpdateId] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
-  const [formData, setFormData] = useState({lga: "", areaName: ""});
+  const [formData, setFormData] = useState({lga: "", areaName: "", lon: "", lat: ""});
   const inputEl = useRef(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [excelExport, setExcelExport] = useState([]);
@@ -137,7 +138,6 @@ const Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteA
     getAreaCount();
   };
 
-
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Areas"} match={match} />
@@ -229,8 +229,27 @@ const Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteA
             </FormGroup>
             <FormGroup>
               <Label>LGA</Label>
-              <Input type="text" name="lga" value={lga} onChange={onChange} required />
+              <Input type="select" name="lga" value={lga} onChange={onChange} required>
+                <option value="" selected hidden>
+                  --Select LGA --
+                </option>
+                {lgaList.map((item) => (
+                  <option value={item.value} selected={lga === item.value}>
+                    {item.label}
+                  </option>
+                ))}
+              </Input>
             </FormGroup>
+            <div className="d-flex ">
+              <FormGroup className="mr-2">
+                <Label>LAT</Label>
+                <Input type="number" min={-90} max={90} step="any" name="lat" value={lat} onChange={onChange} required />
+              </FormGroup>
+              <FormGroup className="ml-2">
+                <Label>LON</Label>
+                <Input type="number" name="lon" step="any" value={lon} onChange={onChange} required />
+              </FormGroup>
+            </div>
           </ModalBody>
           <ModalFooter>
             <Button type="submit" variant="contained" className="text-white btn-info mr-2">
