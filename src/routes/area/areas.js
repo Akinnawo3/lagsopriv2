@@ -98,7 +98,7 @@ const Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteA
   const onSubmit = async (e) => {
     e.preventDefault();
     onAddUpdateAreaModalClose();
-    !editArea ? await createArea(areaName, lga, lat, lon) : await updateArea(updateId, areaName, lga, lat, lon, oldArea);
+    !editArea ? await createArea(areaName, lga, lat.toString(), lon.toString()) : await updateArea(updateId, areaName, lga, lat.toString(), lon.toString(), oldArea);
   };
 
   useEffect(() => {
