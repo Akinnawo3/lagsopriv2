@@ -10,25 +10,26 @@ import Pagination from "react-js-pagination";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {calculatePostDate, getStatus4, getStatusColor4} from "Helpers/helpers";
 import {Badge} from "reactstrap";
-import {getPaymentsService} from "Actions/paymentAction";
+import {getPaymentsService, getPaymentsCount} from "Actions/paymentAction";
 import {Link} from "react-router-dom";
 import {CSVLink} from "react-csv";
 import moment from "moment";
 import {useHistory} from "react-router-dom";
 const qs = require("qs");
 
-const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayments, header, loading}) => {
+const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayments, header, loading, getPaymentsCount}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
   const [excelExport, setExcelExport] = useState([]);
+  const [paymentOptionType, setPaymentOptionType] = useState("");
 
   const paginate = (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
-    getPayments(pageNumber, status, auth_id);
+    getPayments(pageNumber, status, auth_id, false, paymentOptionType);
     window.scrollTo(0, 0);
   };
 
@@ -108,7 +109,6 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
                     <TableCell>User Phn No.</TableCell>
                     <TableCell> User Email</TableCell>
                     <TableCell>User Type</TableCell>
-
                     <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
@@ -156,7 +156,8 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPayments: (pageNo, transaction_status, auth_id,loading,payment_type) => dispatch(getPaymentsService(pageNo, transaction_status, auth_id,loading,payment_type)),
+    getPayments: (pageNo, transaction_status, auth_id, loading, payment_type) => dispatch(getPaymentsService(pageNo, transaction_status, auth_id, loading, payment_type)),
+    getPaymentsCount: (transaction_status, auth_id, payment_type) => dispatch(getPaymentsServiceCount(transaction_status, auth_id, payment_type)),
   };
 }
 

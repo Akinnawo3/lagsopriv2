@@ -69,7 +69,7 @@ export const getPaymentDetails = (payment_id) => async (dispatch) => {
 };
 
 export const getPaymentsService =
-  (page_no, status = "", auth_id = "", loading, payment_type="") =>
+  (page_no, status = "", auth_id = "", loading, payment_type = "") =>
   async (dispatch) => {
     try {
       loading && dispatch(startLoading());
@@ -92,10 +92,10 @@ export const getPaymentsService =
   };
 
 export const getPaymentsServiceCount =
-  (status = "", auth_id = "") =>
+  (status = "", auth_id = "", payment_type = "") =>
   async (dispatch) => {
     try {
-      const res = await axios.get(`${api.wallet}/v1.1/admin/service-transactions?status=${status}&auth_id=${auth_id}&component=count`);
+      const res = await axios.get(`${api.wallet}/v1.1/admin/service-transactions?status=${status}&auth_id=${auth_id}&payment_type=${payment_type}&component=count`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {

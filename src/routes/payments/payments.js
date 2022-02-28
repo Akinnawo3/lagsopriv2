@@ -17,7 +17,7 @@ const Payments = ({history, match, getPayments, getPaymentsCount, payments, paym
     // pageNo, transaction_status, auth_id, loading
     if (pageFromQuery === undefined || payments.length < 1) {
       getPayments(currentPage, "", "", true);
-      getPaymentsCount();
+      getPaymentsCount("");
     }
   }, []);
 
