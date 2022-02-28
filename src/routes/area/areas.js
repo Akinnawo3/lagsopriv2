@@ -64,10 +64,10 @@ const Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteA
     areas.map((area) => {
       if (area.area_id === area_id) {
         setFormData({
-          lga: area.lga,
-          areaName: area.area_name,
-          lon: area.location[0],
-          lat: area.location[1],
+          lga: area?.lga,
+          areaName: area?.area_name,
+          lon: area?.location ? area?.location[0] : "",
+          lat: area?.location ? area?.location[1] : "",
           oldArea: area.area_name,
         });
         setUpdateId(area.area_id);
