@@ -2,6 +2,7 @@ import React from "react";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import {Line} from "react-chartjs-2";
 import {connect} from "react-redux";
+import {getDownloadsByArea} from "Actions/userAction";
 
 const DownloadsChart = () => {
   const data = {
