@@ -137,6 +137,18 @@ const Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteA
     getAreaCount();
   };
 
+  const lgas = [
+    {label: "Coker/Aguda", value: "Coker/Aguda"},
+    {label: "Egbe/Idimu", value: "Egbe/Idimu"},
+    {label: "Ejigbo", value: "Ejigbo"},
+    {label: "Epe", value: "Epe"},
+    {label: "Eredo", value: "Eredo"},
+    {label: "Eti-Osa", value: "Eti-Osa"},
+    {label: "Eti-Osa East", value: "Eti-Osa East"},
+    {label: "Iba", value: "Iba"},
+    {label: "Iba", value: "Iba"},
+  ];
+
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Areas"} match={match} />

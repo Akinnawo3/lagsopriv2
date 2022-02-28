@@ -227,7 +227,7 @@ export const getDownloadsByDate =
     try {
       spinner && (await dispatch(startLoading()));
       !spinner && dispatch(startStatusLoading());
-      const res = await axios.get(`${api.user}/v1.1/admin/download-stat?component=area&start_date=${start_date}&end_date=${end_date}&date_type=${date_type}`);
+      const res = await axios.get(`${api.user}/v1.1/admin/download-stat?component=date&start_date=${start_date}&end_date=${end_date}&date_type=${date_type}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
