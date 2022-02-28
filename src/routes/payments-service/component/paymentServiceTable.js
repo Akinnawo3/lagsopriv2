@@ -10,7 +10,7 @@ import Pagination from "react-js-pagination";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {calculatePostDate, getStatus4, getStatusColor4} from "Helpers/helpers";
 import {Badge} from "reactstrap";
-import {getPaymentsService, getPaymentsCount} from "Actions/paymentAction";
+import {getPaymentsService, getPaymentsServiceCount} from "Actions/paymentAction";
 import {Link} from "react-router-dom";
 import {CSVLink} from "react-csv";
 import moment from "moment";
