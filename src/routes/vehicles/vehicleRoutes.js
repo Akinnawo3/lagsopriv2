@@ -14,7 +14,7 @@ import {
     AsyncPendingDrivers,
     AsyncVerifiedDrivers,
     AsyncVehicles,
-    AsyncInactiveVehicles, AsyncActiveVehicles, AsyncVehicleDetails,
+    AsyncInactiveVehicles, AsyncActiveVehicles, AsyncVehicleDetails, AsyncVehiclesFeedback,
 } from 'Components/AsyncComponent/AsyncComponent';
 
 const VehicleRoutes = ({ match }) => (
@@ -22,6 +22,7 @@ const VehicleRoutes = ({ match }) => (
         <Switch>
             <Route path={`/admin/vehicles/active`} component={AsyncActiveVehicles} />
             <Route path={`/admin/vehicles/inactive`} component={AsyncInactiveVehicles} />
+            <Route path={`/admin/vehicles/feedback`} component={AsyncVehiclesFeedback} />
             <Route path={`/admin/vehicles/:id`} component={AsyncVehicleDetails} />
             <Route path={`/admin/vehicles`} component={AsyncVehicles} />
         </Switch>
