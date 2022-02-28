@@ -19,13 +19,14 @@ import EmptyData from "Components/EmptyData/EmptyData";
 import {CSVLink} from "react-csv";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {verifyUserPermssion} from "../../container/DefaultLayout";
+import {lgaList} from "./lgaList";
 
 const Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteArea, getAreaCount, areaCount, searchArea}) => {
   const [addNewAreaModal, setAddNewAreaModal] = useState(false);
   const [editArea, setEditArea] = useState(false);
   const [updateId, setUpdateId] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
-  const [formData, setFormData] = useState({lga: "", areaName: ""});
+  const [formData, setFormData] = useState({lga: "", areaName: "", lon: "", lat: "", oldHomeArea: "", oldWorkArea: ""});
   const inputEl = useRef(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [excelExport, setExcelExport] = useState([]);
@@ -43,7 +44,7 @@ const Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteA
   };
 
   const onChange = (e) => setFormData({...formData, [e.target.name]: e.target.value});
-  const {lga, areaName} = formData;
+  const {lga, areaName, lat, lon, oldHomeArea, oldWorkArea} = formData;
 
   const opnAddNewAreaModal = (e) => {
     e.preventDefault();
@@ -65,6 +66,10 @@ const Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteA
         setFormData({
           lga: area.lga,
           areaName: area.area_name,
+          lon: area.location[0],
+          lat: area.location[1],
+          oldHomeArea: area.area_name,
+          oldWorkArea: area.area_name,
         });
         setUpdateId(area.area_id);
       }
@@ -73,10 +78,13 @@ const Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteA
     setEditArea(true);
   };
 
+  console.log(formData);
   const onAddUpdateAreaModalClose = () => {
     setFormData({
       lga: "",
       areaName: "",
+      lat: "",
+      lon: "",
     });
     setUpdateId(null);
     setAddNewAreaModal(false);
@@ -91,7 +99,7 @@ const Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteA
   const onSubmit = async (e) => {
     e.preventDefault();
     onAddUpdateAreaModalClose();
-    !editArea ? await createArea(areaName, lga) : await updateArea(updateId, areaName, lga);
+    !editArea ? await createArea(areaName, lga, lat, lon) : await updateArea(updateId, areaName, lga, lat, lon, oldHomeArea, oldWorkArea);
   };
 
   useEffect(() => {
@@ -228,8 +236,25 @@ const Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteA
             </FormGroup>
             <FormGroup>
               <Label>LGA</Label>
-              <Input type="text" name="lga" value={lga} onChange={onChange} required />
+              <Input type="select" name="lga" value={lga} onChange={onChange} required>
+                <option value="" hidden>
+                  --Select LGA --
+                </option>
+                {lgaList.map((item) => (
+                  <option value={item.value.toLowerCase()}>{item.label}</option>
+                ))}
+              </Input>
             </FormGroup>
+            <div className="d-flex ">
+              <FormGroup className="mr-2">
+                <Label>LON</Label>
+                <Input type="number" name="lon" step="any" value={lon} onChange={onChange} required />
+              </FormGroup>
+              <FormGroup className="ml-2">
+                <Label>LAT</Label>
+                <Input type="number" min={-90} max={90} step="any" name="lat" value={lat} onChange={onChange} required />
+              </FormGroup>
+            </div>
           </ModalBody>
           <ModalFooter>
             <Button type="submit" variant="contained" className="text-white btn-info mr-2">
@@ -264,9 +289,9 @@ function mapDispatchToProps(dispatch) {
   return {
     getAreas: (page_no, spinner) => dispatch(getAreas(page_no, spinner)),
     getAreaCount: () => dispatch(getAreasCount()),
-    createArea: (area_name, lga) => dispatch(createArea(area_name, lga)),
+    createArea: (area_name, lga, lat, lon) => dispatch(createArea(area_name, lga, lat, lon)),
     searchArea: (data) => dispatch(searchAreas(data)),
-    updateArea: (area_id, area_name, lga) => dispatch(updateArea(area_id, area_name, lga)),
+    updateArea: (area_id, area_name, lga, lat, lon, old_home_area, old_work_area) => dispatch(updateArea(area_id, area_name, lga, lat, lon, old_home_area, old_work_area)),
     deleteArea: (area_id, areas) => dispatch(deleteArea(area_id, areas)),
   };
 }

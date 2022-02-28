@@ -4,8 +4,8 @@ import {AREAS, AREA_COUNT} from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 
-export const createArea = (area_name, lga) => async (dispatch) => {
-  const body = {area_name, lga};
+export const createArea = (area_name, lga, lat, lon) => async (dispatch) => {
+  const body = {area_name, lga, lat, lon};
   try {
     dispatch(startStatusLoading());
     const res = await axios.post(`${api.area}/v1.1/areas`, body);
@@ -83,8 +83,8 @@ export const searchAreas = (searchData) => async (dispatch) => {
   }
 };
 
-export const updateArea = (area_id, area_name, lga) => async (dispatch) => {
-  const body = {area_name, lga};
+export const updateArea = (area_id, area_name, lga, lat, lon, old_home_area, old_work_area) => async (dispatch) => {
+  const body = {area_name, lga, lat, lon, old_home_area, old_work_area};
   try {
     dispatch(startStatusLoading());
     const res = await axios.put(`${api.area}/v1.1/areas/${area_id}`, body);

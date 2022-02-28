@@ -1,10 +1,11 @@
-import {USER_COUNT, USERS, USERS_LOCATION, ACTIVITY_LOGS, ACTIVITY_LOGS_COUNT, DOWNLOADS_BY_AREA} from "Actions/types";
+import {USER_COUNT, USERS, USERS_LOCATION, ACTIVITY_LOGS, ACTIVITY_LOGS_COUNT, DOWNLOADS_BY_AREA, DOWNLOADS_BY_DATE} from "Actions/types";
 
 const initialState = {
   users: [],
   userCount: 0,
   userLocation: [],
   downloadsByArea: [],
+  downloadsByDate: [],
 };
 
 function usersReducer(state = initialState, action) {
@@ -44,6 +45,12 @@ function usersReducer(state = initialState, action) {
       return {
         ...state,
         downloadsByArea: payload,
+      };
+    }
+    case DOWNLOADS_BY_DATE: {
+      return {
+        ...state,
+        downloadsByDate: payload,
       };
     }
     default:
