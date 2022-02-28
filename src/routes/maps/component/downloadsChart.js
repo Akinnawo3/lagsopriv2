@@ -1,10 +1,18 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import {Line} from "react-chartjs-2";
 import {connect} from "react-redux";
-import {getDownloadsByArea} from "Actions/userAction";
+import {getDownloadsByDate} from "Actions/userAction";
+import {getFirstDayOfMonth, getTodayDate} from "../../../helpers/helpers";
 
-const DownloadsChart = () => {
+const DownloadsChart = ({loading, getDownloadsByDate}) => {
+  const [startDate, setStartDate] = useState(getFirstDayOfMonth());
+  const [endDate, setEndDate] = useState(getTodayDate());
+  const [dateType, setDateType] = useState("daily");
+
+  useEffect(() => {
+    getDownloadsByDate(true, start_date, end_date, date_type);
+  }, []);
   const data = {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     datasets: [
@@ -34,7 +42,7 @@ const DownloadsChart = () => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  getDownloadsByArea: (spinner) => dispatch(getDownloadsByArea(spinner)),
+  getDownloadsByDate: (spinner, start_date, end_date, date_type) => dispatch(getDownloadsByDate(spinner, start_date, end_date, date_type)),
 });
 const mapStateToProps = (state) => ({
   downloadsByDate: state.users.downloadsByDate,
