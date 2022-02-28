@@ -50,7 +50,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
     if (payments.length > 0) {
       let result = payments.map((payment) => {
         return {
-          Date_Time: moment(payment.createAt).format("MMMM Do YYYY, h:mm:ss a"),
+          Date_Time: moment(payment.createdAt).format("MMMM Do YYYY, h:mm:ss"),
           amount: payment.amount,
           description: payment.description,
           paymentID: payment.payment_id,
@@ -74,6 +74,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
       email: "increase.nkanta@zeno.no",
     },
   ];
+
 
   return (
     <div>
