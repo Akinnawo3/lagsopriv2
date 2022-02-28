@@ -59,7 +59,7 @@ const VehicleTable = ({
 
   useEffect(() => {
     if (vehicles) {
-      let result = vehicles.map((vehicle) => {
+      let result = vehicles?.map((vehicle) => {
         return {
           SerialNo: vehicle.car_number,
           plateNo: vehicle.car_number_plate,
@@ -291,7 +291,7 @@ const VehicleTable = ({
                     --Select Vehicle --
                   </option>
                   {oemVehicles.length > 0 &&
-                    oemVehicles.map((item) => (
+                    oemVehicles?.map((item) => (
                       <option value={item.vehicle_id} selected={oemVehicle === item.vehicle_id}>
                         {`${item.brand_name} - ${item.model} ${item.year} `}
                       </option>
