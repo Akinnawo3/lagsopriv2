@@ -64,7 +64,6 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
       setExcelExport(result);
     }
   }, [payments]);
-  console.log(payments);
 
   [
     {
