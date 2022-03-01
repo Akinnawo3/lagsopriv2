@@ -10,7 +10,7 @@ import Pagination from "react-js-pagination";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {calculatePostDate, getStatus4, getStatusColor4} from "Helpers/helpers";
 import {Badge, Card, CardBody, Col, Row} from "reactstrap";
-import {getPaymentsService, getPaymentsServiceCount} from "Actions/paymentAction";
+import {getPaymentsService, getPaymentsServiceCount, getPaymentsServiceBalance} from "Actions/paymentAction";
 import {Link} from "react-router-dom";
 import {CSVLink} from "react-csv";
 import moment from "moment";
@@ -18,7 +18,7 @@ import {useHistory} from "react-router-dom";
 const qs = require("qs");
 import {getFirstDayOfMonth, getTodayDate} from "../../../helpers/helpers";
 
-const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayments, header, loading, getPaymentsServiceCount, paymentsServiceBalance}) => {
+const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayments, header, loading, getPaymentsServiceCount, paymentsServiceBalance, getPaymentsServiceBalance}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -80,6 +80,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
   const applyFilter = () => {
     getPayments(currentPage, status, auth_id, false, paymentOptionType, startDate, endDate);
     getPaymentsServiceCount(status, auth_id, paymentOptionType, startDate, endDate);
+    getPaymentsServiceBalance(status, auth_id, paymentOptionType, startDate, endDate);
   };
 
   return (
@@ -135,7 +136,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
               </CardBody>
               <div className="chart-wrapper mx-3 d-flex align-items-center  justify-content-between" style={{height: "70px"}}>
                 <span className=" font-xl" style={{fontSize: "2.5rem"}}>
-                  ₦{paymentsServiceBalance.toLocaleString()}
+                  ₦{paymentsServiceBalance?.toLocaleString()}
                 </span>
                 <i className="ti-arrow-up font-lg" />
               </div>
@@ -209,6 +210,8 @@ function mapDispatchToProps(dispatch) {
     getPayments: (pageNo, transaction_status, auth_id, loading, payment_type, start_date, end_date) =>
       dispatch(getPaymentsService(pageNo, transaction_status, auth_id, loading, payment_type, start_date, end_date)),
     getPaymentsServiceCount: (transaction_status, auth_id, payment_type, start_date, end_date) => dispatch(getPaymentsServiceCount(transaction_status, auth_id, payment_type, start_date, end_date)),
+    getPaymentsServiceBalance: (transaction_status, auth_id, payment_type, start_date, end_date) =>
+      dispatch(getPaymentsServiceBalance(transaction_status, auth_id, payment_type, start_date, end_date)),
   };
 }
 const mapStateToProps = (state) => ({
