@@ -1,12 +1,4 @@
-import {
-  PAYMENTS_COUNT,
-  PAYMENTS,
-  PAYMENT,
-  PAYMENTS_SERVICE,
-  PAYMENTS_SERVICE_COUNT,
-  PAYMENTS_SERVICE_BALANCE, PAYMENT_SERVICE_DETAILS
-} from "Actions/types";
-
+import {PAYMENTS_COUNT, PAYMENTS, PAYMENT, PAYMENTS_SERVICE, PAYMENTS_SERVICE_COUNT, PAYMENTS_SERVICE_BALANCE, PAYMENTS_SERVICE_BALANCE_INDIVIDUAL, PAYMENT_SERVICE_DETAILS} from "Actions/types";
 
 const initialState = {
   payments: [],
@@ -16,10 +8,11 @@ const initialState = {
   paymentsService: [],
   paymentsServiceCount: 0,
   paymentsServiceBalance: 0,
+  paymentsServiceBalanceIndividual: 0,
 };
 
 function paymentReducer(state = initialState, action) {
-  const { type, payload } = action;
+  const {type, payload} = action;
   switch (type) {
     case PAYMENTS: {
       return {
@@ -57,6 +50,12 @@ function paymentReducer(state = initialState, action) {
         paymentsServiceBalance: payload,
       };
     }
+    case PAYMENTS_SERVICE_BALANCE_INDIVIDUAL: {
+      return {
+        ...state,
+        paymentsServiceBalanceIndividual: payload,
+      };
+    }
     case PAYMENT_SERVICE_DETAILS: {
       return {
         ...state,
@@ -64,7 +63,7 @@ function paymentReducer(state = initialState, action) {
       };
     }
     default:
-      return state
+      return state;
   }
 }
 

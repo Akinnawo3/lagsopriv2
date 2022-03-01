@@ -18,7 +18,7 @@ import {useHistory} from "react-router-dom";
 const qs = require("qs");
 import {getFirstDayOfMonth, getTodayDate} from "../../../helpers/helpers";
 
-const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayments, header, loading, getPaymentsServiceCount}) => {
+const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayments, header, loading, getPaymentsServiceCount, paymentsServiceBalance}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -76,6 +76,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
   //   },
   // ];
 
+  console.log(paymentsServiceBalance);
   const applyFilter = () => {
     getPayments(currentPage, status, auth_id, false, paymentOptionType, startDate, endDate);
     getPaymentsServiceCount(status, auth_id, paymentOptionType, startDate, endDate);
@@ -134,7 +135,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
               </CardBody>
               <div className="chart-wrapper mx-3 d-flex align-items-center  justify-content-between" style={{height: "70px"}}>
                 <span className=" font-xl" style={{fontSize: "2.5rem"}}>
-                  "SDfg"
+                  ₦{paymentsServiceBalance.toLocaleString()}
                 </span>
                 <i className="ti-arrow-up font-lg" />
               </div>
@@ -214,5 +215,6 @@ const mapStateToProps = (state) => ({
   loading: state.loading.loading,
   payments: state.payments.paymentsService,
   paymentsCount: state.payments.paymentsServiceCount,
+  paymentsServiceBalance: state.payments.paymentsServiceBalance,
 });
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentServiceTable);

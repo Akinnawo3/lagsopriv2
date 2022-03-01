@@ -17,7 +17,7 @@ import {getDriverTripCount, getDriverTripCountDisplayAll, getDriverTripCountDisp
 import {getVehicles} from "Actions/vehicleAction";
 import {getWalletBalance, getWallets, getWalletsCount} from "Actions/walletAction";
 import Wallets from "Components/Wallets/wallets";
-import {getPaymentsService, getPaymentsServiceBalance, getPaymentsServiceCount} from "Actions/paymentAction";
+import {getPaymentsService, getPaymentsServiceBalanceForIndividual, getPaymentsServiceCount} from "Actions/paymentAction";
 import PaymentsServiceComponent from "Components/PaymentsComponent/paymentsServiceComponent";
 
 // For Tab Content
@@ -55,8 +55,8 @@ const Driver = (props) => {
     payments,
     getPaymentsService,
     getPaymentsServiceCount,
-    paymentsServiceBalance,
-    getPaymentsServiceBalance,
+    paymentsServiceBalanceIndividual,
+    getPaymentsServiceBalanceForIndividual,
     driverLocation,
   } = props;
 
@@ -83,7 +83,7 @@ const Driver = (props) => {
       getWalletsBalance(match.params.id);
       getPaymentsService(1, "", match.params.id);
       getPaymentsServiceCount("", match.params.id);
-      getPaymentsServiceBalance(match.params.id);
+      getPaymentsServiceBalanceForIndividual(match.params.id);
     }
   }, [match.params.id]);
   return (
@@ -145,11 +145,11 @@ const Driver = (props) => {
             {activeTab === 4 && (
               <TabContainer>
                 <PaymentsServiceComponent
-                 auth_id={match.params.id}
-                //   payments={payments}
-                //    paymentsCount={paymentsCount}
-                //     paymentsServiceBalance={paymentsServiceBalance}
-                     />
+                  auth_id={match.params.id}
+                  //   payments={payments}
+                  //    paymentsCount={paymentsCount}
+                  //     paymentsServiceBalance={paymentsServiceBalance}
+                />
               </TabContainer>
             )}
           </div>
@@ -177,7 +177,7 @@ function mapDispatchToProps(dispatch) {
     getWalletsBalance: (auth_id) => dispatch(getWalletBalance(auth_id)),
     getPaymentsService: (pageNo, transaction_status, auth_id) => dispatch(getPaymentsService(pageNo, transaction_status, auth_id)),
     getPaymentsServiceCount: (transaction_status, auth_id) => dispatch(getPaymentsServiceCount(transaction_status, auth_id)),
-    getPaymentsServiceBalance: (auth_id) => dispatch(getPaymentsServiceBalance(auth_id)),
+    getPaymentsServiceBalanceForIndividual: (auth_id) => dispatch(getPaymentsServiceBalanceForIndividual(auth_id)),
   };
 }
 
@@ -192,7 +192,7 @@ const mapStateToProps = (state) => ({
   walletsCount: state.wallets.walletsCount,
   payments: state.payments.paymentsService,
   paymentsCount: state.payments.paymentsServiceCount,
-  paymentsServiceBalance: state.payments.paymentsServiceBalance,
+  paymentsServiceBalanceIndividual: state.payments.paymentsServiceBalanceIndividual,
   driverLocation: state.driver.driverLocation,
 });
 
