@@ -37,6 +37,8 @@ const Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteA
     getAreaCount();
   }, []);
 
+ 
+
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
     getAreas(pageNumber);
@@ -77,7 +79,6 @@ const Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteA
     setEditArea(true);
   };
 
-  console.log(formData);
   const onAddUpdateAreaModalClose = () => {
     setFormData({
       lga: "",

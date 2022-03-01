@@ -5,7 +5,7 @@ const initialState = {
   userCount: 0,
   userLocation: [],
   downloadsByArea: [],
-  downloadsByDate: [],
+  downloadsByDate: new Array(12).fill(0),
 };
 
 function usersReducer(state = initialState, action) {
@@ -36,6 +36,15 @@ function usersReducer(state = initialState, action) {
       };
     }
     case ACTIVITY_LOGS_COUNT: {
+      // let copiedchartDatauio = chartData.slice();
+      // chartData.map((item, itemIndex) => {
+      //   downloadsByDate.map((downloadsData, downloadsDataIndex) => {
+      //     if (downloadsData.date_value === itemIndex + 1) {
+      //       copiedchartData[itemIndex] = downloadsData.total;
+      //     }
+      //   });
+      //   date_value;
+      // });
       return {
         ...state,
         AdminActivityLogCount: payload,
@@ -48,9 +57,15 @@ function usersReducer(state = initialState, action) {
       };
     }
     case DOWNLOADS_BY_DATE: {
+      let copiedData = state.downloadsByDate.slice();
+      if (payload.length > 0) {
+        payload.map((item) => {
+          copiedData[item.date_value - 1] = item.total;
+        });
+      }
       return {
         ...state,
-        downloadsByDate: payload,
+        downloadsByDate: copiedData,
       };
     }
     default:

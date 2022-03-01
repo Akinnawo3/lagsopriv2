@@ -1,5 +1,15 @@
 import axios from "axios";
-import {PAYMENTS_COUNT, PAYMENTS, PAYMENT, SOS_USER_DETAILS, PAYMENTS_SERVICE, PAYMENTS_SERVICE_COUNT, PAYMENTS_SERVICE_BALANCE, PAYMENT_SERVICE_DETAILS} from "./types";
+import {
+  PAYMENTS_COUNT,
+  PAYMENTS,
+  PAYMENT,
+  SOS_USER_DETAILS,
+  PAYMENTS_SERVICE,
+  PAYMENTS_SERVICE_COUNT,
+  PAYMENTS_SERVICE_BALANCE,
+  PAYMENTS_SERVICE_BALANCE_INDIVIDUAL,
+  PAYMENT_SERVICE_DETAILS,
+} from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "Actions/loadingAction";
@@ -69,12 +79,14 @@ export const getPaymentDetails = (payment_id) => async (dispatch) => {
 };
 
 export const getPaymentsService =
-  (page_no, status = "", auth_id = "", loading, payment_type = "") =>
+  (page_no, status = "", auth_id = "", loading, payment_type = "", start_date = "", end_date = "") =>
   async (dispatch) => {
     try {
       loading && dispatch(startLoading());
       !loading && dispatch(startStatusLoading());
-      const res = await axios.get(`${api.wallet}/v1.1/admin/service-transactions?item_per_page=20&page=${page_no}&status=${status}&auth_id=${auth_id}&payment_type=${payment_type}`);
+      const res = await axios.get(
+        `${api.wallet}/v1.1/admin/service-transactions?item_per_page=20&page=${page_no}&status=${status}&auth_id=${auth_id}&payment_type=${payment_type}&start_date=${start_date}&end_date=${end_date}`
+      );
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -92,15 +104,34 @@ export const getPaymentsService =
   };
 
 export const getPaymentsServiceCount =
-  (status = "", auth_id = "", payment_type = "") =>
+  (status = "", auth_id = "", payment_type = "", start_date = "", end_date = "") =>
   async (dispatch) => {
     try {
-      const res = await axios.get(`${api.wallet}/v1.1/admin/service-transactions?status=${status}&auth_id=${auth_id}&payment_type=${payment_type}&component=count`);
+      const res = await axios.get(
+        `${api.wallet}/v1.1/admin/service-transactions?status=${status}&auth_id=${auth_id}&payment_type=${payment_type}&start_date=${start_date}&end_date=${end_date}&component=count`
+      );
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
         dispatch({
           type: PAYMENTS_SERVICE_COUNT,
+          payload: res.data.data?.total,
+        });
+      }
+    } catch (err) {}
+  };
+export const getPaymentsServiceBalance =
+  (status = "", auth_id = "", payment_type = "", start_date = "", end_date = "") =>
+  async (dispatch) => {
+    try {
+      const res = await axios.get(
+        `${api.wallet}/v1.1/admin/service-transactions?status=${status}&auth_id=${auth_id}&payment_type=${payment_type}&start_date=${start_date}&end_date=${end_date}&component=balance`
+      );
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        dispatch({
+          type: PAYMENTS_SERVICE_BALANCE,
           payload: res.data.data?.total,
         });
       }
@@ -125,7 +156,7 @@ export const getPaymentServiceDetails = (payment_id) => async (dispatch) => {
   }
 };
 
-export const getPaymentsServiceBalance =
+export const getPaymentsServiceBalanceForIndividual =
   (auth_id = "") =>
   async (dispatch) => {
     try {
@@ -134,7 +165,7 @@ export const getPaymentsServiceBalance =
         NotificationManager.error(res.data.msg);
       } else {
         dispatch({
-          type: PAYMENTS_SERVICE_BALANCE,
+          type: PAYMENTS_SERVICE_BALANCE_INDIVIDUAL,
           payload: res.data.data?.total ? res.data.data?.total : 0,
         });
       }

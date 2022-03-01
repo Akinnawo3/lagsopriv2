@@ -153,6 +153,11 @@ export default {
           new_item: false,
           menu_title: "sidebar.inactive",
         },
+        {
+          path: "/admin/vehicles/feedback",
+          new_item: false,
+          menu_title: "sidebar.feedback",
+        },
       ],
     },
     {

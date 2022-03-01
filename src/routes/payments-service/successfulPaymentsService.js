@@ -4,11 +4,11 @@
 import React, {useState, useEffect} from "react";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {connect} from "react-redux";
-import {getPayments, getPaymentsCount, getPaymentsService, getPaymentsServiceCount} from "Actions/paymentAction";
+import {getPayments, getPaymentsCount, getPaymentsService, getPaymentsServiceCount, getPaymentsServiceBalance} from "Actions/paymentAction";
 import PaymentServiceTable from "Routes/payments-service/component/paymentServiceTable";
 const qs = require("qs");
 
-const SuccessfulPaymentService = ({history, match, getPayments, getPaymentsCount, payments, paymentsCount}) => {
+const SuccessfulPaymentService = ({history, match, getPayments, getPaymentsCount, payments, paymentsCount, getPaymentsServiceBalance}) => {
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
@@ -17,6 +17,7 @@ const SuccessfulPaymentService = ({history, match, getPayments, getPaymentsCount
     if (pageFromQuery === undefined || payments.length < 1) {
       getPayments(currentPage, 1, "", true);
       getPaymentsCount(1);
+      getPaymentsServiceBalance(1);
     }
   }, []);
 
@@ -32,6 +33,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getPayments: (pageNo, transaction_status, auth_id, loading) => dispatch(getPaymentsService(pageNo, transaction_status, auth_id, loading)),
     getPaymentsCount: (transaction_status, auth_id) => dispatch(getPaymentsServiceCount(transaction_status, auth_id)),
+    getPaymentsServiceBalance: (transaction_status, auth_id, payment_type) => dispatch(getPaymentsServiceBalance(transaction_status, auth_id, payment_type)),
   };
 }
 
