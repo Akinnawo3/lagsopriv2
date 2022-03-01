@@ -11,8 +11,8 @@ const DownloadsChart = ({loading, getDownloadsByDate, downloadsByDate}) => {
   // const [startDate, setStartDate] = useState(getFirstDayOfMonth());
   // const [endDate, setEndDate] = useState(getTodayDate());
   const [dateType, setDateType] = useState("monthly");
-  useEffect(async () => {
-    await getDownloadsByDate(true, startDate, endDate, dateType);
+  useEffect(() => {
+    getDownloadsByDate(true, startDate, endDate, dateType);
   }, []);
 
   console.log(downloadsByDate);
