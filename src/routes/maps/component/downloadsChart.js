@@ -6,26 +6,16 @@ import {getDownloadsByDate} from "Actions/userAction";
 import {getFirstDayOfMonth, getTodayDate} from "../../../helpers/helpers";
 
 const DownloadsChart = ({loading, getDownloadsByDate, downloadsByDate}) => {
-  const [startDate, setStartDate] = useState(getFirstDayOfMonth());
-  const [endDate, setEndDate] = useState(getTodayDate());
+  const [startDate, setStartDate] = useState("2022-02-01");
+  const [endDate, setEndDate] = useState("2022-02-28");
+  // const [startDate, setStartDate] = useState(getFirstDayOfMonth());
+  // const [endDate, setEndDate] = useState(getTodayDate());
   const [dateType, setDateType] = useState("monthly");
-  const [chartData, setChartData] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
   useEffect(async () => {
     await getDownloadsByDate(true, startDate, endDate, dateType);
-    let copiedchartDatauio = chartData.slice();
-    chartData.map((item, itemIndex) => {
-      downloadsByDate.map((downloadsData, downloadsDataIndex) => {
-        if (downloadsData.date_value === itemIndex + 1) {
-          copiedchartData[itemIndex] = downloadsData.total;
-        }
-      });
-      date_value;
-    });
-    setChartData(copiedchartData);
   }, []);
 
   console.log(downloadsByDate);
-  console.log(chartData);
   const data = {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     datasets: [
@@ -38,10 +28,10 @@ const DownloadsChart = ({loading, getDownloadsByDate, downloadsByDate}) => {
       // },
       {
         label: "Monthly Downloads",
-        data: chartData,
+        data: downloadsByDate,
         fill: false,
         tension: 0,
-        borderColor: "#742774",
+        borderColor: "#006AB5",
       },
     ],
   };
