@@ -39,7 +39,7 @@ export const lgaList = [
   {label: "Kosofe", value: "Kosofe"},
   {label: "Lagos Island", value: "Lagos Island"},
   {label: "Lagos Island East", value: "Lagos Island East"},
-  {label: "Lagos Mainland", value: "Lagos Island East"},
+  {label: "Lagos Mainland", value: "Lagos Mainland"},
   {label: "Lekki", value: "Lekki"},
   {label: "Mosan/Okunnola", value: "Mosan/Okunnola"},
   {label: "Mushin", value: "Mushin"},
