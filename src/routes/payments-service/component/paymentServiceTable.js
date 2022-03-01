@@ -9,7 +9,7 @@ import {connect} from "react-redux";
 import Pagination from "react-js-pagination";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {calculatePostDate, getStatus4, getStatusColor4} from "Helpers/helpers";
-import {Badge} from "reactstrap";
+import {Badge, Card, CardBody, Col, Row} from "reactstrap";
 import {getPaymentsService, getPaymentsServiceCount} from "Actions/paymentAction";
 import {Link} from "react-router-dom";
 import {CSVLink} from "react-csv";
@@ -42,8 +42,6 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
 
   const handleChange = (e) => {
     setPaymentOptionType(e.target.value);
-    getPayments(currentPage, status, auth_id, false, e.target.value);
-    getPaymentsServiceCount(status, auth_id, e.target.value);
   };
 
   useEffect(() => {
@@ -65,16 +63,20 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
     }
   }, [payments]);
 
-  [
-    {
-      user_type: "rider",
-      first_name: "Increase",
-      phone_number: "08111111112",
-      last_name: "Lrtester",
-      email: "increase.nkanta@zeno.no",
-    },
-  ];
+  // [
+  //   {
+  //     user_type: "rider",
+  //     first_name: "Increase",
+  //     phone_number: "08111111112",
+  //     last_name: "Lrtester",
+  //     email: "increase.nkanta@zeno.no",
+  //   },
+  // ];
 
+  const applyFilter = () => {
+    getPayments(currentPage, status, auth_id, false, paymentOptionType);
+    getPaymentsServiceCount(status, auth_id, paymentOptionType);
+  };
 
   return (
     <div>
@@ -86,6 +88,11 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
             ))}
           </select>
         </li>
+        <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
+          <button className="btn btn-primary" onClick={applyFilter}>
+            Apply Filter
+          </button>
+        </li>
         <div className="float-right">
           {!loading && payments.length > 0 && (
             <CSVLink data={excelExport} filename={"drivers.csv"} className="btn-sm btn-outline-default mr-10 bg-primary text-white" target="_blank">
@@ -94,6 +101,35 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
             </CSVLink>
           )}
         </div>
+
+        <Row className="mb-2">
+          <Col xs="12" sm="6" lg="3">
+            <Card className="text-success bg-light p-3">
+              <CardBody className="pb-0">
+                <div className="text-value text-muted fw-bold">Total Count</div>
+              </CardBody>
+              <div className="chart-wrapper mx-3 d-flex align-items-center  justify-content-between" style={{height: "70px"}}>
+                <span className=" font-xl" style={{fontSize: "2.5rem"}}>
+                  {paymentsCount}
+                </span>
+                <i className="ti-arrow-up font-lg" />
+              </div>
+            </Card>
+          </Col>
+          <Col xs="12" sm="6" lg="3">
+            <Card className="text-success bg-light p-3">
+              <CardBody className="pb-0">
+                <div className="text-value text-muted fw-bold">Total Balance</div>
+              </CardBody>
+              <div className="chart-wrapper mx-3 d-flex align-items-center  justify-content-between" style={{height: "70px"}}>
+                <span className=" font-xl" style={{fontSize: "2.5rem"}}>
+                  "SDfg"
+                </span>
+                <i className="ti-arrow-up font-lg" />
+              </div>
+            </Card>
+          </Col>
+        </Row>
 
         {!loading && payments?.length > 0 && (
           <div>
