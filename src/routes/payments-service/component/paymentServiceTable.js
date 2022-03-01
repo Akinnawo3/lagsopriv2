@@ -16,6 +16,7 @@ import {CSVLink} from "react-csv";
 import moment from "moment";
 import {useHistory} from "react-router-dom";
 const qs = require("qs");
+import {getFirstDayOfMonth, getTodayDate} from "../../../helpers/helpers";
 
 const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayments, header, loading, getPaymentsServiceCount}) => {
   const history = useHistory();
@@ -25,11 +26,13 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
   });
   const [excelExport, setExcelExport] = useState([]);
   const [paymentOptionType, setPaymentOptionType] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const paginate = (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
-    getPayments(pageNumber, status, auth_id, false, paymentOptionType);
+    getPayments(pageNumber, status, auth_id, false, paymentOptionType, startDate, endDate);
     window.scrollTo(0, 0);
   };
 
@@ -74,8 +77,8 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
   // ];
 
   const applyFilter = () => {
-    getPayments(currentPage, status, auth_id, false, paymentOptionType);
-    getPaymentsServiceCount(status, auth_id, paymentOptionType);
+    getPayments(currentPage, status, auth_id, false, paymentOptionType, startDate, endDate);
+    getPaymentsServiceCount(status, auth_id, paymentOptionType, startDate, endDate);
   };
 
   return (
@@ -87,6 +90,14 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
               <option value={item.value}>{item.label}</option>
             ))}
           </select>
+        </li>
+        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+          <small className="fw-bold mr-2">From</small>
+          <input type="date" id="start" name="trip-start" defaultValue={startDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setStartDate(e.target.value)} />
+        </li>
+        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+          <small className="fw-bold mr-2">To</small>
+          <input type="date" id="start" name="trip-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setEndDate(e.target.value)} />
         </li>
         <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
           <button className="btn btn-primary" onClick={applyFilter}>
@@ -194,15 +205,14 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPayments: (pageNo, transaction_status, auth_id, loading, payment_type) => dispatch(getPaymentsService(pageNo, transaction_status, auth_id, loading, payment_type)),
-    getPaymentsServiceCount: (transaction_status, auth_id, payment_type) => dispatch(getPaymentsServiceCount(transaction_status, auth_id, payment_type)),
+    getPayments: (pageNo, transaction_status, auth_id, loading, payment_type, start_date, end_date) =>
+      dispatch(getPaymentsService(pageNo, transaction_status, auth_id, loading, payment_type, start_date, end_date)),
+    getPaymentsServiceCount: (transaction_status, auth_id, payment_type, start_date, end_date) => dispatch(getPaymentsServiceCount(transaction_status, auth_id, payment_type, start_date, end_date)),
   };
 }
-
 const mapStateToProps = (state) => ({
   loading: state.loading.loading,
   payments: state.payments.paymentsService,
   paymentsCount: state.payments.paymentsServiceCount,
 });
-
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentServiceTable);
