@@ -161,7 +161,7 @@ const GoogleMapComponent = ({
         <div className="col-sm-12 col-md-8 w-xs-half-block">
           <DownloadsChart />
         </div>
-        <div className="col-sm-12 col-md-4 w-xs-half-block" style={{maxHeight: 540, overflowY: "scroll"}}>
+        <div className="col-sm-12 col-md-4 w-xs-half-block" style={{maxHeight: 450, overflowY: "scroll"}}>
           <DownloadsTable />
         </div>
       </div>

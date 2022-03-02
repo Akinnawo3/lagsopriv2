@@ -113,7 +113,7 @@ const VehicleTable = ({
 
   const opnAddNewUserEditModal = async (id) => {
     let vehic;
-    vehicles.map((vehicle) => {
+    vehicles?.map((vehicle) => {
       if (vehicle.vehicle_id === id) {
         vehic = vehicle;
         setFormData({
@@ -208,7 +208,7 @@ const VehicleTable = ({
                 </TableHead>
                 <TableBody>
                   <Fragment>
-                    {vehicles.map((vehicle, key) => (
+                    {vehicles?.map((vehicle, key) => (
                       <TableRow hover key={key}>
                         <TableCell>{vehicle.car_number_plate}</TableCell>
                         <TableCell>{vehicle.car_number}</TableCell>
@@ -273,7 +273,7 @@ const VehicleTable = ({
                 <option value="" selected hidden>
                   --Select OEM --
                 </option>
-                {oems.map((item) => (
+                {oems?.map((item) => (
                   <option value={item.auth_id} selected={oem === item.auth_id}>
                     {item.name}
                   </option>

@@ -256,6 +256,11 @@ export default {
           menu_title: "sidebar.unsuccessful",
         },
         {
+          path: "/admin/payments-service/pending",
+          new_item: false,
+          menu_title: "sidebar.pending",
+        },
+        {
           path: "/admin/payments-service",
           new_item: false,
           menu_title: "sidebar.all",

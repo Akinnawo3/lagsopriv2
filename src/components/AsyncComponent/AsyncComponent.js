@@ -121,6 +121,10 @@ const AsyncPaymentsServiceUnsuccessful = Loadable({
   loader: () => import("Routes/payments-service/unsuccessfulPaymentsService"),
   loading: () => <RctPageLoader />,
 });
+const AsyncPaymentsServicePending = Loadable({
+  loader: () => import("Routes/payments-service/pendingPaymentService"),
+  loading: () => <RctPageLoader />,
+});
 
 const AsyncRevenues = Loadable({
   loader: () => import("Routes/revenues/revenues"),
@@ -551,6 +555,7 @@ export {
   AsyncSupportContactUsDetails,
   AsyncPaymentsServiceSuccessful,
   AsyncPaymentsServiceUnsuccessful,
+  AsyncPaymentsServicePending,
   AsyncPaymentsService,
   AsyncPaymentsServiceDetails,
   AsyncCustomerCare,
