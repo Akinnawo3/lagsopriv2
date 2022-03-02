@@ -836,11 +836,8 @@ const DriverProfile = ({
               {verificationResult?.code === undefined && (
                 <div>
                   <ul className="list-group">
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Message</strong>
-                      </span>
-                      {`${verificationResult}`}
+                    <li className="list-group-item text-center">
+                      <div className="text-danger fw-bold">{`${verificationResult}`}</div>
                     </li>
                   </ul>
                 </div>
