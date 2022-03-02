@@ -117,7 +117,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
         </div>
 
         <Row className="mb-2">
-          <Col xs="12" sm="6" lg="3">
+          <Col xs="12" sm="6" >
             <Card className="text-success bg-light p-3">
               <CardBody className="pb-0">
                 <div className="text-value text-muted fw-bold">Total Count</div>
@@ -130,7 +130,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
               </div>
             </Card>
           </Col>
-          <Col xs="12" sm="6" lg="3">
+          <Col xs="12" sm="6" >
             <Card className="text-success bg-light p-3">
               <CardBody className="pb-0">
                 <div className="text-value text-muted fw-bold">Total Balance</div>
