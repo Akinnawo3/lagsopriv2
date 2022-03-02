@@ -51,6 +51,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
     if (payments.length > 0) {
       let result = payments.map((payment) => {
         return {
+          status: payment.status,
           Date_Time: moment(payment.createdAt).format("MMMM Do YYYY, h:mm:ss"),
           amount: payment.amount,
           description: payment.description,
@@ -154,7 +155,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
                     <TableCell>Date / Time</TableCell>
                     <TableCell>Payment Method</TableCell>
                     <TableCell>Payment Type</TableCell>
-                    <TableCell>Acual Amount</TableCell>
+                    <TableCell>Actual Amount</TableCell>
                     <TableCell>Status</TableCell>
                     <TableCell>User Name</TableCell>
                     <TableCell>User Phn No.</TableCell>
