@@ -23,6 +23,10 @@ export const sendVerificationRequest = (id_type, id_value, first_name, last_name
     }
     dispatch(endStatusLoading());
   } catch (err) {
+    dispatch({
+      type: VERIFICATION_RESULT,
+      payload: err.response.data.error,
+    });
     dispatch(endStatusLoading());
     NotificationManager.error(err.response.data.error);
   }

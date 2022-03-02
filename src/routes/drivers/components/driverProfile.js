@@ -832,6 +832,19 @@ const DriverProfile = ({
                   </div>
                 </div>
               )}
+              {/* to handle internal server error */}
+              {verificationResult?.code === undefined && (
+                <div>
+                  <ul className="list-group">
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Message</strong>
+                      </span>
+                      {`${verificationResult}`}
+                    </li>
+                  </ul>
+                </div>
+              )}
             </div>
           )}
         </ModalBody>
