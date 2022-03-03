@@ -3,11 +3,11 @@ import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard
 import {Line} from "react-chartjs-2";
 import {connect} from "react-redux";
 import {getDownloadsByDate} from "Actions/userAction";
-import {getFirstDayOfMonth, getTodayDate} from "../../../helpers/helpers";
+import {getFirstDayOfMonth, getTodayDate, getFirstDayOfTheYear, getLastDayOfTheYear} from "../../../helpers/helpers";
 
 const DownloadsChart = ({loading, getDownloadsByDate, downloadsByDate}) => {
-  const [startDate, setStartDate] = useState("2022-01-01");
-  const [endDate, setEndDate] = useState("2022-12-31");
+  const [startDate, setStartDate] = useState(getFirstDayOfTheYear());
+  const [endDate, setEndDate] = useState(getLastDayOfTheYear());
   // const [startDate, setStartDate] = useState(getFirstDayOfMonth());
   // const [endDate, setEndDate] = useState(getTodayDate());
   const [dateType, setDateType] = useState("monthly");
