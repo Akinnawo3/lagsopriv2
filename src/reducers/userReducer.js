@@ -5,7 +5,7 @@ const initialState = {
   userCount: 0,
   userLocation: [],
   downloadsByArea: [],
-  downloadsByDate: new Array(12).fill(0),
+  downloadsByDate: new Array(12).fill(0),  //initially set to 0 for the whole 12 months
 };
 
 function usersReducer(state = initialState, action) {

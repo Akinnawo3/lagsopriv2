@@ -6,8 +6,8 @@ import {getDownloadsByDate} from "Actions/userAction";
 import {getFirstDayOfMonth, getTodayDate} from "../../../helpers/helpers";
 
 const DownloadsChart = ({loading, getDownloadsByDate, downloadsByDate}) => {
-  const [startDate, setStartDate] = useState("2022-02-01");
-  const [endDate, setEndDate] = useState("2022-02-28");
+  const [startDate, setStartDate] = useState("2022-01-01");
+  const [endDate, setEndDate] = useState("2022-12-31");
   // const [startDate, setStartDate] = useState(getFirstDayOfMonth());
   // const [endDate, setEndDate] = useState(getTodayDate());
   const [dateType, setDateType] = useState("monthly");

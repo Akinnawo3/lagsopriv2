@@ -246,6 +246,9 @@ export const getTodayDate = () => {
   return `${year}-${month}-${day}`;
 };
 
+export const getFirstDayOfTheYear = () => new Date(new Date().getFullYear(), 0, 1);
+export const getLastDayOfTheYear = () => new Date(new Date().getFullYear(), 11, 31);
+
 export const getTicketStatus = (status) => {
   if (status == 0) {
     return "New";
