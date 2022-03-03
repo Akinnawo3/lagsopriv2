@@ -199,11 +199,33 @@ export const getAdminLogsCount = (loading) => async (dispatch) => {
   }
 };
 
+// export const getDownloadsByArea = (spinner) => async (dispatch) => {
+//   try {
+//     spinner && (await dispatch(startLoading()));
+//     !spinner && dispatch(startStatusLoading());
+//     const res = await axios.get(`${api.user}/v1.1/admin/download-stat?component=area`);
+//     if (res.data.status === "error") {
+//       NotificationManager.error(res.data.msg);
+//     } else {
+//       dispatch({
+//         type: DOWNLOADS_BY_AREA,
+//         payload: res.data.data,
+//       });
+//     }
+//     dispatch(endLoading());
+//     dispatch(endStatusLoading());
+//   } catch (err) {
+//     dispatch(endLoading());
+//     dispatch(endStatusLoading());
+//     NotificationManager.error(err.response.data.error);
+//   }
+// };
+
 export const getDownloadsByArea = (spinner) => async (dispatch) => {
   try {
     spinner && (await dispatch(startLoading()));
     !spinner && dispatch(startStatusLoading());
-    const res = await axios.get(`${api.user}/v1.1/admin/download-stat?component=area`);
+    const res = await axios.get(`${api.area}/v1.1/areas?component=lga-group`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
