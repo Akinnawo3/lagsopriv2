@@ -36,7 +36,7 @@ const DownloadsTable = ({getDownloadsByArea, downloadsByArea, loading}) => {
         <Table>
           <TableHead>
             <TableRow hover>
-              <TableCell>Area</TableCell>
+              <TableCell>LGA</TableCell>
               <TableCell className="text-right">Number</TableCell>
             </TableRow>
           </TableHead>

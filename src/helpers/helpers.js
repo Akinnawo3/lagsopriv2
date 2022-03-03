@@ -247,7 +247,7 @@ export const getTodayDate = () => {
 };
 
 export const getFirstDayOfTheYear = () => moment(new Date(new Date().getFullYear(), 0, 1)).format("YYYY-MM-DD");
-export const getLastDayOfTheYear = () => moment(new Date(new Date().getFullYear(), 11, 31)).format("YYYY-MM-DD");
+export const getLastDayOfTheYear = () => moment(new Date(new Date().getFullYear(), 11, 31)).format("YYYYe-MM-DD");
 
 export const getTicketStatus = (status) => {
   if (status == 0) {
