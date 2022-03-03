@@ -37,8 +37,6 @@ const Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteA
     getAreaCount();
   }, []);
 
- 
-
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
     getAreas(pageNumber);
@@ -68,8 +66,8 @@ const Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteA
         setFormData({
           lga: area?.lga,
           areaName: area?.area_name,
-          lon: area?.location ? area?.location[0] : "",
-          lat: area?.location ? area?.location[1] : "",
+          lon: area?.location?.coordinates ? area?.location?.coordinates[0] : "",
+          lat: area?.location?.coordinates ? area?.location?.coordinates[1] : "",
           oldArea: area.area_name,
         });
         setUpdateId(area.area_id);
@@ -118,18 +116,26 @@ const Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteA
     {
       area_name: "Lekki Phase 1",
       lga: "oti-osa",
+      lon: 3.374413,
+      lat: 6.518576,
     },
     {
       area_name: "Lekki Phase 5",
       lga: "oti-osa",
+      lon: 3.372213,
+      lat: 6.218576,
     },
     {
       area_name: "Lekki Phase 3",
       lga: "oti-osa",
+      lon: 3.37432,
+      lat: 6.518576,
     },
     {
       area_name: "Lekki Phase 4",
       lga: "oti-osa",
+      lon: 3.372213,
+      lat: 6.218576,
     },
   ];
 
@@ -191,6 +197,7 @@ const Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteA
                     <TableRow hover>
                       <TableCell>Area Name</TableCell>
                       <TableCell>LGA</TableCell>
+                      <TableCell>Coordinate </TableCell>
                       <TableCell>Actions</TableCell>
                     </TableRow>
                   </TableHead>
@@ -200,6 +207,7 @@ const Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteA
                         <TableRow hover key={key}>
                           <TableCell>{area.area_name}</TableCell>
                           <TableCell>{area.lga}</TableCell>
+                          <TableCell>{area?.location?.coordinates && `Lon:${area?.location?.coordinates[0]} - Lat:${area?.location?.coordinates[1]}`}</TableCell>
                           <TableCell>
                             <button type="button" className="rct-link-btn" onClick={(e) => opnAddNewAreaEditModal(area.area_id)}>
                               <i className="ti-pencil"></i>

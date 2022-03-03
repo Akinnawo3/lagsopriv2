@@ -22,6 +22,8 @@ const DownloadsTable = ({getDownloadsByArea, downloadsByArea, loading}) => {
     {area: "Area", number: 0},
     {area: "Area", number: 0},
   ];
+
+  console.log(downloadsByArea);
   return (
     <RctCollapsibleCard heading="Updates">
       <div className="mb-2">
@@ -42,8 +44,8 @@ const DownloadsTable = ({getDownloadsByArea, downloadsByArea, loading}) => {
             <TableBody>
               {downloadsByArea.map((item) => (
                 <TableRow hover>
-                  <TableCell>{item._id}</TableCell>
-                  <TableCell className="text-right">{item.total}</TableCell>
+                  <TableCell>{item?.lga}</TableCell>
+                  <TableCell className="text-right">{item?.riders_home_area_count}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
