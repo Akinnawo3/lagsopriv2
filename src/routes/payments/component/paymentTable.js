@@ -59,7 +59,7 @@ const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, he
                         <TableCell>{item.payment_id}</TableCell>
                         <TableCell>{item.trip_ref}</TableCell>
                         <TableCell>₦{item.amount.toLocaleString()}</TableCell>
-                        <TableCell>{item?.promo_data && "Has Promo Data"}</TableCell>
+                        <TableCell>{item?.is_promo && "Has Promo Data"}</TableCell>
                         <TableCell>{`${item?.first_name ? item?.first_name : ""} ${item?.last_name ? item?.last_name : ""}`}</TableCell>
                         <TableCell>{calculatePostDate(item.createdAt)}</TableCell>
                         <TableCell>{item.charge_method}</TableCell>
