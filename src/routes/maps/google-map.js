@@ -34,10 +34,10 @@ const GoogleMapComponent = ({
   searchUserLocation,
   searchDriverLocation,
 }) => {
-  const [center, setCenter] = useState({ lat: 6.4478954861952404, lng: 3.4742776645841493});
-  const [center2, setCenter2] = useState({ lat: 6.4478954861952404, lng: 3.4742776645841493});
+  const [center, setCenter] = useState({lat: 6.4478954861952404, lng: 3.4742776645841493});
+  const [center2, setCenter2] = useState({lat: 6.4478954861952404, lng: 3.4742776645841493});
 
-  const [type, setType] = useState('driver');
+  const [type, setType] = useState("driver");
   const [searchData, setSearchData] = useState("");
   const [searchedUser, setSearchedUser] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -45,7 +45,6 @@ const GoogleMapComponent = ({
   const [focused, setFocused] = useState(false);
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
-
 
   useEffect(() => {
     getUsersLocation(center2.lng, center2.lat);
@@ -89,18 +88,17 @@ const GoogleMapComponent = ({
 
   const handleOption = (user) => {
     setSearchData(`${user.first_name} ${user.last_name}`);
-    console.log(user?.location?.coordinates)
-    if(user?.location?.coordinates && user?.location?.coordinates[0] !== 0 && user?.location?.coordinates[1] !== 0) {
-      if(type === 'rider') {
-        searchUserLocation(user)
-        setCenter2({lat: user?.location?.coordinates[1], lng: user?.location?.coordinates[0]})
-
-      }else {
-        searchDriverLocation(user)
-        setCenter({lat: user?.location?.coordinates[1], lng: user?.location?.coordinates[0]})
+    console.log(user?.location?.coordinates);
+    if (user?.location?.coordinates && user?.location?.coordinates[0] !== 0 && user?.location?.coordinates[1] !== 0) {
+      if (type === "rider") {
+        searchUserLocation(user);
+        setCenter2({lat: user?.location?.coordinates[1], lng: user?.location?.coordinates[0]});
+      } else {
+        searchDriverLocation(user);
+        setCenter({lat: user?.location?.coordinates[1], lng: user?.location?.coordinates[0]});
       }
     } else {
-      NotificationManager.error('user coordinate is invalid');
+      NotificationManager.error("user coordinate is invalid");
     }
     setIsShow(false);
   };
@@ -109,56 +107,72 @@ const GoogleMapComponent = ({
     <div>
       <PageTitleBar title="Map" match={match} />
       <FormGroup>
-        <Label  htmlFor="browser">Search User on Map</Label>
-        <div className='d-flex w-50'>
-          <Input  type="select"   required style={{width: '120px'}} value={type} onChange={(e) =>setType(e.target.value)}>
+        <Label htmlFor="browser">Search User on Map</Label>
+        <div className="d-flex w-50">
+          <Input type="select" required style={{width: "120px"}} value={type} onChange={(e) => setType(e.target.value)}>
             {/*<option value="">All</option>*/}
             <option value="driver">Driver</option>
             <option value="rider">Rider</option>
           </Input>
           <Input
-              onFocus={onFocus}
-              onBlur={onBlur}
-              type="search"
-              className="search-input-lg"
-              name="searchData"
-              value={searchData}
-              onChange={onChangeSearch}
-              placeholder="Search.. name, email, phone number"
-              autoComplete="off"
-              required
-              style={{width: '50%', marginLeft: '-30px'}}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            type="search"
+            className="search-input-lg"
+            name="searchData"
+            value={searchData}
+            onChange={onChangeSearch}
+            placeholder="Search.. name, email, phone number"
+            autoComplete="off"
+            required
+            style={{width: "50%", marginLeft: "-30px"}}
           />
         </div>
 
         {loading && (
-            <div className="page-loader d-flex justify-content-center mb-30 mt-30">
-              <CircularProgress size={24} />
-            </div>
+          <div className="page-loader d-flex justify-content-center mb-30 mt-30">
+            <CircularProgress size={24} />
+          </div>
         )}
         {!loading && searchedUser?.length > 0 && isShow && (
-            <div className="pr-4 w-100">
-              <div className="bg-white" style={{border: "1px solid #EBEDF2", maxHeight: "200px", overflow: "auto", zIndex: 1, width: "102%"}}>
-                {searchedUser?.length > 0 &&
+          <div className="pr-4 w-100">
+            <div className="bg-white" style={{border: "1px solid #EBEDF2", maxHeight: "200px", overflow: "auto", zIndex: 1, width: "102%"}}>
+              {searchedUser?.length > 0 &&
                 searchedUser.map((user, index) => (
-                    <option onClick={() => handleOption(user)} key={user.auth_id} className="p-2 custom-dropdown" style={{width: "100%", cursor: 'pointer'}}>
-                      {user.first_name} {user.last_name}
-                    </option>
+                  <option onClick={() => handleOption(user)} key={user.auth_id} className="p-2 custom-dropdown" style={{width: "100%", cursor: "pointer"}}>
+                    {user.first_name} {user.last_name}
+                  </option>
                 ))}
-              </div>
             </div>
+          </div>
         )}
       </FormGroup>
       <div className="row">
         <div className="col-sm-12 col-md-6 w-xs-half-block">
-          <GoogleMapComponent1 getUsersLocation={getDriversLocation} userLocation={driversLocation} waiting={tripCountWaitingDrivers} moving={tripCountMovingDrivers} title={"Drivers Map"} center={center} setCenter={setCenter} />
+          <GoogleMapComponent1
+            getUsersLocation={getDriversLocation}
+            userLocation={driversLocation}
+            waiting={tripCountWaitingDrivers}
+            moving={tripCountMovingDrivers}
+            title={"Drivers Map"}
+            center={center}
+            setCenter={setCenter}
+          />
         </div>
         <div className="col-sm-12 col-md-6 w-xs-half-block">
-          <GoogleMapComponent1 getUsersLocation={getUsersLocation} userLocation={userLocation} waiting={tripCountWaitingUsers} moving={tripCountMovingUsers} title={"Riders Map"} center={center2} setCenter={setCenter2} />
+          <GoogleMapComponent1
+            getUsersLocation={getUsersLocation}
+            userLocation={userLocation}
+            waiting={tripCountWaitingUsers}
+            moving={tripCountMovingUsers}
+            title={"Riders Map"}
+            center={center2}
+            setCenter={setCenter2}
+          />
         </div>
       </div>
       <div className="row">
-        <div className="col-sm-12 col-md-8 w-xs-half-block">
+        <div className="col-sm-12 col-md-8 w-xs-half-block" style={{maxHeight: 450, overflowY: "scroll"}}>
           <DownloadsChart />
         </div>
         <div className="col-sm-12 col-md-4 w-xs-half-block" style={{maxHeight: 450, overflowY: "scroll"}}>

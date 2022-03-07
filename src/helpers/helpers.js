@@ -246,6 +246,9 @@ export const getTodayDate = () => {
   return `${year}-${month}-${day}`;
 };
 
+export const getFirstDayOfTheYear = () => moment(new Date(new Date().getFullYear(), 0, 1)).format("YYYY-MM-DD");
+export const getLastDayOfTheYear = () => moment(new Date(new Date().getFullYear(), 11, 31)).format("YYYY-MM-DD");
+
 export const getTicketStatus = (status) => {
   if (status == 0) {
     return "New";
@@ -306,6 +309,16 @@ export const getActualAddress = async (lat, lng) => {
 };
 
 export const stringToNumber = (string) => parseFloat(string.replace(/,/g, ""));
+
+export const firstLetterToUpperCase = (string) => {
+  const formattedString = string
+    ?.split(" ")
+    .map((item) => {
+      return item.charAt(0) === "i" && item.charAt(1) === "i" ? item.toUpperCase() : item.charAt(0).toUpperCase() + item?.slice(1);
+    })
+    .join(" ");
+  return formattedString;
+};
 
 // this function checks the array of the permissions of a user and returns true/false if a perticullar permission is found in the array
 // export const verifyUserPermssion = (checkedPermission, permissionsArray) => permissionsArray.includes(checkedPermission);
