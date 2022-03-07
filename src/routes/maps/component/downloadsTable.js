@@ -10,9 +10,11 @@ import EmptyData from "Components/EmptyData/EmptyData";
 import {getDownloadsByArea} from "Actions/userAction";
 import {Accordion, AccordionItem, AccordionItemHeading, AccordionItemButton, AccordionItemPanel} from "react-accessible-accordion";
 import "react-accessible-accordion/dist/fancy-example.css";
+import {firstLetterToUpperCase} from "../../../helpers/helpers";
 
 const DownloadsTable = ({getDownloadsByArea, downloadsByArea, loading}) => {
   const [infoType, setInfoType] = useState("downloads");
+  const [expandedLga, setExpandedLga] = useState("");
 
   useEffect(() => {
     getDownloadsByArea(true);
@@ -25,8 +27,9 @@ const DownloadsTable = ({getDownloadsByArea, downloadsByArea, loading}) => {
     {area: "Area", number: 0},
     {area: "Area", number: 0},
   ];
-
-  console.log(downloadsByArea);
+  const handleLgaClick = (id) => {
+    expandedLga === id ? setExpandedLga("") : setExpandedLga(id);
+  };
   return (
     <RctCollapsibleCard heading="Updates">
       <div className="mb-2">
@@ -40,7 +43,42 @@ const DownloadsTable = ({getDownloadsByArea, downloadsByArea, loading}) => {
         <div>
           {!loading && downloadsByArea.length > 0 && (
             <div className="accordion" id="accordionExample">
-              {downloadsByArea.map((item, index) => (
+              {downloadsByArea.map((item) => (
+                <div className="card" key={item._id}>
+                  <div className="card-header" id="headingOne" onClick={() => handleLgaClick(item?._id)}>
+                    <h2 className="mb-0">
+                      <div className=" d-flex justify-content-between">
+                        <span>{firstLetterToUpperCase(item?.lga)}</span>
+                        <span>{item?.riders_home_area_count?.toLocaleString()}</span>
+                      </div>
+                    </h2>
+                  </div>
+                  <div id="collapseOne" className={`collapse ${expandedLga === item._id && "show"}`} aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div className="card-body">
+                      <ul className="list-group">
+                        {item.areas.map((area, index) => (
+                          <li className="list-group-item text-right">
+                            <small className="pull-left">
+                              <strong>{firstLetterToUpperCase(area?.area_name)}</strong>
+                            </small>
+                            {area?.riders_home_area_count?.toLocaleString()}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          {downloadsByArea.length < 1 && <EmptyData />}
+        </div>
+      )}
+      {infoType === "requests" && (
+        <div>
+          {!loading && requestByArea.length > 0 && (
+            <div className="accordion" id="accordionExample">
+              {requestByArea.map((item, index) => (
                 <div className="card">
                   <div className="card-header" id="headingOne">
                     <h2 className="mb-0">
@@ -51,16 +89,7 @@ const DownloadsTable = ({getDownloadsByArea, downloadsByArea, loading}) => {
                     </h2>
                   </div>
                   <div id="collapseOne" className="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                    <div className="card-body">
-                      <ul className="list-group">
-                        <li className="list-group-item text-right">
-                          <span className="pull-left">
-                            <strong>Message</strong>
-                          </span>
-                          number
-                        </li>
-                      </ul>
-                    </div>
+                    <div className="card-body"></div>
                   </div>
                 </div>
               ))}

@@ -310,7 +310,15 @@ export const getActualAddress = async (lat, lng) => {
 
 export const stringToNumber = (string) => parseFloat(string.replace(/,/g, ""));
 
-export const firstLetterToUpperCase = (string) => string?.charAt(0).toUpperCase() + string?.slice(1);
+export const firstLetterToUpperCase = (string) => {
+  const formattedString = string
+    ?.split(" ")
+    .map((item) => {
+      return item.charAt(0) === "i" && item.charAt(1) === "i" ? item.toUpperCase() : item.charAt(0).toUpperCase() + item?.slice(1);
+    })
+    .join(" ");
+  return formattedString;
+};
 
 // this function checks the array of the permissions of a user and returns true/false if a perticullar permission is found in the array
 // export const verifyUserPermssion = (checkedPermission, permissionsArray) => permissionsArray.includes(checkedPermission);
