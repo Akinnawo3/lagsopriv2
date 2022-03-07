@@ -9,9 +9,11 @@ import {connect} from "react-redux";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {getDownloadsByArea} from "Actions/userAction";
 import {Accordion, AccordionItem, AccordionItemHeading, AccordionItemButton, AccordionItemPanel} from "react-accessible-accordion";
+import "react-accessible-accordion/dist/fancy-example.css";
 
 const DownloadsTable = ({getDownloadsByArea, downloadsByArea, loading}) => {
   const [infoType, setInfoType] = useState("downloads");
+
   useEffect(() => {
     getDownloadsByArea(true);
   }, []);
@@ -33,56 +35,40 @@ const DownloadsTable = ({getDownloadsByArea, downloadsByArea, loading}) => {
           <option value="requests">Requests</option>
         </select>
       </div>
-      {!loading && downloadsByArea.length > 0 && (
-        <Table className="w-100">
-          <TableHead>
-            <TableRow hover>
-              <TableCell>LGA</TableCell>
-              <TableCell className="text-right">Number</TableCell>
-            </TableRow>
-          </TableHead>
-          {infoType === "downloads" && (
-            <Accordion>
-              <AccordionItem>
-                <AccordionItemHeading>
-                  <AccordionItemButton>What harsh truths do you prefer to ignore?</AccordionItemButton>
-                </AccordionItemHeading>
-                <AccordionItemPanel>
-                  <p>
-                    Exercitation in fugiat est ut ad ea cupidatat ut in cupidatat occaecat ut occaecat consequat est minim minim esse tempor laborum consequat esse adipisicing eu reprehenderit enim.
-                  </p>
-                </AccordionItemPanel>
-              </AccordionItem>
-              <AccordionItem>
-                <AccordionItemHeading>
-                  <AccordionItemButton>Is free will real or just an illusion?</AccordionItemButton>
-                </AccordionItemHeading>
-                <AccordionItemPanel>
-                  <p>In ad velit in ex nostrud dolore cupidatat consectetur ea in ut nostrud velit in irure cillum tempor laboris sed adipisicing eu esse duis nulla non.</p>
-                </AccordionItemPanel>
-              </AccordionItem>
-            </Accordion>
-            //   {downloadsByArea.map((item) => (
-            //     <TableRow hover>
-            //       <TableCell>{item?.lga}</TableCell>
-            //       <TableCell className="text-right">{item?.riders_home_area_count}</TableCell>
-            //     </TableRow>
-            //   ))}
-            // </TableBody>
-          )}
-          {infoType === "requests" && (
-            <TableBody>
-              {requestByArea.map((item) => (
-                <TableRow hover>
-                  <TableCell>{item.area}</TableCell>
-                  <TableCell className="text-right">{item.number}</TableCell>
-                </TableRow>
+
+      {infoType === "downloads" && (
+        <div>
+          {!loading && downloadsByArea.length > 0 && (
+            <div className="accordion" id="accordionExample">
+              {downloadsByArea.map((item, index) => (
+                <div className="card">
+                  <div className="card-header" id="headingOne">
+                    <h2 className="mb-0">
+                      <div className=" d-flex justify-content-between">
+                        <span>Area</span>
+                        <span>Number</span>
+                      </div>
+                    </h2>
+                  </div>
+                  <div id="collapseOne" className="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div className="card-body">
+                      <ul className="list-group">
+                        <li className="list-group-item text-right">
+                          <span className="pull-left">
+                            <strong>Message</strong>
+                          </span>
+                          number
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               ))}
-            </TableBody>
+            </div>
           )}
-        </Table>
+          {downloadsByArea.length < 1 && <EmptyData />}
+        </div>
       )}
-      {downloadsByArea.length < 1 && <EmptyData />}
     </RctCollapsibleCard>
   );
 };

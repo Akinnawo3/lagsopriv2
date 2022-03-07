@@ -172,10 +172,10 @@ const GoogleMapComponent = ({
         </div>
       </div>
       <div className="row">
-        <div className="col-sm-12 col-md-8 w-xs-half-block" style={{maxHeight: 500, overflowY: "scroll"}}>
+        <div className="col-sm-12 col-md-8 w-xs-half-block" style={{maxHeight: 450, overflowY: "scroll"}}>
           <DownloadsChart />
         </div>
-        <div className="col-sm-12 col-md-4 w-xs-half-block" style={{maxHeight: 500, overflowY: "scroll"}}>
+        <div className="col-sm-12 col-md-4 w-xs-half-block" style={{maxHeight: 450, overflowY: "scroll"}}>
           <DownloadsTable />
         </div>
       </div>
