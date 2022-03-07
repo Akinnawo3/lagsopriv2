@@ -43,7 +43,8 @@ const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, he
                     <TableCell>Payment Id</TableCell>
                     <TableCell>Trip Reference</TableCell>
                     <TableCell>Amount</TableCell>
-                    <TableCell>Discount</TableCell>
+                    <TableCell>Actual Amount</TableCell>
+                    <TableCell>Promo</TableCell>
                     <TableCell>Rider Name</TableCell>
                     <TableCell>Date / Time</TableCell>
                     <TableCell>Charge Method</TableCell>
@@ -59,7 +60,8 @@ const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, he
                         <TableCell>{item.payment_id}</TableCell>
                         <TableCell>{item.trip_ref}</TableCell>
                         <TableCell>₦{item.amount.toLocaleString()}</TableCell>
-                        <TableCell>{item?.is_promo && "Has Promo Data"}</TableCell>
+                        <TableCell>₦{item.actual_amount.toLocaleString()}</TableCell>
+                        <TableCell>{item?.is_promo ? "True" : "False"}</TableCell>
                         <TableCell>{`${item?.first_name ? item?.first_name : ""} ${item?.last_name ? item?.last_name : ""}`}</TableCell>
                         <TableCell>{calculatePostDate(item.createdAt)}</TableCell>
                         <TableCell>{item.charge_method}</TableCell>
