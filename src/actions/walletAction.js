@@ -50,18 +50,18 @@ export const getWalletBalance = (auth_id) => async (dispatch) => {
   } catch (err) {}
 };
 
-export const getWallets = (page_no, transaction_status, auth_id, loading) => async (dispatch) => {
-  try {
-    loading && dispatch(startStatusLoading());
-    const res = await axios.get(`${api.wallet}/v1.1/admin/wallet-transactions?item_per_page=20&page=${page_no}&transaction_status=${transaction_status}&auth_id=${auth_id}`);
-    if (res.data.status === "error") {
-      NotificationManager.error(res.data.msg);
-    } else {
-      dispatch({
-        type: WALLETS,
-        payload: res.data.data,
-      });
-    }
-    loading && dispatch(endStatusLoading());
-  } catch (err) {}
-};
+// export const getWallets = (page_no, transaction_status, auth_id, loading) => async (dispatch) => {
+//   try {
+//     loading && dispatch(startStatusLoading());
+//     const res = await axios.get(`${api.wallet}/v1.1/admin/wallet-transactions?item_per_page=20&page=${page_no}&transaction_status=${transaction_status}&auth_id=${auth_id}`);
+//     if (res.data.status === "error") {
+//       NotificationManager.error(res.data.msg);
+//     } else {
+//       dispatch({
+//         type: WALLETS,
+//         payload: res.data.data,
+//       });
+//     }
+//     loading && dispatch(endStatusLoading());
+//   } catch (err) {}
+// };
