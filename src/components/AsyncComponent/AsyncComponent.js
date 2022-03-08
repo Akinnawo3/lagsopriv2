@@ -409,6 +409,10 @@ const AsyncNotifications = Loadable({
   loading: () => <RctPageLoader />,
 });
 
+const AsyncWalletTransactions = Loadable({
+  loader: () => import("Routes/wallet-transactions/walletTransactions"),
+  loading: () => <RctPageLoader />,
+});
 // report
 
 // google maps
@@ -559,5 +563,6 @@ export {
   AsyncPaymentsService,
   AsyncPaymentsServiceDetails,
   AsyncCustomerCare,
+  AsyncWalletTransactions,
   AsyncVehiclesFeedback,
 };
