@@ -82,11 +82,13 @@ const FinanceTable = ({getFinance, financeTrip, financeWallet, financeService, l
                             <TableCell></TableCell>
                           </TableRow>
                         </TableHead>
-                        <TableRow hover>
-                          <TableCell className='font-weight-bold'>Amount</TableCell>
-                          <TableCell className='font-weight-bold'>No. of records</TableCell>
-                          <TableCell className='font-weight-bold'>Status</TableCell>
-                        </TableRow>
+                        <TableHead style={{backgroundColor: 'white'}}>
+                          <TableRow hover>
+                            <TableCell className='font-weight-bold'>Amount</TableCell>
+                            <TableCell className='font-weight-bold'>No. of records</TableCell>
+                            <TableCell className='font-weight-bold'>Status</TableCell>
+                          </TableRow>
+                        </TableHead>
                         {item?.data.length > 0 && item.data.map((data, index) => (
                               <TableBody key={index}>
                                 <Fragment>
@@ -117,11 +119,13 @@ const FinanceTable = ({getFinance, financeTrip, financeWallet, financeService, l
                             <TableCell></TableCell>
                           </TableRow>
                         </TableHead>
-                        <TableRow hover>
-                          <TableCell className='font-weight-bold'>Amount</TableCell>
-                          <TableCell className='font-weight-bold'>No. of records</TableCell>
-                          <TableCell className='font-weight-bold'>Status</TableCell>
-                        </TableRow>
+                        <TableHead style={{backgroundColor: 'white'}}>
+                          <TableRow hover>
+                            <TableCell className='font-weight-bold'>Amount</TableCell>
+                            <TableCell className='font-weight-bold'>No. of records</TableCell>
+                            <TableCell className='font-weight-bold'>Status</TableCell>
+                          </TableRow>
+                        </TableHead>
                         {item?.data.length > 0 && item.data.map((data, index) => (
                               <TableBody key={index}>
                                 <Fragment>
@@ -152,11 +156,13 @@ const FinanceTable = ({getFinance, financeTrip, financeWallet, financeService, l
                             <TableCell></TableCell>
                           </TableRow>
                         </TableHead>
+                        <TableHead style={{backgroundColor: 'white'}}>
                         <TableRow hover>
                           <TableCell className='font-weight-bold'>Amount</TableCell>
                           <TableCell className='font-weight-bold'>No. of records</TableCell>
                           <TableCell className='font-weight-bold'>Status</TableCell>
                         </TableRow>
+                        </TableHead>
                         {item?.data.length > 0 && item.data.map((data, index) => (
                             <TableBody key={index}>
                               <Fragment>
