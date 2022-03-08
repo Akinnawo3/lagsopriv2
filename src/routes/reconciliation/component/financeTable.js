@@ -68,9 +68,9 @@ const FinanceTable = ({getFinance, financeTrip, financeWallet, financeService, l
           }} />
         </li>
         <Button onClick={() => handleSearch()} style={{height: '30px'}} className='align-items-center justify-content-center' color='success'>Search</Button>
-            <div className='row mt-3'>
+            <div className='row mt-3 p-2'>
               <div className='col-sm-4 align-items-start d-flex flex-column'>
-                <div className='font-weight-bold ml-2 mb-2'>Trip Payment</div>
+                <div className='font-weight-bold mb-2'>Trip Payment</div>
                 <div className="table-responsive" style={{minHeight: "50vh", border: '1px solid lightgrey'}}>
                   {financeTrip.length === 0 && !loading && <div className='text-center mt-3'>No Data</div>}
                   {financeTrip.length > 0 && financeTrip.map((item, index) => (
@@ -107,7 +107,7 @@ const FinanceTable = ({getFinance, financeTrip, financeWallet, financeService, l
                 </div>
               </div>
               <div className='col-sm-4 align-items-start d-flex flex-column'>
-                <div className='font-weight-bold ml-2 mb-2'>Service Payment</div>
+                <div className='font-weight-bold  mb-2'>Service Payment</div>
                 <div className="table-responsive" style={{minHeight: "50vh", border: '1px solid lightgrey'}}>
                   {financeService.length === 0 && !loading && <div className='text-center mt-3'>No Data</div>}
                   {financeService.length > 0 && financeService.map((item, index) => (
@@ -144,7 +144,7 @@ const FinanceTable = ({getFinance, financeTrip, financeWallet, financeService, l
                 </div>
               </div>
               <div className='col-sm-4 align-items-start d-flex flex-column'>
-                <div className='font-weight-bold ml-2 mb-2'>Wallet Payment</div>
+                <div className='font-weight-bold  mb-2'>Wallet Payment</div>
                 <div className="table-responsive" style={{minHeight: "50vh", border: '1px solid lightgrey'}}>
                   {financeWallet.length === 0 && !loading && <div className='text-center mt-3'>No Data</div>}
                   {financeWallet.length > 0 && financeWallet.map((item, index) => (
