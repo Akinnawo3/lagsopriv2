@@ -281,6 +281,24 @@ export default {
         },
       ],
     },
+    {
+      menu_title: "sidebar.reconciliation",
+      menu_icon: "icon-credit-card",
+      type_multi: null,
+      new_item: false,
+      child_routes: [
+        {
+          path: "/admin/finance",
+          new_item: false,
+          menu_title: "sidebar.finance",
+        },
+        {
+          path: "/admin/disbursement-log",
+          new_item: false,
+          menu_title: "sidebar.disbursement-log",
+        }
+      ],
+    },
 
     {
       menu_title: "sidebar.referral",

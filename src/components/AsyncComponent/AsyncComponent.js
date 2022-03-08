@@ -126,6 +126,16 @@ const AsyncPaymentsServicePending = Loadable({
   loading: () => <RctPageLoader />,
 });
 
+const AsyncFinance = Loadable({
+  loader: () => import("Routes/reconciliation/finance"),
+  loading: () => <RctPageLoader />,
+});
+
+const AsyncDisbursementLog = Loadable({
+  loader: () => import("Routes/reconciliation/disbursement-log"),
+  loading: () => <RctPageLoader />,
+});
+
 const AsyncRevenues = Loadable({
   loader: () => import("Routes/revenues/revenues"),
   loading: () => <RctPageLoader />,
@@ -560,4 +570,6 @@ export {
   AsyncPaymentsServiceDetails,
   AsyncCustomerCare,
   AsyncVehiclesFeedback,
+  AsyncFinance,
+  AsyncDisbursementLog,
 };

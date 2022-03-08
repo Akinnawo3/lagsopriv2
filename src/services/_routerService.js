@@ -14,7 +14,7 @@ import {
   AsyncCustomerCare,
   AsyncActivityLog,
   AsyncPromoDiscount,
-  AsyncNotifications,
+  AsyncNotifications, AsyncDisbursementLog, AsyncFinance,
 } from "Components/AsyncComponent/AsyncComponent";
 import DriverRoutes from "Routes/drivers/driverRoutes";
 import VehicleRoutes from "Routes/vehicles/vehicleRoutes";
@@ -111,6 +111,18 @@ export default [
   {
     path: "payments-service",
     component: PaymentsServiceRoutes,
+    permission: "view_trip_payments",
+  },
+
+  {
+    path: "finance",
+    component: AsyncFinance,
+    permission: "view_trip_payments",
+  },
+
+  {
+    path: "disbursement-log",
+    component: AsyncDisbursementLog,
     permission: "view_trip_payments",
   },
   // {
