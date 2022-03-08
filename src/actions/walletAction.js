@@ -1,11 +1,11 @@
 import axios from "axios";
-import {WALLETS, WALLETS_COUNT, WALLET, WALLETS_TRANSACTIONS, WALLETS_TRANSACTIONS_COUNT} from "./types";
+import {WALLETS, WALLETS_COUNT, WALLET, FUNDING_BALANCE} from "./types";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 
 export const getWallets =
-  (page_no = 1, status = "", auth_id = "", loading, transaction_type) =>
+  (page_no = 1, status = "", auth_id = "", loading, transaction_type="") =>
   async (dispatch) => {
     try {
       loading && dispatch(startStatusLoading());
@@ -23,7 +23,7 @@ export const getWallets =
   };
 
 export const getWalletsCount =
-  (status = "", auth_id, loading, transaction_type) =>
+  (status = "", auth_id, loading, transaction_type="") =>
   async (dispatch) => {
     try {
       const res = await axios.get(`${api.wallet}/v1.1/admin/wallet-transactions?component=count&status=${status}&auth_id=${auth_id}&transaction_type=${transaction_type}`);
@@ -48,6 +48,21 @@ export const getWalletBalance =
       } else {
         dispatch({
           type: WALLET,
+          payload: res.data.data.total ? res.data.data.total : 0,
+        });
+      }
+    } catch (err) {}
+  };
+export const getFundingBalance =
+  (auth_id = "", status = "", transaction_type="") =>
+  async (dispatch) => {
+    try {
+      const res = await axios.get(`${api.wallet}/v1.1/admin/wallet-transactions?auth_id=${auth_id}&component=funding-balance`);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        dispatch({
+          type: FUNDING_BALANCE,
           payload: res.data.data.total ? res.data.data.total : 0,
         });
       }

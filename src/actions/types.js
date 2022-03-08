@@ -144,6 +144,7 @@ export const ACTIVITY_LOGS_COUNT = "ACTIVITY_LOGS_COUNT";
 export const WALLETS = "WALLETS";
 export const WALLETS_COUNT = "WALLETS_COUNT";
 export const WALLET = "WALLET";
+export const FUNDING_BALANCE = "FUNDING_BALANCE";
 export const PAYMENTS = "PAYMENTS";
 export const PAYMENTS_COUNT = "PAYMENTS_COUNT";
 export const PAYMENT = "PAYMENT";

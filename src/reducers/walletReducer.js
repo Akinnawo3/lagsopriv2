@@ -1,9 +1,10 @@
-import {WALLETS, WALLET, WALLETS_COUNT} from "Actions/types";
+import {WALLETS, WALLET, WALLETS_COUNT, FUNDING_BALANCE} from "Actions/types";
 
 const initialState = {
   wallets: [],
   wallet: 0,
   walletsCount: 0,
+  fundingBalance: 0,
 };
 
 function walletReducer(state = initialState, action) {
@@ -25,6 +26,12 @@ function walletReducer(state = initialState, action) {
       return {
         ...state,
         walletsCount: payload,
+      };
+    }
+    case FUNDING_BALANCE: {
+      return {
+        ...state,
+        fundingBalance: payload,
       };
     }
 
