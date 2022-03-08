@@ -59,8 +59,8 @@ const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, he
                       <TableRow hover key={key}>
                         <TableCell>{item.payment_id}</TableCell>
                         <TableCell>{item.trip_ref}</TableCell>
-                        <TableCell>₦{item.amount.toLocaleString()}</TableCell>
-                        <TableCell>₦{item.actual_amount.toLocaleString()}</TableCell>
+                        <TableCell>₦{item?.amount?.toLocaleString()}</TableCell>
+                        <TableCell>₦{item.actual_amount?.toLocaleString()}</TableCell>
                         <TableCell>{item?.is_promo ? "True" : "False"}</TableCell>
                         <TableCell>{`${item?.first_name ? item?.first_name : ""} ${item?.last_name ? item?.last_name : ""}`}</TableCell>
                         <TableCell>{calculatePostDate(item.createdAt)}</TableCell>

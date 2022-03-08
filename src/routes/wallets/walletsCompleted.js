@@ -19,7 +19,7 @@ const  WalletsCompleted = ({match, getTrips, getTripCount}) => {
 
 	return (
 		<div className="table-wrapper">
-			<PageTitleBar title={"Trips"} match={match} />
+			<PageTitleBar title={"Wallets"} match={match} />
 			<WalletTable status={'completed'} />
 		</div>
 	);

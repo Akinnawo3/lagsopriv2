@@ -19,7 +19,7 @@ const  WalletsPending = ({match, getTrips, getTripCount}) => {
 
 	return (
 		<div className="table-wrapper">
-			<PageTitleBar title={"Trips"} match={match} />
+			<PageTitleBar title={"Wallets"} match={match} />
 			<WalletTable status={'waiting'} />
 		</div>
 	);

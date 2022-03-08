@@ -54,6 +54,7 @@ module.exports = {
   "sidebar.promodiscounts": "Promo and Discount",
   "sidebar.current": "Current",
   "sidebar.cancelled": "Cancelled",
+  "sidebar.debit": "Debit",
   "sidebar.cancellation": "Cancellation",
   "sidebar.payments": "Trip Payments",
   "sidebar.revenue": "Revenues",
