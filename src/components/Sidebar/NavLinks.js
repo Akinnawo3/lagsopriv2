@@ -225,13 +225,6 @@ export default {
         },
       ],
     },
-    {
-      menu_title: "sidebar.wallet-transactions",
-      menu_icon: "zmdi zmdi-map",
-      type_multi: null,
-      new_item: false,
-      path: "/admin/wallet-transactions",
-    },
 
     {
       menu_title: "sidebar.revenue",
@@ -286,6 +279,24 @@ export default {
           new_item: false,
           menu_title: "sidebar.all",
         },
+      ],
+    },
+    {
+      menu_title: "sidebar.reconciliation",
+      menu_icon: "icon-credit-card",
+      type_multi: null,
+      new_item: false,
+      child_routes: [
+        {
+          path: "/admin/finance",
+          new_item: false,
+          menu_title: "sidebar.finance",
+        },
+        {
+          path: "/admin/disbursement-log",
+          new_item: false,
+          menu_title: "sidebar.disbursement-log",
+        }
       ],
     },
 
