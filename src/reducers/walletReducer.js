@@ -1,16 +1,15 @@
-import {
-  WALLETS, WALLET, WALLETS_COUNT
-} from "Actions/types";
-
+import {WALLETS, WALLET, WALLETS_COUNT, WALLETS_TRANSACTIONS,WALLETS_TRANSACTIONS_COUNT} from "Actions/types";
 
 const initialState = {
   wallets: [],
   wallet: 0,
   walletsCount: 0,
+  walletsTransactions: [],
+  walletsTransactionsCount:0,
 };
 
 function walletReducer(state = initialState, action) {
-  const { type, payload } = action;
+  const {type, payload} = action;
   switch (type) {
     case WALLETS: {
       return {
@@ -30,8 +29,20 @@ function walletReducer(state = initialState, action) {
         walletsCount: payload,
       };
     }
+    case WALLETS_TRANSACTIONS: {
+      return {
+        ...state,
+        walletsTransactions: payload,
+      };
+    }
+    case WALLETS_TRANSACTIONS_COUNT: {
+      return {
+        ...state,
+        walletsTransactionsCount: payload,
+      };
+    }
     default:
-      return state
+      return state;
   }
 }
 
