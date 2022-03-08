@@ -86,6 +86,8 @@ const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenue
                     <TableCell>Asset Repayment</TableCell>
                     <TableCell>Dashcam Repayment</TableCell>
                     <TableCell>Mobile Phone Repayment</TableCell>
+                    <TableCell>Gross Balance</TableCell>
+                    <TableCell>Net Balance</TableCell>
                     {/* <TableCell>Gross Balance</TableCell>
                     <TableCell> Balance</TableCell> */}
                   </TableRow>
@@ -105,6 +107,8 @@ const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenue
                           <TableCell>{`₦${item?.asset_repayment.toLocaleString()}`}</TableCell>
                           <TableCell>{`₦${item?.dashcam_repayment.toLocaleString()}`}</TableCell>
                           <TableCell>{`₦${item?.mobile_phone_repayment.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.gross_balance.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.balance.toLocaleString()}`}</TableCell>
                           {/* <TableCell>{`₦${item?.gross_balance.toLocaleString()}`}</TableCell>
                           <TableCell>{`₦${item?.balance.toLocaleString()}`}</TableCell> */}
                         </TableRow>

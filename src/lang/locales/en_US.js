@@ -808,6 +808,7 @@ module.exports = {
   "widgets.target": "Target",
   "widgets.totalActiveUsers": "Total Active Users",
   "sidebar.user": "User",
+  "sidebar.wallet-transactions": "Wallet Transactions",
   "sidebar.miscellaneous": "Miscellaneous",
   "sidebar.promo": "Promo",
   "themeOptions.themeColor": "Theme Color",

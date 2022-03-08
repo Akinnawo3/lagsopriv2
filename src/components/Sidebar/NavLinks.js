@@ -225,6 +225,13 @@ export default {
         },
       ],
     },
+    {
+      menu_title: "sidebar.wallet-transactions",
+      menu_icon: "zmdi zmdi-map",
+      type_multi: null,
+      new_item: false,
+      path: "/admin/wallet-transactions",
+    },
 
     {
       menu_title: "sidebar.revenue",

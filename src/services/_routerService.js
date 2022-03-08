@@ -15,6 +15,7 @@ import {
   AsyncActivityLog,
   AsyncPromoDiscount,
   AsyncNotifications, AsyncDisbursementLog, AsyncFinance,
+  AsyncWalletTransactions,
 } from "Components/AsyncComponent/AsyncComponent";
 import DriverRoutes from "Routes/drivers/driverRoutes";
 import VehicleRoutes from "Routes/vehicles/vehicleRoutes";
@@ -224,5 +225,10 @@ export default [
     path: "service-requests",
     component: ServiceRequestsRoutes,
     permission: "",
+  },
+  {
+    path: "wallet-transactions",
+    component: AsyncWalletTransactions,
+    permission: "view_trip_payments",
   },
 ];
