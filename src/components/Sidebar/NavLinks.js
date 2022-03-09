@@ -225,6 +225,39 @@ export default {
         },
       ],
     },
+    {
+      menu_title: "sidebar.wallet",
+      menu_icon: "icon-credit-card",
+      type_multi: null,
+      new_item: false,
+      child_routes: [
+        {
+          path: "/admin/wallets/completed",
+          new_item: false,
+          menu_title: "sidebar.completed",
+        },
+        {
+          path: "/admin/wallets/pending",
+          new_item: false,
+          menu_title: "sidebar.pending",
+        },
+        {
+          path: "/admin/wallets/cancelled",
+          new_item: false,
+          menu_title: "sidebar.cancelled",
+        },
+        {
+          path: "/admin/wallets/debit",
+          new_item: false,
+          menu_title: "sidebar.debit",
+        },
+        {
+          path: "/admin/wallets",
+          new_item: false,
+          menu_title: "sidebar.all",
+        },
+      ],
+    },
 
     {
       menu_title: "sidebar.revenue",
@@ -278,6 +311,24 @@ export default {
           path: "/admin/service-requests",
           new_item: false,
           menu_title: "sidebar.all",
+        },
+      ],
+    },
+    {
+      menu_title: "sidebar.reconciliation",
+      menu_icon: "icon-credit-card",
+      type_multi: null,
+      new_item: false,
+      child_routes: [
+        {
+          path: "/admin/finance",
+          new_item: false,
+          menu_title: "sidebar.finance",
+        },
+        {
+          path: "/admin/disbursement-log",
+          new_item: false,
+          menu_title: "sidebar.disbursement-log",
         },
       ],
     },

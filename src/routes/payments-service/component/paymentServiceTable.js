@@ -79,7 +79,8 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
 
   console.log(paymentsServiceBalance);
   const applyFilter = () => {
-    getPayments(currentPage, status, auth_id, false, paymentOptionType, startDate, endDate);
+    history.push(`${history.location.pathname}?page=${1}`);
+    getPayments(1, status, auth_id, false, paymentOptionType, startDate, endDate);
     getPaymentsServiceCount(status, auth_id, paymentOptionType, startDate, endDate);
     getPaymentsServiceBalance(status, auth_id, paymentOptionType, startDate, endDate);
   };

@@ -48,8 +48,8 @@ const DownloadsTable = ({getDownloadsByArea, downloadsByArea, loading}) => {
                   <div className="card-header" id="headingOne" onClick={() => handleLgaClick(item?._id)}>
                     <h2 className="mb-0">
                       <div className=" d-flex justify-content-between">
-                        <span>{firstLetterToUpperCase(item?.lga)}</span>
-                        <span>{item?.riders_home_area_count?.toLocaleString()}</span>
+                        <small>{firstLetterToUpperCase(item?.lga)}</small>
+                        <small>{item?.riders_home_area_count?.toLocaleString()}</small>
                       </div>
                     </h2>
                   </div>

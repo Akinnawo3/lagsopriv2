@@ -114,11 +114,11 @@ class Header extends Component {
               <Link to="/admin/notifications">
                 <li className="list-inline-item setting-icon ml-2 position-relative">
                   <i className="zmdi zmdi-notifications-none text-danger mr-1 " title="Notifications" style={{fontSize: "25px"}}></i>
-                  <blink>
+                  {/*<blink>*/}
                     <small className="bg-danger blink text-white position-absolute fw-bold rounded-circle" style={{top: -2, left: -2, fontSize: 8, padding: "0 4px"}}>
                       {this.props.counter && <span>.</span>}
                     </small>
-                  </blink>
+                  {/*</blink>*/}
                 </li>
               </Link>
               <li className="list-inline-item setting-icon ml-2">

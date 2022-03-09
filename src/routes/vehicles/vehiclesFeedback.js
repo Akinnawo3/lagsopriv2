@@ -24,8 +24,6 @@ const VehiclesFeedback = ({history, match, getVehicles, getVehiclesCount}) => {
   );
 };
 
-
-
 function mapDispatchToProps(dispatch) {
   return {
     getVehicles: (page_no, spinner) => dispatch(getVehiclesFeedback(page_no, spinner)),
