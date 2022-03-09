@@ -5,11 +5,15 @@ import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 
 export const getWallets =
-  (page_no = 1, status = "", auth_id = "", loading, transaction_type="") =>
+  (page_no = 1, status = "", auth_id = "", loading, transaction_type = "", start_date = "", end_date = "") =>
   async (dispatch) => {
     try {
       loading && dispatch(startStatusLoading());
-      const res = await axios.get(`${api.wallet}/v1.1/admin/wallet-transactions?item_per_page=20&page=${page_no}&status=${status}&auth_id=${auth_id}&transaction_type=${transaction_type}`);
+      const res = await axios.get(
+        `${
+          api.wallet
+        }/v1.1/admin/wallet-transactions?item_per_page=20&page=${page_no}&status=${status}&auth_id=${auth_id}&transaction_type=${transaction_type}&start_date=${start_date}&end_date=${end_date}`
+      );
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -23,10 +27,12 @@ export const getWallets =
   };
 
 export const getWalletsCount =
-  (status = "", auth_id, loading, transaction_type="") =>
+  (status = "", auth_id, loading, transaction_type = "", start_date = "", end_date = "") =>
   async (dispatch) => {
     try {
-      const res = await axios.get(`${api.wallet}/v1.1/admin/wallet-transactions?component=count&status=${status}&auth_id=${auth_id}&transaction_type=${transaction_type}`);
+      const res = await axios.get(
+        `${api.wallet}/v1.1/admin/wallet-transactions?component=count&status=${status}&auth_id=${auth_id}&transaction_type=${transaction_type}&start_date=${start_date}&end_date=${end_date}`
+      );
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -39,10 +45,10 @@ export const getWalletsCount =
   };
 
 export const getWalletBalance =
-  (auth_id = "", status = "", transaction_type="") =>
+  (auth_id = "", status = "", transaction_type = "", start_date = "", end_date = "") =>
   async (dispatch) => {
     try {
-      const res = await axios.get(`${api.wallet}/v1.1/admin/wallet-transactions?auth_id=${auth_id}&component=balance`);
+      const res = await axios.get(`${api.wallet}/v1.1/admin/wallet-transactions?auth_id=${auth_id}&component=balance&start_date=${start_date}&end_date=${end_date}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -54,10 +60,12 @@ export const getWalletBalance =
     } catch (err) {}
   };
 export const getFundingBalance =
-  (auth_id = "", status = "", transaction_type="") =>
+  (auth_id = "", status = "", transaction_type = "", start_date = "", end_date = "") =>
   async (dispatch) => {
     try {
-      const res = await axios.get(`${api.wallet}/v1.1/admin/wallet-transactions?auth_id=${auth_id}&component=funding-balance`);
+      const res = await axios.get(
+        `${api.wallet}/v1.1/admin/wallet-transactions?auth_id=${auth_id}&component=funding-balance&start_date=${start_date}&end_date=${end_date}&transaction_type=${transaction_type}`
+      );
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {

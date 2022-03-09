@@ -21,7 +21,7 @@ import {useHistory} from "react-router-dom";
 const qs = require("qs");
 import {getFirstDayOfMonth, getTodayDate} from "../../../helpers/helpers";
 
-const WalletTable = ({status, wallets, getWallets, isLoading, walletsCount, fundingBalance}) => {
+const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBalance, isLoading, walletsCount, fundingBalance}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -35,10 +35,11 @@ const WalletTable = ({status, wallets, getWallets, isLoading, walletsCount, fund
   const paginate = (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
-    // getPayments(pageNumber, status, auth_id, false, paymentOptionType, startDate, endDate);
+    getWallets(pageNumber, status, "", false, transactionOptionType);
     window.scrollTo(0, 0);
   };
 
+  console.log(walletsCount);
   const transactionTypeOptions = [
     {value: "", label: "- - Filter by Transaction Type - -"},
     {label: "Funding From Paystack", value: "fund"},
@@ -50,9 +51,10 @@ const WalletTable = ({status, wallets, getWallets, isLoading, walletsCount, fund
   };
 
   const applyFilter = () => {
-    // getPayments(currentPage, status, auth_id, false, paymentOptionType, startDate, endDate);
-    // getPaymentsServiceCount(status, auth_id, paymentOptionType, startDate, endDate);
-    // getPaymentsServiceBalance(status, auth_id, paymentOptionType, startDate, endDate);
+    history.push(`${history.location.pathname}?page=${1}`);
+    getWallets(1, status, "", true, transactionOptionType, startDate, endDate);
+    getWalletsCount(status, "", true, transactionOptionType, startDate, endDate);
+    getFundingBalance("", status, transactionOptionType, startDate, endDate);
   };
 
   return (
@@ -107,10 +109,13 @@ const WalletTable = ({status, wallets, getWallets, isLoading, walletsCount, fund
               <Table>
                 <TableHead>
                   <TableRow hover>
-                    <TableCell>Trip Id</TableCell>
+                    <TableCell> Id</TableCell>
                     <TableCell>Date/Time</TableCell>
-                    <TableCell>Class</TableCell>
+                    <TableCell>Transaction Type</TableCell>
+                    <TableCell>Amount</TableCell>
                     <TableCell>Status</TableCell>
+                    <TableCell>Description</TableCell>
+                    <TableCell>Recipient</TableCell>
                     <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
@@ -118,26 +123,29 @@ const WalletTable = ({status, wallets, getWallets, isLoading, walletsCount, fund
                   <Fragment>
                     {wallets.length > 0 &&
                       wallets.map((trip) => (
-                        <TableRow hover key={trip.trip_id}>
+                        <TableRow hover key={trip._id}>
                           <TableCell>
                             <Media>
                               <Media body>
-                                <h5 className="m-0 pt-15">{"trip.trip_id"}</h5>
+                                <h5 className="m-0 pt-15">{trip._id}</h5>
                               </Media>
                             </Media>
                           </TableCell>
                           <TableCell>
                             {new Date(trip.createdAt).toDateString()} {new Date(trip.createdAt).toLocaleTimeString()}
                           </TableCell>
-                          <TableCell>{trip.ride_class}</TableCell>
+                          <TableCell>{trip.transaction_type}</TableCell>
+                          <TableCell> ₦{trip?.amount?.toLocaleString()}</TableCell>
                           <TableCell>
-                            <Badge color={trip.ride_status === "completed" ? "success" : trip.ride_status === "cancel" ? "danger" : trip.ride_status === "waiting" ? "warning" : "secondary"}>
-                              {trip.ride_status === "on_trip" ? "current" : trip.ride_status === "on_pickup" ? "on route" : trip.ride_status}
+                            <Badge color={trip.status === 1 ? "success" : trip.status === 0 ? "secondary" : trip.status === 2 ? "danger" : "info"}>
+                              {trip.status === 1 ? "Complete" : trip.status === 0 ? "Pending" : trip.status === 2 ? "Cancelled" : "Debit "}
                             </Badge>
                           </TableCell>
+                          <TableCell>{trip.description}</TableCell>
+                          <TableCell>{trip.recipient}</TableCell>
                           <TableCell>
                             <button type="button" className="rct-link-btn text-primary" title="view details">
-                              <Link to={`/admin/wallets/${trip.trip_id}`}>
+                              <Link to={`/admin/wallets/${trip._id}`}>
                                 <i className="ti-eye" />
                               </Link>
                             </button>
@@ -161,9 +169,9 @@ const WalletTable = ({status, wallets, getWallets, isLoading, walletsCount, fund
 
 function mapDispatchToProps(dispatch) {
   return {
-    getWallets: (page_no, status, auth_id, spinner, transaction_type) => dispatch(getWallets(page_no, status, auth_id, spinner, transaction_type)),
-    getWalletsCount: (status, auth_id, loading, transaction_type) => dispatch(getWalletsCount(status, auth_id, loading, transaction_type)),
-    getFundingBalance: (auth_id, status, transaction_type) => dispatch(getFundingBalance(auth_id, status, transaction_type)),
+    getWallets: (page_no, status, auth_id, spinner, transaction_type, start_date, end_date) => dispatch(getWallets(page_no, status, auth_id, spinner, transaction_type, start_date, end_date)),
+    getWalletsCount: (status, auth_id, loading, transaction_type, start_date, end_date) => dispatch(getWalletsCount(status, auth_id, loading, transaction_type, start_date, end_date)),
+    getFundingBalance: (auth_id, status, transaction_type, start_date, end_date) => dispatch(getFundingBalance(auth_id, status, transaction_type, start_date, end_date)),
   };
 }
 

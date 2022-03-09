@@ -8,13 +8,13 @@ import WalletTable from "Routes/wallets/component/walletTable";
 import {getWallets, getWalletsCount, getWalletBalance, getFundingBalance} from "Actions/walletAction";
 const qs = require("qs");
 
-const Wallets = ({history, match, getWallets, getWalletsCount, getFundingBalance}) => {
+const Wallets = ({history, match,wallets, getWallets, getWalletsCount, getFundingBalance}) => {
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
   useEffect(() => {
-    if (pageFromQuery === undefined || payments.length < 1) {
+    if (pageFromQuery === undefined || wallets.length < 1) {
       getWallets(currentPage, "", "", true, "");
       getWalletsCount("", "", true, "");
       getFundingBalance("", "", "");
