@@ -87,7 +87,7 @@ export const getSingleWalletTransaction = (transaction_id, spinner) => async (di
     } else {
       dispatch({
         type: SINGLE_WALLET_TRANSACTION,
-        payload: res.data.data[0],
+        payload: res.data.data,
       });
     }
     dispatch(endLoading());

@@ -7,11 +7,12 @@ import {getSingleWalletTransaction} from "Actions/walletAction";
 import {formatTime} from "Helpers/helpers";
 import {Link} from "react-router-dom";
 
-const WalletDetails = ({getSingleWalletTransaction, match, loading, trip}) => {
+const WalletDetails = ({getSingleWalletTransaction, transaction, match, loading, trip}) => {
   useEffect(() => {
     getSingleWalletTransaction(match.params.id, true);
   }, [match.params.id]);
 
+  console.log(transaction);
   return (
     <div className="mb-5" style={{minHeight: "90vh"}}>
       <Helmet>
@@ -25,68 +26,48 @@ const WalletDetails = ({getSingleWalletTransaction, match, loading, trip}) => {
             <div className="tab-content px-4">
               <div className="tab-pane active" id="home">
                 <ul className="list-group">
-                  {/* <li className="list-group-item text-right">
+                  <li className="list-group-item text-right">
                     <span className="pull-left">
-                      <strong>Trip Id</strong>
+                      <strong>Transaction ID</strong>
                     </span>
-                    {trip?.trip_id}
+                    {transaction?.transaction_id}
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
-                      <strong>Trip Class</strong>
+                      <strong>Date</strong>
                     </span>
-                    {trip?.ride_class}
+                    {new Date(transaction?.createdAt)?.toDateString()} {new Date(transaction?.createdAt)?.toLocaleTimeString()}
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
-                      <strong>Trip Type</strong>
+                      <strong>Amount</strong>
                     </span>
-                    {trip?.ride_type}
+                    ₦{transaction?.amount?.toLocaleString()}
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
-                      <strong>Driver Name</strong>
+                      <strong>Description</strong>
                     </span>
-                    <Link to={`/admin/drivers/${trip?.driver_data?.driver_id}`}>{trip?.driver_data?.name}</Link>
+                    {transaction?.description}
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
-                      <strong>Driver Email</strong>
+                      <strong>Recipient</strong>
                     </span>
-                    {trip?.driver_data?.email}
+                    {transaction?.recipient}
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
-                      <strong>Driver Phone Number</strong>
+                      <strong>Status</strong>
                     </span>
-                    {trip?.driver_data?.phone}
+                    {transaction?.status}
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
-                      <strong>Vehicle Plate Number</strong>
+                      <strong>Transaction Type</strong>
                     </span>
-                    {trip?.driver_data?.car_number_plate}
+                    {transaction?.transaction_type}
                   </li>
-                  <li className="list-group-item text-right">
-                    <span className="pull-left">
-                      <strong>Vehicle Model</strong>
-                    </span>
-                    {trip?.driver_data?.car_model}
-                  </li>
-                  <li className="list-group-item text-right">
-                    <span className="pull-left">
-                      <strong>Trip Status</strong>
-                    </span>
-                    <Badge color={trip?.ride_status === "completed" ? "success" : trip?.ride_status === "cancel" ? "danger" : trip?.ride_status === "waiting" ? "warning" : "secondary"}>
-                      {trip?.ride_status === "on_trip" ? "current" : trip?.ride_status === "on_pickup" ? "on route" : trip?.ride_status}
-                    </Badge>
-                  </li>
-                  <li className="list-group-item text-right">
-                    <span className="pull-left" style={{fontSize: "1rem"}}>
-                      <strong>Rider(s)</strong>
-                    </span>
-                    {trip?.home_area}
-                  </li> */}
                 </ul>
               </div>
             </div>
@@ -99,12 +80,12 @@ const WalletDetails = ({getSingleWalletTransaction, match, loading, trip}) => {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getSingleWalletTransaction: (tansaction_id, spinner) => dispatch(getSingleWalletTransaction(transaction_id, spinner)),
+    getSingleWalletTransaction: (tansaction_id, spinner) => dispatch(getSingleWalletTransaction(tansaction_id, spinner)),
   };
 }
 
 const mapStateToProps = (state) => ({
-  trip: state.trips.trip,
+  transaction: state.wallets.singleWalletTransaction,
   loading: state.loading.loading,
   loadingStatus: state.loading.loadingStatus,
 });
