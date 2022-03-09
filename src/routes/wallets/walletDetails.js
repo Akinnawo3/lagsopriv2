@@ -50,12 +50,15 @@ const WalletDetails = ({getSingleWalletTransaction, transaction, match, loading,
                     </span>
                     {transaction?.description}
                   </li>
-                  <li className="list-group-item text-right">
-                    <span className="pull-left">
-                      <strong>Recipient</strong>
-                    </span>
-                    {transaction?.recipient}
-                  </li>
+                  {(transaction?.transaction_type === "fund" || transaction?.transaction_type === "share") && (
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Recipient</strong>
+                      </span>
+                      {transaction?.recipient}
+                    </li>
+                  )}
+
                   <li className="list-group-item text-right">
                     <span className="pull-left">
                       <strong>Status</strong>

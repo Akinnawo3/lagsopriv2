@@ -21,7 +21,7 @@ import {useHistory} from "react-router-dom";
 const qs = require("qs");
 import {getFirstDayOfMonth, getTodayDate} from "../../../helpers/helpers";
 
-const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBalance, isLoading, walletsCount, fundingBalance,heading}) => {
+const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBalance, isLoading, walletsCount, fundingBalance, heading}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -42,9 +42,9 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
   console.log(walletsCount);
   const transactionTypeOptions = [
     {value: "", label: "- - Filter by Transaction Type - -"},
-    {label: "Funding From Paystack", value: "fund"},
-    {label: "Debt-service Net Possion", value: "driver-commission"},
-    {label: "Wallet Transfer", value: "share"},
+    {label: "Funding Wallet", value: "fund"},
+    {label: "Wallet Share", value: "share"},
+    {label: "Drivers Commission", value: "driver-commission"},
   ];
   const handleChange = (e) => {
     setTransactionOptionType(e.target.value);
@@ -110,12 +110,11 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
                 <TableHead>
                   <TableRow hover>
                     <TableCell> Id</TableCell>
+                    <TableCell>User Name</TableCell>
                     <TableCell>Date/Time</TableCell>
                     <TableCell>Transaction Type</TableCell>
                     <TableCell>Amount</TableCell>
                     <TableCell>Status</TableCell>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Recipient</TableCell>
                     <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
@@ -131,6 +130,7 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
                               </Media>
                             </Media>
                           </TableCell>
+                          <TableCell>{trip?.user_data?.first_name} {trip?.user_data?.last_name}</TableCell>
                           <TableCell>
                             {new Date(trip.createdAt).toDateString()} {new Date(trip.createdAt).toLocaleTimeString()}
                           </TableCell>
@@ -141,8 +141,7 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
                               {trip.status === 1 ? "Complete" : trip.status === 0 ? "Pending" : trip.status === 2 ? "Cancelled" : "Debit "}
                             </Badge>
                           </TableCell>
-                          <TableCell>{trip.description}</TableCell>
-                          <TableCell>{trip.recipient}</TableCell>
+
                           <TableCell>
                             <button type="button" className="rct-link-btn text-primary" title="view details">
                               <Link to={`/admin/wallets/${trip._id}`}>

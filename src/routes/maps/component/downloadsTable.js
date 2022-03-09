@@ -68,9 +68,9 @@ const DownloadsTable = ({getDownloadsByArea, downloadsByArea, loading}) => {
                     <div className="card-body " style={{padding:"2px 5px"}}>
                       <ul className="list-inline">
                         {item.areas.map((area, index) => (
-                          <li className="text-right border-bottom " style={{padding:"2px 5px"}}>
-                            <small className="pull-left">{firstLetterToUpperCase(area?.area_name)}</small>
-                            <small> {area?.riders_home_area_count?.toLocaleString()}</small>
+                          <li className="text-right border-bottom m-0 " style={{padding:"2px 5px", fontSize:13}}>
+                            <div className="pull-left ">{firstLetterToUpperCase(area?.area_name)}</div>
+                            <div > {area?.riders_home_area_count?.toLocaleString()}</div>
                           </li>
                         ))}
                       </ul>
