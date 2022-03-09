@@ -24,7 +24,7 @@ const Wallets = ({history, match,wallets, getWallets, getWalletsCount, getFundin
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Wallets"} match={match} />
-      <WalletTable status={""} />
+      <WalletTable status={""} heading={"All Transaction"}/>
     </div>
   );
 };

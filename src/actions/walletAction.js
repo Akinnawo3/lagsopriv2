@@ -62,7 +62,7 @@ export const getFundingBalance =
   async (dispatch) => {
     try {
       const res = await axios.get(
-        `${api.wallet}/v1.1/admin/wallet-transactions?auth_id=${auth_id}&component=funding-balance&start_date=${start_date}&end_date=${end_date}&transaction_type=${transaction_type}`
+        `${api.wallet}/v1.1/admin/wallet-transactions?auth_id=${auth_id}&status=${status}&component=funding-balance&start_date=${start_date}&end_date=${end_date}&transaction_type=${transaction_type}`
       );
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);

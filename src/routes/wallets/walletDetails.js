@@ -60,7 +60,7 @@ const WalletDetails = ({getSingleWalletTransaction, transaction, match, loading,
                     <span className="pull-left">
                       <strong>Status</strong>
                     </span>
-                    {transaction?.status}
+                    {transaction.status === 1 ? "Complete" : transaction.status === 0 ? "Pending" : transaction.status === 2 ? "Cancelled" : "Debit "}
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">

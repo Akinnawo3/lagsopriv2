@@ -21,7 +21,7 @@ import {useHistory} from "react-router-dom";
 const qs = require("qs");
 import {getFirstDayOfMonth, getTodayDate} from "../../../helpers/helpers";
 
-const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBalance, isLoading, walletsCount, fundingBalance}) => {
+const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBalance, isLoading, walletsCount, fundingBalance,heading}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -59,7 +59,7 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
 
   return (
     <div>
-      <RctCollapsibleCard heading="All Trips" fullBlock>
+      <RctCollapsibleCard heading={heading} fullBlock>
         <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
           <select id="filter-dropdown" name="fiter-dropdown" onChange={handleChange} className="p-1 px-4">
             {transactionTypeOptions.map((item) => (
