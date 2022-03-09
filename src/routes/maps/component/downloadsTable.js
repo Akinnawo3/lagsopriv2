@@ -43,6 +43,17 @@ const DownloadsTable = ({getDownloadsByArea, downloadsByArea, loading}) => {
         <div>
           {!loading && downloadsByArea.length > 0 && (
             <div className="accordion" id="accordionExample">
+              <div className="card bg-secondary">
+                <div className="card-header" id="headingOne">
+                  <h2 className="mb-0">
+                    <div className=" d-flex justify-content-between text-white fw-bold">
+                      <small>LGA</small>
+                      <small>DOWNLOADS</small>
+                    </div>
+                  </h2>
+                </div>
+              </div>
+
               {downloadsByArea.map((item) => (
                 <div className="card" key={item._id}>
                   <div className="card-header" id="headingOne" onClick={() => handleLgaClick(item?._id)}>
