@@ -92,6 +92,19 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
           <Col xs="12" sm="6">
             <Card className="text-success bg-light p-3">
               <CardBody className="pb-0">
+                <div className="text-value text-muted fw-bold">Total Count</div>
+              </CardBody>
+              <div className="chart-wrapper mx-3 d-flex align-items-center  justify-content-between" style={{height: "70px"}}>
+                <span className=" font-xl" style={{fontSize: "2.5rem"}}>
+                  {walletsCount}
+                </span>
+                <i className="ti-arrow-up font-lg" />
+              </div>
+            </Card>
+          </Col>
+          <Col xs="12" sm="6">
+            <Card className="text-success bg-light p-3">
+              <CardBody className="pb-0">
                 <div className="text-value text-muted fw-bold">Funding Balance</div>
               </CardBody>
               <div className="chart-wrapper mx-3 d-flex align-items-center  justify-content-between" style={{height: "70px"}}>
@@ -130,7 +143,9 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
                               </Media>
                             </Media>
                           </TableCell>
-                          <TableCell>{trip?.user_data?.first_name} {trip?.user_data?.last_name}</TableCell>
+                          <TableCell>
+                            {trip?.user_data?.first_name} {trip?.user_data?.last_name}
+                          </TableCell>
                           <TableCell>
                             {new Date(trip.createdAt).toDateString()} {new Date(trip.createdAt).toLocaleTimeString()}
                           </TableCell>
