@@ -57,6 +57,7 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
     getFundingBalance("", status, transactionOptionType, startDate, endDate);
   };
 
+
   return (
     <div>
       <RctCollapsibleCard heading={heading} fullBlock>
