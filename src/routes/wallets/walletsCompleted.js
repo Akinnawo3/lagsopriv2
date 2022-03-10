@@ -24,7 +24,7 @@
    return (
 	 <div className="table-wrapper">
 	   <PageTitleBar title={"Wallets"} match={match} />
-	   <WalletTable status={1} heading={"Complete Transactions"} />
+	   <WalletTable status={1} heading={"Successful Transactions"} />
 	 </div>
    );
  };
