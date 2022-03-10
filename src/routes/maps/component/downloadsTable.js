@@ -42,11 +42,11 @@ const DownloadsTable = ({getDownloadsByArea, downloadsByArea, loading}) => {
       {infoType === "downloads" && (
         <div>
           {!loading && downloadsByArea.length > 0 && (
-            <div className="accordion" id="accordionExample">
+            <div className="accordion " id="accordionExample">
               <div className="card bg-secondary">
                 <div className="card-header" id="headingOne">
                   <h2 className="mb-0">
-                    <div className=" d-flex justify-content-between text-white fw-bold">
+                    <div className=" d-flex justify-content-between text-white fw-bold ">
                       <small>LGA</small>
                       <small>DOWNLOADS</small>
                     </div>
@@ -65,14 +65,12 @@ const DownloadsTable = ({getDownloadsByArea, downloadsByArea, loading}) => {
                     </h2>
                   </div>
                   <div id="collapseOne" className={`collapse ${expandedLga === item._id && "show"}`} aria-labelledby="headingOne" data-parent="#accordionExample">
-                    <div className="card-body">
-                      <ul className="list-group">
+                    <div className="card-body " style={{padding:"2px 5px"}}>
+                      <ul className="list-inline">
                         {item.areas.map((area, index) => (
-                          <li className="list-group-item text-right">
-                            <small className="pull-left">
-                              <strong>{firstLetterToUpperCase(area?.area_name)}</strong>
-                            </small>
-                            {area?.riders_home_area_count?.toLocaleString()}
+                          <li className="text-right border-bottom m-0 " style={{padding:"2px 5px", fontSize:13}}>
+                            <div className="pull-left ">{firstLetterToUpperCase(area?.area_name)}</div>
+                            <div > {area?.riders_home_area_count?.toLocaleString()}</div>
                           </li>
                         ))}
                       </ul>

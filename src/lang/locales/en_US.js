@@ -215,7 +215,7 @@ module.exports = {
   "sidebar.sublevel": "Sublevel",
   "sidebar.crypto": "Crypto",
   "sidebar.marketCap": "Market cap",
-  "sidebar.wallet": "Wallet",
+  "sidebar.wallet": "Wallet Transactions",
   "sidebar.trade": "trade",
   "sidebar.crm": "CRM",
   "sidebar.dashboard": "dashboard",

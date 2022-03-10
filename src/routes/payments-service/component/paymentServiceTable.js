@@ -59,6 +59,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
           paymentMethod: payment.payment_method,
           paymentType: payment.payment_type,
           UserName: `${payment?.user_data[0]?.first_name} ${payment?.user_data[0]?.last_name}`,
+          UserAddress: `${payment?.user_data[0]?.home_address}`,
           UserPhoneNumber: payment.user_data[0]?.phone_number,
           UserEMail: payment.user_data[0]?.email,
         };
@@ -118,7 +119,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
         </div>
 
         <Row className="mb-2">
-          <Col xs="12" sm="6" >
+          <Col xs="12" sm="6">
             <Card className="text-success bg-light p-3">
               <CardBody className="pb-0">
                 <div className="text-value text-muted fw-bold">Total Count</div>
@@ -131,7 +132,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
               </div>
             </Card>
           </Col>
-          <Col xs="12" sm="6" >
+          <Col xs="12" sm="6">
             <Card className="text-success bg-light p-3">
               <CardBody className="pb-0">
                 <div className="text-value text-muted fw-bold">Total Balance</div>

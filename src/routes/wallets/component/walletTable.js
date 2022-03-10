@@ -21,7 +21,7 @@ import {useHistory} from "react-router-dom";
 const qs = require("qs");
 import {getFirstDayOfMonth, getTodayDate} from "../../../helpers/helpers";
 
-const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBalance, isLoading, walletsCount, fundingBalance,heading}) => {
+const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBalance, isLoading, walletsCount, fundingBalance, heading}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -42,9 +42,9 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
   console.log(walletsCount);
   const transactionTypeOptions = [
     {value: "", label: "- - Filter by Transaction Type - -"},
-    {label: "Funding From Paystack", value: "fund"},
-    {label: "Debt-service Net Possion", value: "driver-commission"},
-    {label: "Wallet Transfer", value: "share"},
+    {label: "Funding Wallet", value: "fund"},
+    {label: "Wallet Share", value: "share"},
+    {label: "Drivers Commission", value: "driver-commission"},
   ];
   const handleChange = (e) => {
     setTransactionOptionType(e.target.value);
@@ -56,6 +56,7 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
     getWalletsCount(status, "", true, transactionOptionType, startDate, endDate);
     getFundingBalance("", status, transactionOptionType, startDate, endDate);
   };
+
 
   return (
     <div>
@@ -92,6 +93,19 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
           <Col xs="12" sm="6">
             <Card className="text-success bg-light p-3">
               <CardBody className="pb-0">
+                <div className="text-value text-muted fw-bold">Total Count</div>
+              </CardBody>
+              <div className="chart-wrapper mx-3 d-flex align-items-center  justify-content-between" style={{height: "70px"}}>
+                <span className=" font-xl" style={{fontSize: "2.5rem"}}>
+                  {walletsCount}
+                </span>
+                <i className="ti-arrow-up font-lg" />
+              </div>
+            </Card>
+          </Col>
+          <Col xs="12" sm="6">
+            <Card className="text-success bg-light p-3">
+              <CardBody className="pb-0">
                 <div className="text-value text-muted fw-bold">Funding Balance</div>
               </CardBody>
               <div className="chart-wrapper mx-3 d-flex align-items-center  justify-content-between" style={{height: "70px"}}>
@@ -110,12 +124,11 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
                 <TableHead>
                   <TableRow hover>
                     <TableCell> Id</TableCell>
+                    <TableCell>User Name</TableCell>
                     <TableCell>Date/Time</TableCell>
                     <TableCell>Transaction Type</TableCell>
                     <TableCell>Amount</TableCell>
                     <TableCell>Status</TableCell>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Recipient</TableCell>
                     <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
@@ -132,6 +145,9 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
                             </Media>
                           </TableCell>
                           <TableCell>
+                            {trip?.user_data?.first_name} {trip?.user_data?.last_name}
+                          </TableCell>
+                          <TableCell>
                             {new Date(trip.createdAt).toDateString()} {new Date(trip.createdAt).toLocaleTimeString()}
                           </TableCell>
                           <TableCell>{trip.transaction_type}</TableCell>
@@ -141,8 +157,7 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
                               {trip.status === 1 ? "Complete" : trip.status === 0 ? "Pending" : trip.status === 2 ? "Cancelled" : "Debit "}
                             </Badge>
                           </TableCell>
-                          <TableCell>{trip.description}</TableCell>
-                          <TableCell>{trip.recipient}</TableCell>
+
                           <TableCell>
                             <button type="button" className="rct-link-btn text-primary" title="view details">
                               <Link to={`/admin/wallets/${trip._id}`}>
