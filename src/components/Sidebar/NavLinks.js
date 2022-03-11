@@ -226,11 +226,37 @@ export default {
       ],
     },
     {
-      menu_title: "sidebar.wallet-transactions",
-      menu_icon: "zmdi zmdi-map",
+      menu_title: "sidebar.wallet",
+      menu_icon: "icon-credit-card",
       type_multi: null,
       new_item: false,
-      path: "/admin/wallet-transactions",
+      child_routes: [
+        {
+          path: "/admin/wallets/completed",
+          new_item: false,
+          menu_title: "sidebar.successful",
+        },
+        {
+          path: "/admin/wallets/pending",
+          new_item: false,
+          menu_title: "sidebar.pending",
+        },
+        {
+          path: "/admin/wallets/cancelled",
+          new_item: false,
+          menu_title: "sidebar.cancelled",
+        },
+        {
+          path: "/admin/wallets/debit",
+          new_item: false,
+          menu_title: "sidebar.debit",
+        },
+        {
+          path: "/admin/wallets",
+          new_item: false,
+          menu_title: "sidebar.all",
+        },
+      ],
     },
 
     {
@@ -303,7 +329,7 @@ export default {
           path: "/admin/disbursement-log",
           new_item: false,
           menu_title: "sidebar.disbursement-log",
-        }
+        },
       ],
     },
 

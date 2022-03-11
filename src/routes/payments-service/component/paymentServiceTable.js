@@ -61,6 +61,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
           UserName: `${payment?.user_data[0]?.first_name} ${payment?.user_data[0]?.last_name}`,
           UserPhoneNumber: payment.user_data[0]?.phone_number,
           UserEMail: payment.user_data[0]?.email,
+          UserAddress: `${payment?.user_data[0]?.home_address}`,
         };
       });
       setExcelExport(result);
@@ -79,7 +80,8 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
 
   console.log(paymentsServiceBalance);
   const applyFilter = () => {
-    getPayments(currentPage, status, auth_id, false, paymentOptionType, startDate, endDate);
+    history.push(`${history.location.pathname}?page=${1}`);
+    getPayments(1, status, auth_id, false, paymentOptionType, startDate, endDate);
     getPaymentsServiceCount(status, auth_id, paymentOptionType, startDate, endDate);
     getPaymentsServiceBalance(status, auth_id, paymentOptionType, startDate, endDate);
   };
@@ -117,7 +119,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
         </div>
 
         <Row className="mb-2">
-          <Col xs="12" sm="6" >
+          <Col xs="12" sm="6">
             <Card className="text-success bg-light p-3">
               <CardBody className="pb-0">
                 <div className="text-value text-muted fw-bold">Total Count</div>
@@ -130,7 +132,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
               </div>
             </Card>
           </Col>
-          <Col xs="12" sm="6" >
+          <Col xs="12" sm="6">
             <Card className="text-success bg-light p-3">
               <CardBody className="pb-0">
                 <div className="text-value text-muted fw-bold">Total Balance</div>

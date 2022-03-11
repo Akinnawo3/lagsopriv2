@@ -11,7 +11,7 @@ const Oem = ({history, match, getOems, getOemCount, oems, oemsCount}) => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
   useEffect(() => {
-    if (pageFromQuery === undefined || drivers.length < 1) {
+    if (pageFromQuery === undefined || oems.length < 1) {
       getOems(currentPage, true);
       getOemCount();
     }

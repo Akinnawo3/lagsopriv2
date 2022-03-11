@@ -1,9 +1,10 @@
 import axios from "axios";
-import {VEHICLES, VEHICLES_COUNT, VEHICLE, DRIVER,  VEHICLES_FEEDBACK, VEHICLES_FEEDBACK_COUNT} from "./types";
+import {VEHICLES, VEHICLES_COUNT, VEHICLE, DRIVER, VEHICLES_FEEDBACK, VEHICLES_FEEDBACK_COUNT} from "./types";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 import {getDriver, getDrivers} from "Actions/driverAction";
+import {onAddUpdateVehicleModalClose} from "../routes/vehicles/components/vehicleTable";
 
 export const getVehicles =
   (page_no = 1, assign = "", spinner, car_number_plate = "") =>
@@ -30,29 +31,28 @@ export const getVehicles =
   };
 
 export const getVehiclesFeedback =
-    (page_no = 1, spinner) =>
-        async (dispatch) => {
-          try {
-            spinner && dispatch(startLoading());
-            !spinner && dispatch(startStatusLoading());
-            const res = await axios.get(`${api.vehicles}/v1.1/vehicles/comments?item_per_page=20&page=${page_no}`);
-            if (res.data.status === "error") {
-              NotificationManager.error(res.data.msg);
-            } else {
-              dispatch({
-                type: VEHICLES_FEEDBACK,
-                payload: res.data.data,
-              });
-            }
-            dispatch(endLoading());
-            dispatch(endStatusLoading());
-          } catch (err) {
-            dispatch(endStatusLoading());
-            dispatch(endLoading());
-            NotificationManager.error(err.response.data.message);
-          }
-        };
-
+  (page_no = 1, spinner) =>
+  async (dispatch) => {
+    try {
+      spinner && dispatch(startLoading());
+      !spinner && dispatch(startStatusLoading());
+      const res = await axios.get(`${api.vehicles}/v1.1/vehicles/comments?item_per_page=20&page=${page_no}`);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        dispatch({
+          type: VEHICLES_FEEDBACK,
+          payload: res.data.data,
+        });
+      }
+      dispatch(endLoading());
+      dispatch(endStatusLoading());
+    } catch (err) {
+      dispatch(endStatusLoading());
+      dispatch(endLoading());
+      NotificationManager.error(err.response.data.message);
+    }
+  };
 
 export const getVehicle = (vehicle_id, spinner) => async (dispatch) => {
   try {
@@ -96,22 +96,21 @@ export const getVehiclesCount =
     }
   };
 
-export const getVehiclesFeedbackCount = () =>
-        async (dispatch) => {
-          try {
-            const res = await axios.get(`${api.vehicles}/v1.1/vehicles/comments?component=count`);
-            if (res.data.status === "error") {
-              NotificationManager.error(res.data.msg);
-            } else {
-              dispatch({
-                type: VEHICLES_FEEDBACK_COUNT,
-                payload: res.data?.data?.total ? res.data?.data?.total : 0,
-              });
-            }
-          } catch (err) {
-            NotificationManager.error(err.response.data.message);
-          }
-        };
+export const getVehiclesFeedbackCount = () => async (dispatch) => {
+  try {
+    const res = await axios.get(`${api.vehicles}/v1.1/vehicles/comments?component=count`);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      dispatch({
+        type: VEHICLES_FEEDBACK_COUNT,
+        payload: res.data?.data?.total ? res.data?.data?.total : 0,
+      });
+    }
+  } catch (err) {
+    NotificationManager.error(err.response.data.message);
+  }
+};
 export const createVehicles = (car_number_plate, car_make, car_model, car_desc, car_color, oem_id, oem_vehicle_id) => async (dispatch) => {
   dispatch(startStatusLoading());
   console.log(oem_id);
@@ -122,6 +121,7 @@ export const createVehicles = (car_number_plate, car_make, car_model, car_desc, 
       NotificationManager.error(res.data.msg);
     } else {
       await NotificationManager.success("Vehicle Created Successfully!");
+      onAddUpdateVehicleModalClose();
       await dispatch(getVehicles());
     }
     dispatch(endStatusLoading());
@@ -140,6 +140,7 @@ export const updateVehicle = (vehicle_id, car_number_plate, car_make, car_model,
       NotificationManager.error(res.data.msg);
     } else {
       await NotificationManager.success("Vehicle Updated Successfully");
+      onAddUpdateVehicleModalClose();
       await dispatch(getVehicles(page_no, assign));
     }
     dispatch(endStatusLoading());

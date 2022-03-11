@@ -53,5 +53,6 @@ const api =
         idVerification: "https://verify-service-microservices.api.lagosride.com",
         messageSending: "https://message-service-microservices.api.lagosride.com",
         socket: "https://admin-socket-service-microservices.api.lagosride.com/",
+        oem: "https://oem-service-microservices.api.lagosride.com",
       };
 export default api;

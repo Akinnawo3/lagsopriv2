@@ -358,6 +358,10 @@ const AsyncWalletsCancelled = Loadable({
   loader: () => import("Routes/wallets/walletsCancelled"),
   loading: () => <RctPageLoader />,
 });
+const AsyncWalletsDebit = Loadable({
+  loader: () => import("Routes/wallets/walletsDebit"),
+  loading: () => <RctPageLoader />,
+});
 
 const AsyncWallet = Loadable({
   loader: () => import("Routes/wallets/walletDetails"),
@@ -419,10 +423,6 @@ const AsyncNotifications = Loadable({
   loading: () => <RctPageLoader />,
 });
 
-const AsyncWalletTransactions = Loadable({
-  loader: () => import("Routes/wallet-transactions/walletTransactions"),
-  loading: () => <RctPageLoader />,
-});
 // report
 
 // google maps
@@ -565,6 +565,7 @@ export {
   AsyncWalletsCancelled,
   AsyncWalletsCompleted,
   AsyncWalletsPending,
+  AsyncWalletsDebit,
   AsyncSupportContactUs,
   AsyncSupportContactUsDetails,
   AsyncPaymentsServiceSuccessful,
@@ -573,7 +574,6 @@ export {
   AsyncPaymentsService,
   AsyncPaymentsServiceDetails,
   AsyncCustomerCare,
-  AsyncWalletTransactions,
   AsyncVehiclesFeedback,
   AsyncFinance,
   AsyncDisbursementLog,

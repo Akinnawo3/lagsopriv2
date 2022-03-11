@@ -8,23 +8,23 @@
  import {getWallets, getWalletsCount, getWalletBalance, getFundingBalance} from "Actions/walletAction";
  const qs = require("qs");
  
- const WalletsPending = ({history, match,wallets, getWallets, getWalletsCount, getFundingBalance}) => {
+ const WalletsDebit = ({history, match,wallets, getWallets, getWalletsCount, getFundingBalance}) => {
    const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
    const [currentPage, setCurrentPage] = useState(() => {
 	 return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
    });
    useEffect(() => {
 	 if (pageFromQuery === undefined || wallets.length < 1) {
-	   getWallets(currentPage, 0, "", true, "");
-	   getWalletsCount(0, "", true, "");
-	   getFundingBalance("", 0, "");
+	   getWallets(currentPage, -1, "", true, "");
+	   getWalletsCount(-1, "", true, "");
+	   getFundingBalance("", -1, "");
 	 }
    }, []);
  
    return (
 	 <div className="table-wrapper">
 	   <PageTitleBar title={"Wallets"} match={match} />
-	   <WalletTable status={0} heading={"Pending Transactions"} />
+	   <WalletTable status={-1} heading={"Debit Transactions"} />
 	 </div>
    );
  };
@@ -43,8 +43,7 @@
    isLoading: state.loading.isLoading,
  });
  
- export default connect(mapStateToProps, mapDispatchToProps)(WalletsPending);
+ export default connect(mapStateToProps, mapDispatchToProps)(WalletsDebit);
  
-
 
 

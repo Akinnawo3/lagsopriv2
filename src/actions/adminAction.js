@@ -79,25 +79,24 @@ export const createAdmin = (adminData) => async (dispatch) => {
 };
 
 export const updateAdmin = (adminData, auth_id) => async (dispatch) => {
-  console.log(adminData)
-  // const body = {
-  //   ...adminData,
-  //   password: "Password123",
-  // };
-  // try {
-  //   dispatch(startStatusLoading());
-  //   const res = await axios.put(`${api.user}/v1.1/admin/${auth_id}`, body);
-  //   if (res.data.status === "error") {
-  //     NotificationManager.error(res.data.msg);
-  //   } else {
-  //     await NotificationManager.success("Admin Updated Successfully!");
-  //     await dispatch(getAdmins());
-  //   }
-  //   dispatch(endStatusLoading());
-  // } catch (e) {
-  //   dispatch(endStatusLoading());
-  //   NotificationManager.error("Network error");
-  // }
+  const body = {
+    ...adminData,
+    password: "Password123",
+  };
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.put(`${api.user}/v1.1/admin/${auth_id}`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success("Admin Updated Successfully!");
+      await dispatch(getAdmins());
+    }
+    dispatch(endStatusLoading());
+  } catch (e) {
+    dispatch(endStatusLoading());
+    NotificationManager.error("Network error");
+  }
 };
 
 export const deleteAdmin = (auth_id, adminsData) => async (dispatch) => {
