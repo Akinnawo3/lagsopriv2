@@ -234,7 +234,7 @@ export default {
         {
           path: "/admin/wallets/completed",
           new_item: false,
-          menu_title: "sidebar.completed",
+          menu_title: "sidebar.successful",
         },
         {
           path: "/admin/wallets/pending",
