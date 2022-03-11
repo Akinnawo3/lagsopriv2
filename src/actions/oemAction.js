@@ -1,12 +1,13 @@
 import axios from "axios";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
 import {sendMessage} from "./messagesAction";
-import {OEMS, OEMS_COUNT,OEMS_VEHICLES} from "./types";
+import {OEMS, OEMS_COUNT, OEMS_VEHICLES} from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 // import {configureStore} from "../store";
 // import {changeCurrentPage, onAddUpdateUserModalClose} from "Routes/admin/admins";
 import emailMessages from "Assets/data/email-messages/emailMessages";
+import {onAddUpdateOemModalClose} from "../routes/setup/component/oemTable";
 
 export const getOems =
   (page_no = 1, spinner) =>
@@ -63,6 +64,7 @@ export const creatOEM = (body) => async (dispatch) => {
           email: body.email,
         })
       );
+      onAddUpdateOemModalClose();
       await dispatch(getOems());
       await dispatch(getOemCount());
     }
@@ -82,6 +84,8 @@ export const updateOEM = (body, auth_id) => async (dispatch) => {
       NotificationManager.error(res.data.msg);
     } else {
       await NotificationManager.success("OEM Details Updated Successfully!");
+      onAddUpdateOemModalClose();
+
       await dispatch(getOems());
       await dispatch(getOemCount());
     }

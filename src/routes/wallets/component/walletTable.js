@@ -154,7 +154,7 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
                           <TableCell> ₦{trip?.amount?.toLocaleString()}</TableCell>
                           <TableCell>
                             <Badge color={trip.status === 1 ? "success" : trip.status === 0 ? "secondary" : trip.status === 2 ? "danger" : "info"}>
-                              {trip.status === 1 ? "Complete" : trip.status === 0 ? "Pending" : trip.status === 2 ? "Cancelled" : "Debit "}
+                              {trip.status === 1 ? "Successful" : trip.status === 0 ? "Pending" : trip.status === 2 ? "Cancelled" : "Debit "}
                             </Badge>
                           </TableCell>
 

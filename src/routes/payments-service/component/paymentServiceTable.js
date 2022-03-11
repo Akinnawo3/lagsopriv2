@@ -59,9 +59,9 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
           paymentMethod: payment.payment_method,
           paymentType: payment.payment_type,
           UserName: `${payment?.user_data[0]?.first_name} ${payment?.user_data[0]?.last_name}`,
-          UserAddress: `${payment?.user_data[0]?.home_address}`,
           UserPhoneNumber: payment.user_data[0]?.phone_number,
           UserEMail: payment.user_data[0]?.email,
+          UserAddress: `${payment?.user_data[0]?.home_address}`,
         };
       });
       setExcelExport(result);

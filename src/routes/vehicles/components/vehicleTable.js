@@ -21,7 +21,7 @@ import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {verifyUserPermssion} from "../../../container/DefaultLayout";
 import {useHistory} from "react-router-dom";
 const qs = require("qs");
-export let closeModalVehicle;
+export let onAddUpdateVehicleModalClose;
 const VehicleTable = ({
   getVehicles,
   vehicles,
@@ -107,7 +107,7 @@ const VehicleTable = ({
     setAddNewUserModal(true);
   };
 
-  const onAddUpdateUserModalClose1 = () => {
+  const onAddUpdateVehicleModalClose1 = () => {
     setAddNewUserModal1(false);
   };
 
@@ -134,10 +134,10 @@ const VehicleTable = ({
     await getVehiclesByOem(1, false, vehic.oem_id);
   };
 
-  const onAddUpdateUserModalClose = () => {
-    if (editUser) {
+   onAddUpdateVehicleModalClose = () => {
+    // if (editUser) {
       setFormData({...formData, plateNo: "", type: "", model: "", desc: "", make: "", color: "", oem: ""});
-    }
+    // }
     setUpdateId(null);
     setAddNewUserModal(false);
     setEditUser(false);
@@ -145,7 +145,6 @@ const VehicleTable = ({
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    onAddUpdateUserModalClose();
     !editUser ? await createVehicles(plateNo, make, model, desc, color, oem, oemVehicle) : await updateVehicle(updateId, plateNo, make, model, desc, color, currentPage, assign, oem, oemVehicle);
   };
 
@@ -246,8 +245,8 @@ const VehicleTable = ({
           {vehicles.length < 1 && <EmptyData />}
         </RctCollapsibleCard>
       )}
-      <Modal isOpen={addNewUserModal} toggle={() => onAddUpdateUserModalClose()}>
-        <ModalHeader toggle={() => onAddUpdateUserModalClose()}>{editUser ? "Update Vehicle" : "Add New Vehicle"}</ModalHeader>
+      <Modal isOpen={addNewUserModal} toggle={() => onAddUpdateVehicleModalClose()}>
+        <ModalHeader toggle={() => onAddUpdateVehicleModalClose()}>{editUser ? "Update Vehicle" : "Add New Vehicle"}</ModalHeader>
         <Form onSubmit={onSubmit}>
           <ModalBody>
             <FormGroup>
@@ -307,10 +306,10 @@ const VehicleTable = ({
           </ModalFooter>
         </Form>
       </Modal>
-      <Modal isOpen={addNewUserModal1} toggle={() => onAddUpdateUserModalClose1()}>
-        <ModalHeader toggle={() => onAddUpdateUserModalClose1()}>Upload Vehicle</ModalHeader>
+      <Modal isOpen={addNewUserModal1} toggle={() => onAddUpdateVehicleModalClose1()}>
+        <ModalHeader toggle={() => onAddUpdateVehicleModalClose1()}>Upload Vehicle</ModalHeader>
         <ModalBody>
-          <Upload oncloseModal={onAddUpdateUserModalClose1} />
+          <Upload oncloseModal={onAddUpdateVehicleModalClose1} />
         </ModalBody>
       </Modal>
       <DeleteConfirmationDialog
