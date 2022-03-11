@@ -20,7 +20,7 @@ import {verifyUserPermssion} from "../../../container/DefaultLayout";
 import {useHistory} from "react-router-dom";
 import {getOems, getOemCount, creatOEM, updateOEM, deleteOEM} from "Actions/oemAction";
 const qs = require("qs");
-
+export let onAddUpdateOemModalClose;
 const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header, creatOEM, updateOEM, deleteOEM}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
@@ -102,10 +102,10 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header, cre
     setEditUser(true);
   };
 
-  const onAddUpdateUserModalClose = () => {
-    if (editUser) {
-      setFormData({...formData, name: "", email: "", password: "", phoneNumber: "", address: ""});
-    }
+  onAddUpdateOemModalClose = () => {
+    // if (editUser) {
+    setFormData({...formData, name: "", email: "", password: "", phoneNumber: "", address: ""});
+    // }
     setUpdateId(null);
     setAddNewUserModal(false);
     setEditUser(false);
@@ -113,7 +113,6 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header, cre
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    onAddUpdateUserModalClose();
     !editUser ? await creatOEM({name, email, password, phone_number: phoneNumber, address}) : await updateOEM({name, email, phone_number: phoneNumber, address}, updateId);
   };
 
@@ -213,8 +212,8 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header, cre
           {oems.length < 1 && <EmptyData />}
         </RctCollapsibleCard>
       )}
-      <Modal isOpen={addNewUserModal} toggle={() => onAddUpdateUserModalClose()}>
-        <ModalHeader toggle={() => onAddUpdateUserModalClose()}>{editUser ? "Update OEM" : "Add New OEM"}</ModalHeader>
+      <Modal isOpen={addNewUserModal} toggle={() => onAddUpdateOemModalClose()}>
+        <ModalHeader toggle={() => onAddUpdateOemModalClose()}>{editUser ? "Update OEM" : "Add New OEM"}</ModalHeader>
         <Form onSubmit={onSubmit}>
           <ModalBody>
             <FormGroup>
