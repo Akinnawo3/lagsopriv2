@@ -7,7 +7,7 @@ import {
   PAYMENTS_SERVICE_BALANCE,
   PAYMENTS_SERVICE_BALANCE_INDIVIDUAL,
   PAYMENT_SERVICE_DETAILS,
-  FINANCE_WALLET, FINANCE_TRIP, FINANCE_SERVICE,
+  FINANCE_WALLET, FINANCE_TRIP, FINANCE_SERVICE, FINANCE_DRIVER_LOG, FINANCE_DRIVER_LOG_COUNT,
 } from "Actions/types";
 
 const initialState = {
@@ -19,6 +19,8 @@ const initialState = {
   financeWallet: [],
   financeService: [],
   financeTrip: [],
+  financeDriverLog: [],
+  financeDriverLogCount: 0,
   paymentsServiceCount: 0,
   paymentsServiceBalance: 0,
   paymentsServiceBalanceIndividual: 0,
@@ -91,6 +93,18 @@ function paymentReducer(state = initialState, action) {
       return {
         ...state,
         paymentServiceDetails: payload,
+      };
+    }
+    case FINANCE_DRIVER_LOG: {
+      return {
+        ...state,
+        financeDriverLog: payload,
+      };
+    }
+    case FINANCE_DRIVER_LOG_COUNT: {
+      return {
+        ...state,
+        financeDriverLogCount: payload,
       };
     }
     default:

@@ -9,7 +9,13 @@ import {
   PAYMENTS_SERVICE_BALANCE,
   PAYMENTS_SERVICE_BALANCE_INDIVIDUAL,
   PAYMENT_SERVICE_DETAILS,
-  FINANCE_WALLET, FINANCE_TRIP, FINANCE_SERVICE
+  FINANCE_WALLET,
+  FINANCE_TRIP,
+  FINANCE_SERVICE,
+  ACTIVITY_LOGS,
+  ACTIVITY_LOGS_COUNT,
+  FINANCE_DRIVER_LOG,
+  FINANCE_DRIVER_LOG_COUNT
 } from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
@@ -200,6 +206,51 @@ export const getFinance = (payment_type, date_type = 'daily', start_date = '', e
     }
     dispatch(endStatusLoading());
   } catch (err) {
+    dispatch(endStatusLoading());
+  }
+};
+
+export const getFinanceDriverLogs =
+    (page_no = 1, loading) =>
+        async (dispatch) => {
+          try {
+            loading && (await dispatch(startLoading()));
+            !loading && dispatch(startStatusLoading());
+            const res = await axios.get(`${api.revenueSplit}/v1.1/admin/driver-disbursement-preview?item_per_page=20&page=${page_no}`);
+            if (res.data.status === "error") {
+              NotificationManager.error(res.data.msg);
+            } else {
+              dispatch({
+                type: FINANCE_DRIVER_LOG,
+                payload: res.data.data,
+              });
+            }
+            dispatch(endLoading());
+            dispatch(endStatusLoading());
+          } catch (err) {
+            dispatch(endLoading());
+            dispatch(endStatusLoading());
+          }
+        };
+
+export const getFinanceDriverLogsCount = (loading) => async (dispatch) => {
+  try {
+    loading && (await dispatch(startLoading()));
+    !loading && dispatch(startStatusLoading());
+    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/driver-disbursement-preview?component=count`);
+    console.log(res.data, 'ttttttttttttt')
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      dispatch({
+        type: FINANCE_DRIVER_LOG_COUNT,
+        payload: res.data.data,
+      });
+    }
+    dispatch(endLoading());
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endLoading());
     dispatch(endStatusLoading());
   }
 };
