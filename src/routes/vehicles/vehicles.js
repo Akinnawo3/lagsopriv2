@@ -12,7 +12,7 @@ const Vehicles = ({history, match, getVehicles, getVehiclesCount, getOems}) => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
   useEffect(() => {
-    if (pageFromQuery === undefined || drivers.length < 1) {
+    if (pageFromQuery === undefined || vehicles.length < 1) {
       getVehicles(currentPage, "", true);
       getVehiclesCount();
       getOems(1, true);

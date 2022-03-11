@@ -11,7 +11,7 @@ const VehiclesFeedback = ({history, match, getVehicles, getVehiclesCount}) => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
   useEffect(() => {
-    if (pageFromQuery === undefined || drivers.length < 1) {
+    if (pageFromQuery === undefined || vehicles.length < 1) {
       getVehicles(currentPage, true);
       getVehiclesCount();
     }
