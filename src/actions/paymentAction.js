@@ -9,7 +9,13 @@ import {
   PAYMENTS_SERVICE_BALANCE,
   PAYMENTS_SERVICE_BALANCE_INDIVIDUAL,
   PAYMENT_SERVICE_DETAILS,
-  FINANCE_WALLET, FINANCE_TRIP, FINANCE_SERVICE
+  FINANCE_WALLET,
+  FINANCE_TRIP,
+  FINANCE_SERVICE,
+  ACTIVITY_LOGS,
+  ACTIVITY_LOGS_COUNT,
+  FINANCE_DRIVER_LOG,
+  FINANCE_DRIVER_LOG_COUNT
 } from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
@@ -173,33 +179,99 @@ export const getPaymentsServiceBalanceForIndividual =
     } catch (err) {}
   };
 
-export const getFinance = (payment_type, date_type = 'daily', start_date = '', end_date = '') => async dispatch => {
+export const getFinanceWallet = (payment_type, date_type = 'daily', start_date = '', end_date = '') => async dispatch => {
   try {
     dispatch(startStatusLoading());
     const res = await axios.get(`${api.wallet}/v1.1/admin/finance-stat?payment_type=${payment_type}&date_type=${date_type}&start_date=${start_date}&end_date=${end_date}`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
-      if(payment_type === 'trip') {
-        dispatch({
-          type: FINANCE_TRIP,
-          payload: res.data.data
-        });
-      } else if(payment_type === 'service') {
-        dispatch({
-          type: FINANCE_SERVICE,
-          payload: res.data.data
-        });
-      } else if(payment_type === 'wallet') {
+
         dispatch({
           type: FINANCE_WALLET,
           payload: res.data.data
         });
-      }
-
     }
     dispatch(endStatusLoading());
   } catch (err) {
+    dispatch(endStatusLoading());
+  }
+};
+export const getFinanceService = (payment_type, date_type = 'daily', start_date = '', end_date = '') => async dispatch => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.get(`${api.wallet}/v1.1/admin/finance-stat?payment_type=${payment_type}&date_type=${date_type}&start_date=${start_date}&end_date=${end_date}`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+        dispatch({
+          type: FINANCE_SERVICE,
+          payload: res.data.data
+        });
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+  }
+};
+export const getFinanceTrip = (payment_type, date_type = 'daily', start_date = '', end_date = '') => async dispatch => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.get(`${api.wallet}/v1.1/admin/finance-stat?payment_type=${payment_type}&date_type=${date_type}&start_date=${start_date}&end_date=${end_date}`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+        dispatch({
+          type: FINANCE_TRIP,
+          payload: res.data.data
+        });
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+  }
+};
+
+export const getFinanceDriverLogs =
+    (page_no = 1, loading) =>
+        async (dispatch) => {
+          try {
+            loading && (await dispatch(startLoading()));
+            !loading && dispatch(startStatusLoading());
+            const res = await axios.get(`${api.revenueSplit}/v1.1/admin/driver-disbursement-preview?item_per_page=20&page=${page_no}`);
+            if (res.data.status === "error") {
+              NotificationManager.error(res.data.msg);
+            } else {
+              dispatch({
+                type: FINANCE_DRIVER_LOG,
+                payload: res.data.data,
+              });
+            }
+            dispatch(endLoading());
+            dispatch(endStatusLoading());
+          } catch (err) {
+            dispatch(endLoading());
+            dispatch(endStatusLoading());
+          }
+        };
+
+export const getFinanceDriverLogsCount = (loading) => async (dispatch) => {
+  try {
+    loading && (await dispatch(startLoading()));
+    !loading && dispatch(startStatusLoading());
+    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/driver-disbursement-preview?component=count`);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      dispatch({
+        type: FINANCE_DRIVER_LOG_COUNT,
+        payload: res.data.data,
+      });
+    }
+    dispatch(endLoading());
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endLoading());
     dispatch(endStatusLoading());
   }
 };
