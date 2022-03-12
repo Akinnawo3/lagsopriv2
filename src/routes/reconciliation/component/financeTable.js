@@ -6,23 +6,22 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import {getFirstDayOfMonth, getStatus4, getStatusColor4, getTodayDate} from "Helpers/helpers";
-import {getFinance} from "Actions/paymentAction";
-import {Badge, Button} from "reactstrap";
-import {Icon} from "@material-ui/core";
+import {getTodayDate} from "Helpers/helpers";
+import {getFinanceService, getFinanceTrip, getFinanceWallet} from "Actions/paymentAction";
+import {Button} from "reactstrap";
 
-const FinanceTable = ({getFinance, financeTrip, financeWallet, financeService, loading}) => {
+const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, financeTrip, financeWallet, financeService, loading}) => {
   const [dateType, setDateType] = useState("daily");
-  const [startDate, setStartDate] = useState(getFirstDayOfMonth());
-  const [endDate, setEndDate] = useState(getTodayDate());
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
 
   useEffect(() => {
-    getFinance('trip', dateType)
-    getFinance('service', dateType)
-    getFinance('wallet', dateType)
+    getFinanceTrip('trip', dateType)
+    getFinanceService('service', dateType)
+    getFinanceWallet('wallet', dateType)
 
-  }, [dateType]);
+  }, []);
 
 
 
@@ -32,9 +31,9 @@ const FinanceTable = ({getFinance, financeTrip, financeWallet, financeService, l
   };
 
   const handleSearch = () => {
-    getFinance('trip', 'daily', startDate, endDate)
-    getFinance('service', 'daily', startDate, endDate)
-    getFinance('wallet', 'daily', startDate, endDate)
+    getFinanceTrip('trip', dateType, startDate, endDate)
+    getFinanceService('service', dateType, startDate, endDate)
+    getFinanceWallet('wallet', dateType, startDate, endDate)
   }
 
 
@@ -68,7 +67,7 @@ const FinanceTable = ({getFinance, financeTrip, financeWallet, financeService, l
             setEndDate(e.target.value)
           }} />
         </li>
-        <Button onClick={() => handleSearch()} style={{height: '30px'}} className='align-items-center justify-content-center' color='success'>Search</Button>
+        <Button onClick={() => handleSearch()} style={{height: '30px'}} className='align-items-center justify-content-center' color='success'>Apply filter</Button>
             <div className='row mt-3 p-2'>
               <div className='col-sm-4 align-items-start d-flex flex-column'>
                 <div className='font-weight-bold mb-2'>Trip Payment</div>
@@ -82,7 +81,7 @@ const FinanceTable = ({getFinance, financeTrip, financeWallet, financeService, l
                         <TableCell>Failed</TableCell>
                       </TableRow>
                     </TableHead>
-                    {financeTrip.length > 0 && financeService.map((item, index) =>  {
+                    {financeTrip.length > 0 && financeTrip.map((item, index) =>  {
                       let success = item.data[item.data.findIndex(x => x.status ===1)]
                       let pending = item.data[item.data.findIndex(x => x.status ===0)]
                       let failure = item.data[item.data.findIndex(x => x.status ===2)]
@@ -214,7 +213,7 @@ const FinanceTable = ({getFinance, financeTrip, financeWallet, financeService, l
                         <TableCell>Failed</TableCell>
                       </TableRow>
                     </TableHead>
-                    {financeWallet.length > 0 && financeService.map((item, index) =>  {
+                    {financeWallet.length > 0 && financeWallet.map((item, index) =>  {
                       let success = item.data[item.data.findIndex(x => x.status ===1)]
                       let pending = item.data[item.data.findIndex(x => x.status ===0)]
                       let failure = item.data[item.data.findIndex(x => x.status ===2)]
@@ -275,7 +274,9 @@ const FinanceTable = ({getFinance, financeTrip, financeWallet, financeService, l
 };
 function mapDispatchToProps(dispatch) {
   return {
-    getFinance: (payment_type, date_type, start_date , end_date) => dispatch(getFinance(payment_type, date_type, start_date , end_date)),
+    getFinanceTrip: (payment_type, date_type, start_date , end_date) => dispatch(getFinanceTrip(payment_type, date_type, start_date , end_date)),
+    getFinanceService: (payment_type, date_type, start_date , end_date) => dispatch(getFinanceService(payment_type, date_type, start_date , end_date)),
+    getFinanceWallet: (payment_type, date_type, start_date , end_date) => dispatch(getFinanceWallet(payment_type, date_type, start_date , end_date)),
   };
 }
 const mapStateToProps = (state) => ({

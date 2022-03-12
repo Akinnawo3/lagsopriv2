@@ -179,30 +179,52 @@ export const getPaymentsServiceBalanceForIndividual =
     } catch (err) {}
   };
 
-export const getFinance = (payment_type, date_type = 'daily', start_date = '', end_date = '') => async dispatch => {
+export const getFinanceWallet = (payment_type, date_type = 'daily', start_date = '', end_date = '') => async dispatch => {
   try {
     dispatch(startStatusLoading());
     const res = await axios.get(`${api.wallet}/v1.1/admin/finance-stat?payment_type=${payment_type}&date_type=${date_type}&start_date=${start_date}&end_date=${end_date}`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
-      if(payment_type === 'trip') {
-        dispatch({
-          type: FINANCE_TRIP,
-          payload: res.data.data
-        });
-      } else if(payment_type === 'service') {
-        dispatch({
-          type: FINANCE_SERVICE,
-          payload: res.data.data
-        });
-      } else if(payment_type === 'wallet') {
+
         dispatch({
           type: FINANCE_WALLET,
           payload: res.data.data
         });
-      }
-
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+  }
+};
+export const getFinanceService = (payment_type, date_type = 'daily', start_date = '', end_date = '') => async dispatch => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.get(`${api.wallet}/v1.1/admin/finance-stat?payment_type=${payment_type}&date_type=${date_type}&start_date=${start_date}&end_date=${end_date}`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+        dispatch({
+          type: FINANCE_SERVICE,
+          payload: res.data.data
+        });
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+  }
+};
+export const getFinanceTrip = (payment_type, date_type = 'daily', start_date = '', end_date = '') => async dispatch => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.get(`${api.wallet}/v1.1/admin/finance-stat?payment_type=${payment_type}&date_type=${date_type}&start_date=${start_date}&end_date=${end_date}`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+        dispatch({
+          type: FINANCE_TRIP,
+          payload: res.data.data
+        });
     }
     dispatch(endStatusLoading());
   } catch (err) {
@@ -238,7 +260,6 @@ export const getFinanceDriverLogsCount = (loading) => async (dispatch) => {
     loading && (await dispatch(startLoading()));
     !loading && dispatch(startStatusLoading());
     const res = await axios.get(`${api.revenueSplit}/v1.1/admin/driver-disbursement-preview?component=count`);
-    console.log(res.data, 'ttttttttttttt')
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
