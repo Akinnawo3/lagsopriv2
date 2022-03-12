@@ -161,7 +161,7 @@ const RevenueSplit = ({match, getRevenueSplitData, revenueSplitData, updateReven
             </ModalBody>
             <ModalFooter>
               <Button type="submit" variant="contained" className="text-white btn-info mr-2">
-                {/* Add Parameter */}
+                Add Parameter
               </Button>
               <Button variant="contained" className="btn btn-outline-danger" onClick={() => setParameterModalOpen(false)}>
                 Cancel
