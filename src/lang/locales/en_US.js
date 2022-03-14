@@ -25,7 +25,7 @@ module.exports = {
   "sidebar.all": "All",
   "sidebar.reconciliation": "Reconciliation",
   "sidebar.finance": "Finance",
-  "sidebar.disbursement-log": "disbursement Log",
+  "sidebar.disbursement": "disbursement",
   "sidebar.vehicles": "Vehicles",
   "sidebar.fdt and schedule": "Fdt and Schedule",
   "sidebar.Fdt": "Fdt",
