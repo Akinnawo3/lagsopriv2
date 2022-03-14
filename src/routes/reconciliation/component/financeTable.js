@@ -37,6 +37,7 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
   }
 
 
+
   const dateTypeFilter = [
     {value: "daily", label: "Daily"},
     {value: "monthly", label: "Monthly"},
@@ -77,13 +78,11 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
                       <TableRow hover>
                         <TableCell>Date</TableCell>
                         <TableCell>Successful</TableCell>
-                        <TableCell>Pending</TableCell>
                         <TableCell>Failed</TableCell>
                       </TableRow>
                     </TableHead>
                     {financeTrip.length > 0 && financeTrip.map((item, index) =>  {
                       let success = item.data[item.data.findIndex(x => x.status ===1)]
-                      let pending = item.data[item.data.findIndex(x => x.status ===0)]
                       let failure = item.data[item.data.findIndex(x => x.status ===2)]
                       return (
                           <TableBody key={index}>
@@ -99,18 +98,6 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
                                   <div className='mt-2'>
                                     <div>Count</div>
                                     <div className='text-success font-weight-bold'>{success.total}</div>
-                                  </div>
-                                </div>
-                                }</TableCell>
-                                <TableCell>{pending &&
-                                <div>
-                                  <div>
-                                    <div>Amount</div>
-                                    <div className='text-warning font-weight-bold'>₦{pending?.balance.toLocaleString()}</div>
-                                  </div>
-                                  <div className='mt-2'>
-                                    <div>Count</div>
-                                    <div className='text-warning font-weight-bold'>{pending?.total}</div>
                                   </div>
                                 </div>
                                 }</TableCell>
@@ -143,13 +130,11 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
                       <TableRow hover>
                         <TableCell>Date</TableCell>
                         <TableCell>Successful</TableCell>
-                        <TableCell>Pending</TableCell>
                         <TableCell>Failed</TableCell>
                       </TableRow>
                     </TableHead>
                     {financeService.length > 0 && financeService.map((item, index) =>  {
                       let success = item.data[item.data.findIndex(x => x.status ===1)]
-                      let pending = item.data[item.data.findIndex(x => x.status ===0)]
                       let failure = item.data[item.data.findIndex(x => x.status ===2)]
                       return (
                           <TableBody key={index}>
@@ -165,18 +150,6 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
                                   <div className='mt-2'>
                                     <div>Count</div>
                                     <div className='text-success font-weight-bold'>{success.total}</div>
-                                  </div>
-                                </div>
-                                }</TableCell>
-                                <TableCell>{pending &&
-                                <div>
-                                  <div>
-                                    <div>Amount</div>
-                                    <div className='text-warning font-weight-bold'>₦{pending?.balance.toLocaleString()}</div>
-                                  </div>
-                                  <div className='mt-2'>
-                                    <div>Count</div>
-                                    <div className='text-warning font-weight-bold'>{pending?.total}</div>
                                   </div>
                                 </div>
                                 }</TableCell>
@@ -209,13 +182,11 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
                       <TableRow hover>
                         <TableCell>Date</TableCell>
                         <TableCell>Successful</TableCell>
-                        <TableCell>Pending</TableCell>
                         <TableCell>Failed</TableCell>
                       </TableRow>
                     </TableHead>
                     {financeWallet.length > 0 && financeWallet.map((item, index) =>  {
                       let success = item.data[item.data.findIndex(x => x.status ===1)]
-                      let pending = item.data[item.data.findIndex(x => x.status ===0)]
                       let failure = item.data[item.data.findIndex(x => x.status ===2)]
                       return (
                           <TableBody key={index}>
@@ -231,18 +202,6 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
                                   <div className='mt-2'>
                                     <div>Count</div>
                                     <div className='text-success font-weight-bold'>{success.total}</div>
-                                  </div>
-                                </div>
-                                }</TableCell>
-                                <TableCell>{pending &&
-                                <div>
-                                  <div>
-                                    <div>Amount</div>
-                                    <div className='text-warning font-weight-bold'>₦{pending?.balance.toLocaleString()}</div>
-                                  </div>
-                                  <div className='mt-2'>
-                                    <div>Count</div>
-                                    <div className='text-warning font-weight-bold'>{pending?.total}</div>
                                   </div>
                                 </div>
                                 }</TableCell>
