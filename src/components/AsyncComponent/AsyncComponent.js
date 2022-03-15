@@ -131,8 +131,8 @@ const AsyncFinance = Loadable({
   loading: () => <RctPageLoader />,
 });
 
-const AsyncDisbursementLog = Loadable({
-  loader: () => import("Routes/reconciliation/disbursement-log"),
+const AsyncDisbursement = Loadable({
+  loader: () => import("Routes/reconciliation/disbursement"),
   loading: () => <RctPageLoader />,
 });
 
@@ -576,5 +576,5 @@ export {
   AsyncCustomerCare,
   AsyncVehiclesFeedback,
   AsyncFinance,
-  AsyncDisbursementLog,
+  AsyncDisbursement,
 };

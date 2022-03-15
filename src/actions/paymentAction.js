@@ -15,7 +15,7 @@ import {
   ACTIVITY_LOGS,
   ACTIVITY_LOGS_COUNT,
   FINANCE_DRIVER_LOG,
-  FINANCE_DRIVER_LOG_COUNT
+  FINANCE_DRIVER_LOG_COUNT, USER_COUNT, USERS
 } from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
@@ -272,6 +272,32 @@ export const getFinanceDriverLogsCount = (loading) => async (dispatch) => {
     dispatch(endStatusLoading());
   } catch (err) {
     dispatch(endLoading());
+    dispatch(endStatusLoading());
+  }
+};
+
+
+export const searchFinanceDriverLogs = (searchData) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/driver-disbursement-preview?q=${searchData}`);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      const res2 = await axios.get(`${api.revenueSplit}/v1.1/admin/driver-disbursement-preview?component=count&q=${searchData}`);
+
+
+      dispatch({
+        type: FINANCE_DRIVER_LOG_COUNT,
+        payload: res2.data.data,
+      });
+      dispatch({
+        type: FINANCE_DRIVER_LOG,
+        payload: res.data.data,
+      });
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
     dispatch(endStatusLoading());
   }
 };

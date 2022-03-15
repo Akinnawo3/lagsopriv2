@@ -10,11 +10,12 @@ import {calculatePostDate} from "Helpers/helpers";
 import EmptyData from "Components/EmptyData/EmptyData";
 import Pagination from "react-js-pagination";
 import {connect} from "react-redux";
-import {getFinanceDriverLogs, getFinanceDriverLogsCount} from "Actions/paymentAction";
+import {getFinanceDriverLogs, getFinanceDriverLogsCount, searchFinanceDriverLogs} from "Actions/paymentAction";
 import {Link} from "react-router-dom";
+import SearchComponent from "Components/SearchComponent/SearchComponent";
 const qs = require("qs");
 
-const DisbursementLog = ({history, loading, getFinanceDriverLogs, financeDriverLog, getFinanceDriverLogsCount, financeDriverLogCount, match}) => {
+const Disbursement = ({history, loading, getFinanceDriverLogs, financeDriverLog, getFinanceDriverLogsCount, financeDriverLogCount, match, searchFinanceDriverLogs}) => {
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
@@ -33,14 +34,15 @@ const DisbursementLog = ({history, loading, getFinanceDriverLogs, financeDriverL
     window.scrollTo(0, 0);
   };
 
-  console.log(financeDriverLog, 'qqqqq')
-
 
   return (
       <div className="table-wrapper">
-        <PageTitleBar title={"Drivers Disbursement Log"} match={match} />
+        <PageTitleBar title={"Disbursement"} match={match} />
         {!loading && (
-            <RctCollapsibleCard heading="Activity Log" fullBlock>
+            <RctCollapsibleCard heading="Payment Overview" fullBlock>
+              <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+                <SearchComponent getPreviousData={getFinanceDriverLogs} getSearchedData={searchFinanceDriverLogs} setCurrentPage={setCurrentPage} getCount={getFinanceDriverLogsCount} placeHolder={'name, email'} />
+              </li>
               {financeDriverLog?.length > 0 && (
                   <div className="table-responsive" style={{minHeight: "50vh"}}>
                     <Table>
@@ -50,7 +52,6 @@ const DisbursementLog = ({history, loading, getFinanceDriverLogs, financeDriverL
                           <TableCell>Earning</TableCell>
                           <TableCell>Phone No</TableCell>
                           <TableCell>Successful Trips</TableCell>
-                          <TableCell>Pending Trips</TableCell>
                           <TableCell>Failed Trips</TableCell>
                         </TableRow>
                       </TableHead>
@@ -78,18 +79,6 @@ const DisbursementLog = ({history, loading, getFinanceDriverLogs, financeDriverL
                                     <div className='mt-2'>
                                       <div>Count</div>
                                       <div className='text-success font-weight-bold'>{success.total}</div>
-                                    </div>
-                                  </div>
-                                  }</TableCell>
-                                  <TableCell>{pending &&
-                                  <div>
-                                    <div>
-                                      <div>Amount</div>
-                                      <div className='text-warning font-weight-bold'>₦{pending?.amount.toLocaleString()}</div>
-                                    </div>
-                                    <div className='mt-2'>
-                                      <div>Count</div>
-                                      <div className='text-warning font-weight-bold'>{pending?.total}</div>
                                     </div>
                                   </div>
                                   }</TableCell>
@@ -130,6 +119,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getFinanceDriverLogs: (page_no, loading) => dispatch(getFinanceDriverLogs(page_no, loading)),
     getFinanceDriverLogsCount: (loading) => dispatch(getFinanceDriverLogsCount(loading)),
+    searchFinanceDriverLogs: (searchData) => dispatch(searchFinanceDriverLogs(searchData)),
   };
 }
 
@@ -139,4 +129,4 @@ const mapStateToProps = (state) => ({
   financeDriverLogCount: state.payments.financeDriverLogCount,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(DisbursementLog);
+export default connect(mapStateToProps, mapDispatchToProps)(Disbursement);

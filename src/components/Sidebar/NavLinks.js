@@ -326,9 +326,9 @@ export default {
           menu_title: "sidebar.finance",
         },
         {
-          path: "/admin/disbursement-log",
+          path: "/admin/disbursement",
           new_item: false,
-          menu_title: "sidebar.disbursement-log",
+          menu_title: "sidebar.disbursement",
         },
       ],
     },
