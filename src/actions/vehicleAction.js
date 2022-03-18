@@ -1,5 +1,5 @@
 import axios from "axios";
-import {VEHICLES, VEHICLES_COUNT, VEHICLE, DRIVER, VEHICLES_FEEDBACK, VEHICLES_FEEDBACK_COUNT} from "./types";
+import {VEHICLES, VEHICLES_COUNT, VEHICLE, DRIVER, VEHICLES_FEEDBACK, VEHICLES_FEEDBACK_COUNT, VEHICLES_FEEDBACK_DETAILS} from "./types";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
@@ -74,6 +74,57 @@ export const getVehicle = (vehicle_id, spinner) => async (dispatch) => {
     !spinner && dispatch(endStatusLoading());
   } catch (err) {
     dispatch(endLoading());
+    dispatch(endStatusLoading());
+  }
+};
+
+export const getVehicleFeedbackDetails = (comment_id, spinner) => async (dispatch) => {
+  try {
+    spinner && dispatch(startLoading());
+    !spinner && dispatch(startStatusLoading());
+    const res = await axios.get(`${api.vehicles}/v1.1/vehicles/comments/${comment_id}`);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      dispatch({
+        type: VEHICLES_FEEDBACK_DETAILS,
+        payload: res.data.data,
+      });
+    }
+    spinner && dispatch(endLoading());
+    !spinner && dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endLoading());
+    dispatch(endStatusLoading());
+  }
+};
+
+export const assignVehicleFeedback = (comment_id, admin_id) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.post(`${api.vehicles}/v1.1/vehicles/assign-comment`, {comment_id, admin_id});
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+     dispatch(getVehicleFeedbackDetails(comment_id, false))
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+  }
+};
+
+export const updateVehicleFeedbackStatus = (comment_id, status) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.put(`${api.vehicles}/v1.1/vehicles/comment-status`, {comment_id, status});
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      dispatch(getVehicleFeedbackDetails(comment_id, false))
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
     dispatch(endStatusLoading());
   }
 };

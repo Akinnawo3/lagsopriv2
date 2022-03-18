@@ -12,14 +12,14 @@ import {getVehiclesFeedback,} from "Actions/vehicleAction";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {Link} from "react-router-dom";
 import {useHistory} from "react-router-dom";
-import {calculatePostDate} from "Helpers/helpers";
+import {calculatePostDate, textTruncate} from "Helpers/helpers";
+import {Badge} from "reactstrap";
 const qs = require("qs");
 const VehicleFeedbackTable = ({
   getVehicles,
   vehicles,
   loading,
   vehiclesCount,
-  assign,
   header,
 
 }) => {
@@ -36,6 +36,16 @@ const VehicleFeedbackTable = ({
     getVehicles(pageNumber);
     window.scrollTo(0, 0);
   };
+
+  // comment: "Too fast"
+  // comment_id: "62335b6d240ef511d1aecc5e"
+  // createdAt: "2022-03-17T16:01:49.506Z"
+  // driver_auth_id: "61fbd6ccf42aaf792a3402bb"
+  // driver_first_name: "Olushola"
+  // driver_last_name: "Lrtester"
+  // plate_number: "LND-123CK"
+  // vehicle_id: "61ee9957ff9b126d7d35b0d3"
+  // vehicle_make: "Honda Accord"
 
   return (
     <div>
@@ -54,20 +64,36 @@ const VehicleFeedbackTable = ({
               <Table>
                 <TableHead>
                   <TableRow hover>
-                    <TableCell>Comment</TableCell>
-                    <TableCell>Driver Id</TableCell>
                     <TableCell>Date</TableCell>
+                    <TableCell>Comment</TableCell>
+                    <TableCell>Driver Name</TableCell>
+                    <TableCell>Plate No</TableCell>
+                    <TableCell>Status</TableCell>
+                    <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   <Fragment>
                     {vehicles.map((vehicle, key) => (
                       <TableRow hover key={key}>
-                        <TableCell>{vehicle.comment}</TableCell>
-                        <TableCell> <Link to={`/admin/drivers/${vehicle.driver_auth_id}`}>
-                          {vehicle.driver_auth_id}
-                        </Link></TableCell>
                         <TableCell>{calculatePostDate(vehicle.createdAt)}</TableCell>
+                        <TableCell>{textTruncate(vehicle.comment)}</TableCell>
+                        <TableCell> <Link to={`/admin/drivers/${vehicle.driver_auth_id}`}>
+                          {vehicle?.driver_first_name}  {vehicle?.driver_last_name}
+                        </Link></TableCell>
+                        <TableCell> <Link to={`/admin/vehicles/${vehicle.vehicle_id}`}>
+                          {vehicle?.plate_number}
+                        </Link></TableCell>
+                        <TableCell>
+                          <Badge color={vehicle?.status === 1 ? "success" : "warning"}>{vehicle?.status === 1 ? "Resolved" :  "Pending" }</Badge>
+                        </TableCell>
+                        <TableCell>
+                          <button type="button" className="rct-link-btn text-primary ml-3" title="view details">
+                            <Link to={`/admin/vehicles/feedback/${vehicle._id}`}>
+                              <i className="ti-eye" />
+                            </Link>
+                          </button>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </Fragment>

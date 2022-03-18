@@ -200,6 +200,11 @@ const AsyncVehiclesFeedback = Loadable({
   loading: () => <RctPageLoader />,
 });
 
+const AsyncVehiclesFeedbackDetails = Loadable({
+  loader: () => import("Routes/vehicles/vehicleFeedbackDetails"),
+  loading: () => <RctPageLoader />,
+});
+
 const AsyncAreas = Loadable({
   loader: () => import("Routes/area/areas"),
   loading: () => <RctPageLoader />,
@@ -577,4 +582,5 @@ export {
   AsyncVehiclesFeedback,
   AsyncFinance,
   AsyncDisbursement,
+  AsyncVehiclesFeedbackDetails
 };
