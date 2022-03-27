@@ -224,15 +224,23 @@ import {connect} from "react-redux";
 import {
     getFinanceDriverLogs,
     getFinanceDriverLogsCount,
-    getFinanceDriverPayouts, getFinanceDriverPayoutsCount,
-    searchFinanceDriverLogs, searchFinanceDriverPayouts
+    getFinanceDriverPayouts,
+    getFinanceDriverPayoutsCount,
+    getFinanceHolderLogs,
+    getFinanceHolderLogsCount,
+    getFinanceHolderPayouts, getFinanceHolderPayoutsCount,
+    searchFinanceDriverLogs,
+    searchFinanceDriverPayouts,
+    searchFinanceHolderLogs, searchFinanceHolderPayouts
 } from "Actions/paymentAction";
 import {Link} from "react-router-dom";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
-import {Badge, Input} from "reactstrap";
+import {Badge, Form, Input, Modal, ModalBody, ModalHeader} from "reactstrap";
+import {calculatePostDate} from "Helpers/helpers";
+import Button from "@material-ui/core/Button";
 const qs = require("qs");
 
-const Disbursement = (props) => {
+const DisbursementHolder = (props) => {
 
     const {
         history,
@@ -259,10 +267,14 @@ const Disbursement = (props) => {
     });
     const [receivable, setReceivable] = useState(true)
     const [type, setType] = useState('receivable')
+    const [isIbileModal, setIsIbileModal] = useState(false)
+    const [ibileData, setIbileData] = useState({})
+    const [isZenoModal, setIsZenoModal] = useState(false)
+    const [zenoData, setZenoData] = useState({})
     useEffect(() => {
         getFinanceDriverLogs(currentPage, true);
         getFinanceDriverLogsCount(true);
-        getFinanceDriverPayouts(currentPage, true);
+        getFinanceDriverPayouts(currentPage2, true);
         getFinanceDriverPayoutsCount(true);
     }, []);
 
@@ -274,7 +286,7 @@ const Disbursement = (props) => {
     };
     return (
         <div className="table-wrapper">
-            <PageTitleBar title={"Driver Disbursement"} match={match} />
+            <PageTitleBar title={"Holders Disbursement"} match={match} />
             {!loading && (
                 <RctCollapsibleCard heading="Payment Overview" fullBlock>
                     <ul className='d-flex'>
@@ -291,9 +303,9 @@ const Disbursement = (props) => {
                                 <option value="payouts">Payouts</option>
                             </Input>
                         </li>
-                        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-                            <SearchComponent getPreviousData={type === 'receivable' ? getFinanceDriverLogs : getFinanceDriverPayouts} getSearchedData={type === 'receivable' ? searchFinanceDriverLogs : searchFinanceDriverPayouts} setCurrentPage={type === 'receivable' ? setCurrentPage : setCurrentPage2} getCount={type === 'receivable' ? getFinanceDriverLogsCount : getFinanceDriverPayoutsCount} placeHolder={'name, email'} />
-                        </li>
+                        {/*<li className="list-inline-item search-icon d-inline-block ml-2 mb-2">*/}
+                        {/*    <SearchComponent getPreviousData={type === 'receivable' ? getFinanceDriverLogs : getFinanceDriverPayouts} getSearchedData={type === 'receivable' ? searchFinanceDriverLogs : searchFinanceDriverPayouts} setCurrentPage={type === 'receivable' ? setCurrentPage : setCurrentPage2} getCount={type === 'receivable' ? getFinanceDriverLogsCount : getFinanceDriverPayoutsCount} placeHolder={'name, email'} />*/}
+                        {/*</li>*/}
                     </ul>
                     {receivable ?
                         <>
@@ -302,37 +314,39 @@ const Disbursement = (props) => {
                                     <Table>
                                         <TableHead>
                                             <TableRow hover>
-                                                <TableCell>Name</TableCell>
-                                                <TableCell>Earning</TableCell>
-                                                <TableCell>Phone No</TableCell>
-                                                <TableCell>Successful Payments</TableCell>
-                                                <TableCell>Failed Payments</TableCell>
+                                                <TableCell>Date</TableCell>
+                                                <TableCell>Ibile Balance</TableCell>
+                                                <TableCell>Action</TableCell>
+                                                <TableCell>Zeno Balance</TableCell>
+                                                <TableCell>Action</TableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
                                             <Fragment>
                                                 {financeDriverLog.map((item, key) => {
-                                                    let success = item.trip_data[item.trip_data.findIndex(x => x.status ===1)]
-                                                    let failure = item.trip_data[item.trip_data.findIndex(x => x.status ===2)]
                                                     return (
                                                         <TableRow hover key={key}>
+                                                            <TableCell>{item.group_date}</TableCell>
+                                                            <TableCell>₦{item?.ibile_balance?.toLocaleString()}</TableCell>
                                                             <TableCell>
-                                                                <Link to={`/admin/drivers/${item._id}`}>
-                                                                    {item.first_name + "  " + item.last_name}
-                                                                </Link>
+                                                                <button onClick={() => {
+                                                                    setIbileData({...item?.ibile_data, ibile_balance: item?.ibile_balance, date: item.group_date
+                                                                })
+                                                                    setIsIbileModal(true)
+                                                                }} type="button" className="rct-link-btn text-primary ml-3" title="view details">
+                                                                        <i className="ti-eye" />
+                                                                </button>
                                                             </TableCell>
-                                                            <TableCell>₦{item.earning.toLocaleString()}</TableCell>
-                                                            <TableCell>{item.phone_number}</TableCell>
-                                                            <TableCell>{success &&
-                                                                <div>
-                                                                    ₦{success?.amount?.toLocaleString()} ({success.total})
-                                                                </div>
-                                                            }</TableCell>
-                                                            <TableCell>{failure &&
-                                                                <div>
-                                                                    ₦{failure?.amount?.toLocaleString()} ({failure.total})
-                                                                </div>
-                                                            }</TableCell>
+                                                            <TableCell>₦{item?.zeno_balance?.toLocaleString()}</TableCell>
+                                                            <TableCell>
+                                                                <button onClick={() => {
+                                                                    setZenoData({...item?.zeno_data, zeno_balance: item?.zeno_balance, date: item.group_date
+                                                                    })
+                                                                    setIsZenoModal(true)
+                                                                }} type="button" className="rct-link-btn text-primary ml-3" title="view details">
+                                                                    <i className="ti-eye" />
+                                                                </button>
+                                                            </TableCell>
                                                         </TableRow>
                                                     )
                                                 })}
@@ -343,11 +357,11 @@ const Disbursement = (props) => {
                             )}
                             {financeDriverLog?.length < 1 &&  <EmptyData />}
 
-                            {!loading && financeDriverLog?.length > 0 && (
-                                <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
-                                    <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={financeDriverLogCount?.total ? financeDriverLogCount?.total : 0} onChange={paginate} />
-                                </div>
-                            )}
+                            {/*{!loading && financeDriverLog?.length > 0 && (*/}
+                            {/*    <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">*/}
+                            {/*        <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={financeDriverLogCount?.total ? financeDriverLogCount?.total : 0} onChange={paginate} />*/}
+                            {/*    </div>*/}
+                            {/*)}*/}
                         </> :
                         <>
                             {financeDriverPayouts?.length > 0 && (
@@ -361,8 +375,6 @@ const Disbursement = (props) => {
                                                 <TableCell>Bank Name</TableCell>
                                                 <TableCell>Actual Amount</TableCell>
                                                 <TableCell>Amount</TableCell>
-                                                <TableCell>Email</TableCell>
-                                                <TableCell>Phone No</TableCell>
                                                 <TableCell>Status</TableCell>
                                             </TableRow>
                                         </TableHead>
@@ -372,13 +384,11 @@ const Disbursement = (props) => {
                                                     return (
                                                         <TableRow hover key={key}>
                                                             <TableCell>{item.group_date}</TableCell>
-                                                            <TableCell>{item.first_name} {item.last_name}</TableCell>
-                                                            <TableCell>{item.account_name}</TableCell>
+                                                            <TableCell>{item.stack_holder}</TableCell>
+                                                            <TableCell>{item.account_number}</TableCell>
                                                             <TableCell>{item.bank_name}</TableCell>
                                                             <TableCell>₦{item?.actual_amount?.toLocaleString()}</TableCell>
                                                             <TableCell>₦{item?.amount?.toLocaleString()}</TableCell>
-                                                            <TableCell>{item.email}</TableCell>
-                                                            <TableCell>{item.phone_number}</TableCell>
                                                             <TableCell>
                                                                 <Badge color={item?.status === 1 ? "success" : "warning"}>{item?.status === 1 ? "Successful" :  "Pending" }</Badge>
                                                             </TableCell>
@@ -392,36 +402,129 @@ const Disbursement = (props) => {
                             )}
                             {financeDriverPayouts?.length < 1 && <EmptyData />}
 
-                            {!loading && financeDriverPayouts?.length > 0 && (
-                                <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
-                                    <Pagination activePage={currentPage2} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={financeDriverPayoutsCount?.total ? financeDriverPayoutsCount?.total : 0} onChange={paginate} />
-                                </div>
-                            )}
+                            {/*{!loading && financeDriverPayouts?.length > 0 && (*/}
+                            {/*    <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">*/}
+                            {/*        <Pagination activePage={currentPage2} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={financeDriverPayoutsCount?.total ? financeDriverPayoutsCount?.total : 0} onChange={paginate} />*/}
+                            {/*    </div>*/}
+                            {/*)}*/}
                         </>
                     }
                 </RctCollapsibleCard>
             )}
+            <Modal isOpen={isIbileModal} toggle={() => setIsIbileModal(!isIbileModal)}>
+                <ModalHeader toggle={() => setIsIbileModal(!isIbileModal)}>Ibile Details</ModalHeader>
+                <ModalBody>
+                    <div className="w-100" style={{fontSize: "0.8rem"}}>
+                            <div className="tab-content px-4">
+                                <div className="tab-pane active" id="home">
+                                    <ul className="list-group">
+                                        <li className="list-group-item text-right">
+                                        <span className="pull-left">
+                                          <strong>Date</strong>
+                                        </span>
+                                            {ibileData?.date}
+                                        </li>
+                                        <li className="list-group-item text-right">
+                                        <span className="pull-left">
+                                          <strong>Balance</strong>
+                                        </span>
+                                            ₦{ibileData?.ibile_balance?.toLocaleString()}
+                                        </li>
+                                        <li className="list-group-item text-right">
+                                        <span className="pull-left">
+                                          <strong>Asset CO</strong>
+                                        </span>
+                                            ₦{ibileData?.asset_co?.toLocaleString()}
+                                        </li>
+                                        <li className="list-group-item text-right">
+                                        <span className="pull-left">
+                                          <strong>Daily Tax</strong>
+                                        </span>
+                                            ₦{ibileData?.daily_tax?.toLocaleString()}
+                                        </li>
+                                        <li className="list-group-item text-right">
+                                        <span className="pull-left">
+                                          <strong>Debt Service</strong>
+                                        </span>
+                                            ₦{ibileData?.debt_service?.toLocaleString()}
+                                        </li>
+                                        <li className="list-group-item text-right">
+                                        <span className="pull-left">
+                                          <strong>Maintenance</strong>
+                                        </span>
+                                            ₦{ibileData?.maintenance?.toLocaleString()}
+                                        </li>
+                                        <li className="list-group-item text-right">
+                                        <span className="pull-left">
+                                          <strong>Refleeting</strong>
+                                        </span>
+                                            ₦{ibileData?.refleeting?.toLocaleString()}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                </ModalBody>
+            </Modal>
+
+            <Modal isOpen={isZenoModal} toggle={() => setIsZenoModal(!isZenoModal)}>
+                <ModalHeader toggle={() => setIsZenoModal(!isZenoModal)}>Zeno Details</ModalHeader>
+                <ModalBody>
+                    <div className="w-100" style={{fontSize: "0.8rem"}}>
+                        <div className="tab-content px-4">
+                            <div className="tab-pane active" id="home">
+                                <ul className="list-group">
+                                    <li className="list-group-item text-right">
+                                        <span className="pull-left">
+                                          <strong>Date</strong>
+                                        </span>
+                                        {zenoData?.date}
+                                    </li>
+                                    <li className="list-group-item text-right">
+                                        <span className="pull-left">
+                                          <strong>Balance</strong>
+                                        </span>
+                                        ₦{zenoData?.zeno_balance?.toLocaleString()}
+                                    </li>
+                                    <li className="list-group-item text-right">
+                                        <span className="pull-left">
+                                          <strong>Comms</strong>
+                                        </span>
+                                        ₦{zenoData?.comms?.toLocaleString()}
+                                    </li>
+                                    <li className="list-group-item text-right">
+                                        <span className="pull-left">
+                                          <strong>Tech Co</strong>
+                                        </span>
+                                        ₦{zenoData?.tech_co?.toLocaleString()}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </ModalBody>
+            </Modal>
         </div>
     );
 };
 
 function mapDispatchToProps(dispatch) {
     return {
-        getFinanceDriverLogs: (page_no, loading) => dispatch(getFinanceDriverLogs(page_no, loading)),
-        getFinanceDriverLogsCount: (loading) => dispatch(getFinanceDriverLogsCount(loading)),
-        searchFinanceDriverLogs: (searchData) => dispatch(searchFinanceDriverLogs(searchData)),
-        getFinanceDriverPayouts: (page_no, loading) => dispatch(getFinanceDriverPayouts(page_no, loading)),
-        getFinanceDriverPayoutsCount: (loading) => dispatch(getFinanceDriverPayoutsCount(loading)),
-        searchFinanceDriverPayouts: (searchData) => dispatch(searchFinanceDriverPayouts(searchData)),
+        getFinanceDriverLogs: (page_no, loading) => dispatch(getFinanceHolderLogs(page_no, loading)),
+        getFinanceDriverLogsCount: (loading) => dispatch(getFinanceHolderLogsCount(loading)),
+        searchFinanceDriverLogs: (searchData) => dispatch(searchFinanceHolderLogs(searchData)),
+        getFinanceDriverPayouts: (page_no, loading) => dispatch(getFinanceHolderPayouts(page_no, loading)),
+        getFinanceDriverPayoutsCount: (loading) => dispatch(getFinanceHolderPayoutsCount(loading)),
+        searchFinanceDriverPayouts: (searchData) => dispatch(searchFinanceHolderPayouts(searchData)),
     };
 }
 
 const mapStateToProps = (state) => ({
     loading: state.loading.loading,
-    financeDriverLog: state.payments.financeDriverLog,
-    financeDriverLogCount: state.payments.financeDriverLogCount,
-    financeDriverPayouts: state.payments.financeDriverPayouts,
-    financeDriverPayoutsCount: state.payments.financeDriverPayoutsCount,
+    financeDriverLog: state.payments.financeHolderLog,
+    financeDriverLogCount: state.payments.financeHolderLogCount,
+    financeDriverPayouts: state.payments.financeHolderPayouts,
+    financeDriverPayoutsCount: state.payments.financeHolderPayoutsCount,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Disbursement);
+export default connect(mapStateToProps, mapDispatchToProps)(DisbursementHolder);

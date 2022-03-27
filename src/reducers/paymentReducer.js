@@ -7,7 +7,17 @@ import {
   PAYMENTS_SERVICE_BALANCE,
   PAYMENTS_SERVICE_BALANCE_INDIVIDUAL,
   PAYMENT_SERVICE_DETAILS,
-  FINANCE_WALLET, FINANCE_TRIP, FINANCE_SERVICE, FINANCE_DRIVER_LOG, FINANCE_DRIVER_LOG_COUNT,
+  FINANCE_WALLET,
+  FINANCE_TRIP,
+  FINANCE_SERVICE,
+  FINANCE_DRIVER_LOG,
+  FINANCE_DRIVER_LOG_COUNT,
+  FINANCE_DRIVER_PAYOUTS,
+  FINANCE_DRIVER_PAYOUTS_COUNT,
+  FINANCE_HOLDER_LOG,
+  FINANCE_HOLDER_LOG_COUNT,
+  FINANCE_HOLDER_PAYOUTS,
+  FINANCE_HOLDER_PAYOUTS_COUNT,
 } from "Actions/types";
 
 const initialState = {
@@ -21,6 +31,12 @@ const initialState = {
   financeTrip: [],
   financeDriverLog: [],
   financeDriverLogCount: 0,
+  financeDriverPayouts: [],
+  financeDriverPayoutsCount: 0,
+  financeHolderLog: [],
+  financeHolderLogCount: 0,
+  financeHolderPayouts: [],
+  financeHolderPayoutsCount: 0,
   paymentsServiceCount: 0,
   paymentsServiceBalance: 0,
   paymentsServiceBalanceIndividual: 0,
@@ -105,6 +121,42 @@ function paymentReducer(state = initialState, action) {
       return {
         ...state,
         financeDriverLogCount: payload,
+      };
+    }
+    case FINANCE_DRIVER_PAYOUTS: {
+      return {
+        ...state,
+        financeDriverPayouts: payload,
+      };
+    }
+    case FINANCE_DRIVER_PAYOUTS_COUNT: {
+      return {
+        ...state,
+        financeDriverPayoutsCount: payload,
+      };
+    }
+    case FINANCE_HOLDER_LOG: {
+      return {
+        ...state,
+        financeHolderLog: payload,
+      };
+    }
+    case FINANCE_HOLDER_LOG_COUNT: {
+      return {
+        ...state,
+        financeHolderLogCount: payload,
+      };
+    }
+    case FINANCE_HOLDER_PAYOUTS: {
+      return {
+        ...state,
+        financeHolderPayouts: payload,
+      };
+    }
+    case FINANCE_HOLDER_PAYOUTS_COUNT: {
+      return {
+        ...state,
+        financeHolderPayoutsCount: payload,
       };
     }
     default:

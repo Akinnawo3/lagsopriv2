@@ -19,7 +19,7 @@ const VehiclesFeedback = ({history, match, getVehicles, getVehiclesCount}) => {
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Vehicles  FeedBack"} match={match} />
-      <VehicleFeedbackTable assign={""} header="Feedback" />
+      <VehicleFeedbackTable  header="Feedback" />
     </div>
   );
 };

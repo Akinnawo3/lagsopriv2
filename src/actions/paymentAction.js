@@ -12,22 +12,27 @@ import {
   FINANCE_WALLET,
   FINANCE_TRIP,
   FINANCE_SERVICE,
-  ACTIVITY_LOGS,
-  ACTIVITY_LOGS_COUNT,
   FINANCE_DRIVER_LOG,
-  FINANCE_DRIVER_LOG_COUNT, USER_COUNT, USERS
+  FINANCE_DRIVER_LOG_COUNT,
+  FINANCE_HOLDER_LOG,
+  FINANCE_HOLDER_LOG_COUNT,
+  FINANCE_DRIVER_PAYOUTS,
+  FINANCE_DRIVER_PAYOUTS_COUNT,
+  FINANCE_HOLDER_PAYOUTS,
+  FINANCE_HOLDER_PAYOUTS_COUNT
 } from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "Actions/loadingAction";
 
 export const getPayments =
-  (page_no, status = "", auth_id = "", loading) =>
+  (page_no, status = "", auth_id = "", loading, userType = 'ride_id', ) =>
   async (dispatch) => {
     try {
       loading && dispatch(startLoading());
       !loading && dispatch(startStatusLoading());
-      const res = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?item_per_page=20&page=${page_no}&status=${status}&rider_id=${auth_id}`);
+      const res = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?item_per_page=20&page=${page_no}&status=${status}&${userType}=${auth_id}`);
+      // console.log(res.data, auth_id, 'qqqqqqqq')
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -45,10 +50,10 @@ export const getPayments =
   };
 
 export const getPaymentsCount =
-  (status = "", auth_id = "") =>
+  (status = "", auth_id = "", userType = 'ride_id') =>
   async (dispatch) => {
     try {
-      const res = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?component=count&status=${status}&rider_id=${auth_id}`);
+      const res = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?component=count&status=${status}&${userType}=${auth_id}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -301,5 +306,219 @@ export const searchFinanceDriverLogs = (searchData) => async (dispatch) => {
     dispatch(endStatusLoading());
   }
 };
+
+export const getFinanceHolderLogs =
+    (page_no = 1, loading) =>
+        async (dispatch) => {
+          try {
+            loading && (await dispatch(startLoading()));
+            !loading && dispatch(startStatusLoading());
+            const res = await axios.get(`${api.revenueSplit}/v1.1/admin/stack-holder-disbursement-preview?item_per_page=20&page=${page_no}`);
+            if (res.data.status === "error") {
+              NotificationManager.error(res.data.msg);
+            } else {
+              dispatch({
+                type: FINANCE_HOLDER_LOG,
+                payload: res.data.data,
+              });
+            }
+            dispatch(endLoading());
+            dispatch(endStatusLoading());
+          } catch (err) {
+            dispatch(endLoading());
+            dispatch(endStatusLoading());
+          }
+        };
+
+export const getFinanceHolderLogsCount = (loading) => async (dispatch) => {
+  try {
+    loading && (await dispatch(startLoading()));
+    !loading && dispatch(startStatusLoading());
+    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/stack-holder-disbursement-preview?component=count`);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      dispatch({
+        type: FINANCE_HOLDER_LOG_COUNT,
+        payload: res.data.data,
+      });
+    }
+    dispatch(endLoading());
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endLoading());
+    dispatch(endStatusLoading());
+  }
+};
+
+export const searchFinanceHolderLogs = (searchData) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/stack-holder-disbursement-preview?q=${searchData}`);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      const res2 = await axios.get(`${api.revenueSplit}/v1.1/admin/stack-holder-disbursement-preview?component=count&q=${searchData}`);
+
+
+      dispatch({
+        type: FINANCE_HOLDER_LOG_COUNT,
+        payload: res2.data.data,
+      });
+      dispatch({
+        type: FINANCE_HOLDER_LOG,
+        payload: res.data.data,
+      });
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+  }
+};
+
+
+export const getFinanceDriverPayouts =
+    (page_no = 1, loading) =>
+        async (dispatch) => {
+          try {
+            loading && (await dispatch(startLoading()));
+            !loading && dispatch(startStatusLoading());
+            const res = await axios.get(`${api.revenueSplit}/v1.1/admin/driver-payout?item_per_page=20&page=${page_no}`);
+            if (res.data.status === "error") {
+              NotificationManager.error(res.data.msg);
+            } else {
+              dispatch({
+                type: FINANCE_DRIVER_PAYOUTS,
+                payload: res.data.data,
+              });
+            }
+            dispatch(endLoading());
+            dispatch(endStatusLoading());
+          } catch (err) {
+            dispatch(endLoading());
+            dispatch(endStatusLoading());
+          }
+        };
+
+
+export const getFinanceDriverPayoutsCount = (loading) => async (dispatch) => {
+  try {
+    loading && (await dispatch(startLoading()));
+    !loading && dispatch(startStatusLoading());
+    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/driver-payout?component=count`);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      dispatch({
+        type: FINANCE_DRIVER_PAYOUTS_COUNT,
+        payload: res.data.data,
+      });
+    }
+    dispatch(endLoading());
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endLoading());
+    dispatch(endStatusLoading());
+  }
+};
+
+
+export const searchFinanceDriverPayouts = (searchData) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/driver-payout?q=${searchData}`);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      const res2 = await axios.get(`${api.revenueSplit}/v1.1/admin/driver-payout?component=count&q=${searchData}`);
+
+
+      dispatch({
+        type: FINANCE_DRIVER_PAYOUTS_COUNT,
+        payload: res2.data.data,
+      });
+      dispatch({
+        type: FINANCE_DRIVER_PAYOUTS,
+        payload: res.data.data,
+      });
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+  }
+};
+export const getFinanceHolderPayouts =
+    (page_no = 1, loading) =>
+        async (dispatch) => {
+          try {
+            loading && (await dispatch(startLoading()));
+            !loading && dispatch(startStatusLoading());
+            const res = await axios.get(`${api.revenueSplit}/v1.1/admin/stack-holder-payout?item_per_page=20&page=${page_no}`);
+            if (res.data.status === "error") {
+              NotificationManager.error(res.data.msg);
+            } else {
+              dispatch({
+                type: FINANCE_HOLDER_PAYOUTS,
+                payload: res.data.data,
+              });
+            }
+            dispatch(endLoading());
+            dispatch(endStatusLoading());
+          } catch (err) {
+            dispatch(endLoading());
+            dispatch(endStatusLoading());
+          }
+        };
+
+
+export const getFinanceHolderPayoutsCount = (loading) => async (dispatch) => {
+  try {
+    loading && (await dispatch(startLoading()));
+    !loading && dispatch(startStatusLoading());
+    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/stack-holder-payout?component=count`);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      dispatch({
+        type: FINANCE_HOLDER_PAYOUTS_COUNT,
+        payload: res.data.data,
+      });
+    }
+    dispatch(endLoading());
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endLoading());
+    dispatch(endStatusLoading());
+  }
+};
+
+
+export const searchFinanceHolderPayouts = (searchData) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/stack-holder-payout?q=${searchData}`);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      const res2 = await axios.get(`${api.revenueSplit}/v1.1/admin/stack-holder-payout?component=count&q=${searchData}`);
+
+
+      dispatch({
+        type: FINANCE_HOLDER_PAYOUTS_COUNT,
+        payload: res2.data.data,
+      });
+      dispatch({
+        type: FINANCE_HOLDER_PAYOUTS,
+        payload: res.data.data,
+      });
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+  }
+};
+
+
+
 
 

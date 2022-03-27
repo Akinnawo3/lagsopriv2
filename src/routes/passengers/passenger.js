@@ -140,7 +140,7 @@ function TabContainer(props) {
                                 />
                                 <Tab
                                     icon={<i className="icon-credit-card"></i>}
-                                    label={"Payment History"}
+                                    label={"Trip Payment History"}
                                 />
                             </Tabs>
                         </AppBar>

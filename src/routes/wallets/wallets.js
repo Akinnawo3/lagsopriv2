@@ -40,7 +40,6 @@ function mapDispatchToProps(dispatch) {
 const mapStateToProps = (state) => ({
   wallets: state.wallets.wallets,
   walletsCount: state.wallets.walletsCount,
-  walletsCount: state.wallets.walletsCount,
   isLoading: state.loading.isLoading,
 });
 

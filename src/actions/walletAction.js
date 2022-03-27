@@ -5,7 +5,7 @@ import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 
 export const getWallets =
-  (page_no = 1, status = "", auth_id = "", loading, transaction_type = "", start_date = "", end_date = "") =>
+  (page_no = 1, status = "", auth_id = "", loading, transaction_type = "fund", start_date = "", end_date = "") =>
   async (dispatch) => {
     try {
       loading && dispatch(startStatusLoading());
@@ -25,7 +25,7 @@ export const getWallets =
   };
 
 export const getWalletsCount =
-  (status = "", auth_id, loading, transaction_type = "", start_date = "", end_date = "") =>
+  (status = "", auth_id, loading, transaction_type = "fund", start_date = "", end_date = "") =>
   async (dispatch) => {
     try {
       const res = await axios.get(
@@ -58,7 +58,7 @@ export const getWalletBalance =
     } catch (err) {}
   };
 export const getFundingBalance =
-  (auth_id = "", status = "", transaction_type = "", start_date = "", end_date = "") =>
+  (auth_id = "", status = "", transaction_type = "fund", start_date = "", end_date = "") =>
   async (dispatch) => {
     try {
       const res = await axios.get(

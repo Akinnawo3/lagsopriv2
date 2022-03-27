@@ -1,10 +1,18 @@
-import {VEHICLE, VEHICLES, VEHICLES_COUNT, VEHICLES_FEEDBACK, VEHICLES_FEEDBACK_COUNT} from "Actions/types";
+import {
+  VEHICLE,
+  VEHICLES,
+  VEHICLES_COUNT,
+  VEHICLES_FEEDBACK,
+  VEHICLES_FEEDBACK_COUNT,
+  VEHICLES_FEEDBACK_DETAILS
+} from "Actions/types";
 
 
 const initialState = {
   vehicles: [],
   vehiclesFeedback: [],
   vehicleDetails: {},
+  vehicleFeedbackDetails: {},
   vehiclesCount: 0,
   vehiclesFeedbackCount: 0,
 };
@@ -28,6 +36,12 @@ function vehicleReducer(state = initialState, action) {
       return {
         ...state,
         vehicleDetails: payload,
+      };
+    }
+    case VEHICLES_FEEDBACK_DETAILS: {
+      return {
+        ...state,
+        vehicleFeedbackDetails: payload,
       };
     }
     case VEHICLES_COUNT: {

@@ -136,6 +136,11 @@ const AsyncDisbursement = Loadable({
   loading: () => <RctPageLoader />,
 });
 
+const AsyncDisbursementHolders = Loadable({
+  loader: () => import("Routes/reconciliation/disbursementHolder"),
+  loading: () => <RctPageLoader />,
+});
+
 const AsyncRevenues = Loadable({
   loader: () => import("Routes/revenues/revenues"),
   loading: () => <RctPageLoader />,
@@ -197,6 +202,11 @@ const AsyncInactiveVehicles = Loadable({
 });
 const AsyncVehiclesFeedback = Loadable({
   loader: () => import("Routes/vehicles/vehiclesFeedback"),
+  loading: () => <RctPageLoader />,
+});
+
+const AsyncVehiclesFeedbackDetails = Loadable({
+  loader: () => import("Routes/vehicles/vehicleFeedbackDetails"),
   loading: () => <RctPageLoader />,
 });
 
@@ -577,4 +587,6 @@ export {
   AsyncVehiclesFeedback,
   AsyncFinance,
   AsyncDisbursement,
+  AsyncVehiclesFeedbackDetails,
+  AsyncDisbursementHolders
 };
