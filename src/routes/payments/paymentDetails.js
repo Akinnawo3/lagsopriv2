@@ -34,6 +34,12 @@ const PaymentDetails = ({match, payment, getPaymentDetails, sosUserDetails}) => 
                 </li>
                 <li className="list-group-item text-right">
                   <span className="pull-left">
+                    <strong>Trip Reference</strong>
+                  </span>
+                  {payment?.trip_ref}
+                </li>
+                <li className="list-group-item text-right">
+                  <span className="pull-left">
                     <strong>Amount</strong>
                   </span>
                   ₦{payment?.amount?.toLocaleString()}
@@ -87,6 +93,12 @@ const PaymentDetails = ({match, payment, getPaymentDetails, sosUserDetails}) => 
                     <strong>Trip Class</strong>
                   </span>
                   {payment?.trip_class}
+                </li>
+                <li className="list-group-item text-right">
+                  <span className="pull-left">
+                    <strong>Promo</strong>
+                  </span>
+                  {payment?.is_promo ? "True" : "False"}
                 </li>
                 <li className="list-group-item text-right">
                   <span className="pull-left">

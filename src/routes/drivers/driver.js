@@ -17,8 +17,15 @@ import {getDriverTripCount, getDriverTripCountDisplayAll, getDriverTripCountDisp
 import {getVehicles} from "Actions/vehicleAction";
 import {getWalletBalance, getWallets, getWalletsCount} from "Actions/walletAction";
 import Wallets from "Components/Wallets/wallets";
-import {getPaymentsService, getPaymentsServiceBalanceForIndividual, getPaymentsServiceCount} from "Actions/paymentAction";
+import {
+  getPayments, getPaymentsCount,
+  getPaymentsService,
+  getPaymentsServiceBalanceForIndividual,
+  getPaymentsServiceCount
+} from "Actions/paymentAction";
 import PaymentsServiceComponent from "Components/PaymentsComponent/paymentsServiceComponent";
+import PaymentTripComponent from "Components/PaymentsComponent/paymentTripComponent";
+
 
 // For Tab Content
 function TabContainer(props) {
@@ -58,6 +65,8 @@ const Driver = (props) => {
     paymentsServiceBalanceIndividual,
     getPaymentsServiceBalanceForIndividual,
     driverLocation,
+    getPayments,
+    getPaymentsCount
   } = props;
 
   const [activeTab, setActiveTab] = useState(location.state ? location.state.activeTab : 0);
@@ -84,6 +93,8 @@ const Driver = (props) => {
       getPaymentsService(1, "", match.params.id);
       getPaymentsServiceCount("", match.params.id);
       getPaymentsServiceBalanceForIndividual(match.params.id);
+      getPayments(1, "", match.params.id, false, 'driver_id');
+      getPaymentsCount("", match.params.id, 'driver_id');
     }
   }, [match.params.id]);
   return (
@@ -115,6 +126,7 @@ const Driver = (props) => {
                 <Tab icon={<i className="icon-credit-card"></i>} label={"Wallet History"} />
                 {/* <Tab icon={<i className="icon-credit-card"></i>} label={"Revenue Split"} /> */}
                 <Tab icon={<i className="icon-credit-card"></i>} label={"Debt Service History"} />
+                <Tab icon={<i className="icon-credit-card"></i>} label={"Trip Payment History"} />
               </Tabs>
             </AppBar>
             {activeTab === 0 && (
@@ -152,6 +164,16 @@ const Driver = (props) => {
                 />
               </TabContainer>
             )}
+            {activeTab === 5 && (
+                <TabContainer>
+                  <PaymentTripComponent
+                      auth_id={match.params.id}
+                      //   payments={payments}
+                      //    paymentsCount={paymentsCount}
+                      //     paymentsServiceBalance={paymentsServiceBalance}
+                  />
+                </TabContainer>
+            )}
           </div>
         </RctCard>
       )}
@@ -178,6 +200,8 @@ function mapDispatchToProps(dispatch) {
     getPaymentsService: (pageNo, transaction_status, auth_id) => dispatch(getPaymentsService(pageNo, transaction_status, auth_id)),
     getPaymentsServiceCount: (transaction_status, auth_id) => dispatch(getPaymentsServiceCount(transaction_status, auth_id)),
     getPaymentsServiceBalanceForIndividual: (auth_id) => dispatch(getPaymentsServiceBalanceForIndividual(auth_id)),
+    getPayments: (pageNo, transaction_status, auth_id, loading, userType) => dispatch(getPayments(pageNo, transaction_status, auth_id, loading, userType)),
+    getPaymentsCount: (transaction_status, auth_id, userType) => dispatch(getPaymentsCount(transaction_status, auth_id, userType)),
   };
 }
 
