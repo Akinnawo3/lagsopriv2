@@ -7,7 +7,7 @@
  import WalletTable from "Routes/wallets/component/walletTable";
  import {getWallets, getWalletsCount, getWalletBalance, getFundingBalance} from "Actions/walletAction";
  const qs = require("qs");
- 
+
  const WalletsPending = ({history, match,wallets, getWallets, getWalletsCount, getFundingBalance}) => {
    const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
    const [currentPage, setCurrentPage] = useState(() => {
@@ -20,7 +20,7 @@
 	   getFundingBalance("", 0, "");
 	 }
    }, []);
- 
+
    return (
 	 <div className="table-wrapper">
 	   <PageTitleBar title={"Wallets"} match={match} />
@@ -28,7 +28,7 @@
 	 </div>
    );
  };
- 
+
  function mapDispatchToProps(dispatch) {
    return {
 	 getWallets: (page_no, status, auth_id, spinner, transaction_type) => dispatch(getWallets(page_no, status, auth_id, spinner, transaction_type)),
@@ -39,12 +39,11 @@
  const mapStateToProps = (state) => ({
    wallets: state.wallets.wallets,
    walletsCount: state.wallets.walletsCount,
-   walletsCount: state.wallets.walletsCount,
    isLoading: state.loading.isLoading,
  });
- 
+
  export default connect(mapStateToProps, mapDispatchToProps)(WalletsPending);
- 
+
 
 
 

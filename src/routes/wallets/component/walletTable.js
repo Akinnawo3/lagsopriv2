@@ -41,8 +41,7 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
 
   console.log(walletsCount);
   const transactionTypeOptions = [
-    {value: "", label: "- - Filter by Transaction Type - -"},
-    {label: "Funding Wallet", value: "fund"},
+    {label: "Fund Wallet", value: "fund"},
     {label: "Wallet Share", value: "share"},
     {label: "Drivers Commission", value: "driver-commission"},
   ];
