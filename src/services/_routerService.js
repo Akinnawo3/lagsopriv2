@@ -9,12 +9,12 @@ import {
   AsyncGooleMapsComponent,
   AsyncUsers,
   AsyncAreas,
-  AsyncRevenueSplitOld,
   AsyncCancellationReasons,
-  AsyncCustomerCare,
   AsyncActivityLog,
-  AsyncPromoDiscount,
-  AsyncNotifications, AsyncDisbursement, AsyncFinance,
+  AsyncNotifications,
+  AsyncDisbursement,
+  AsyncFinance,
+  AsyncDisbursementHolders,
 } from "Components/AsyncComponent/AsyncComponent";
 import DriverRoutes from "Routes/drivers/driverRoutes";
 import VehicleRoutes from "Routes/vehicles/vehicleRoutes";
@@ -121,8 +121,13 @@ export default [
   },
 
   {
-    path: "disbursement",
+    path: "disbursement-driver",
     component: AsyncDisbursement,
+    permission: "view_trip_payments",
+  },
+  {
+    path: "disbursement-holder",
+    component: AsyncDisbursementHolders,
     permission: "view_trip_payments",
   },
   // {

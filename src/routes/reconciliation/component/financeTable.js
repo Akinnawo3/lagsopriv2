@@ -91,26 +91,28 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
                                 <TableCell>{item.group_date}</TableCell>
                                 <TableCell>{success &&
                                 <div>
-                                  <div>
-                                    <div>Amount</div>
-                                    <div className='text-success font-weight-bold'>₦{success.balance.toLocaleString()}</div>
-                                  </div>
-                                  <div className='mt-2'>
-                                    <div>Count</div>
-                                    <div className='text-success font-weight-bold'>{success.total}</div>
-                                  </div>
+                                  ₦{success.balance.toLocaleString()} ({success.total})
+                                  {/*<div>*/}
+                                  {/*  <div>Amount</div>*/}
+                                  {/*  <div className='text-success font-weight-bold'>₦{success.balance.toLocaleString()}</div>*/}
+                                  {/*</div>*/}
+                                  {/*<div className='mt-2'>*/}
+                                  {/*  <div>Count</div>*/}
+                                  {/*  <div className='text-success font-weight-bold'>{success.total}</div>*/}
+                                  {/*</div>*/}
                                 </div>
                                 }</TableCell>
                                 <TableCell>{failure &&
                                 <div>
-                                  <div>
-                                    <div>Amount</div>
-                                    <div className='text-danger font-weight-bold'>₦{failure?.balance.toLocaleString()}</div>
-                                  </div>
-                                  <div className='mt-2'>
-                                    <div>Count</div>
-                                    <div className='text-danger font-weight-bold'>{failure?.total}</div>
-                                  </div>
+                                  ₦{success.failure.toLocaleString()} ({failure.total})
+                                  {/*<div>*/}
+                                  {/*  <div>Amount</div>*/}
+                                  {/*  <div className='text-danger font-weight-bold'>₦{failure?.balance.toLocaleString()}</div>*/}
+                                  {/*</div>*/}
+                                  {/*<div className='mt-2'>*/}
+                                  {/*  <div>Count</div>*/}
+                                  {/*  <div className='text-danger font-weight-bold'>{failure?.total}</div>*/}
+                                  {/*</div>*/}
                                 </div>
                                 }</TableCell>
                               </TableRow>
@@ -143,26 +145,28 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
                                 <TableCell>{item.group_date}</TableCell>
                                 <TableCell>{success &&
                                 <div>
-                                  <div>
-                                    <div>Amount</div>
-                                    <div className='text-success font-weight-bold'>₦{success.balance.toLocaleString()}</div>
-                                  </div>
-                                  <div className='mt-2'>
-                                    <div>Count</div>
-                                    <div className='text-success font-weight-bold'>{success.total}</div>
-                                  </div>
+                                  ₦{success.balance.toLocaleString()} ({success.total})
+                                  {/*<div>*/}
+                                  {/*  <div>Amount</div>*/}
+                                  {/*  <div className='text-success font-weight-bold'>₦{success.balance.toLocaleString()}</div>*/}
+                                  {/*</div>*/}
+                                  {/*<div className='mt-2'>*/}
+                                  {/*  <div>Count</div>*/}
+                                  {/*  <div className='text-success font-weight-bold'>{success.total}</div>*/}
+                                  {/*</div>*/}
                                 </div>
                                 }</TableCell>
                                 <TableCell>{failure &&
                                 <div>
-                                  <div>
-                                    <div>Amount</div>
-                                    <div className='text-danger font-weight-bold'>₦{failure?.balance.toLocaleString()}</div>
-                                  </div>
-                                  <div className='mt-2'>
-                                    <div>Count</div>
-                                    <div className='text-danger font-weight-bold'>{failure?.total}</div>
-                                  </div>
+                                  ₦{failure.balance.toLocaleString()} ({failure.total})
+                                  {/*<div>*/}
+                                  {/*  <div>Amount</div>*/}
+                                  {/*  <div className='text-danger font-weight-bold'>₦{failure?.balance.toLocaleString()}</div>*/}
+                                  {/*</div>*/}
+                                  {/*<div className='mt-2'>*/}
+                                  {/*  <div>Count</div>*/}
+                                  {/*  <div className='text-danger font-weight-bold'>{failure?.total}</div>*/}
+                                  {/*</div>*/}
                                 </div>
                                 }</TableCell>
                               </TableRow>
@@ -195,26 +199,28 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
                                 <TableCell>{item.group_date}</TableCell>
                                 <TableCell>{success &&
                                 <div>
-                                  <div>
-                                    <div>Amount</div>
-                                    <div className='text-success font-weight-bold'>₦{success.balance.toLocaleString()}</div>
-                                  </div>
-                                  <div className='mt-2'>
-                                    <div>Count</div>
-                                    <div className='text-success font-weight-bold'>{success.total}</div>
-                                  </div>
+                                  ₦{success.balance.toLocaleString()} ({success.total})
+                                  {/*<div>*/}
+                                  {/*  <div>Amount</div>*/}
+                                  {/*  <div className='text-success font-weight-bold'>₦{success.balance.toLocaleString()}</div>*/}
+                                  {/*</div>*/}
+                                  {/*<div className='mt-2'>*/}
+                                  {/*  <div>Count</div>*/}
+                                  {/*  <div className='text-success font-weight-bold'>{success.total}</div>*/}
+                                  {/*</div>*/}
                                 </div>
                                 }</TableCell>
                                 <TableCell>{failure &&
                                 <div>
-                                  <div>
-                                    <div>Amount</div>
-                                    <div className='text-danger font-weight-bold'>₦{failure?.balance.toLocaleString()}</div>
-                                  </div>
-                                  <div className='mt-2'>
-                                    <div>Count</div>
-                                    <div className='text-danger font-weight-bold'>{failure?.total}</div>
-                                  </div>
+                                  ₦{failure.balance.toLocaleString()} ({failure.total})
+                                  {/*<div>*/}
+                                  {/*  <div>Amount</div>*/}
+                                  {/*  <div className='text-danger font-weight-bold'>₦{failure?.balance.toLocaleString()}</div>*/}
+                                  {/*</div>*/}
+                                  {/*<div className='mt-2'>*/}
+                                  {/*  <div>Count</div>*/}
+                                  {/*  <div className='text-danger font-weight-bold'>{failure?.total}</div>*/}
+                                  {/*</div>*/}
                                 </div>
                                 }</TableCell>
                               </TableRow>

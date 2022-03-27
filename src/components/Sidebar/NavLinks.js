@@ -326,9 +326,14 @@ export default {
           menu_title: "sidebar.finance",
         },
         {
-          path: "/admin/disbursement",
+          path: "/admin/disbursement-driver",
           new_item: false,
-          menu_title: "sidebar.disbursement",
+          menu_title: "sidebar.disbursement-driver",
+        },
+        {
+          path: "/admin/disbursement-holder",
+          new_item: false,
+          menu_title: "sidebar.disbursement-holder",
         },
       ],
     },
