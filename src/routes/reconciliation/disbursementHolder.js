@@ -236,8 +236,8 @@ import {
 import {Link} from "react-router-dom";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {Badge, Form, Input, Modal, ModalBody, ModalHeader} from "reactstrap";
-import {calculatePostDate} from "Helpers/helpers";
-import Button from "@material-ui/core/Button";
+import {calculatePostDate, getTodayDate} from "Helpers/helpers";
+import {Button} from "reactstrap";
 const qs = require("qs");
 
 const DisbursementHolder = (props) => {
@@ -271,6 +271,18 @@ const DisbursementHolder = (props) => {
     const [ibileData, setIbileData] = useState({})
     const [isZenoModal, setIsZenoModal] = useState(false)
     const [zenoData, setZenoData] = useState({})
+    const [dateType, setDateType] = useState("daily");
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+    const dateTypeFilter = [
+        {value: "daily", label: "Daily"},
+        {value: "monthly", label: "Monthly"},
+        {value: "yearly", label: "Yearly"},
+    ];
+
+
+
+
     useEffect(() => {
         getFinanceDriverLogs(currentPage, true);
         getFinanceDriverLogsCount(true);
@@ -278,12 +290,32 @@ const DisbursementHolder = (props) => {
         getFinanceDriverPayoutsCount(true);
     }, []);
 
-    const paginate = (pageNumber) => {
-        history.push(`${history.location.pathname}?page=${pageNumber}`);
-        setCurrentPage(pageNumber);
-        getFinanceDriverLogs(pageNumber);
-        window.scrollTo(0, 0);
+
+    // const paginate = (pageNumber) => {
+    //     history.push(`${history.location.pathname}?page=${pageNumber}`);
+    //     setCurrentPage(pageNumber);
+    //     getFinanceDriverLogs(pageNumber);
+    //     window.scrollTo(0, 0);
+    // };
+
+    const handleChange = (e) => {
+        setDateType(e.target.value);
     };
+
+    const handleSearch = () => {
+       // if(type === 'receivable') {
+           getFinanceDriverLogs(currentPage, false, dateType,  startDate, endDate);
+           getFinanceDriverLogsCount(false, dateType,  startDate, endDate);
+       // } else {
+           getFinanceDriverPayouts(currentPage2, false, dateType,  startDate, endDate);
+           getFinanceDriverPayoutsCount(false, dateType,  startDate, endDate);
+       // }
+
+        // getFinanceTrip('trip', dateType, startDate, endDate)
+        // getFinanceService('service', dateType, startDate, endDate)
+        // getFinanceWallet('wallet', dateType, startDate, endDate)
+    }
+
     return (
         <div className="table-wrapper">
             <PageTitleBar title={"Holders Disbursement"} match={match} />
@@ -303,6 +335,29 @@ const DisbursementHolder = (props) => {
                                 <option value="payouts">Payouts</option>
                             </Input>
                         </li>
+                        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+                            {/* <small className="fw-bold">Date Type Filter</small> */}
+                            <select name="fiter-dropdown" onChange={handleChange} className="p-1 px-4">
+                                {dateTypeFilter.map((item, index) => (
+                                    <option value={item.value} key={index}>
+                                        {item.label}
+                                    </option>
+                                ))}
+                            </select>
+                        </li>
+                        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+                            <small className="fw-bold mr-2">From</small>
+                            <input type="date" id="start" name="trip-start" defaultValue={startDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => {
+                                setStartDate(e.target.value)
+                            }} />
+                        </li>
+                        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+                            <small className="fw-bold mr-2">To</small>
+                            <input type="date" id="start" name="trip-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => {
+                                setEndDate(e.target.value)
+                            }} />
+                        </li>
+                        <Button onClick={() => handleSearch()} style={{height: '30px'}} className='align-items-center justify-content-center' color='success'>Apply filter</Button>
                         {/*<li className="list-inline-item search-icon d-inline-block ml-2 mb-2">*/}
                         {/*    <SearchComponent getPreviousData={type === 'receivable' ? getFinanceDriverLogs : getFinanceDriverPayouts} getSearchedData={type === 'receivable' ? searchFinanceDriverLogs : searchFinanceDriverPayouts} setCurrentPage={type === 'receivable' ? setCurrentPage : setCurrentPage2} getCount={type === 'receivable' ? getFinanceDriverLogsCount : getFinanceDriverPayoutsCount} placeHolder={'name, email'} />*/}
                         {/*</li>*/}
@@ -510,11 +565,11 @@ const DisbursementHolder = (props) => {
 
 function mapDispatchToProps(dispatch) {
     return {
-        getFinanceDriverLogs: (page_no, loading) => dispatch(getFinanceHolderLogs(page_no, loading)),
-        getFinanceDriverLogsCount: (loading) => dispatch(getFinanceHolderLogsCount(loading)),
+        getFinanceDriverLogs: (page_no, loading, date_type,  start_date, end_date) => dispatch(getFinanceHolderLogs(page_no, loading, date_type,  start_date, end_date)),
+        getFinanceDriverLogsCount: (loading, date_type,  start_date, end_date) => dispatch(getFinanceHolderLogsCount(loading, date_type,  start_date, end_date)),
         searchFinanceDriverLogs: (searchData) => dispatch(searchFinanceHolderLogs(searchData)),
-        getFinanceDriverPayouts: (page_no, loading) => dispatch(getFinanceHolderPayouts(page_no, loading)),
-        getFinanceDriverPayoutsCount: (loading) => dispatch(getFinanceHolderPayoutsCount(loading)),
+        getFinanceDriverPayouts: (page_no, loading, date_type,  start_date, end_date) => dispatch(getFinanceHolderPayouts(page_no, loading, date_type,  start_date, end_date)),
+        getFinanceDriverPayoutsCount: (loading, date_type,  start_date, end_date) => dispatch(getFinanceHolderPayoutsCount(loading, date_type,  start_date, end_date)),
         searchFinanceDriverPayouts: (searchData) => dispatch(searchFinanceHolderPayouts(searchData)),
     };
 }
