@@ -50,7 +50,7 @@ export const getPayments =
   };
 
 export const getPaymentsCount =
-  (status = "", auth_id = "", userType = 'ride_id') =>
+  (status = "", auth_id = "", userType = 'rider_id') =>
   async (dispatch) => {
     try {
       const res = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?component=count&status=${status}&${userType}=${auth_id}`);
