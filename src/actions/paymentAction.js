@@ -26,7 +26,7 @@ import api from "../environments/environment";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "Actions/loadingAction";
 
 export const getPayments =
-  (page_no, status = "", auth_id = "", loading, userType = 'ride_id', ) =>
+  (page_no, status = "", auth_id = "", loading, userType = 'rider_id', ) =>
   async (dispatch) => {
     try {
       loading && dispatch(startLoading());
