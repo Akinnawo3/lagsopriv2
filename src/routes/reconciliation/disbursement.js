@@ -371,7 +371,7 @@ const Disbursement = (props) => {
                                                                     {item.first_name + "  " + item.last_name}
                                                                 </Link>
                                                             </TableCell>
-                                                            <TableCell>₦{item.earning.toLocaleString()}</TableCell>
+                                                            <TableCell>₦{item?.earning?.toLocaleString()}</TableCell>
                                                             <TableCell>{item.phone_number}</TableCell>
                                                             <TableCell>{success &&
                                                                 <div>

@@ -91,7 +91,7 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
                                 <TableCell>{item.group_date}</TableCell>
                                 <TableCell>{success &&
                                 <div>
-                                  ₦{success.balance.toLocaleString()} ({success.total})
+                                  ₦{success?.balance?.toLocaleString()} ({success?.total})
                                   {/*<div>*/}
                                   {/*  <div>Amount</div>*/}
                                   {/*  <div className='text-success font-weight-bold'>₦{success.balance.toLocaleString()}</div>*/}
@@ -104,7 +104,7 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
                                 }</TableCell>
                                 <TableCell>{failure &&
                                 <div>
-                                  ₦{success.failure.toLocaleString()} ({failure.total})
+                                  ₦{success?.failure?.toLocaleString()} ({failure?.total})
                                   {/*<div>*/}
                                   {/*  <div>Amount</div>*/}
                                   {/*  <div className='text-danger font-weight-bold'>₦{failure?.balance.toLocaleString()}</div>*/}
@@ -142,10 +142,10 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
                           <TableBody key={index}>
                             <Fragment>
                               <TableRow hover>
-                                <TableCell>{item.group_date}</TableCell>
+                                <TableCell>{item?.group_date}</TableCell>
                                 <TableCell>{success &&
                                 <div>
-                                  ₦{success.balance.toLocaleString()} ({success.total})
+                                  ₦{success?.balance?.toLocaleString()} ({success?.total})
                                   {/*<div>*/}
                                   {/*  <div>Amount</div>*/}
                                   {/*  <div className='text-success font-weight-bold'>₦{success.balance.toLocaleString()}</div>*/}
@@ -158,7 +158,7 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
                                 }</TableCell>
                                 <TableCell>{failure &&
                                 <div>
-                                  ₦{failure.balance.toLocaleString()} ({failure.total})
+                                  ₦{failure?.balance?.toLocaleString()} ({failure?.total})
                                   {/*<div>*/}
                                   {/*  <div>Amount</div>*/}
                                   {/*  <div className='text-danger font-weight-bold'>₦{failure?.balance.toLocaleString()}</div>*/}
@@ -196,10 +196,10 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
                           <TableBody key={index}>
                             <Fragment>
                               <TableRow hover>
-                                <TableCell>{item.group_date}</TableCell>
+                                <TableCell>{item?.group_date}</TableCell>
                                 <TableCell>{success &&
                                 <div>
-                                  ₦{success.balance.toLocaleString()} ({success.total})
+                                  ₦{success?.balance?.toLocaleString()} ({success?.total})
                                   {/*<div>*/}
                                   {/*  <div>Amount</div>*/}
                                   {/*  <div className='text-success font-weight-bold'>₦{success.balance.toLocaleString()}</div>*/}
@@ -212,7 +212,7 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
                                 }</TableCell>
                                 <TableCell>{failure &&
                                 <div>
-                                  ₦{failure.balance.toLocaleString()} ({failure.total})
+                                  ₦{failure?.balance?.toLocaleString()} ({failure?.total})
                                   {/*<div>*/}
                                   {/*  <div>Amount</div>*/}
                                   {/*  <div className='text-danger font-weight-bold'>₦{failure?.balance.toLocaleString()}</div>*/}
