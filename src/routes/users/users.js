@@ -9,7 +9,15 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import Pagination from "react-js-pagination";
 import {connect} from "react-redux";
-import {deleteUser, getUserCount, getUsers, searchUsers, ResetUserDetails, changeKycStatus} from "Actions/userAction";
+import {
+  deleteUser,
+  getUserCount,
+  getUsers,
+  searchUsers,
+  ResetUserDetails,
+  changeKycStatus,
+  getUserExport
+} from "Actions/userAction";
 import EmptyData from "Components/EmptyData/EmptyData";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
@@ -18,10 +26,11 @@ import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from "reactstrap";
 import {sendVerificationRequest} from "Actions/idVerificationAction";
 import {Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 import {Form, FormGroup, Label, Input} from "reactstrap";
-import Button from "@material-ui/core/Button";
+// import Button from "@material-ui/core/Button";
 import Spinner from "Components/spinner/Spinner";
 import emailMessages from "Assets/data/email-messages/emailMessages";
 import {getStatusColorKYC} from "Helpers/helpers";
+import {Button} from "reactstrap";
 const qs = require("qs");
 export let onUserDetailsResetModalClose;
 
@@ -41,6 +50,7 @@ const Users = ({
   sendVerificationRequest,
   verificationResult,
   changeKycStatus,
+  getUserExport,
 }) => {
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -65,6 +75,7 @@ const Users = ({
   const [user, setUser] = useState("");
 
   const inputEl = useRef(null);
+  const exportRef = useRef(null);
 
   useEffect(() => {
     if (pageFromQuery === undefined || users.length < 1) {
@@ -162,14 +173,27 @@ const Users = ({
     inputEl.current.close();
   };
 
+  const handleExport = () => {
+    exportRef.current.open();
+  };
+
+  const confirmExport = () => {
+    exportRef.current.close();
+    getUserExport()
+  }
+
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Users"} match={match} />
       <RctCollapsibleCard heading="Users" fullBlock>
-        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-          <SearchComponent getPreviousData={getUsers} getSearchedData={searchUsers} setCurrentPage={setCurrentPage} getCount={getUserCount} />
-        </li>
-        {!loading && users.length > 0 && (
+       <div className="d-flex justify-content-between">
+         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+           <SearchComponent getPreviousData={getUsers} getSearchedData={searchUsers} setCurrentPage={setCurrentPage} getCount={getUserCount} />
+         </li>
+         <Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center mr-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>  Export to Excel</Button>
+
+       </div>
+          {!loading && users.length > 0 && (
           <>
             <div className="table-responsive" style={{minHeight: "50vh"}}>
               <Table>
@@ -202,13 +226,13 @@ const Users = ({
                             {user.kyc_status === 2 && "Suspended"}
                           </Badge>
                           {user.kyc_status === 0 && (
-                            <span className="fw-bold text muted ml-1 " onClick={() => triggerIdVerifcation("nin", user, "1")}>
-                              Verify
+                            <span className="fw-bold text muted ml-1 ">
+                                      <Button onClick={() => triggerIdVerifcation("nin", user, "1")} className='align-items-center justify-content-center ml-2' color='success'>Verify</Button>
                             </span>
                           )}
                           {user.kyc_status === 1 && (
-                            <span className="fw-bold text muted ml-1 text-danger" onClick={() => verifyId(user?.auth_id, "2")}>
-                              Suspend
+                            <span className="fw-bold text muted ml-1 text-danger" >
+                              <Button onClick={() => verifyId(user?.auth_id, "2")}  className='align-items-center justify-content-center ml-2' color='danger'>Suspend</Button>
                             </span>
                           )}
                           {user.kyc_status === 2 && (
@@ -386,6 +410,8 @@ const Users = ({
         </Form>
       </Modal>
       <DeleteConfirmationDialog ref={inputEl} title={title} message={message} onConfirm={onConfirm} />
+      <DeleteConfirmationDialog ref={exportRef} title={'Are you sure you want to Export File?'} message={'This will send the excel file to your email'} onConfirm={confirmExport} />
+
     </div>
   );
 };
@@ -395,6 +421,7 @@ function mapDispatchToProps(dispatch) {
     getUsers: (page_no, loading) => dispatch(getUsers(page_no, loading)),
     deleteUser: (auth_id, users) => dispatch(deleteUser(auth_id, users)),
     getUserCount: () => dispatch(getUserCount()),
+    getUserExport: (user_type, driver_category, driver_account_status) => dispatch(getUserExport(user_type, driver_category, driver_account_status)),
     searchUsers: (searchData) => dispatch(searchUsers(searchData)),
     ResetUserDetails: (body, emailData) => dispatch(ResetUserDetails(body, emailData)),
     changeKycStatus: (auth_id, kyc_status) => dispatch(changeKycStatus(auth_id, kyc_status)),

@@ -237,6 +237,21 @@ export const getFinanceTrip = (payment_type, date_type = 'daily', start_date = '
   }
 };
 
+export const sendFinanceTripExport = (payment_type, date_type = 'daily', start_date = '', end_date = '') => async dispatch => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.get(`${api.wallet}/v1.1/admin/finance-stat?payment_type=${payment_type}&date_type=${date_type}&start_date=${start_date}&end_date=${end_date}&component=export`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    } else {
+      NotificationManager.success('Excel file sent to your email successfully');
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+  }
+};
+
 export const getFinanceDriverLogs =
     (page_no = 1, loading, date_type = "",  start_date = '', end_date = '') =>
         async (dispatch) => {
