@@ -1,11 +1,11 @@
-import React, {useState, useEffect, Fragment} from "react";
+import React, {useState, useEffect, Fragment, useRef} from "react";
 import {connect} from "react-redux";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import {Badge} from "reactstrap";
+import {Badge, Button} from "reactstrap";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import {getDrivers, getDriversCount, searchDrivers} from "Actions/driverAction";
 import {CSVLink} from "react-csv";
@@ -15,18 +15,21 @@ import EmptyData from "Components/EmptyData/EmptyData";
 import {Link} from "react-router-dom";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {useHistory} from "react-router-dom";
+import {getUserExport} from "Actions/userAction";
+import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 const qs = require("qs");
 
-const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, searchDrivers, header, getDriversCount}) => {
+const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, searchDrivers, header, getDriversCount, getUserExport}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
-  const [excelExport, setExcelExport] = useState([]);
   const [appStatus, setAppStatus] = useState("");
   const [paymentStatus, setPaymentStatus] = useState("");
   const [driverCategory, setDriverCategory] = useState("");
+  const exportRef = useRef(null);
+
 
   const paginate = (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
@@ -75,29 +78,16 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
     {value: 1, label: "Online"},
     {value: 0, label: "Offline"},
   ];
-  useEffect(() => {
-    if (drivers.length > 0) {
-      let result = drivers.map((driver) => {
-        return {
-          firstName: driver["first_name"],
-          lastName: driver["last_name"],
-          phoneNumber: driver["phone_number"],
-          email: driver["email"],
-          bloodGroup: driver["blood_group"],
-          dateOfBirth: driver["dob"],
-          education: driver["education"],
-          stateOfOrigin: driver["state"],
-          homeAddress: driver["home_address"],
-          drverCategory: driver["driver_data"]["driver_category"],
-          lasdriID: driver["driver_data"]["lasdri_id"]["value"],
-          lassraID: driver["driver_data"]["lassra_id"]["value"],
-          drivingLicence: driver["driver_data"]["license_id"]["value"],
-          nin: driver["driver_data"]["nin_id"]["value"],
-        };
-      });
-      setExcelExport(result);
-    }
-  }, [drivers]);
+
+  const handleExport = () => {
+    exportRef.current.open();
+  };
+
+  const confirmExport = () => {
+    exportRef.current.close();
+    getUserExport('driver', driverCategory, status)
+  }
+
 
 
   return (
@@ -133,10 +123,7 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
         )}
         <div className="float-right">
           {!isLoading && drivers.length > 0 && (
-            <CSVLink data={excelExport} filename={"drivers.csv"} className="btn-sm btn-outline-default mr-10 bg-primary text-white" target="_blank">
-              <i className="zmdi zmdi-download mr-2"></i>
-              Export to Excel
-            </CSVLink>
+              <Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center mr-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>  Export to Excel</Button>
           )}
         </div>
         {!isLoading && drivers.length > 0 && (
@@ -201,6 +188,7 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
         )}
         {drivers.length === 0 && !isLoading && <EmptyData />}
       </RctCollapsibleCard>
+      <DeleteConfirmationDialog ref={exportRef} title={'Are you sure you want to Export File?'} message={'This will send the excel file to your email'} onConfirm={confirmExport} />
     </div>
   );
 };
@@ -211,6 +199,8 @@ function mapDispatchToProps(dispatch) {
       dispatch(getDrivers(status, page_no, spinner, driver_online_status, asset_payment, driver_category)),
     searchDrivers: (searchData, status) => dispatch(searchDrivers(searchData, status)),
     getDriversCount: (status) => dispatch(getDriversCount(status)),
+    getUserExport: (user_type, driver_category, driver_account_status) => dispatch(getUserExport(user_type, driver_category, driver_account_status)),
+
   };
 }
 

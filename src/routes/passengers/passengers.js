@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Fragment} from "react";
+import React, {useState, useEffect, Fragment, useRef} from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -16,14 +16,17 @@ import {Link} from "react-router-dom";
 import {calculatePostDate} from "Helpers/helpers";
 import EmptyData from "Components/EmptyData/EmptyData";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
+import {getUserExport} from "Actions/userAction";
+import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
+import {Button} from "reactstrap";
 const qs = require("qs");
 
-const Passengers = ({history, match, getPassengers, passengers, loading, passengerCount, getPassengerCount, searchPassenger}) => {
+const Passengers = ({history, match, getPassengers, passengers, loading, passengerCount, getPassengerCount, searchPassenger, getUserExport}) => {
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
-  const [excelExport, setExcelExport] = useState([]);
+  const exportRef = useRef(null);
 
   useEffect(() => {
     if (pageFromQuery === undefined || passengers.length < 1) {
@@ -32,22 +35,6 @@ const Passengers = ({history, match, getPassengers, passengers, loading, passeng
     }
   }, []);
 
-  useEffect(() => {
-    if (passengers) {
-      let result = passengers.map((passenger) => {
-        return {
-          FirstName: passenger["first_name"],
-          LastName: passenger["last_name"],
-          PhoneNumber: passenger["phone_number"],
-          Email: passenger["email"],
-          HomeLocation: passenger["home_address"],
-          WorkLocation: passenger["work_address"],
-          Registration_Date: new Date(passenger["createdAt"]).toLocaleString(),
-        };
-      });
-      setExcelExport(result);
-    }
-  }, [passengers]);
 
   const paginate = (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
@@ -55,6 +42,16 @@ const Passengers = ({history, match, getPassengers, passengers, loading, passeng
     getPassengers(pageNumber);
     window.scrollTo(0, 0);
   };
+
+  const handleExport = () => {
+    exportRef.current.open();
+  };
+
+  const confirmExport = () => {
+    exportRef.current.close();
+    getUserExport('rider')
+  }
+
 
   return (
     <div className="table-wrapper">
@@ -72,10 +69,12 @@ const Passengers = ({history, match, getPassengers, passengers, loading, passeng
         </li>
         <div className="float-right">
           {!loading && passengers.length > 0 && (
-            <CSVLink data={excelExport} filename={"passengers.csv"} className="btn-sm btn-outline-default mr-10 bg-primary text-white" target="_blank">
-              <i className="zmdi zmdi-download mr-2"></i>
-              Export to Excel
-            </CSVLink>
+              <Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center mr-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>  Export to Excel</Button>
+
+              // <CSVLink data={excelExport} filename={"passengers.csv"} className="btn-sm btn-outline-default mr-10 bg-primary text-white" target="_blank">
+            //   <i className="zmdi zmdi-download mr-2"></i>
+            //   Export to Excel
+            // </CSVLink>
           )}
         </div>
         {!loading && passengers.length > 0 && (
@@ -120,6 +119,8 @@ const Passengers = ({history, match, getPassengers, passengers, loading, passeng
         )}
         {!loading && passengers.length < 1 && <EmptyData />}
       </RctCollapsibleCard>
+      <DeleteConfirmationDialog ref={exportRef} title={'Are you sure you want to Export File?'} message={'This will send the excel file to your email'} onConfirm={confirmExport} />
+
     </div>
   );
 };
@@ -129,6 +130,7 @@ function mapDispatchToProps(dispatch) {
     getPassengers: (page_no, spinner) => dispatch(getPassengers(page_no, spinner)),
     getPassengerCount: () => dispatch(getPassengerCount()),
     searchPassenger: (searchData) => dispatch(searchPassengers(searchData)),
+    getUserExport: (user_type, driver_category, driver_account_status) => dispatch(getUserExport(user_type, driver_category, driver_account_status)),
   };
 }
 

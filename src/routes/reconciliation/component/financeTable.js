@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Fragment} from "react";
+import React, {useState, useEffect, Fragment, useRef} from "react";
 import {connect} from "react-redux";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -7,13 +7,15 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import {getTodayDate} from "Helpers/helpers";
-import {getFinanceService, getFinanceTrip, getFinanceWallet} from "Actions/paymentAction";
+import {getFinanceService, getFinanceTrip, getFinanceWallet, sendFinanceTripExport} from "Actions/paymentAction";
 import {Button} from "reactstrap";
+import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 
-const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, financeTrip, financeWallet, financeService, loading}) => {
+const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, financeTrip, financeWallet, financeService, loading, sendFinanceTripExport}) => {
   const [dateType, setDateType] = useState("daily");
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const inputEl = useRef(null);
 
 
   useEffect(() => {
@@ -22,6 +24,15 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
     getFinanceWallet('wallet', dateType)
 
   }, []);
+
+  const handleExport = () => {
+    inputEl.current.open();
+  };
+
+  const confirmExport = () => {
+    inputEl.current.close();
+    sendFinanceTripExport('trip', dateType, startDate, endDate)
+  }
 
 
 
@@ -69,6 +80,8 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
           }} />
         </li>
         <Button onClick={() => handleSearch()} style={{height: '30px'}} className='align-items-center justify-content-center' color='success'>Apply filter</Button>
+        <Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center ml-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>
+          Export to Excel</Button>
             <div className='row mt-3 p-2'>
               <div className='col-sm-4 align-items-start d-flex flex-column'>
                 <div className='font-weight-bold mb-2'>Trip Payment</div>
@@ -91,7 +104,7 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
                                 <TableCell>{item.group_date}</TableCell>
                                 <TableCell>{success &&
                                 <div>
-                                  ₦{success.balance.toLocaleString()} ({success.total})
+                                  ₦{success?.balance?.toLocaleString()} ({success?.total})
                                   {/*<div>*/}
                                   {/*  <div>Amount</div>*/}
                                   {/*  <div className='text-success font-weight-bold'>₦{success.balance.toLocaleString()}</div>*/}
@@ -104,7 +117,7 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
                                 }</TableCell>
                                 <TableCell>{failure &&
                                 <div>
-                                  ₦{success.failure.toLocaleString()} ({failure.total})
+                                  ₦{success?.failure?.toLocaleString()} ({failure?.total})
                                   {/*<div>*/}
                                   {/*  <div>Amount</div>*/}
                                   {/*  <div className='text-danger font-weight-bold'>₦{failure?.balance.toLocaleString()}</div>*/}
@@ -142,10 +155,10 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
                           <TableBody key={index}>
                             <Fragment>
                               <TableRow hover>
-                                <TableCell>{item.group_date}</TableCell>
+                                <TableCell>{item?.group_date}</TableCell>
                                 <TableCell>{success &&
                                 <div>
-                                  ₦{success.balance.toLocaleString()} ({success.total})
+                                  ₦{success?.balance?.toLocaleString()} ({success?.total})
                                   {/*<div>*/}
                                   {/*  <div>Amount</div>*/}
                                   {/*  <div className='text-success font-weight-bold'>₦{success.balance.toLocaleString()}</div>*/}
@@ -158,7 +171,7 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
                                 }</TableCell>
                                 <TableCell>{failure &&
                                 <div>
-                                  ₦{failure.balance.toLocaleString()} ({failure.total})
+                                  ₦{failure?.balance?.toLocaleString()} ({failure?.total})
                                   {/*<div>*/}
                                   {/*  <div>Amount</div>*/}
                                   {/*  <div className='text-danger font-weight-bold'>₦{failure?.balance.toLocaleString()}</div>*/}
@@ -196,10 +209,10 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
                           <TableBody key={index}>
                             <Fragment>
                               <TableRow hover>
-                                <TableCell>{item.group_date}</TableCell>
+                                <TableCell>{item?.group_date}</TableCell>
                                 <TableCell>{success &&
                                 <div>
-                                  ₦{success.balance.toLocaleString()} ({success.total})
+                                  ₦{success?.balance?.toLocaleString()} ({success?.total})
                                   {/*<div>*/}
                                   {/*  <div>Amount</div>*/}
                                   {/*  <div className='text-success font-weight-bold'>₦{success.balance.toLocaleString()}</div>*/}
@@ -212,7 +225,7 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
                                 }</TableCell>
                                 <TableCell>{failure &&
                                 <div>
-                                  ₦{failure.balance.toLocaleString()} ({failure.total})
+                                  ₦{failure?.balance?.toLocaleString()} ({failure?.total})
                                   {/*<div>*/}
                                   {/*  <div>Amount</div>*/}
                                   {/*  <div className='text-danger font-weight-bold'>₦{failure?.balance.toLocaleString()}</div>*/}
@@ -234,6 +247,7 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
               </div>
             </div>
       </RctCollapsibleCard>
+      <DeleteConfirmationDialog ref={inputEl} title={'Are you sure you want to Export File?'} message={'This will send the excel file to your email'} onConfirm={confirmExport} />
     </div>
   );
 };
@@ -241,6 +255,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getFinanceTrip: (payment_type, date_type, start_date , end_date) => dispatch(getFinanceTrip(payment_type, date_type, start_date , end_date)),
     getFinanceService: (payment_type, date_type, start_date , end_date) => dispatch(getFinanceService(payment_type, date_type, start_date , end_date)),
+    sendFinanceTripExport: (payment_type, date_type, start_date , end_date) => dispatch(sendFinanceTripExport(payment_type, date_type, start_date , end_date)),
     getFinanceWallet: (payment_type, date_type, start_date , end_date) => dispatch(getFinanceWallet(payment_type, date_type, start_date , end_date)),
   };
 }
