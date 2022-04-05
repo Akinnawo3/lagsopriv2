@@ -80,8 +80,7 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
           }} />
         </li>
         <Button onClick={() => handleSearch()} style={{height: '30px'}} className='align-items-center justify-content-center' color='success'>Apply filter</Button>
-        <Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center ml-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>
-          Export to Excel</Button>
+        {/*<Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center ml-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>Export to Excel</Button>*/}
             <div className='row mt-3 p-2'>
               <div className='col-sm-4 align-items-start d-flex flex-column'>
                 <div className='font-weight-bold mb-2'>Trip Payment</div>

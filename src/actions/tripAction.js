@@ -158,6 +158,25 @@ export const getTripCount =
     } catch (err) {}
   };
 
+export const getTripExport =
+    (status = "") =>
+        async (dispatch) => {
+          dispatch(startStatusLoading());
+          try {
+            const res = await axios.get(
+                `${api.trip}/v1.1/trips/?component=export&trip_status=${status}`
+            );
+            if (res.data.status === "error") {
+              NotificationManager.error(res.data.msg);
+            } else {
+              NotificationManager.success('Excel file sent to your email successfully');
+            }
+            dispatch(endStatusLoading());
+          } catch (err) {
+            dispatch(endStatusLoading());
+          }
+        };
+
 export const getDriverTrips =
   (pageNo, authId, spinner, trip_status) => async (dispatch) => {
     try {

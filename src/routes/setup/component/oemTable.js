@@ -113,7 +113,7 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header, cre
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    !editUser ? await creatOEM({name, email, password, phone_number: phoneNumber, address}) : await updateOEM({name, email, phone_number: phoneNumber, address}, updateId);
+    !editUser ? await creatOEM({name, email, phone_number: phoneNumber, address}) : await updateOEM({name, email, phone_number: phoneNumber, address}, updateId);
   };
 
   // const sampleData = [
@@ -232,12 +232,12 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header, cre
               <Label for="phoneNumber">Phone Number</Label>
               <Input type="tel" name="phoneNumber" value={phoneNumber} onChange={onChange} required />
             </FormGroup>
-            {!updateId && (
-              <FormGroup>
-                <Label for="password">Password</Label>
-                <Input type="text" name="password" value={password} onChange={onChange} required max={year} />
-              </FormGroup>
-            )}
+            {/*{!updateId && (*/}
+            {/*  <FormGroup>*/}
+            {/*    <Label for="password">Password</Label>*/}
+            {/*    <Input type="text" name="password" value={password} onChange={onChange} required max={year} />*/}
+            {/*  </FormGroup>*/}
+            {/*)}*/}
           </ModalBody>
           <ModalFooter>
             <Button type="submit" variant="contained" className="text-white btn-success">

@@ -65,6 +65,23 @@ export const getPaymentsCount =
     } catch (err) {}
   };
 
+export const getPaymentsExport =
+    (status = "", auth_id = "", userType = 'rider_id') =>
+        async (dispatch) => {
+          dispatch(startStatusLoading());
+          try {
+            const res = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?component=export&status=${status}&${userType}=${auth_id}`);
+            if (res.data.status === "error") {
+              NotificationManager.error(res.data.msg);
+            } else {
+              NotificationManager.success('Excel file sent to your email successfully');
+            }
+            dispatch(endStatusLoading());
+          } catch (err) {
+            dispatch(endStatusLoading());
+          }
+        };
+
 export const getPaymentDetails = (payment_id) => async (dispatch) => {
   try {
     dispatch(startLoading());
@@ -132,6 +149,26 @@ export const getPaymentsServiceCount =
       }
     } catch (err) {}
   };
+
+export const getPaymentsServiceExport =
+    (status = "", auth_id = "", payment_type = "", start_date = "", end_date = "") =>
+        async (dispatch) => {
+          dispatch(startStatusLoading());
+          try {
+            const res = await axios.get(
+                `${api.wallet}/v1.1/admin/service-transactions?status=${status}&auth_id=${auth_id}&payment_type=${payment_type}&start_date=${start_date}&end_date=${end_date}&component=export`
+            );
+            if (res.data.status === "error") {
+              NotificationManager.error(res.data.msg);
+            } else {
+              NotificationManager.success('Excel file sent to your email successfully');
+            }
+            dispatch(endStatusLoading())
+          } catch (err) {
+            dispatch(endStatusLoading())
+          }
+        };
+
 export const getPaymentsServiceBalance =
   (status = "", auth_id = "", payment_type = "", start_date = "", end_date = "") =>
   async (dispatch) => {

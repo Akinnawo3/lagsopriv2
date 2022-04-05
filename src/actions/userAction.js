@@ -43,6 +43,7 @@ export const getUserCount = () => async (dispatch) => {
 };
 
 export const getUserExport = (user_type = '', driver_category = '', driver_account_status = '') => async (dispatch) => {
+  dispatch(startStatusLoading());
   try {
     const res = await axios.get(`${api.user}/v1.1/admin/users?component=export&user_type=${user_type}&driver_category=${driver_category}&driver_account_status=${driver_account_status}`);
     if (res.data.status === "error") {
@@ -50,7 +51,10 @@ export const getUserExport = (user_type = '', driver_category = '', driver_accou
     } else {
       NotificationManager.success('Excel file sent to your email successfully');
     }
-  } catch (err) {}
+    dispatch(endStatusLoading())
+  } catch (err) {
+    dispatch(endStatusLoading())
+  }
 };
 
 export const ResetUserDetails = (body, emailData) => async (dispatch) => {

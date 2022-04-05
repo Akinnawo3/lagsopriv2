@@ -70,11 +70,6 @@ const Passengers = ({history, match, getPassengers, passengers, loading, passeng
         <div className="float-right">
           {!loading && passengers.length > 0 && (
               <Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center mr-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>  Export to Excel</Button>
-
-              // <CSVLink data={excelExport} filename={"passengers.csv"} className="btn-sm btn-outline-default mr-10 bg-primary text-white" target="_blank">
-            //   <i className="zmdi zmdi-download mr-2"></i>
-            //   Export to Excel
-            // </CSVLink>
           )}
         </div>
         {!loading && passengers.length > 0 && (

@@ -304,21 +304,32 @@ const Disbursement = (props) => {
             <PageTitleBar title={"Driver Disbursement"} match={match} />
             {!loading && (
                 <RctCollapsibleCard heading="Payment Overview" fullBlock>
-                    <ul className='d-flex'>
+                    <ul className='d-flex align-items-end'>
                         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-                            <Input type="select" required style={{width: "120px"}} value={type}  onChange={(e) => {
-                                setType(e.target.value)
-                                if(e.target.value === 'receivable') {
-                                    setReceivable(true)
-                                } else {
-                                    setReceivable(false)
-                                }
-                            }}>
-                                <option value="receivable">Receivable</option>
-                                <option value="payouts">Payouts</option>
-                            </Input>
+                            <SearchComponent getPreviousData={type === 'receivable' ? getFinanceDriverLogs : getFinanceDriverPayouts} getSearchedData={type === 'receivable' ? searchFinanceDriverLogs : searchFinanceDriverPayouts} setCurrentPage={type === 'receivable' ? setCurrentPage : setCurrentPage2} getCount={type === 'receivable' ? getFinanceDriverLogsCount : getFinanceDriverPayoutsCount} placeHolder={'name, email'} />
                         </li>
                         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+                            <div className='mb-2 font-sm'>
+                                Payment Type
+                            </div>
+                            <div>
+                                <Input type="select" required style={{width: "120px"}} value={type}  onChange={(e) => {
+                                    setType(e.target.value)
+                                    if(e.target.value === 'receivable') {
+                                        setReceivable(true)
+                                    } else {
+                                        setReceivable(false)
+                                    }
+                                }}>
+                                    <option value="receivable">Receivable</option>
+                                    <option value="payouts">Payouts</option>
+                                </Input>
+                            </div>
+                        </li>
+                        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+                            <div className='mb-2 font-sm'>
+                                Date Type
+                            </div>
                             {/* <small className="fw-bold">Date Type Filter</small> */}
                             <select name="fiter-dropdown" onChange={handleChange} className="p-1 px-4">
                                 {dateTypeFilter.map((item, index) => (
@@ -329,20 +340,23 @@ const Disbursement = (props) => {
                             </select>
                         </li>
                         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-                            <small className="fw-bold mr-2">From</small>
+                            <div className='mb-2 font-sm'>
+                                Start Date
+                            </div>
                             <input type="date" id="start" name="trip-start" defaultValue={startDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => {
                                 setStartDate(e.target.value)
                             }} />
                         </li>
                         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-                            <small className="fw-bold mr-2">To</small>
+                            <div className='mb-2 font-sm'>
+                                End Date
+                            </div>
                             <input type="date" id="start" name="trip-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => {
                                 setEndDate(e.target.value)
                             }} />
                         </li>
-                        <Button onClick={() => handleSearch()} style={{height: '30px'}} className='align-items-center justify-content-center' color='success'>Apply filter</Button>
                         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-                            <SearchComponent getPreviousData={type === 'receivable' ? getFinanceDriverLogs : getFinanceDriverPayouts} getSearchedData={type === 'receivable' ? searchFinanceDriverLogs : searchFinanceDriverPayouts} setCurrentPage={type === 'receivable' ? setCurrentPage : setCurrentPage2} getCount={type === 'receivable' ? getFinanceDriverLogsCount : getFinanceDriverPayoutsCount} placeHolder={'name, email'} />
+                            <Button onClick={() => handleSearch()} color='success'>Apply filter</Button>
                         </li>
                     </ul>
                     {receivable ?
