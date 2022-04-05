@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useRef, useState} from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -9,17 +9,19 @@ import {connect} from "react-redux";
 import Pagination from "react-js-pagination";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {calculatePostDate, getStatus4, getStatusColor4} from "Helpers/helpers";
-import {Badge} from "reactstrap";
-import {getPayments} from "Actions/paymentAction";
+import {Badge, Button} from "reactstrap";
+import {getPayments, getPaymentsExport} from "Actions/paymentAction";
 import {Link} from "react-router-dom";
 import {useHistory} from "react-router-dom";
+import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 const qs = require("qs");
-const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, header, loading}) => {
+const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, header, loading, getPaymentsExport}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
+  const exportRef = useRef(null);
   const paginate = (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
@@ -27,13 +29,23 @@ const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, he
     window.scrollTo(0, 0);
   };
 
-  //   console.log(payments, "sssss");
+  const handleExport = () => {
+    exportRef.current.open();
+  };
 
-  console.log(payments);
+  const confirmExport = () => {
+    exportRef.current.close();
+    getPaymentsExport(status)
+  }
 
   return (
     <div>
       <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}}>
+        <div className="float-right">
+          {!loading && payments.length > 0 && (
+              <Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center mr-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>  Export to Excel</Button>
+          )}
+        </div>
         {!loading && payments?.length > 0 && (
           <div>
             <div className="table-responsive" style={{minHeight: "50vh"}}>
@@ -90,6 +102,8 @@ const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, he
         )}
         {!loading && payments?.length < 1 && <EmptyData />}
       </RctCollapsibleCard>
+      <DeleteConfirmationDialog ref={exportRef} title={'Are you sure you want to Export File?'} message={'This will send the excel file to your email'} onConfirm={confirmExport} />
+
     </div>
   );
 };
@@ -97,6 +111,8 @@ const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, he
 function mapDispatchToProps(dispatch) {
   return {
     getPayments: (pageNo, transaction_status, auth_id) => dispatch(getPayments(pageNo, transaction_status, auth_id)),
+    getPaymentsExport: (status,  auth_id, userType) => dispatch(getPaymentsExport(status,  auth_id, userType)),
+
   };
 }
 

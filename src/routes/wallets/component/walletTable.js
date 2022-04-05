@@ -14,14 +14,15 @@ import {getTripCount, getTrips} from "Actions/tripAction";
 import {Link} from "react-router-dom";
 import Pagination from "react-js-pagination";
 import EmptyData from "Components/EmptyData/EmptyData";
-import {getWallets, getWalletsCount, getFundingBalance} from "Actions/walletAction";
-import {Media, Badge, Card, CardBody, Col, Row} from "reactstrap";
+import {getWallets, getWalletsCount, getFundingBalance, getWalletsExport} from "Actions/walletAction";
+import {Media, Badge, Card, CardBody, Col, Row, Button} from "reactstrap";
 import moment from "moment";
 import {useHistory} from "react-router-dom";
 const qs = require("qs");
 import {getFirstDayOfMonth, getTodayDate} from "../../../helpers/helpers";
+import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 
-const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBalance, isLoading, walletsCount, fundingBalance, heading}) => {
+const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBalance, isLoading, walletsCount, fundingBalance, heading, getWalletsExport}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -31,6 +32,7 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
   const [transactionOptionType, setTransactionOptionType] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const exportRef = useRef(null);
 
   const paginate = (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
@@ -39,7 +41,6 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
     window.scrollTo(0, 0);
   };
 
-  console.log(walletsCount);
   const transactionTypeOptions = [
     {label: "Fund Wallet", value: "fund"},
     {label: "Wallet Share", value: "share"},
@@ -55,6 +56,15 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
     getWalletsCount(status, "", true, transactionOptionType, startDate, endDate);
     getFundingBalance("", status, transactionOptionType, startDate, endDate);
   };
+
+  const handleExport = () => {
+    exportRef.current.open();
+  };
+
+  const confirmExport = () => {
+    exportRef.current.close();
+    getWalletsExport(status, "", true, transactionOptionType, startDate, endDate);
+  }
 
 
   return (
@@ -80,14 +90,11 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
             Apply Filter
           </button>
         </li>
-        {/* <div className="float-right">
-        {!loading && payments.length > 0 && (
-          <CSVLink data={excelExport} filename={"drivers.csv"} className="btn-sm btn-outline-default mr-10 bg-primary text-white" target="_blank">
-            <i className="zmdi zmdi-download mr-2"></i>
-            Export to Excel
-          </CSVLink>
-        )}
-      </div> */}
+        <div className="float-right">
+          {!isLoading && wallets.length > 0 && (
+              <Button onClick={() => handleExport()} className='align-items-center justify-content-center mr-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>  Export to Excel</Button>
+          )}
+        </div>
         <Row className="mb-2">
           <Col xs="12" sm="6">
             <Card className="text-success bg-light p-3">
@@ -177,6 +184,7 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
         )}
         {wallets.length === 0 && !isLoading && <EmptyData />}
       </RctCollapsibleCard>
+      <DeleteConfirmationDialog ref={exportRef} title={'Are you sure you want to Export File?'} message={'This will send the excel file to your email'} onConfirm={confirmExport} />
     </div>
   );
 };
@@ -185,6 +193,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getWallets: (page_no, status, auth_id, spinner, transaction_type, start_date, end_date) => dispatch(getWallets(page_no, status, auth_id, spinner, transaction_type, start_date, end_date)),
     getWalletsCount: (status, auth_id, loading, transaction_type, start_date, end_date) => dispatch(getWalletsCount(status, auth_id, loading, transaction_type, start_date, end_date)),
+    getWalletsExport: (status, auth_id, loading, transaction_type, start_date, end_date) => dispatch(getWalletsExport(status, auth_id, loading, transaction_type, start_date, end_date)),
     getFundingBalance: (auth_id, status, transaction_type, start_date, end_date) => dispatch(getFundingBalance(auth_id, status, transaction_type, start_date, end_date)),
   };
 }

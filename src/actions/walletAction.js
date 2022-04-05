@@ -42,6 +42,25 @@ export const getWalletsCount =
     } catch (err) {}
   };
 
+export const getWalletsExport =
+    (status = "", auth_id, loading, transaction_type = "fund", start_date = "", end_date = "") =>
+        async (dispatch) => {
+            dispatch(startStatusLoading())
+          try {
+            const res = await axios.get(
+                `${api.wallet}/v1.1/admin/wallet-transactions?component=export&status=${status}&auth_id=${auth_id}&transaction_type=${transaction_type}&start_date=${start_date}&end_date=${end_date}`
+            );
+            if (res.data.status === "error") {
+              NotificationManager.error(res.data.msg);
+            } else {
+              NotificationManager.success('Excel file sent to your email successfully');
+            }
+            dispatch(endStatusLoading())
+          } catch (err) {
+              dispatch(startStatusLoading())
+          }
+        };
+
 export const getWalletBalance =
   (auth_id = "", status = "", transaction_type = "", start_date = "", end_date = "") =>
   async (dispatch) => {

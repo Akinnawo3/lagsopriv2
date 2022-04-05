@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useEffect} from "react";
+import React, {Fragment, useState, useEffect, useRef} from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -9,16 +9,22 @@ import {connect} from "react-redux";
 import Pagination from "react-js-pagination";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {calculatePostDate, getStatus4, getStatusColor4} from "Helpers/helpers";
-import {Badge, Card, CardBody, Col, Row} from "reactstrap";
-import {getPaymentsService, getPaymentsServiceCount, getPaymentsServiceBalance} from "Actions/paymentAction";
+import {Badge, Button, Card, CardBody, Col, Row} from "reactstrap";
+import {
+  getPaymentsService,
+  getPaymentsServiceCount,
+  getPaymentsServiceBalance,
+  getPaymentsServiceExport
+} from "Actions/paymentAction";
 import {Link} from "react-router-dom";
 import {CSVLink} from "react-csv";
 import moment from "moment";
 import {useHistory} from "react-router-dom";
 const qs = require("qs");
 import {getFirstDayOfMonth, getTodayDate} from "../../../helpers/helpers";
+import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 
-const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayments, header, loading, getPaymentsServiceCount, paymentsServiceBalance, getPaymentsServiceBalance}) => {
+const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayments, header, loading, getPaymentsServiceCount, paymentsServiceBalance, getPaymentsServiceBalance, getPaymentsServiceExport}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -28,6 +34,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
   const [paymentOptionType, setPaymentOptionType] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const exportRef = useRef(null);
 
   const paginate = (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
@@ -68,23 +75,21 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
     }
   }, [payments]);
 
-  // [
-  //   {
-  //     user_type: "rider",
-  //     first_name: "Increase",
-  //     phone_number: "08111111112",
-  //     last_name: "Lrtester",
-  //     email: "increase.nkanta@zeno.no",
-  //   },
-  // ];
-
-  console.log(paymentsServiceBalance);
   const applyFilter = () => {
     history.push(`${history.location.pathname}?page=${1}`);
     getPayments(1, status, auth_id, false, paymentOptionType, startDate, endDate);
     getPaymentsServiceCount(status, auth_id, paymentOptionType, startDate, endDate);
     getPaymentsServiceBalance(status, auth_id, paymentOptionType, startDate, endDate);
   };
+
+  const handleExport = () => {
+    exportRef.current.open();
+  };
+
+  const confirmExport = () => {
+    exportRef.current.close();
+    getPaymentsServiceExport(status, auth_id, paymentOptionType, startDate, endDate);
+  }
 
   return (
     <div>
@@ -111,10 +116,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
         </li>
         <div className="float-right">
           {!loading && payments.length > 0 && (
-            <CSVLink data={excelExport} filename={"drivers.csv"} className="btn-sm btn-outline-default mr-10 bg-primary text-white" target="_blank">
-              <i className="zmdi zmdi-download mr-2"></i>
-              Export to Excel
-            </CSVLink>
+              <Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center mr-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>  Export to Excel</Button>
           )}
         </div>
 
@@ -204,6 +206,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
         )}
         {!loading && payments?.length < 1 && <EmptyData />}
       </RctCollapsibleCard>
+      <DeleteConfirmationDialog ref={exportRef} title={'Are you sure you want to Export File?'} message={'This will send the excel file to your email'} onConfirm={confirmExport} />
     </div>
   );
 };
@@ -213,6 +216,7 @@ function mapDispatchToProps(dispatch) {
     getPayments: (pageNo, transaction_status, auth_id, loading, payment_type, start_date, end_date) =>
       dispatch(getPaymentsService(pageNo, transaction_status, auth_id, loading, payment_type, start_date, end_date)),
     getPaymentsServiceCount: (transaction_status, auth_id, payment_type, start_date, end_date) => dispatch(getPaymentsServiceCount(transaction_status, auth_id, payment_type, start_date, end_date)),
+    getPaymentsServiceExport: (transaction_status, auth_id, payment_type, start_date, end_date) => dispatch(getPaymentsServiceExport(transaction_status, auth_id, payment_type, start_date, end_date)),
     getPaymentsServiceBalance: (transaction_status, auth_id, payment_type, start_date, end_date) =>
       dispatch(getPaymentsServiceBalance(transaction_status, auth_id, payment_type, start_date, end_date)),
   };

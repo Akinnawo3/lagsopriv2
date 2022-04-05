@@ -7,25 +7,27 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import {Media, Badge} from "reactstrap";
+import {Media, Badge, Button} from "reactstrap";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import {connect} from "react-redux";
-import {getTripCount, getTrips, searchTrip} from "Actions/tripAction";
+import {getTripCount, getTripExport, getTrips, searchTrip} from "Actions/tripAction";
 import {Link} from "react-router-dom";
 import Pagination from "react-js-pagination";
 import EmptyData from "Components/EmptyData/EmptyData";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {getCancelledTripCount, getCancelledTrips} from "../../../actions/tripAction";
 import {useHistory} from "react-router-dom";
+import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 const qs = require("qs");
 
-const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, searchTrips, getTripCount, getCancelledTrips, getCancelledTripCount}) => {
+const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, searchTrips, getTripCount, getCancelledTrips, getCancelledTripCount, getTripExport}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
   const [postsPerPage] = useState(20);
+  const exportRef = useRef(null);
   const paginate = async (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
     await setCurrentPage(pageNumber);
@@ -45,7 +47,14 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
     status === "cancel" ? getCancelledTripCount() : getTripCount(status);
   };
 
-  console.log(trips);
+  const handleExport = () => {
+    exportRef.current.open();
+  };
+
+  const confirmExport = () => {
+    exportRef.current.close();
+    getTripExport(status)
+  }
 
   return (
     <div>
@@ -55,19 +64,11 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
             <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={"Trip Id"} />
           </li>
         )}
-        {/*<div className="float-right">*/}
-        {/*	{!isLoading && drivers.length > 0 &&*/}
-        {/*	<CSVLink*/}
-        {/*		data={excelExport}*/}
-        {/*		filename={"drivers.csv"}*/}
-        {/*		className="btn-sm btn-outline-default mr-10 bg-primary text-white"*/}
-        {/*		target="_blank"*/}
-        {/*	>*/}
-        {/*		<i className="zmdi zmdi-download mr-2"></i>*/}
-        {/*		Export to Excel*/}
-        {/*	</CSVLink>*/}
-        {/*	}*/}
-        {/*</div>*/}
+        <div className="float-right">
+          {!isLoading && trips.length > 0 && (
+              <Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center mr-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>  Export to Excel</Button>
+          )}
+        </div>
         {!isLoading && trips.length > 0 && (
           <div>
             <div className="table-responsive" style={{minHeight: "50vh"}}>
@@ -149,6 +150,7 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
         )}
         {trips.length === 0 && !isLoading && <EmptyData />}
       </RctCollapsibleCard>
+      <DeleteConfirmationDialog ref={exportRef} title={'Are you sure you want to Export File?'} message={'This will send the excel file to your email'} onConfirm={confirmExport} />
     </div>
   );
 };
@@ -157,6 +159,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getTrips: (pageNo, status, spinner) => dispatch(getTrips(pageNo, status, spinner)),
     getTripCount: (status) => dispatch(getTripCount(status)),
+    getTripExport: (status) => dispatch(getTripExport(status)),
     searchTrips: (trip_id, status) => dispatch(searchTrip(trip_id, status)),
     getCancelledTrips: (pageNo, spinner) => dispatch(getCancelledTrips(pageNo, spinner)),
     getCancelledTripCount: () => dispatch(getCancelledTripCount()),
