@@ -73,6 +73,8 @@ module.exports = {
   "sidebar.driverRatings": "Driver Ratings",
   "sidebar.refunds": "Refunds",
   "sidebar.pending": "Pending",
+  "sidebar.undecided": "Undecided",
+  "sidebar.refund": "Refund",
   "sidebar.cancellations": "Cancellations",
   "sidebar.classTypes": "Class Types",
   "sidebar.bookingTypes": "Booking Types",

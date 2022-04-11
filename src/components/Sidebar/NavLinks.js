@@ -252,6 +252,11 @@ export default {
           menu_title: "sidebar.debit",
         },
         {
+          path: "/admin/wallets/refund",
+          new_item: false,
+          menu_title: "sidebar.refund",
+        },
+        {
           path: "/admin/wallets",
           new_item: false,
           menu_title: "sidebar.all",
@@ -292,6 +297,11 @@ export default {
           path: "/admin/payments-service/pending",
           new_item: false,
           menu_title: "sidebar.pending",
+        },
+        {
+          path: "/admin/payments-service/refund",
+          new_item: false,
+          menu_title: "sidebar.refund",
         },
         {
           path: "/admin/payments-service",

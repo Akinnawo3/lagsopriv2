@@ -126,6 +126,11 @@ const AsyncPaymentsServicePending = Loadable({
   loading: () => <RctPageLoader />,
 });
 
+const AsyncPaymentsServiceRefund = Loadable({
+  loader: () => import("Routes/payments-service/refundPaymentsService"),
+  loading: () => <RctPageLoader />,
+});
+
 const AsyncFinance = Loadable({
   loader: () => import("Routes/reconciliation/finance"),
   loading: () => <RctPageLoader />,
@@ -364,6 +369,10 @@ const AsyncWalletsCompleted = Loadable({
   loader: () => import("Routes/wallets/walletsCompleted"),
   loading: () => <RctPageLoader />,
 });
+const AsyncWalletsRefund = Loadable({
+  loader: () => import("Routes/wallets/walletsRefund"),
+  loading: () => <RctPageLoader />,
+});
 const AsyncWalletsCancelled = Loadable({
   loader: () => import("Routes/wallets/walletsCancelled"),
   loading: () => <RctPageLoader />,
@@ -588,5 +597,7 @@ export {
   AsyncFinance,
   AsyncDisbursement,
   AsyncVehiclesFeedbackDetails,
-  AsyncDisbursementHolders
+  AsyncDisbursementHolders,
+  AsyncPaymentsServiceRefund,
+  AsyncWalletsRefund
 };

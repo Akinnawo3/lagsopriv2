@@ -65,6 +65,30 @@ export const getPaymentsCount =
     } catch (err) {}
   };
 
+export const searchPayment = (searchData, status) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?q=${searchData}&status=${status}`);
+
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      const res2 = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?component=count&status=${status}&q=${searchData}`);
+      dispatch({
+        type: PAYMENTS_COUNT,
+        payload: res2.data.data.total ? res2.data.data.total : 0,
+      });
+      dispatch({
+        type: PAYMENTS,
+        payload: res.data.data,
+      });
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+  }
+};
+
 export const getPaymentsExport =
     (status = "", auth_id = "", userType = 'rider_id') =>
         async (dispatch) => {

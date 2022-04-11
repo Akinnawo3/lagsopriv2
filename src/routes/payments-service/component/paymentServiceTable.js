@@ -8,7 +8,7 @@ import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard
 import {connect} from "react-redux";
 import Pagination from "react-js-pagination";
 import EmptyData from "Components/EmptyData/EmptyData";
-import {calculatePostDate, getStatus4, getStatusColor4} from "Helpers/helpers";
+import {calculatePostDate, getStatus4, getStatus5, getStatusColor4, getStatusColor5} from "Helpers/helpers";
 import {Badge, Button, Card, CardBody, Col, Row} from "reactstrap";
 import {
   getPaymentsService,
@@ -178,7 +178,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
                         <TableCell>{user.payment_type}</TableCell>
                         <TableCell>₦{user?.actual_amount?.toLocaleString()}</TableCell>
                         <TableCell>
-                          <Badge color={getStatusColor4(user.status)}>{getStatus4(user.status)} </Badge>
+                          <Badge color={getStatusColor5(user.status)}>{getStatus5(user.status)} </Badge>
                         </TableCell>
 
                         <TableCell>{user?.user_data.length ? `${user?.user_data[0]?.first_name} ${user?.user_data[0]?.last_name}` : ""}</TableCell>
