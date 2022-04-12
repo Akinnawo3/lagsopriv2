@@ -12,7 +12,7 @@ export const getVehicles =
     try {
       spinner && dispatch(startLoading());
       !spinner && dispatch(startStatusLoading());
-      const res = await axios.get(`${api.vehicles}/v1.1/vehicles?item_per_page=20&page=${page_no}&assign=${assign}&car_number_plate=${car_number_plate}`);
+      const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicles?item_per_page=20&page=${page_no}&assign=${assign}&car_number_plate=${car_number_plate}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -36,7 +36,7 @@ export const getVehiclesFeedback =
     try {
       spinner && dispatch(startLoading());
       !spinner && dispatch(startStatusLoading());
-      const res = await axios.get(`${api.vehicles}/v1.1/vehicles/comments?item_per_page=20&page=${page_no}`);
+      const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicle-comments?item_per_page=20&page=${page_no}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -58,7 +58,7 @@ export const getVehicle = (vehicle_id, spinner) => async (dispatch) => {
   try {
     spinner && dispatch(startLoading());
     !spinner && dispatch(startStatusLoading());
-    const res = await axios.get(`${api.vehicles}/v1.1/vehicles/${vehicle_id}`);
+    const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicles/${vehicle_id}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
@@ -82,7 +82,7 @@ export const getVehicleFeedbackDetails = (comment_id, spinner) => async (dispatc
   try {
     spinner && dispatch(startLoading());
     !spinner && dispatch(startStatusLoading());
-    const res = await axios.get(`${api.vehicles}/v1.1/vehicles/comments/${comment_id}`);
+    const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicle-comments/${comment_id}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
@@ -102,7 +102,7 @@ export const getVehicleFeedbackDetails = (comment_id, spinner) => async (dispatc
 export const assignVehicleFeedback = (comment_id, admin_id) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
-    const res = await axios.post(`${api.vehicles}/v1.1/vehicles/assign-comment`, {comment_id, admin_id});
+    const res = await axios.post(`${api.vehicles}/v1.1/admin/assign-vehicle-comment`, {comment_id, admin_id});
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
@@ -117,7 +117,7 @@ export const assignVehicleFeedback = (comment_id, admin_id) => async (dispatch) 
 export const updateVehicleFeedbackStatus = (comment_id, status) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
-    const res = await axios.put(`${api.vehicles}/v1.1/vehicles/comment-status`, {comment_id, status});
+    const res = await axios.put(`${api.vehicles}/v1.1/admin/vehicle-comment-status`, {comment_id, status});
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
@@ -133,7 +133,7 @@ export const getVehiclesCount =
   (assign = "", car_number_plate = "") =>
   async (dispatch) => {
     try {
-      const res = await axios.get(`${api.vehicles}/v1.1/vehicles?component=count&assign=${assign}&car_number_plate=${car_number_plate}`);
+      const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicles?component=count&assign=${assign}&car_number_plate=${car_number_plate}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -149,7 +149,7 @@ export const getVehiclesCount =
 
 export const getVehiclesFeedbackCount = () => async (dispatch) => {
   try {
-    const res = await axios.get(`${api.vehicles}/v1.1/vehicles/comments?component=count`);
+    const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicle-comments?component=count`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
@@ -162,12 +162,12 @@ export const getVehiclesFeedbackCount = () => async (dispatch) => {
     NotificationManager.error(err.response.data.message);
   }
 };
-export const createVehicles = (car_number_plate, car_make, car_model, car_desc, car_color, oem_id, oem_vehicle_id) => async (dispatch) => {
+export const createVehicles = (car_number_plate, car_make, car_model, car_desc, car_color, oem_id, oem_vehicle_id, purchase_year, chassis_number, engine_number) => async (dispatch) => {
   dispatch(startStatusLoading());
   console.log(oem_id);
-  const body = {car_number_plate, car_make, car_model, car_desc, car_color, oem_id, oem_vehicle_id};
+  const body = {car_number_plate, car_make, car_model, car_desc, car_color, oem_id, oem_vehicle_id, purchase_year, chassis_number, engine_number};
   try {
-    const res = await axios.post(`${api.vehicles}/v1.1/vehicles`, body);
+    const res = await axios.post(`${api.vehicles}/v1.1/admin/vehicles`, body);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
@@ -182,11 +182,11 @@ export const createVehicles = (car_number_plate, car_make, car_model, car_desc, 
   }
 };
 
-export const updateVehicle = (vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign, oem_id, oem_vehicle_id) => async (dispatch) => {
-  const body = {car_number_plate, car_make, car_model, car_desc, car_color, oem_id, oem_vehicle_id};
+export const updateVehicle = (vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign, oem_id, oem_vehicle_id, purchase_year, chassis_number, engine_number) => async (dispatch) => {
+  const body = {car_number_plate, car_make, car_model, car_desc, car_color, oem_id, oem_vehicle_id, purchase_year, chassis_number, engine_number};
   try {
     dispatch(startStatusLoading());
-    const res = await axios.put(`${api.vehicles}/v1.1/vehicles/${vehicle_id}`, body);
+    const res = await axios.put(`${api.vehicles}/v1.1/admin/vehicles/${vehicle_id}`, body);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
@@ -204,7 +204,7 @@ export const updateVehicle = (vehicle_id, car_number_plate, car_make, car_model,
 export const deleteVehicle = (vehicle_id, vehicles) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
-    const res = await axios.delete(`${api.vehicles}/v1.1/vehicles/${vehicle_id}`);
+    const res = await axios.delete(`${api.vehicles}/v1.1/admin/vehicles/${vehicle_id}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
@@ -225,7 +225,7 @@ export const deleteVehicle = (vehicle_id, vehicles) => async (dispatch) => {
 export const revokeVehicle = (vehicle_id, vehicleDetails, driverDetails) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
-    const res = await axios.post(`${api.vehicles}/v1.1/vehicles/revoke`, {vehicle_id});
+    const res = await axios.post(`${api.vehicles}/v1.1/admin/revoke-vehicle`, {vehicle_id});
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
@@ -248,7 +248,7 @@ export const assignVehicleOnProfile = (vehicle_id, driver_auth_id, driverData, v
   const body = {vehicle_id, driver_auth_id};
   try {
     dispatch(startStatusLoading());
-    const res = await axios.post(`${api.vehicles}/v1.1/vehicles/assign`, body);
+    const res = await axios.post(`${api.vehicles}/v1.1/admin/assign-vehicle`, body);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
@@ -266,7 +266,7 @@ export const assignVehicleOnProfile = (vehicle_id, driver_auth_id, driverData, v
 export const searchVehicles = (data, assign) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
-    const res = await axios.get(`${api.vehicles}/v1.1/vehicles?q=${data}&assign=${assign}`);
+    const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicles?q=${data}&assign=${assign}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {

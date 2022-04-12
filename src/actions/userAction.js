@@ -6,12 +6,12 @@ import api from "../environments/environment";
 import {sendMessage} from "./messagesAction";
 import {onUserDetailsResetModalClose} from "../routes/users/users";
 export const getUsers =
-  (page_no = 1, loading) =>
+  (page_no = 1, loading, start_date = '', end_date = '') =>
   async (dispatch) => {
     try {
       loading && (await dispatch(startLoading()));
       !loading && dispatch(startStatusLoading());
-      const res = await axios.get(`${api.user}/v1.1/admin/users?item_per_page=20&page=${page_no}`);
+      const res = await axios.get(`${api.user}/v1.1/admin/users?item_per_page=20&page=${page_no}&start_date=${start_date}&end_date=${end_date}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -28,9 +28,9 @@ export const getUsers =
     }
   };
 
-export const getUserCount = () => async (dispatch) => {
+export const getUserCount = (start_date = '', end_date = '') => async (dispatch) => {
   try {
-    const res = await axios.get(`${api.user}/v1.1/admin/users?component=count`);
+    const res = await axios.get(`${api.user}/v1.1/admin/users?component=count&start_date=${start_date}&end_date=${end_date}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
@@ -42,10 +42,10 @@ export const getUserCount = () => async (dispatch) => {
   } catch (err) {}
 };
 
-export const getUserExport = (user_type = '', driver_category = '', driver_account_status = '') => async (dispatch) => {
+export const getUserExport = (user_type = '', driver_category = '', driver_account_status = '', start_date = '', end_date = '') => async (dispatch) => {
   dispatch(startStatusLoading());
   try {
-    const res = await axios.get(`${api.user}/v1.1/admin/users?component=export&user_type=${user_type}&driver_category=${driver_category}&driver_account_status=${driver_account_status}`);
+    const res = await axios.get(`${api.user}/v1.1/admin/users?component=export&user_type=${user_type}&driver_category=${driver_category}&driver_account_status=${driver_account_status}&start_date=${start_date}&end_date=${end_date}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {

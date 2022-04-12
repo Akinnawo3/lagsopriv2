@@ -10,7 +10,7 @@ import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard
 import {getDrivers, getDriversCount, searchDrivers} from "Actions/driverAction";
 import {CSVLink} from "react-csv";
 import Pagination from "react-js-pagination";
-import {calculatePostDate, getStatus, getStatusColor} from "Helpers/helpers";
+import {calculatePostDate, getStatus, getStatusColor, getTodayDate} from "Helpers/helpers";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {Link} from "react-router-dom";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
@@ -28,6 +28,8 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
   const [appStatus, setAppStatus] = useState("");
   const [paymentStatus, setPaymentStatus] = useState("");
   const [driverCategory, setDriverCategory] = useState("");
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const exportRef = useRef(null);
 
 
@@ -85,7 +87,12 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
 
   const confirmExport = () => {
     exportRef.current.close();
-    getUserExport('driver', driverCategory, status)
+    getUserExport('driver', driverCategory, status, startDate, endDate)
+  }
+
+  const handleFilter = () => {
+    getDrivers(status, 1, false, appStatus, '', driverCategory, startDate, endDate);
+    getDriversCount(status, startDate, endDate)
   }
 
 
@@ -121,6 +128,21 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
             </select>
           </li>
         )}
+        {/*<div>*/}
+        <li className="list-inline-item search-icon d-inline-block mb-2">
+          <small className="fw-bold mr-2">From</small>
+          <input type="date" id="start" name="trip-start" defaultValue={startDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => {
+            setStartDate(e.target.value)
+          }} />
+        </li>
+        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+          <small className="fw-bold mr-2">To</small>
+          <input type="date" id="start" name="trip-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => {
+            setEndDate(e.target.value)
+          }} />
+        </li>
+        <Button onClick={() => handleFilter()} style={{height: '30px'}} className='align-items-center justify-content-center' color='success'>Apply filter</Button>
+        {/*</div>*/}
         <div className="float-right">
           {!isLoading && drivers.length > 0 && (
               <Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center mr-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>  Export to Excel</Button>
@@ -195,11 +217,11 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
 
 function mapDispatchToProps(dispatch) {
   return {
-    getDrivers: (status, page_no, spinner, driver_online_status, asset_payment, driver_category) =>
-      dispatch(getDrivers(status, page_no, spinner, driver_online_status, asset_payment, driver_category)),
+    getDrivers: (status, page_no, spinner, driver_online_status, asset_payment, driver_category, start_date, end_date) =>
+      dispatch(getDrivers(status, page_no, spinner, driver_online_status, asset_payment, driver_category, start_date, end_date)),
     searchDrivers: (searchData, status) => dispatch(searchDrivers(searchData, status)),
-    getDriversCount: (status) => dispatch(getDriversCount(status)),
-    getUserExport: (user_type, driver_category, driver_account_status) => dispatch(getUserExport(user_type, driver_category, driver_account_status)),
+    getDriversCount: (status, start_date, end_date) => dispatch(getDriversCount(status, start_date, end_date)),
+    getUserExport: (user_type, driver_category, driver_account_status, start_date, end_date) => dispatch(getUserExport(user_type, driver_category, driver_account_status, start_date, end_date)),
 
   };
 }
