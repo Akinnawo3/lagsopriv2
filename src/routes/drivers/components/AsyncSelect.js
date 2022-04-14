@@ -36,7 +36,12 @@ const AsyncSelectComponent = ({onChange}) => {
       }, 1000);
     });
 
-  return <AsyncSelect cacheOptions defaultOptions loadOptions={promiseOptions} onChange={itemChange} />;
+  return (
+    <div>
+      <div>Select vehicle</div>
+      <AsyncSelect cacheOptions defaultOptions loadOptions={promiseOptions} onChange={itemChange} placeholder="Search by colour, plate number, model or year " />
+    </div>
+  );
 };
 
 export default AsyncSelectComponent;
