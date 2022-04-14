@@ -64,6 +64,7 @@ const DriverProfile = ({
     }
   }, [vehicle]);
 
+  console.log(driver);
   const opnAddVehicleModal = () => {
     setAddVehicleModal(true);
   };
@@ -897,7 +898,6 @@ const DriverProfile = ({
                   {item}
                 </FormGroup>
               ))}
-
               <ModalFooter>
                 <Button type="submit" variant="contained" className="text-white btn-danger">
                   Proceed

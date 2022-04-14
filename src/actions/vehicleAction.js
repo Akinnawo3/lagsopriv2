@@ -106,7 +106,7 @@ export const assignVehicleFeedback = (comment_id, admin_id) => async (dispatch) 
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-     dispatch(getVehicleFeedbackDetails(comment_id, false))
+      dispatch(getVehicleFeedbackDetails(comment_id, false));
     }
     dispatch(endStatusLoading());
   } catch (err) {
@@ -121,7 +121,7 @@ export const updateVehicleFeedbackStatus = (comment_id, status) => async (dispat
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      dispatch(getVehicleFeedbackDetails(comment_id, false))
+      dispatch(getVehicleFeedbackDetails(comment_id, false));
     }
     dispatch(endStatusLoading());
   } catch (err) {
@@ -182,24 +182,25 @@ export const createVehicles = (car_number_plate, car_make, car_model, car_desc, 
   }
 };
 
-export const updateVehicle = (vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign, oem_id, oem_vehicle_id, purchase_year, chassis_number, engine_number) => async (dispatch) => {
-  const body = {car_number_plate, car_make, car_model, car_desc, car_color, oem_id, oem_vehicle_id, purchase_year, chassis_number, engine_number};
-  try {
-    dispatch(startStatusLoading());
-    const res = await axios.put(`${api.vehicles}/v1.1/admin/vehicles/${vehicle_id}`, body);
-    if (res.data.status === "error") {
-      NotificationManager.error(res.data.msg);
-    } else {
-      await NotificationManager.success("Vehicle Updated Successfully");
-      onAddUpdateVehicleModalClose();
-      await dispatch(getVehicles(page_no, assign));
+export const updateVehicle =
+  (vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign, oem_id, oem_vehicle_id, purchase_year, chassis_number, engine_number) => async (dispatch) => {
+    const body = {car_number_plate, car_make, car_model, car_desc, car_color, oem_id, oem_vehicle_id, purchase_year, chassis_number, engine_number};
+    try {
+      dispatch(startStatusLoading());
+      const res = await axios.put(`${api.vehicles}/v1.1/admin/vehicles/${vehicle_id}`, body);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        await NotificationManager.success("Vehicle Updated Successfully");
+        onAddUpdateVehicleModalClose();
+        await dispatch(getVehicles(page_no, assign));
+      }
+      dispatch(endStatusLoading());
+    } catch (err) {
+      dispatch(endStatusLoading());
+      NotificationManager.error(err.response.data.result);
     }
-    dispatch(endStatusLoading());
-  } catch (err) {
-    dispatch(endStatusLoading());
-    NotificationManager.error(err.response.data.result);
-  }
-};
+  };
 
 export const deleteVehicle = (vehicle_id, vehicles) => async (dispatch) => {
   try {
@@ -245,7 +246,7 @@ export const revokeVehicle = (vehicle_id, vehicleDetails, driverDetails) => asyn
 };
 
 export const assignVehicleOnProfile = (vehicle_id, driver_auth_id, driverData, vehicleData, message_type, subject) => async (dispatch) => {
-  const body = {vehicle_id, driver_auth_id};
+  const body = {vehicle_id, auth_id: driver_auth_id};
   try {
     dispatch(startStatusLoading());
     const res = await axios.post(`${api.vehicles}/v1.1/admin/assign-vehicle`, body);
