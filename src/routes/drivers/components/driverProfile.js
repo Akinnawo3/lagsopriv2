@@ -110,6 +110,7 @@ const DriverProfile = ({
     //     driver?.driver_data?.nin_id?.status
     // ) {
     //     NotificationManager.error("All IDs are not yet verified !");
+    // cc?
     // }
     // else {
     setTitle("Are you sure you want to verify driver");
