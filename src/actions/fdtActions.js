@@ -6,11 +6,11 @@ import api from "../environments/environment";
 
 
 
-  export const getFdt = (page_no=1, spinner) => async dispatch => {
+  export const getFdt = (page_no=1, spinner, start_date = '', end_date = '') => async dispatch => {
   try {
   spinner &&  dispatch(startLoading());
   !spinner && dispatch(startStatusLoading())
-    const res = await axios.get(`${api.fdt}/v1.1/fdts?ride_type=fdt&component=group&item_per_page=20&page=${page_no}`);
+    const res = await axios.get(`${api.fdt}/v1.1/fdts?ride_type=fdt&component=group&item_per_page=20&page=${page_no}&start_date=${start_date}&end_date=${end_date}`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -47,9 +47,9 @@ export const getFdtDetails = (auth_id) => async dispatch => {
   }
 };
 
-export const getFdtCount = () => async dispatch => {
+export const getFdtCount = (start_date= '', end_date = '') => async dispatch => {
   try {
-    const res = await axios.get(`${api.fdt}/v1.1/fdts?ride_type=fdt&component=group-count`);
+    const res = await axios.get(`${api.fdt}/v1.1/fdts?ride_type=fdt&component=group-count&start_date=${start_date}&end_date=${end_date}`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -63,11 +63,43 @@ export const getFdtCount = () => async dispatch => {
   }
 };
 
-export const getSchedule = (page_no=1, spinner) => async dispatch => {
+export const exportFdt = (start_date = '', end_date = '') => async dispatch => {
+  dispatch(startStatusLoading())
+  try {
+    const res = await axios.get(`${api.fdt}/v1.1/fdts?ride_type=fdt&component=export&start_date=${start_date}&end_date=${end_date}`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      NotificationManager.success('Excel file sent to your email successfully');
+    }
+    dispatch(endStatusLoading())
+  } catch (err) {
+    NotificationManager.error(err.response.data.result)
+    dispatch(endStatusLoading())
+  }
+};
+
+export const exportSchedule = (start_date = '', end_date = '') => async dispatch => {
+  dispatch(startStatusLoading())
+  try {
+    const res = await axios.get(`${api.fdt}/v1.1/fdts?ride_type=schedule&component=export&start_date=${start_date}&end_date=${end_date}`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      NotificationManager.success('Excel file sent to your email successfully');
+    }
+    dispatch(endStatusLoading())
+  } catch (err) {
+    NotificationManager.error(err.response.data.result)
+    dispatch(endStatusLoading())
+  }
+};
+
+export const getSchedule = (page_no=1, spinner, start_date = '', end_date = '') => async dispatch => {
   try {
     spinner &&  dispatch(startLoading());
     !spinner && dispatch(startStatusLoading())
-    const res = await axios.get(`${api.fdt}/v1.1/fdts?ride_type=schedule&component=group&item_per_page=20&page=${page_no}`);
+    const res = await axios.get(`${api.fdt}/v1.1/fdts?ride_type=schedule&component=group&item_per_page=20&page=${page_no}&start_date=${start_date}&end_date=${end_date}`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -104,9 +136,9 @@ export const getScheduleDetails = (auth_id) => async dispatch => {
   }
 };
 
-export const getScheduleCount = () => async dispatch => {
+export const getScheduleCount = (start_date = '', end_date = '') => async dispatch => {
   try {
-    const res = await axios.get(`${api.fdt}/v1.1/fdts?ride_type=schedule&component=count`);
+    const res = await axios.get(`${api.fdt}/v1.1/fdts?ride_type=schedule&component=count&start_date=${start_date}&end_date=${end_date}`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {

@@ -1,7 +1,7 @@
 /**
  * Schedule
  */
-import React, {useState, useEffect, Fragment} from "react";
+import React, {useState, useEffect, Fragment, useRef} from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -11,17 +11,22 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
-import {getFdtCount, getSchedule, getScheduleCount} from "Actions/fdtActions";
+import {exportSchedule, getFdtCount, getSchedule, getScheduleCount} from "Actions/fdtActions";
 import Pagination from "react-js-pagination";
 import EmptyData from "Components/EmptyData/EmptyData";
-import {Badge} from "reactstrap";
+import {Badge, Button} from "reactstrap";
+import {getTodayDate} from "Helpers/helpers";
+import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 const qs = require("qs");
 
-const Schedule = ({history, match, getSchedule, schedule, loading, getScheduleCount, scheduleCount}) => {
+const Schedule = ({history, match, getSchedule, schedule, loading, getScheduleCount, scheduleCount, exportSchedule}) => {
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const exportRef = useRef(null);
   useEffect(() => {
     if (pageFromQuery === undefined || schedule.length < 1) {
       getSchedule(currentPage, true);
@@ -36,10 +41,43 @@ const Schedule = ({history, match, getSchedule, schedule, loading, getScheduleCo
     getSchedule(pageNumber);
   };
 
+  const handleFilter = () => {
+    getSchedule(1, false, startDate, endDate)
+    getScheduleCount(startDate, endDate)
+  }
+
+  const handleExport = () => {
+    exportRef.current.open();
+  };
+
+  const confirmExport = () => {
+    exportRef.current.close();
+    exportSchedule(startDate, endDate)
+  }
+
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Schedules"} match={match} />
       <RctCollapsibleCard heading={"Schedules"} fullBlock style={{minHeight: "70vh"}}>
+        <div className='ml-2'>
+          <li className="list-inline-item search-icon d-inline-block mb-2">
+            <small className="fw-bold mr-2">From</small>
+            <input type="date" id="start" name="trip-start" defaultValue={startDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => {
+              setStartDate(e.target.value)
+            }} />
+          </li>
+          <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+            <small className="fw-bold mr-2">To</small>
+            <input type="date" id="start" name="trip-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => {
+              setEndDate(e.target.value)
+            }} />
+          </li>
+          <Button onClick={() => handleFilter()} style={{height: '30px'}} className='align-items-center justify-content-center' color='success'>Apply filter</Button>
+
+          <div className="float-right">
+            <Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center mr-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>  Export to Excel</Button>
+          </div>
+        </div>
         {schedule.length > 0 && (
           <div>
             <div className="table-responsive" style={{minHeight: "50vh"}}>
@@ -90,14 +128,16 @@ const Schedule = ({history, match, getSchedule, schedule, loading, getScheduleCo
         )}
         {schedule?.length < 1 && <EmptyData />}
       </RctCollapsibleCard>
+      <DeleteConfirmationDialog ref={exportRef} title={'Are you sure you want to Export File?'} message={'This will send the excel file to your email'} onConfirm={confirmExport} />
     </div>
   );
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    getSchedule: (page_no, spinner) => dispatch(getSchedule(page_no, spinner)),
-    getScheduleCount: () => dispatch(getScheduleCount()),
+    getSchedule: (page_no, spinner, start_date, end_date) => dispatch(getSchedule(page_no, spinner, start_date, end_date)),
+    getScheduleCount: (start_date, end_date) => dispatch(getScheduleCount(start_date, end_date)),
+    exportSchedule: (start_date, end_date) => dispatch(exportSchedule(start_date, end_date)),
   };
 }
 
