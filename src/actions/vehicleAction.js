@@ -254,15 +254,16 @@ export const assignVehicleOnProfile = (vehicle_id, driver_auth_id, driverData, v
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      onAddVehicleModalClose();
       await NotificationManager.success("Vehicle assigned Successfully!");
       await dispatch(sendVehicleAssignMessage(driverData, vehicleData, message_type, subject));
       await dispatch(getDriver(driver_auth_id, true));
+      onAddVehicleModalClose();
     }
     dispatch(endStatusLoading());
   } catch (err) {
     dispatch(endStatusLoading());
-    NotificationManager.error(err.response.data.error);
+    console.log(err);
+    // NotificationManager.error(err.response.data.error);
   }
 };
 

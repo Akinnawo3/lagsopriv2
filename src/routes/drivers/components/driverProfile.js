@@ -78,9 +78,10 @@ const DriverProfile = ({
   };
 
   const onSubmit = async (e) => {
-    console.log(formData);
+    onAddVehicleModalClose();
     e.preventDefault();
     if (formData?.vehicle) {
+      console.log(vehicleData);
       await assignVehicle(vehicle?.vehicle_id, driver?.auth_id, driver, vehicleData, "5M");
       await changeDriverStatus(
         driver?.auth_id,
@@ -88,7 +89,7 @@ const DriverProfile = ({
         driver,
         emailMessages.approveMsg({
           firstName: driver?.first_name,
-          vehicleDetails: vehicleData,
+          vehicleDetails: vehicle,
         }),
         "Driver Approved"
       );
