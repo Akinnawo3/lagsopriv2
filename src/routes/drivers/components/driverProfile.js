@@ -15,6 +15,7 @@ import TableCell from "@material-ui/core/TableCell";
 import suspensionReasonsList from "../../../assets/data/suspension-reasons/suspensionReasonsList";
 import Spinner from "Components/spinner/Spinner";
 import {verifyUserPermssion} from "../../../container/DefaultLayout";
+import AsyncSelectComponent from "./AsyncSelect";
 
 const DriverProfile = ({
   driver,
@@ -50,7 +51,10 @@ const DriverProfile = ({
     email: driver?.email,
     vehicle: "",
   });
-  const onChange = (e) => setFormData({...formData, [e.target.name]: e.target.value});
+  const onChange = (e) => {
+    console.log(e);
+    setFormData({...formData, [e.target.name]: e.target.value});
+  };
 
   const {vehicle} = formData;
 
@@ -116,16 +120,16 @@ const DriverProfile = ({
     inputEl.current.open();
   };
 
-  const onApproved = () => {
-    if (!driver.driver_data?.vehicle_id) {
-      NotificationManager.error("A vehicle must be assigned to the driver before approval");
-    } else {
-      setTitle("Are you sure you want to approve driver");
-      setMessage("This driver will be approved on the platform.");
-      setArgument(4);
-      inputEl.current.open();
-    }
-  };
+  // const onApproved = () => {
+  //   if (!driver.driver_data?.vehicle_id) {
+  //     NotificationManager.error("A vehicle must be assigned to the driver before approval");
+  //   } else {
+  //     setTitle("Are you sure you want to approve driver");
+  //     setMessage("This driver will be approved on the platform.");
+  //     setArgument(4);
+  //     inputEl.current.open();
+  //   }
+  // };
   const onSuspend = (e) => {
     e.preventDefault();
     if (!suspensionReasons.length) {
@@ -851,6 +855,7 @@ const DriverProfile = ({
         <ModalHeader toggle={() => onAddVehicleModalClose()}>Assign Vehicle</ModalHeader>
         <ModalBody>
           <div>
+            {/* <AsyncSelect cacheOptions defaultOptions loadOptions={promiseOptions} onChange={() => null} />; */}
             <Form onSubmit={onSubmit}>
               <FormGroup>
                 <Label for="userName">First Name</Label>
@@ -864,7 +869,7 @@ const DriverProfile = ({
                 <Label for="userEmail">Email</Label>
                 <Input onChange={onChange} type="email" name="email" readOnly={true} value={driver?.email} />
               </FormGroup>
-              <FormGroup>
+              {/* <FormGroup>
                 <Label for="exampleSelect">Vehicles</Label>
                 <Input type="select" name="vehicle" onChange={onChange} value={vehicle} required={true}>
                   <option value="">Select Vehicle</option>
@@ -875,7 +880,9 @@ const DriverProfile = ({
                       </option>
                     ))}
                 </Input>
-              </FormGroup>
+              </FormGroup> */}
+              <AsyncSelectComponent onChange={onChange} formData={formData} />
+              {/* <AsyncSelect cacheOptions defaultOptions loadOptions={() => [{label: "one", value: 1},{label: "two", value: 2}]} onChange={() => null} />; */}
               <ModalFooter>
                 <Button type="submit" variant="contained" className="text-white btn-success">
                   Assign
