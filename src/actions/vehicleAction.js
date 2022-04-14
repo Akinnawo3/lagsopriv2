@@ -262,7 +262,8 @@ export const assignVehicleOnProfile = (vehicle_id, driver_auth_id, driverData, v
     dispatch(endStatusLoading());
   } catch (err) {
     dispatch(endStatusLoading());
-    NotificationManager.error(err.response.data.error);
+    console.log(err);
+    // NotificationManager.error(err.response.data.error);
   }
 };
 
