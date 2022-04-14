@@ -29,7 +29,7 @@ import {Form, FormGroup, Label, Input} from "reactstrap";
 // import Button from "@material-ui/core/Button";
 import Spinner from "Components/spinner/Spinner";
 import emailMessages from "Assets/data/email-messages/emailMessages";
-import {getStatusColorKYC} from "Helpers/helpers";
+import {getStatusColorKYC, getTodayDate} from "Helpers/helpers";
 import {Button} from "reactstrap";
 const qs = require("qs");
 export let onUserDetailsResetModalClose;
@@ -73,6 +73,8 @@ const Users = ({
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
   const [user, setUser] = useState("");
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   const inputEl = useRef(null);
   const exportRef = useRef(null);
@@ -179,8 +181,14 @@ const Users = ({
 
   const confirmExport = () => {
     exportRef.current.close();
-    getUserExport()
+    getUserExport('', '', '', startDate, endDate)
   }
+
+  const handleFilter = () => {
+    getUsers(1, false, startDate, endDate)
+    getUserCount(startDate, endDate)
+  }
+
 
   return (
     <div className="table-wrapper">
@@ -190,6 +198,21 @@ const Users = ({
          <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
            <SearchComponent getPreviousData={getUsers} getSearchedData={searchUsers} setCurrentPage={setCurrentPage} getCount={getUserCount} />
          </li>
+        <div>
+          <li className="list-inline-item search-icon d-inline-block mb-2">
+            <small className="fw-bold mr-2">From</small>
+            <input type="date" id="start" name="trip-start" defaultValue={startDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => {
+              setStartDate(e.target.value)
+            }} />
+          </li>
+          <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+            <small className="fw-bold mr-2">To</small>
+            <input type="date" id="start" name="trip-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => {
+              setEndDate(e.target.value)
+            }} />
+          </li>
+          <Button onClick={() => handleFilter()} style={{height: '30px'}} className='align-items-center justify-content-center' color='success'>Apply filter</Button>
+        </div>
          <Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center mr-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>  Export to Excel</Button>
 
        </div>
@@ -418,10 +441,10 @@ const Users = ({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getUsers: (page_no, loading) => dispatch(getUsers(page_no, loading)),
+    getUsers: (page_no, loading, start_date, end_date) => dispatch(getUsers(page_no, loading, start_date, end_date)),
     deleteUser: (auth_id, users) => dispatch(deleteUser(auth_id, users)),
-    getUserCount: () => dispatch(getUserCount()),
-    getUserExport: (user_type, driver_category, driver_account_status) => dispatch(getUserExport(user_type, driver_category, driver_account_status)),
+    getUserCount: (start_date, end_date) => dispatch(getUserCount(start_date, end_date)),
+    getUserExport: (user_type, driver_category, driver_account_status, start_date, end_date) => dispatch(getUserExport(user_type, driver_category, driver_account_status, start_date, end_date)),
     searchUsers: (searchData) => dispatch(searchUsers(searchData)),
     ResetUserDetails: (body, emailData) => dispatch(ResetUserDetails(body, emailData)),
     changeKycStatus: (auth_id, kyc_status) => dispatch(changeKycStatus(auth_id, kyc_status)),

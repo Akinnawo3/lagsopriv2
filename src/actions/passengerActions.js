@@ -6,11 +6,11 @@ import api from "../environments/environment";
 
 
 
-  export const getPassengers = (page_no=1, spinner) => async dispatch => {
+  export const getPassengers = (page_no=1, spinner, start_date = "", end_date = "") => async dispatch => {
   try {
    spinner && dispatch(startLoading());
    !spinner && dispatch(startStatusLoading())
-    const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=rider&item_per_page=20&page=${page_no}`);
+    const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=rider&item_per_page=20&page=${page_no}&start_date=${start_date}&end_date=${end_date}`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {
@@ -28,9 +28,9 @@ import api from "../environments/environment";
   }
 };
 
-export const getPassengerCount = () => async dispatch => {
+export const getPassengerCount = (start_date = "", end_date = "") => async dispatch => {
   try {
-    const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=rider&component=count`);
+    const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=rider&component=count&start_date=${start_date}&end_date=${end_date}`);
     if(res.data.status === 'error') {
       NotificationManager.error(res.data.msg);
     }else {

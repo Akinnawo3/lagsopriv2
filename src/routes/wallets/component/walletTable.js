@@ -10,7 +10,7 @@ import TableRow from "@material-ui/core/TableRow";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import {connect} from "react-redux";
-import {getTripCount, getTrips} from "Actions/tripAction";
+import {getTripCount, getTrips} from "Actions/walletAction";
 import {Link} from "react-router-dom";
 import Pagination from "react-js-pagination";
 import EmptyData from "Components/EmptyData/EmptyData";
@@ -19,7 +19,7 @@ import {Media, Badge, Card, CardBody, Col, Row, Button} from "reactstrap";
 import moment from "moment";
 import {useHistory} from "react-router-dom";
 const qs = require("qs");
-import {getFirstDayOfMonth, getTodayDate} from "../../../helpers/helpers";
+import {getFirstDayOfMonth, getStatus5, getStatusColor5, getTodayDate} from "../../../helpers/helpers";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 
 const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBalance, isLoading, walletsCount, fundingBalance, heading, getWalletsExport}) => {
@@ -79,11 +79,11 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
         </li>
         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
           <small className="fw-bold mr-2">From</small>
-          <input type="date" id="start" name="trip-start" defaultValue={startDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setStartDate(e.target.value)} />
+          <input type="date" id="start" name="wallet-start" defaultValue={startDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setStartDate(e.target.value)} />
         </li>
         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
           <small className="fw-bold mr-2">To</small>
-          <input type="date" id="start" name="trip-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setEndDate(e.target.value)} />
+          <input type="date" id="start" name="wallet-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setEndDate(e.target.value)} />
         </li>
         <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
           <button className="btn btn-primary" onClick={applyFilter}>
@@ -141,32 +141,34 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
                 <TableBody>
                   <Fragment>
                     {wallets.length > 0 &&
-                      wallets.map((trip) => (
-                        <TableRow hover key={trip._id}>
+                      wallets.map((wallet) => (
+                        <TableRow hover key={wallet._id}>
                           <TableCell>
                             <Media>
                               <Media body>
-                                <h5 className="m-0 pt-15">{trip._id}</h5>
+                                <h5 className="m-0 pt-15">{wallet._id}</h5>
                               </Media>
                             </Media>
                           </TableCell>
                           <TableCell>
-                            {trip?.user_data?.first_name} {trip?.user_data?.last_name}
+                            {wallet?.user_data?.first_name} {wallet?.user_data?.last_name}
                           </TableCell>
                           <TableCell>
-                            {new Date(trip.createdAt).toDateString()} {new Date(trip.createdAt).toLocaleTimeString()}
+                            {new Date(wallet.createdAt).toDateString()} {new Date(wallet.createdAt).toLocaleTimeString()}
                           </TableCell>
-                          <TableCell>{trip.transaction_type}</TableCell>
-                          <TableCell> ₦{trip?.amount?.toLocaleString()}</TableCell>
+                          <TableCell>{wallet.transaction_type}</TableCell>
+                          <TableCell> ₦{wallet?.amount?.toLocaleString()}</TableCell>
                           <TableCell>
-                            <Badge color={trip.status === 1 ? "success" : trip.status === 0 ? "secondary" : trip.status === 2 ? "danger" : "info"}>
-                              {trip.status === 1 ? "Successful" : trip.status === 0 ? "Pending" : trip.status === 2 ? "Cancelled" : "Debit "}
-                            </Badge>
+                            <Badge color={getStatusColor5(wallet.status)}>{getStatus5(wallet.status)} </Badge>
+
+                            {/*<Badge color={wallet.status === 1 ? "success" : wallet.status === 0 ? "secondary" : wallet.status === 2 ? "danger" : "info"}>*/}
+                            {/*  {wallet.status === 1 ? "Successful" : wallet.status === 0 ? "Pending" : wallet.status === 2 ? "Cancelled" : "Debit "}*/}
+                            {/*</Badge>*/}
                           </TableCell>
 
                           <TableCell>
                             <button type="button" className="rct-link-btn text-primary" title="view details">
-                              <Link to={`/admin/wallets/${trip._id}`}>
+                              <Link to={`/admin/wallets/${wallet._id}`}>
                                 <i className="ti-eye" />
                               </Link>
                             </button>

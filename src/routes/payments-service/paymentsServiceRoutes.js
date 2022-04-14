@@ -11,7 +11,7 @@ import {
   AsyncPaymentsServiceDetails,
   AsyncPaymentsServiceSuccessful,
   AsyncPaymentsServiceUnsuccessful,
-  AsyncPaymentsServicePending,
+  AsyncPaymentsServicePending, AsyncPaymentsServiceUndecisive, AsyncPaymentsServiceRefund,
 } from "Components/AsyncComponent/AsyncComponent";
 
 const PaymentsServiceRoutes = ({match}) => (
@@ -20,6 +20,7 @@ const PaymentsServiceRoutes = ({match}) => (
       <Route path={`/admin/payments-service/unsuccessful`} component={AsyncPaymentsServiceUnsuccessful} />
       <Route path={`/admin/payments-service/successful`} component={AsyncPaymentsServiceSuccessful} />
       <Route path={`/admin/payments-service/pending`} component={AsyncPaymentsServicePending} />
+      <Route path={`/admin/payments-service/refund`} component={AsyncPaymentsServiceRefund} />
       <Route path={`/admin/payments-service/:id`} component={AsyncPaymentsServiceDetails} />
       <Route path={`/admin/payments-service`} component={AsyncPaymentsService} />
     </Switch>

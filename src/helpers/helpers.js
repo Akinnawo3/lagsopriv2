@@ -116,6 +116,48 @@ export function getStatusColor4(status) {
   }
 }
 
+// Status Definition
+/**
+ * 0 = pending
+ * 1 = successful, completed, done
+ * 2 = failed, canceled
+ * 3 = undecisive (not decided)
+ * 4 = refunded
+ */
+
+export function getStatus5(status) {
+  if (status === 0) {
+    return "Pending";
+  } else if (status === 1) {
+    return "Successful";
+  } else if (status === 2) {
+    return "failed";
+  } else if (status === 3) {
+    return "undecided";
+  } else if (status === 4) {
+    return "refunded";
+  } else {
+    return "undecided";
+  }
+}
+
+export function getStatusColor5(status) {
+  if (status === 0) {
+    return "warning";
+  } else if (status === 1) {
+    return "success";
+  } else if (status === 2) {
+    return "danger";
+  } else if (status === 3) {
+    return "secondary";
+  } else if (status === 4) {
+    return "info";
+  } else {
+    return "primary";
+  }
+}
+
+
 export function getStatusColor(status) {
   if (status === 0) {
     return "secondary";

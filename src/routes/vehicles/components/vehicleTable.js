@@ -47,7 +47,7 @@ const VehicleTable = ({
   const [addNewUserModal, setAddNewUserModal] = useState(false);
   const [editUser, setEditUser] = useState(false);
   const [updateId, setUpdateId] = useState(null);
-  const [formData, setFormData] = useState({plateNo: "", make: "", model: "", desc: "", color: "", oem: "", oemVehicle: ""});
+  const [formData, setFormData] = useState({plateNo: "", make: "", model: "", desc: "", color: "", oem: "", oemVehicle: "", purchase_year: "", chassis_number: "", engine_number: ""});
   const [addNewUserModal1, setAddNewUserModal1] = useState(false);
   const [searchData, setSearchData] = useState("");
   const inputEl = useRef(null);
@@ -100,7 +100,7 @@ const VehicleTable = ({
     setFormData({...formData, oem: e.target.value});
     await getVehiclesByOem(1, false, e.target.value);
   };
-  const {plateNo, model, make, desc, color, oem, oemVehicle} = formData;
+  const {plateNo, model, make, desc, color, oem, oemVehicle, purchase_year, chassis_number, engine_number} = formData;
 
   const opnAddNewUserModal = (e) => {
     e.preventDefault();
@@ -125,6 +125,9 @@ const VehicleTable = ({
           color: vehicle.car_color,
           oem: vehicle.oem_id,
           oemVehicle: vehicle.oem_vehicle_id,
+          purchase_year: vehicle?.purchase_year,
+          chassis_number: vehicle?.chassis_number,
+          engine_number: vehicle.engine_number
         });
         setUpdateId(vehicle.vehicle_id);
       }
@@ -136,7 +139,7 @@ const VehicleTable = ({
 
    onAddUpdateVehicleModalClose = () => {
     // if (editUser) {
-      setFormData({...formData, plateNo: "", type: "", model: "", desc: "", make: "", color: "", oem: ""});
+      setFormData({...formData, plateNo: "", type: "", model: "", desc: "", make: "", color: "", oem: "", purchase_year: "", chassis_number: "", engine_number: ""});
     // }
     setUpdateId(null);
     setAddNewUserModal(false);
@@ -145,18 +148,9 @@ const VehicleTable = ({
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    !editUser ? await createVehicles(plateNo, make, model, desc, color, oem, oemVehicle) : await updateVehicle(updateId, plateNo, make, model, desc, color, currentPage, assign, oem, oemVehicle);
+    !editUser ? await createVehicles(plateNo, make, model, desc, color, oem, oemVehicle, purchase_year, chassis_number, engine_number) : await updateVehicle(updateId, plateNo, make, model, desc, color, currentPage, assign, oem, oemVehicle, purchase_year, chassis_number, engine_number);
   };
 
-  const sampleData = [
-    {
-      plateNo: "DVFGR9o",
-      type: "sedan",
-      model: "2013",
-      make: "toyota",
-      desc: "A vehicle",
-    },
-  ];
 
   const onDelete = (id) => {
     inputEl.current.open();
@@ -176,18 +170,6 @@ const VehicleTable = ({
                 Export to Excel
               </CSVLink>
             )}
-            {/*<CSVLink*/}
-            {/*	// headers={headers}*/}
-            {/*	data={sampleData}*/}
-            {/*	filename={"sampleVehicles.csv"}*/}
-            {/*	className="btn-sm btn-outline-default mr-10 bg-success text-white"*/}
-            {/*	target="_blank"*/}
-            {/*>*/}
-            {/*	<i className="zmdi zmdi-download mr-2"></i>*/}
-
-            {/*	Sample excel to upload*/}
-            {/*</CSVLink>*/}
-            {/*<a href="#" onClick={(e) => opnAddNewUserModal1(e)} color="primary" className="btn-sm btn-outline-default mr-10 bg-danger text-white"><i className="zmdi zmdi-upload mr-2"></i>Upload</a>*/}
             <a href="#" onClick={(e) => verifyUserPermssion("create_vehicle", () => opnAddNewUserModal(e))} color="primary" className="caret btn-sm mr-10">
               Add New Vehicle <i className="zmdi zmdi-plus"></i>
             </a>
@@ -298,6 +280,18 @@ const VehicleTable = ({
                 </Input>
               </FormGroup>
             )}
+            <FormGroup>
+              <Label for="purchase_year">Purchase Year</Label>
+              <Input type="number" name="purchase_year" value={purchase_year} onChange={onChange}  />
+            </FormGroup>
+            <FormGroup>
+              <Label for="chassis_number">Chassis Number</Label>
+              <Input type="text" name="chassis_number" value={chassis_number} onChange={onChange}  />
+            </FormGroup>
+            <FormGroup>
+              <Label for="engine_number">Engine Number</Label>
+              <Input type="text" name="engine_number" value={engine_number} onChange={onChange}  />
+            </FormGroup>
           </ModalBody>
           <ModalFooter>
             <Button type="submit" variant="contained" className="text-white btn-success">
@@ -331,10 +325,10 @@ function mapDispatchToProps(dispatch) {
     getVehiclesCount: (assign, car_number_plate) => dispatch(getVehiclesCount(assign, car_number_plate)),
     searchVehicles: (data, assign) => dispatch(searchVehicles(data, assign)),
     deleteVehicle: (vehicle_id, vehicles) => dispatch(deleteVehicle(vehicle_id, vehicles)),
-    createVehicles: (car_number_plate, car_make, car_model, car_desc, car_color, oem, oemVehicle) =>
-      dispatch(createVehicles(car_number_plate, car_make, car_model, car_desc, car_color, oem, oemVehicle)),
-    updateVehicle: (vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign, oem, oemVehicle) =>
-      dispatch(updateVehicle(vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign, oem, oemVehicle)),
+    createVehicles: (car_number_plate, car_make, car_model, car_desc, car_color, oem, oemVehicle, purchase_year, chassis_number, engine_number) =>
+      dispatch(createVehicles(car_number_plate, car_make, car_model, car_desc, car_color, oem, oemVehicle, purchase_year, chassis_number, engine_number)),
+    updateVehicle: (vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign, oem, oemVehicle, purchase_year, chassis_number, engine_number) =>
+      dispatch(updateVehicle(vehicle_id, car_number_plate, car_make, car_model, car_desc, car_color, page_no, assign, oem, oemVehicle, purchase_year, chassis_number, engine_number)),
     getVehiclesByOem: (page_no, spinner, oem_id) => dispatch(getVehiclesByOem(page_no, spinner, oem_id)),
   };
 }

@@ -10,12 +10,13 @@ import Pagination from "react-js-pagination";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {calculatePostDate, getStatus4, getStatusColor4} from "Helpers/helpers";
 import {Badge, Button} from "reactstrap";
-import {getPayments, getPaymentsExport} from "Actions/paymentAction";
+import {getPayments, getPaymentsCount, getPaymentsExport, searchPayment} from "Actions/paymentAction";
 import {Link} from "react-router-dom";
 import {useHistory} from "react-router-dom";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
+import SearchComponent from "Components/SearchComponent/SearchComponent";
 const qs = require("qs");
-const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, header, loading, getPaymentsExport}) => {
+const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, header, loading, getPaymentsExport, getPaymentsCount, searchPayment}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -38,9 +39,26 @@ const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, he
     getPaymentsExport(status)
   }
 
-  return (
+ const  handleGetPreviousData = () => {
+   getPayments(currentPage, status, auth_id);
+ }
+
+  const  handleGetCount = () => {
+    getPaymentsCount(status, auth_id);
+  }
+
+    const  handleGetSearch = (data) => {
+        searchPayment(data, status);
+    }
+
+
+
+    return (
     <div>
       <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}}>
+        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+          <SearchComponent getPreviousData={handleGetPreviousData} getSearchedData={handleGetSearch} setCurrentPage={setCurrentPage} getCount={handleGetCount} placeHolder={'email, phone, trip reference'} />
+        </li>
         <div className="float-right">
           {!loading && payments.length > 0 && (
               <Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center mr-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>  Export to Excel</Button>
@@ -112,6 +130,9 @@ function mapDispatchToProps(dispatch) {
   return {
     getPayments: (pageNo, transaction_status, auth_id) => dispatch(getPayments(pageNo, transaction_status, auth_id)),
     getPaymentsExport: (status,  auth_id, userType) => dispatch(getPaymentsExport(status,  auth_id, userType)),
+    getPaymentsCount: (transaction_status, auth_id) => dispatch(getPaymentsCount(transaction_status, auth_id)),
+      searchPayment: (searchData, status) => dispatch(searchPayment(searchData, status)),
+
 
   };
 }

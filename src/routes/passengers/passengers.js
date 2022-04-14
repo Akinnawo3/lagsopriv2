@@ -13,7 +13,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MobileSearchForm from "Components/Header/MobileSearchForm";
 import Pagination from "react-js-pagination";
 import {Link} from "react-router-dom";
-import {calculatePostDate} from "Helpers/helpers";
+import {calculatePostDate, getTodayDate} from "Helpers/helpers";
 import EmptyData from "Components/EmptyData/EmptyData";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {getUserExport} from "Actions/userAction";
@@ -26,6 +26,8 @@ const Passengers = ({history, match, getPassengers, passengers, loading, passeng
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const exportRef = useRef(null);
 
   useEffect(() => {
@@ -49,7 +51,12 @@ const Passengers = ({history, match, getPassengers, passengers, loading, passeng
 
   const confirmExport = () => {
     exportRef.current.close();
-    getUserExport('rider')
+    getUserExport('rider', '', '', startDate, endDate)
+  }
+
+  const handleFilter = () => {
+    getPassengers(1, false, startDate, endDate)
+    getPassengerCount(startDate, endDate)
   }
 
 
@@ -67,6 +74,21 @@ const Passengers = ({history, match, getPassengers, passengers, loading, passeng
           // onClose={() => this.setState({ isMobileSearchFormVisible: false })}
           />
         </li>
+        {/*<div>*/}
+          <li className="list-inline-item search-icon d-inline-block mb-2 ml-3">
+            <small className="fw-bold mr-2">From</small>
+            <input type="date" id="start" name="trip-start" defaultValue={startDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => {
+              setStartDate(e.target.value)
+            }} />
+          </li>
+          <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+            <small className="fw-bold mr-2">To</small>
+            <input type="date" id="start" name="trip-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => {
+              setEndDate(e.target.value)
+            }} />
+          </li>
+          <Button onClick={() => handleFilter()} style={{height: '30px'}} className='align-items-center justify-content-center' color='success'>Apply filter</Button>
+        {/*</div>*/}
         <div className="float-right">
           {!loading && passengers.length > 0 && (
               <Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center mr-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>  Export to Excel</Button>
@@ -122,10 +144,10 @@ const Passengers = ({history, match, getPassengers, passengers, loading, passeng
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPassengers: (page_no, spinner) => dispatch(getPassengers(page_no, spinner)),
-    getPassengerCount: () => dispatch(getPassengerCount()),
+    getPassengers: (page_no, spinner, start_date, end_date) => dispatch(getPassengers(page_no, spinner, start_date, end_date)),
+    getPassengerCount: (start_date, end_date) => dispatch(getPassengerCount(start_date, end_date)),
     searchPassenger: (searchData) => dispatch(searchPassengers(searchData)),
-    getUserExport: (user_type, driver_category, driver_account_status) => dispatch(getUserExport(user_type, driver_category, driver_account_status)),
+    getUserExport: (user_type, driver_category, driver_account_status, start_date, end_date) => dispatch(getUserExport(user_type, driver_category, driver_account_status, start_date, end_date)),
   };
 }
 

@@ -1,13 +1,12 @@
 /**
  * Dashboard
  */
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {Helmet} from "react-helmet";
 import IntlMessages from "Util/IntlMessages";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import {VisitorAreaChartWidget, TripCard, OverallTrafficStatusWidget, SchedulesWidget, PaymentWidget, RefundsWidget} from "Components/Widgets";
-import {visitorsData, salesData, ordersData, trafficStatus} from "./data";
+import {PaymentWidget, RefundsWidget, SchedulesWidget, TripCard, VisitorAreaChartWidget} from "Components/Widgets";
 import VehicleChart from "Components/Widgets/VehicleChart";
 import DriverChart from "Components/Widgets/DriverChart";
 import {connect} from "react-redux";
@@ -25,14 +24,14 @@ const HomeDashboard = ({match}) => {
 
       <div className="row">
         <div className="col-sm-6 col-md-4 w-xs-half-block">
-          <VisitorAreaChartWidget data={visitorsData} />
+          <VisitorAreaChartWidget />
         </div>
 
         <div className="col-sm-12 col-md-4 w-xs-half-block">
-          <DriverChart data={ordersData} />
+          <DriverChart />
         </div>
         <div className="col-sm-6 col-md-4 w-xs-full">
-          <VehicleChart data={salesData} />
+          <VehicleChart />
         </div>
       </div>
       <div className="row">

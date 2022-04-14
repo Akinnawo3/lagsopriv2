@@ -73,7 +73,27 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
                     </span>
                     {vehicleDetails?.car_color}
                   </li>
-                  {/*<li className="list-group-item text-right"><span*/}
+                    <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Purchase Year</strong>
+                    </span>
+                        {vehicleDetails?.purchase_year}
+                    </li>
+                    <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Chassis Number</strong>
+                    </span>
+                        {vehicleDetails?.chassis_number}
+                    </li>
+                    <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Engine Number</strong>
+                    </span>
+                        {vehicleDetails?.engine_number}
+                    </li>
+                    {/*purchase_year, chassis_number, engine_number*/}
+
+                    {/*<li className="list-group-item text-right"><span*/}
                   {/*    className="pull-left"><strong>Vehicle Description</strong></span>{vehicleDetails?.car_desc}*/}
                   {/*</li>*/}
                   {driverDetails?.driver_data?.vehicle_id === vehicleDetails?.vehicle_id && (

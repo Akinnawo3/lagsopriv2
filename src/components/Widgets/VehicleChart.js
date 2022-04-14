@@ -21,7 +21,7 @@ const VehicleChart = ({ data }) => {
     },[])
     const getVehicleCount = async () => {
         try {
-            const res = await axios.get(`${api.vehicles}/v1.1/vehicles?component=count`);
+            const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicles?component=count`);
             if (res.data.status === 'error') {
                 NotificationManager.error(res.data.msg);
             } else {
@@ -33,7 +33,7 @@ const VehicleChart = ({ data }) => {
 
     const getVehicleAssigned = async () => {
         try {
-            const res = await axios.get(`${api.vehicles}/v1.1/vehicles?component=count&assign=1`);
+            const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicles?component=count&assign=1`);
             if (res.data.status === 'error') {
                 NotificationManager.error(res.data.msg);
             } else {
@@ -45,7 +45,7 @@ const VehicleChart = ({ data }) => {
 
     const getVehicleUnassigned = async () => {
         try {
-            const res = await axios.get(`${api.vehicles}/v1.1/vehicles?component=count&assign=0`);
+            const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicles?component=count&assign=0`);
             if (res.data.status === 'error') {
                 NotificationManager.error(res.data.msg);
             } else {

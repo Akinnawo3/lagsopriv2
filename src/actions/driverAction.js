@@ -6,13 +6,13 @@ import api from "../environments/environment";
 import {getVehicle} from "Actions/vehicleAction";
 
 export const getDrivers =
-  (status = "", page_no = 1, spinner, driver_online_status = "", asset_payment = "", driver_category = "") =>
+  (status = "", page_no = 1, spinner, driver_online_status = "", asset_payment = "", driver_category = "", start_date = "", end_date = "") =>
   async (dispatch) => {
     try {
       spinner && dispatch(startLoading());
       !spinner && dispatch(startStatusLoading());
       const res = await axios.get(
-        `${api.user}/v1.1/admin/users?user_type=driver&item_per_page=20&page=${page_no}&driver_account_status=${status}&driver_online_status=${driver_online_status}&asset_payment=${asset_payment}&driver_category=${driver_category}`
+        `${api.user}/v1.1/admin/users?user_type=driver&item_per_page=20&page=${page_no}&driver_account_status=${status}&driver_online_status=${driver_online_status}&asset_payment=${asset_payment}&driver_category=${driver_category}&start_date=${start_date}&end_date=${end_date}`
       );
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
@@ -32,10 +32,10 @@ export const getDrivers =
   };
 
 export const getDriversCount =
-  (status = "") =>
+  (status = "", start_date = "", end_date = "") =>
   async (dispatch) => {
     try {
-      const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=driver&driver_account_status=${status}&component=count`);
+      const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=driver&driver_account_status=${status}&component=count&start_date=${start_date}&end_date=${end_date}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
