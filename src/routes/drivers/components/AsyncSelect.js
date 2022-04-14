@@ -3,11 +3,11 @@ import axios from "axios";
 import React, {useState} from "react";
 import api from "../../../environments/environment";
 
-const AsyncSelectComponent = ({onChange, formData}) => {
+const AsyncSelectComponent = ({onChange}) => {
   const [label, setLabel] = useState("nonsense");
 
   const itemChange = (item) => {
-    // onChange(item);
+    onChange(item);
     return item;
   };
 
@@ -16,10 +16,12 @@ const AsyncSelectComponent = ({onChange, formData}) => {
       const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicles?q=${data}&assign=${0}`);
       console.log(res);
       return res.data.data.map((item) => ({
-        value: {
-          id: item?.vehicle_id,
-          plateNumber: item.car_number_plate,
-        },
+        value: item,
+        //  {
+        //   id: item?.vehicle_id,
+        //   plateNumber: item.car_number_plate,
+
+        // }
         label: `${item.car_number_plate} - ${item.car_make} - ${item.car_model} (${item.car_color})`,
       }));
     } catch (err) {
