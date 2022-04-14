@@ -15,7 +15,8 @@ import TableCell from "@material-ui/core/TableCell";
 import suspensionReasonsList from "../../../assets/data/suspension-reasons/suspensionReasonsList";
 import Spinner from "Components/spinner/Spinner";
 import {verifyUserPermssion} from "../../../container/DefaultLayout";
-
+import AsyncSelectComponent from "./AsyncSelect";
+export let onAddVehicleModalClose;
 const DriverProfile = ({
   driver,
   changeDriverStatus,
@@ -50,7 +51,10 @@ const DriverProfile = ({
     email: driver?.email,
     vehicle: "",
   });
-  const onChange = (e) => setFormData({...formData, [e.target.name]: e.target.value});
+  const onChange = (e) => {
+    // checking if the argument "e" is from a form input element or from the asyncSelect component, i checked for e.target.name.. if its not defined then the argument isnt passed from a form input
+    e?.target?.name ? setFormData({...formData, [e.target.name]: e.target.value}) : setFormData({...formData, vehicle: e.value});
+  };
 
   const {vehicle} = formData;
 
@@ -64,28 +68,33 @@ const DriverProfile = ({
     }
   }, [vehicle]);
 
+  console.log(driver);
   const opnAddVehicleModal = () => {
     setAddVehicleModal(true);
   };
 
-  const onAddVehicleModalClose = () => {
+  onAddVehicleModalClose = () => {
     setAddVehicleModal(false);
   };
 
   const onSubmit = async (e) => {
+    console.log(formData);
     e.preventDefault();
-    onAddVehicleModalClose();
-    await assignVehicle(vehicle, driver?.auth_id, driver, vehicleData, "5M");
-    await changeDriverStatus(
-      driver?.auth_id,
-      "4",
-      driver,
-      emailMessages.approveMsg({
-        firstName: driver?.first_name,
-        vehicleDetails: vehicleData,
-      }),
-      "Driver Approved"
-    );
+    if (formData?.vehicle) {
+      await assignVehicle(vehicle?.vehicle_id, driver?.auth_id, driver, vehicleData, "5M");
+      await changeDriverStatus(
+        driver?.auth_id,
+        "4",
+        driver,
+        emailMessages.approveMsg({
+          firstName: driver?.first_name,
+          vehicleDetails: vehicleData,
+        }),
+        "Driver Approved"
+      );
+    } else {
+      NotificationManager.error("Select a vehicle");
+    }
   };
   const onAccept = () => {
     setTitle("Are you sure you want to accept driver");
@@ -115,16 +124,16 @@ const DriverProfile = ({
     inputEl.current.open();
   };
 
-  const onApproved = () => {
-    if (!driver.driver_data?.vehicle_id) {
-      NotificationManager.error("A vehicle must be assigned to the driver before approval");
-    } else {
-      setTitle("Are you sure you want to approve driver");
-      setMessage("This driver will be approved on the platform.");
-      setArgument(4);
-      inputEl.current.open();
-    }
-  };
+  // const onApproved = () => {
+  //   if (!driver.driver_data?.vehicle_id) {
+  //     NotificationManager.error("A vehicle must be assigned to the driver before approval");
+  //   } else {
+  //     setTitle("Are you sure you want to approve driver");
+  //     setMessage("This driver will be approved on the platform.");
+  //     setArgument(4);
+  //     inputEl.current.open();
+  //   }
+  // };
   const onSuspend = (e) => {
     e.preventDefault();
     if (!suspensionReasons.length) {
@@ -850,6 +859,7 @@ const DriverProfile = ({
         <ModalHeader toggle={() => onAddVehicleModalClose()}>Assign Vehicle</ModalHeader>
         <ModalBody>
           <div>
+            {/* <AsyncSelect cacheOptions defaultOptions loadOptions={promiseOptions} onChange={() => null} />; */}
             <Form onSubmit={onSubmit}>
               <FormGroup>
                 <Label for="userName">First Name</Label>
@@ -863,7 +873,7 @@ const DriverProfile = ({
                 <Label for="userEmail">Email</Label>
                 <Input onChange={onChange} type="email" name="email" readOnly={true} value={driver?.email} />
               </FormGroup>
-              <FormGroup>
+              {/* <FormGroup>
                 <Label for="exampleSelect">Vehicles</Label>
                 <Input type="select" name="vehicle" onChange={onChange} value={vehicle} required={true}>
                   <option value="">Select Vehicle</option>
@@ -874,7 +884,9 @@ const DriverProfile = ({
                       </option>
                     ))}
                 </Input>
-              </FormGroup>
+              </FormGroup> */}
+              <AsyncSelectComponent onChange={onChange} />
+              {/* <AsyncSelect cacheOptions defaultOptions loadOptions={() => [{label: "one", value: 1},{label: "two", value: 2}]} onChange={() => null} />; */}
               <ModalFooter>
                 <Button type="submit" variant="contained" className="text-white btn-success">
                   Assign
@@ -897,7 +909,6 @@ const DriverProfile = ({
                   {item}
                 </FormGroup>
               ))}
-
               <ModalFooter>
                 <Button type="submit" variant="contained" className="text-white btn-danger">
                   Proceed
