@@ -68,7 +68,6 @@ const DriverProfile = ({
     }
   }, [vehicle]);
 
-  console.log(driver);
   const opnAddVehicleModal = () => {
     setAddVehicleModal(true);
   };
@@ -81,7 +80,6 @@ const DriverProfile = ({
     onAddVehicleModalClose();
     e.preventDefault();
     if (formData?.vehicle) {
-      console.log(vehicleData);
       await assignVehicle(vehicle?.vehicle_id, driver?.auth_id, driver, vehicleData, "5M");
       await changeDriverStatus(
         driver?.auth_id,
@@ -211,6 +209,9 @@ const DriverProfile = ({
     }
     inputEl.current.close();
   };
+
+  console.log(driver);
+
   return (
     <div className="row" style={{fontSize: "0.8rem"}}>
       <div className="col-sm-10 col-lg-5">
