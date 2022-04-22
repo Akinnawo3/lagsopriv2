@@ -19,7 +19,7 @@ const InactiveVehicles = ({history, match, getVehicles, getVehiclesCount}) => {
 
   return (
     <div className="table-wrapper">
-      <PageTitleBar title={"Active"} match={match} />
+      <PageTitleBar title={"Inactive"} match={match} />
       <VehicleTable assign={""} header="Active Vehicles" />
     </div>
   );
