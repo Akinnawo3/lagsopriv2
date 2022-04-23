@@ -51,7 +51,7 @@ export const getDriver = (auth_id, linerLoader) => async (dispatch) => {
   try {
     !linerLoader && dispatch(startLoading());
     linerLoader && dispatch(startStatusLoading());
-    const res = await axios.get(`${api.user}/v1.1/admin/users/${auth_id}`);
+    const res = await axios.get(`${api.user}/v1.1/admin/users/${auth_id}/?user_type=driver`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
