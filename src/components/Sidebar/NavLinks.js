@@ -133,6 +133,50 @@ export default {
       ],
     },
     {
+      menu_title: "sidebar.partners",
+      menu_icon: "icon-user",
+      type_multi: null,
+      new_item: false,
+      child_routes: [
+        {
+          path: "/admin/partners",
+          new_item: false,
+          menu_title: "sidebar.all",
+        },
+        // {
+        //   path: "/admin/drivers/pending",
+        //   new_item: false,
+        //   menu_title: "sidebar.pending",
+        // },
+        // {
+        //   path: "/admin/drivers/accepted",
+        //   new_item: false,
+        //   menu_title: "sidebar.accepted",
+        // },
+        // {
+        //   path: "/admin/drivers/verified",
+        //   new_item: false,
+        //   menu_title: "sidebar.verified",
+        // },
+        // {
+        //   path: "/admin/drivers/trained",
+        //   new_item: false,
+        //   menu_title: "sidebar.trained",
+        // },
+        // {
+        //   path: "/admin/drivers/active",
+        //   new_item: false,
+        //   menu_title: "sidebar.approved",
+        // },
+        //
+        // {
+        //   path: "/admin/drivers/inactive",
+        //   new_item: false,
+        //   menu_title: "sidebar.inactive",
+        // }
+      ],
+    },
+    {
       menu_title: "sidebar.vehicles",
       menu_icon: "zmdi zmdi-car",
       type_multi: null,

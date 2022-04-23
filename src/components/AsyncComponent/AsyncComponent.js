@@ -496,7 +496,13 @@ const AsyncSessionPage500Component = Loadable({
   loading: () => <RctPageLoader />,
 });
 
-// terms and condition
+
+// partners
+
+const AsyncPartners = Loadable({
+  loader: () => import("Routes/partners/partners"),
+  loading: () => <RctPageLoader />,
+});
 
 export {
   AsyncPaymentsSuccessful,
@@ -599,5 +605,6 @@ export {
   AsyncVehiclesFeedbackDetails,
   AsyncDisbursementHolders,
   AsyncPaymentsServiceRefund,
-  AsyncWalletsRefund
+  AsyncWalletsRefund,
+  AsyncPartners
 };

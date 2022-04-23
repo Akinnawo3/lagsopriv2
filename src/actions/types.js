@@ -199,3 +199,9 @@ export const FENCES_COUNT = "FENCES_COUNT";
 export const OEMS = "OEMS";
 export const OEMS_COUNT = "OEMS_COUNT";
 export const OEMS_VEHICLES = "OEMS_VEHICLES";
+
+
+//partners
+export const PARTNERS = "PARTNERS";
+export const PARTNERS_COUNT = "PARTNERS_COUNT";
+
