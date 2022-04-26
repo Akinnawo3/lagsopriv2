@@ -143,37 +143,16 @@ export default {
           new_item: false,
           menu_title: "sidebar.all",
         },
-        // {
-        //   path: "/admin/drivers/pending",
-        //   new_item: false,
-        //   menu_title: "sidebar.pending",
-        // },
-        // {
-        //   path: "/admin/drivers/accepted",
-        //   new_item: false,
-        //   menu_title: "sidebar.accepted",
-        // },
-        // {
-        //   path: "/admin/drivers/verified",
-        //   new_item: false,
-        //   menu_title: "sidebar.verified",
-        // },
-        // {
-        //   path: "/admin/drivers/trained",
-        //   new_item: false,
-        //   menu_title: "sidebar.trained",
-        // },
-        // {
-        //   path: "/admin/drivers/active",
-        //   new_item: false,
-        //   menu_title: "sidebar.approved",
-        // },
-        //
-        // {
-        //   path: "/admin/drivers/inactive",
-        //   new_item: false,
-        //   menu_title: "sidebar.inactive",
-        // }
+        {
+          path: "/admin/partners/pending",
+          new_item: false,
+          menu_title: "sidebar.pending",
+        },
+        {
+          path: "/admin/partners/verified",
+          new_item: false,
+          menu_title: "sidebar.verified",
+        },
       ],
     },
     {

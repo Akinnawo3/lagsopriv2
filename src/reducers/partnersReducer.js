@@ -1,8 +1,9 @@
-import {PARTNERS, PARTNERS_COUNT} from "Actions/types";
+import {PARTNER, PARTNERS, PARTNERS_COUNT} from "Actions/types";
 
 const initialState = {
   partners: [],
   partnersCount: 0,
+  partner: {},
 };
 
 function partnersReducer(state = initialState, action) {
@@ -18,6 +19,12 @@ function partnersReducer(state = initialState, action) {
       return {
         ...state,
         partnersCount: payload,
+      };
+    }
+    case PARTNER: {
+      return {
+        ...state,
+        partner: payload,
       };
     }
     default:

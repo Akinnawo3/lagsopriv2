@@ -504,6 +504,21 @@ const AsyncPartners = Loadable({
   loading: () => <RctPageLoader />,
 });
 
+const AsyncPartnersPending = Loadable({
+  loader: () => import("Routes/partners/partnersPending"),
+  loading: () => <RctPageLoader />,
+});
+
+const AsyncPartnersVerified = Loadable({
+  loader: () => import("Routes/partners/partnersVerified"),
+  loading: () => <RctPageLoader />,
+});
+
+const AsyncPartner = Loadable({
+  loader: () => import("Routes/partners/partner"),
+  loading: () => <RctPageLoader />,
+});
+
 export {
   AsyncPaymentsSuccessful,
   AsyncPaymentsUnsuccessful,
@@ -606,5 +621,8 @@ export {
   AsyncDisbursementHolders,
   AsyncPaymentsServiceRefund,
   AsyncWalletsRefund,
-  AsyncPartners
+  AsyncPartners,
+  AsyncPartner,
+  AsyncPartnersPending,
+  AsyncPartnersVerified
 };

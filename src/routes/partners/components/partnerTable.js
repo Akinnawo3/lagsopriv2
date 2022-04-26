@@ -33,6 +33,7 @@ const PartnerTable = ({
   getPartnersCount,
   searchPartners,
   createPartners,
+    status = ''
 }) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
@@ -86,7 +87,7 @@ const PartnerTable = ({
   }
 
   const handleFilter = () => {
-    getPartners(1, false, startDate, endDate)
+    getPartners(1, false, startDate, endDate, status)
     getPartnersCount(startDate, endDate)
   }
 
@@ -103,19 +104,6 @@ const PartnerTable = ({
     });
     setOrg_name('')
   }
-
-  console.log(partners)
-
-  // account_type: "organization"
-  // asset_payment: {status: false, payment_id: ''}
-  // auth_id: "6262688636738834e17fd68c"
-  // bank_data: {bank_account: '', bank_name: '', account_name: '', pstack_payment_ref: '', status: false}
-  // data_mode: "test"
-  // payment_data: {}
-  // payment_plan: {plan: '8709.23', is_default: true, last_updated: '2022-04-21T17:27:51.729Z'}
-  // status: 0
-  // update_count: 0
-
 
   return (
     <div>
@@ -179,7 +167,7 @@ const PartnerTable = ({
                                 <TableCell>{calculatePostDate(partner.createdAt)}</TableCell>
                                 <TableCell>{partner?.partner_data?.account_type}</TableCell>
                                 <TableCell>
-                                  <Badge color={partner?.partner_data?.status === 1 ? "success" : "warning"}>{partner?.partner_data?.status === 1 ? "Verified" : "Pending"}</Badge>
+                                  <Badge color={partner?.partner_data?.partner_status === 4 ? "success" : "warning"}>{partner?.partner_data?.partner_status === 4 ? "Verified" : "Pending"}</Badge>
                                 </TableCell>
                                 <TableCell>
                                   <button type="button" className="rct-link-btn text-primary" title="view details">

@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect, useRef} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import {Badge, ModalHeader, Modal, ModalBody, Form, FormGroup, Label, Input, ModalFooter} from "reactstrap";
 import Button from "@material-ui/core/Button";
 import {getStatus, getStatusColor, idVerificationType} from "Helpers/helpers";
@@ -11,7 +11,6 @@ import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/Delete
 import {Link} from "react-router-dom";
 import {NotificationManager} from "react-notifications";
 import emailMessages from "Assets/data/email-messages/emailMessages";
-import TableCell from "@material-ui/core/TableCell";
 import suspensionReasonsList from "../../../assets/data/suspension-reasons/suspensionReasonsList";
 import Spinner from "Components/spinner/Spinner";
 import {verifyUserPermssion} from "../../../container/DefaultLayout";
@@ -58,7 +57,7 @@ const DriverProfile = ({
 
   const {vehicle} = formData;
 
-  const isTest = dataMode === "test" ? true : false;
+  const isTest = dataMode === "test";
 
   useEffect(() => {
     getCustomerCare();
@@ -102,20 +101,10 @@ const DriverProfile = ({
     inputEl.current.open();
   };
   const onVerified = () => {
-    // if (driver?.driver_data?.license_id?.status ||
-    //     !driver?.driver_data?.lasdri_id?.status ||
-    //     driver?.driver_data?.lassra_id?.status ||
-    //     driver?.driver_data?.nin_id?.status
-    // ) {
-    //     NotificationManager.error("All IDs are not yet verified !");
-    // cc?
-    // }
-    // else {
     setTitle("Are you sure you want to verify driver");
     setMessage("This driver will be verified on the platform.");
     setArgument(2);
     inputEl.current.open();
-    // }
   };
   const onTrained = () => {
     setTitle("Are you sure you want to confirm this driver trained");
@@ -124,16 +113,7 @@ const DriverProfile = ({
     inputEl.current.open();
   };
 
-  // const onApproved = () => {
-  //   if (!driver.driver_data?.vehicle_id) {
-  //     NotificationManager.error("A vehicle must be assigned to the driver before approval");
-  //   } else {
-  //     setTitle("Are you sure you want to approve driver");
-  //     setMessage("This driver will be approved on the platform.");
-  //     setArgument(4);
-  //     inputEl.current.open();
-  //   }
-  // };
+
   const onSuspend = (e) => {
     e.preventDefault();
     if (!suspensionReasons.length) {
@@ -346,10 +326,6 @@ const DriverProfile = ({
                 </span>
                 {driver?.driver_data?.payment_plan?.plan ? "₦" + driver?.driver_data?.payment_plan?.plan : "NA"}
               </li>
-              {/* <li className="list-group-item text-right"><span
-                                className="pull-left"><strong>Made First Payment</strong></span>
-                                <Badge color={driver?.driver_data?.made_first_payment ? 'success' : 'danger'}>{driver?.driver_data?.made_first_payment ? 'Yes' : 'No'}</Badge>
-                            </li> */}
               <li className="list-group-item text-right">
                 <span className="pull-left">
                   <strong>Driving License</strong>
@@ -472,29 +448,26 @@ const DriverProfile = ({
                 </span>
                 {driver?.driver_data?.year_exp}
               </li>
-              {driver?.driver_data?.vehicle_id === vehicleDetails?.vehicle_id && (
+              {driver?.vehicle_data?._id && (
                 <>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
                       <strong>Vehicle Plate No </strong>
                     </span>
-                    <Link to={`/admin/vehicles/${vehicleDetails?.vehicle_id}`}>{vehicleDetails?.car_number_plate}</Link>
+                    <Link to={`/admin/vehicles/${driver?.vehicle_data?._id}`}>{driver?.vehicle_data?.car_number_plate}</Link>
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
-                      <strong>Vehicle Model</strong>
+                      <strong>Vehicle Number</strong>
                     </span>
-                    {vehicleDetails?.car_make}
+                    {driver?.vehicle_data?.car_number}
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
                       <strong>Vehicle Year</strong>
                     </span>
-                    {vehicleDetails?.car_model}
+                    {driver?.vehicle_data?.car_model}
                   </li>
-                  {/*<li className="list-group-item text-right"><span*/}
-                  {/*    className="pull-left"><strong>Vehicle Description</strong></span>{vehicleDetails?.car_desc}*/}
-                  {/*</li>*/}
                 </>
               )}
               <li className="list-group-item text-right">
@@ -521,11 +494,6 @@ const DriverProfile = ({
               </li>
               <li className="list-group-item">
                 <span className="pull-left d-flex">
-                  {/* {driver?.driver_data?.driver_status === 0 &&
-                                        <div className='text-center'>
-                                            <Button disabled={loadingStatus} onClick={() => onAccept()} className="bg-primary mt-3 text-white">Accept Driver</Button>
-                                        </div>} */}
-
                   {driver?.driver_data?.driver_status === 1 && //this makes sure u can no longer see verify button after u pass the verification pphase
                     driver?.driver_data?.license_id?.status && // the remaining conditions ensures you cannot verify till all the individual ids are verified
                     driver?.driver_data?.lasdri_id?.status &&
@@ -544,11 +512,7 @@ const DriverProfile = ({
                       </Button>
                     </div>
                   )}
-                  {/* {driver?.driver_data?.driver_status === 3 &&
-                                        <div className='text-center d-flex'>
-                                            {/* <Button disabled={loadingStatus} onClick={() => onTrained()} className="bg-warning mt-3 text-white mr-2">Confirm Driver Training</Button> */}
-                  {/* <Button disabled={loadingStatus} onClick={() => onApproved()} className="bg-danger mt-3 text-white ">Approve Driver</Button> */}
-                  {/* </div>}  */}
+
                   {driver?.driver_data?.driver_status === 4 && (
                     <div className="text-center">
                       <Button disabled={loadingStatus} onClick={() => verifyUserPermssion("update_driver_status", () => setSuspensionReasonsModalOpen(true))} className="bg-danger mt-3 text-white">
@@ -576,20 +540,6 @@ const DriverProfile = ({
           </div>
         </div>
       </div>
-      {/*<div className="col-sm-6 px-4">*/}
-      {/*    <div className='text-center px-3 h-50'>*/}
-      {/*       <div className="font-weight-bold">Payment Receipt</div>*/}
-      {/*        <img*/}
-      {/*            onClick={ () => openImageViewer(0) }*/}
-      {/*            src={driver?.driver_data?.receipt_url}*/}
-      {/*            alt="receipt"*/}
-      {/*            className="img-fluid mt-2"*/}
-      {/*            // width="100%"*/}
-      {/*            // height="10%"*/}
-      {/*            style={{width: '100%', height: '100%', objectFit: 'cover', cursor: 'pointer'}}*/}
-      {/*        />*/}
-      {/*    </div>*/}
-      {/*</div>*/}
       <Modal size="lg" isOpen={isViewerOpen} toggle={() => setIsViewerOpen(!isViewerOpen)}>
         <ModalHeader toggle={() => setIsViewerOpen(!isViewerOpen)}>Receipt Preview</ModalHeader>
         <img src={driver?.driver_data?.receipt_url} alt="receipt" />
@@ -707,7 +657,7 @@ const DriverProfile = ({
                   </ul>
                 </div>
               )}
-              {/* status "1" is for lasdri when valid status 
+              {/* status "1" is for lasdri when valid status
               status "0" is for lasdri when valid but expired */}
               {(verificationResult?.status === "1" || verificationResult?.status === "0") && (
                 <div>
@@ -876,18 +826,6 @@ const DriverProfile = ({
                 <Label for="userEmail">Email</Label>
                 <Input onChange={onChange} type="email" name="email" readOnly={true} value={driver?.email} />
               </FormGroup>
-              {/* <FormGroup>
-                <Label for="exampleSelect">Vehicles</Label>
-                <Input type="select" name="vehicle" onChange={onChange} value={vehicle} required={true}>
-                  <option value="">Select Vehicle</option>
-                  {vehicles &&
-                    vehicles.map((vehicle) => (
-                      <option key={vehicle.vehicle_id} value={vehicle.vehicle_id}>
-                        {vehicle.car_number_plate}
-                      </option>
-                    ))}
-                </Input>
-              </FormGroup> */}
               <AsyncSelectComponent onChange={onChange} />
               {/* <AsyncSelect cacheOptions defaultOptions loadOptions={() => [{label: "one", value: 1},{label: "two", value: 2}]} onChange={() => null} />; */}
               <ModalFooter>

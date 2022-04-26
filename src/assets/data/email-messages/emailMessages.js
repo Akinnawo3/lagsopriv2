@@ -29,6 +29,7 @@ export default {
   userDetailResetMsg: (name, detailType, update) => {
     return `Dear ${name}, your ${detailType} has been changed to ${update}`;
   },
+  approvedPartnerMessage: "Dear Partner, your details have been verified as a partner with LagosRide, you can go ahead to make payment for the cost of the asset. Kindly click on the link below to make payment.",
 
   // "You have been suspended from LagosRide for the following reasons;\n" +
   // "\n" +

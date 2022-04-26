@@ -1,21 +1,34 @@
 import axios from "axios";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
 import {sendMessage} from "./messagesAction";
-import {ADMINS, ADMIN_COUNT, USER_COUNT, USERS, PARTNERS, PARTNERS_COUNT, PASSENGER_COUNT, PASSENGERS} from "./types";
+import {
+  ADMINS,
+  ADMIN_COUNT,
+  USER_COUNT,
+  USERS,
+  PARTNERS,
+  PARTNERS_COUNT,
+  PASSENGER_COUNT,
+  PASSENGERS,
+  PASSENGER, PARTNER, DRIVER
+} from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 import {configureStore} from "../store";
 import {changeCurrentPage, onAddUpdateUserModalClose} from "Routes/admin/admins";
 import emailMessages from "Assets/data/email-messages/emailMessages";
+import {getDriver, sendDriverMessage} from "./driverAction";
+import {onAddVehicleModalClose} from "Routes/drivers/components/driverProfile";
+import {getVehicle, sendVehicleAssignMessage, sendVehicleUnassignMessage} from "Actions/vehicleAction";
 
 export const getPartners =
-  (page_no = 1, spinner, start_date = "", end_date = "") =>
+  (page_no = 1, spinner, start_date = "", end_date = "", status = '') =>
   async (dispatch) => {
     try {
       spinner && (await dispatch(startLoading()));
       !spinner && (await dispatch(startStatusLoading()));
       const res = await axios.get(
-          `${api.user}/v1.1/admin/users?user_type=partner&item_per_page=20&page=${page_no}&start_date=${start_date}&end_date=${end_date}`
+          `${api.user}/v1.1/admin/users?user_type=partner&item_per_page=20&page=${page_no}&start_date=${start_date}&end_date=${end_date}&account_status=${status}`
       );
       console.log(res.data.data, 'from partners')
       if (res.data.status === "error") {
@@ -34,9 +47,9 @@ export const getPartners =
     }
   };
 
-export const getPartnersCount = (start_date = "", end_date = "") => async (dispatch) => {
+export const getPartnersCount = (start_date = "", end_date = "", status = '') => async (dispatch) => {
   try {
-    const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=partner&component=count&start_date=${start_date}&end_date=${end_date}`);
+    const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=partner&component=count&start_date=${start_date}&end_date=${end_date}&account_status=${status}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
@@ -95,6 +108,84 @@ export const searchPartners = (searchData) => async dispatch => {
   } catch (err) {
     dispatch(endStatusLoading());
     NotificationManager.error(err.response.data.result)
+  }
+};
+
+export const getPartner = (auth_id, loading = true) => async dispatch => {
+  try {
+  loading ?  dispatch(startLoading()): dispatch(startStatusLoading());
+    const res = await axios.get(`${api.user}/v1.1/admin/users/${auth_id}/?user_type=partner`);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      dispatch({
+        type: PARTNER,
+        payload: res.data.data
+      });
+    }
+  loading ?  dispatch(endLoading()) : dispatch(endStatusLoading());
+  } catch (err) {
+   loading ? dispatch(endLoading()) : dispatch(endStatusLoading());
+  }
+};
+
+export const assignVehicleToPartner = (vehicle_id, auth_id, setAddVehicleModal) => async (dispatch) => {
+  const body = {vehicle_id, auth_id};
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.post(`${api.vehicles}/v1.1/admin/assign-vehicle`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success("Vehicle assigned Successfully!");
+      typeof setAddVehicleModal === "function" ? setAddVehicleModal(false) : null
+      await dispatch(getPartner(auth_id, false));
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+    console.log(err);
+    // NotificationManager.error(err.response.data.error);
+  }
+};
+
+export const changePartnerStatus = (auth_id, partner_status, partnerData, message_type, subject) => async (dispatch) => {
+  const body = {component: "partner_status", auth_id, partner_status};
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.put(`${api.user}/v1.1/admin/users`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      if (partnerData && message_type) {
+        await dispatch(sendDriverMessage(partnerData, message_type, subject));
+      }
+
+      await NotificationManager.success("Partner approved!");
+      await dispatch(getPartner(auth_id, false));
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+    NotificationManager.error(err.response.data.message);
+  }
+};
+
+export const revokePartnerVehicle = (vehicle_id, vehicleDetails, partnerDetails) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.post(`${api.vehicles}/v1.1/admin/revoke-vehicle`, {vehicle_id});
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success("Vehicle unassigned Successfully!");
+      await dispatch(sendVehicleUnassignMessage(partnerDetails, vehicleDetails));
+     await dispatch(getPartner(partnerDetails?.auth_id, false));
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+    NotificationManager.error("network error, try again");
   }
 };
 

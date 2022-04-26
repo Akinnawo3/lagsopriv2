@@ -10,11 +10,9 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {getDriver} from "Actions/driverAction";
 import DriverProfile from "Routes/drivers/components/driverProfile";
 import DriverRatings from "Routes/drivers/components/driverRatings";
-import RevenueSplit from "Routes/drivers/components/revenueSplit";
 import {getRating, getUserRating, getUserRatingAverage, getUserRatingsCount} from "Actions/ratingAction";
 import DriverTrips from "Routes/drivers/components/driverTrips";
 import {getDriverTripCount, getDriverTripCountDisplayAll, getDriverTripCountDisplayCancelled, getDriverTripCountDisplayCompleted, getDriverTrips} from "Actions/tripAction";
-import {getVehicles} from "Actions/vehicleAction";
 import {getWalletBalance, getWallets, getWalletsCount} from "Actions/walletAction";
 import Wallets from "Components/Wallets/wallets";
 import {
@@ -46,7 +44,6 @@ const Driver = (props) => {
     getDriverTripCount,
     driverDetails,
     getUserRating,
-    getVehicles,
     getDriverTripCountDisplayAll,
     getDriverTripCountDisplayCompleted,
     getDriverTripCountDisplayCancelled,
@@ -58,13 +55,9 @@ const Driver = (props) => {
     wallets,
     wallet,
     walletsCount,
-    paymentsCount,
-    payments,
     getPaymentsService,
     getPaymentsServiceCount,
-    paymentsServiceBalanceIndividual,
     getPaymentsServiceBalanceForIndividual,
-    driverLocation,
     getPayments,
     getPaymentsCount
   } = props;
@@ -77,26 +70,60 @@ const Driver = (props) => {
 
   useEffect(() => {
     if (match.params.id) {
-      getDriverTrips(1, match.params.id, true, "");
+      getDriver(match.params.id);
+    }
+  }, [match.params.id]);
+
+  //called only when on trip tab
+  useEffect(() => {
+    if (match.params.id && activeTab === 1) {
+      getDriverTrips(1, match.params.id, false, "");
       getDriverTripCount(match.params.id, "");
       getDriverTripCountDisplayAll(match.params.id);
       getDriverTripCountDisplayCompleted(match.params.id);
       getDriverTripCountDisplayCancelled(match.params.id);
-      getDriver(match.params.id);
+    }
+  }, [match.params.id, activeTab]);
+
+//called only when on rating tab
+  useEffect(() => {
+    if (match.params.id && activeTab === 2) {
       getUserRating(1, "driver", match.params.id);
       getUserRatingCount("driver", match.params.id);
       getUserRatingAverage("driver", match.params.id);
-      getVehicles(1, 0);
-      getWallets(1, "", match.params.id);
+    }
+  }, [match.params.id, activeTab]);
+
+//called only when on wallet tab
+  useEffect(() => {
+    if (match.params.id && activeTab === 3) {
+      getWallets(1, "", match.params.id, true);
       getWalletsCount("", match.params.id);
       getWalletsBalance(match.params.id);
-      getPaymentsService(1, "", match.params.id);
-      getPaymentsServiceCount("", match.params.id);
-      getPaymentsServiceBalanceForIndividual(match.params.id);
+    }
+  }, [match.params.id, activeTab]);
+
+//called only when on trip payment tab
+  useEffect(() => {
+    if (match.params.id && activeTab === 5) {
       getPayments(1, "", match.params.id, false, 'driver_id');
       getPaymentsCount("", match.params.id, 'driver_id');
     }
-  }, [match.params.id]);
+  }, [match.params.id, activeTab]);
+
+
+//called only when on service payment tab
+  useEffect(() => {
+    if (match.params.id && activeTab === 4) {
+      getPaymentsService(1, "", match.params.id);
+      getPaymentsServiceCount("", match.params.id);
+      getPaymentsServiceBalanceForIndividual(match.params.id);
+    }
+  }, [match.params.id, activeTab]);
+
+
+
+
   return (
     <div className="userProfile-wrapper">
       <Helmet>
@@ -149,18 +176,10 @@ const Driver = (props) => {
                 <Wallets auth_id={match.params.id} wallets={wallets} wallet={wallet} walletsCount={walletsCount} />
               </TabContainer>
             )}
-            {/* {activeTab === 4 && (
-              <TabContainer>
-                <RevenueSplit auth_id={match.params.id} wallets={wallets} wallet={wallet} walletsCount={walletsCount} />
-              </TabContainer>
-            )} */}
             {activeTab === 4 && (
               <TabContainer>
                 <PaymentsServiceComponent
                   auth_id={match.params.id}
-                  //   payments={payments}
-                  //    paymentsCount={paymentsCount}
-                  //     paymentsServiceBalance={paymentsServiceBalance}
                 />
               </TabContainer>
             )}
@@ -168,9 +187,6 @@ const Driver = (props) => {
                 <TabContainer>
                   <PaymentTripComponent
                       auth_id={match.params.id}
-                      //   payments={payments}
-                      //    paymentsCount={paymentsCount}
-                      //     paymentsServiceBalance={paymentsServiceBalance}
                   />
                 </TabContainer>
             )}
@@ -190,11 +206,10 @@ function mapDispatchToProps(dispatch) {
     getDriverTripCountDisplayAll: (authId) => dispatch(getDriverTripCountDisplayAll(authId)),
     getDriverTripCountDisplayCompleted: (authId) => dispatch(getDriverTripCountDisplayCompleted(authId)),
     getDriverTripCountDisplayCancelled: (authId) => dispatch(getDriverTripCountDisplayCancelled(authId)),
-    getVehicles: (page_no, assign, spinner) => dispatch(getVehicles(page_no, assign, spinner)),
     getUserRating: (page_no, user_type, auth_id) => dispatch(getUserRating(page_no, user_type, auth_id)),
     getUserRatingCount: (user_type, auth_id) => dispatch(getUserRatingsCount(user_type, auth_id)),
     getUserRatingAverage: (user_type, auth_id) => dispatch(getUserRatingAverage(user_type, auth_id)),
-    getWallets: (pageNo, transaction_status, auth_id) => dispatch(getWallets(pageNo, transaction_status, auth_id)),
+    getWallets: (pageNo, transaction_status, auth_id, loading) => dispatch(getWallets(pageNo, transaction_status, auth_id, loading)),
     getWalletsCount: (transaction_status, auth_id) => dispatch(getWalletsCount(transaction_status, auth_id)),
     getWalletsBalance: (auth_id) => dispatch(getWalletBalance(auth_id)),
     getPaymentsService: (pageNo, transaction_status, auth_id) => dispatch(getPaymentsService(pageNo, transaction_status, auth_id)),

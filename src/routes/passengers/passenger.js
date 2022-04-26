@@ -68,24 +68,50 @@ function TabContainer(props) {
     useEffect(()=> {
          if (match.params.id){
              getPassenger(match.params.id)
-             getPassengerTrips(1, match.params.id, true, '')
-             getPassengerTripCount(match.params.id, '')
-             getPassengerTripCountDisplayAll(match.params.id)
-             getPassengerTripCountDisplayCompleted(match.params.id)
-             getPassengerTripCountDisplayCancelled(match.params.id)
-             getUserRating(1, 'rider', match.params.id)
-             getUserRatingCount('rider', match.params.id)
-             getUserRatingAverage('rider', match.params.id)
-             getWallets(1, '', match.params.id)
-             getWalletsCount('', match.params.id)
-             getWalletsBalance(match.params.id)
-             getPayments(1, '', match.params.id)
-             getPaymentsCount('', match.params.id)
          }
      },[match.params.id])
 
 
-        return (
+     //called only when on trip tab
+     useEffect(()=> {
+         if (match.params.id && activeTab === 1){
+             getPassengerTrips(1, match.params.id, false, '')
+             getPassengerTripCount(match.params.id, '')
+             getPassengerTripCountDisplayAll(match.params.id)
+             getPassengerTripCountDisplayCompleted(match.params.id)
+             getPassengerTripCountDisplayCancelled(match.params.id)
+         }
+     },[match.params.id, activeTab])
+
+     //called only when on rating tab
+     useEffect(()=> {
+         if (match.params.id && activeTab === 2){
+             getUserRating(1, 'rider', match.params.id)
+             getUserRatingCount('rider', match.params.id)
+             getUserRatingAverage('rider', match.params.id)
+         }
+     },[match.params.id, activeTab])
+
+     //called only when on wallet tab
+     useEffect(()=> {
+         if (match.params.id && activeTab === 3){
+             getWallets(1, '', match.params.id, true)
+             getWalletsCount('', match.params.id)
+             getWalletsBalance(match.params.id)
+         }
+     },[match.params.id, activeTab])
+
+     //called only when on trip payment tab
+     useEffect(()=> {
+         if (match.params.id && activeTab === 4){
+             getPayments(1, '', match.params.id)
+             getPaymentsCount('', match.params.id)
+         }
+     },[match.params.id, activeTab])
+
+
+
+     return (
             <div className="userProfile-wrapper">
                 <Helmet>
                     <title>User Profile</title>
@@ -182,7 +208,7 @@ function mapDispatchToProps(dispatch) {
         getUserRating: (page_no, user_type, auth_id) => dispatch(getUserRating(page_no,user_type, auth_id)),
         getUserRatingCount: (user_type, auth_id) => dispatch(getUserRatingsCount(user_type, auth_id)),
         getUserRatingAverage: (user_type, auth_id) => dispatch(getUserRatingAverage(user_type, auth_id)),
-        getWallets: (pageNo, transaction_status, auth_id) => dispatch(getWallets(pageNo, transaction_status, auth_id)),
+        getWallets: (pageNo, transaction_status, auth_id, loading) => dispatch(getWallets(pageNo, transaction_status, auth_id, loading)),
         getWalletsCount: (transaction_status, auth_id) => dispatch(getWalletsCount(transaction_status, auth_id)),
         getWalletsBalance: (auth_id) => dispatch(getWalletBalance(auth_id)),
         getPayments: (pageNo, transaction_status, auth_id) => dispatch(getPayments(pageNo, transaction_status, auth_id)),

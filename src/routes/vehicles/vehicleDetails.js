@@ -1,7 +1,6 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef} from "react";
 import {connect} from "react-redux";
 import {Helmet} from "react-helmet";
-import QRCode from "qrcode.react";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {Link} from "react-router-dom";
 import {getVehicle, revokeVehicle} from "Actions/vehicleAction";
@@ -122,10 +121,16 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
                   )}
                   <li className="list-group-item text-right">
                     <span className="pull-left">
-                      <strong>Status</strong>
+                      <strong>Driver Status</strong>
                     </span>
                     <Badge color={vehicleDetails?.assigned ? "success" : "danger"}>{vehicleDetails?.assigned ? "Assigned" : "Unassigned"}</Badge>
                   </li>
+                    <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Partner Status</strong>
+                    </span>
+                        <Badge color={vehicleDetails?.partner_assigned ? "success" : "danger"}>{vehicleDetails?.partner_assigned ? "Assigned" : "Unassigned"}</Badge>
+                    </li>
                   <li className="list-group-item text-right">
                     <div className="d-flex justify-content-between align-items-start ">
                       <strong>QR Code</strong>

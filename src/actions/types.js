@@ -202,6 +202,7 @@ export const OEMS_VEHICLES = "OEMS_VEHICLES";
 
 
 //partners
+export const PARTNER = "PARTNER";
 export const PARTNERS = "PARTNERS";
 export const PARTNERS_COUNT = "PARTNERS_COUNT";
 

@@ -156,6 +156,10 @@ const VehicleTable = ({
     inputEl.current.open();
     setDeleteId(id);
   };
+
+
+  console.log(vehicles, 'aaaaa')
+
   return (
     <div>
       {!loading && (
@@ -183,7 +187,8 @@ const VehicleTable = ({
                     <TableCell>Serial No</TableCell>
                     <TableCell>Model</TableCell>
                     <TableCell>Year</TableCell>
-                    <TableCell>status</TableCell>
+                    <TableCell>Driver status</TableCell>
+                    <TableCell>Partner status</TableCell>
                     <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
@@ -197,6 +202,9 @@ const VehicleTable = ({
                         <TableCell>{vehicle.car_model}</TableCell>
                         <TableCell>
                           <Badge color={vehicle.assigned ? "success" : "danger"}>{vehicle.assigned ? "Assigned" : "Unassigned"}</Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Badge color={vehicle.partner_assigned ? "success" : "danger"}>{vehicle.partner_assigned ? "Assigned" : "Unassigned"}</Badge>
                         </TableCell>
                         <TableCell>
                           <button type="button" className="rct-link-btn" onClick={(e) => opnAddNewUserEditModal(vehicle.vehicle_id)}>
