@@ -291,7 +291,7 @@ export const sendVehicleAssignMessage = (driverData, vehicleData, message_type) 
     type: "generic",
     email: driverData.email,
     name: driverData.first_name,
-    message: `Your payment has been acknowledged, and a vehicle (${vehicleData.car_number_plate}, ${vehicleData.car_color} ${vehicleData.car_make}, ${vehicleData.car_model}) has been assigned to you. Kindly log into the app to start earning. Thank you for partnering with us.`,
+    message: `Your payment has been acknowledged, and a vehicle (${vehicleData.car_number_plate}, ${vehicleData.car_make}, ${vehicleData.car_model}) has been assigned to you. Kindly log into the app to start earning. Thank you for partnering with us.`,
     phone_number: driverData.phone_number,
     subject: "Vehicle Assigned",
   };
