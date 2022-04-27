@@ -519,6 +519,11 @@ const AsyncPartner = Loadable({
   loading: () => <RctPageLoader />,
 });
 
+const AsyncPartnerDrivers = Loadable({
+  loader: () => import("Routes/partners/partnerDrivers"),
+  loading: () => <RctPageLoader />,
+});
+
 export {
   AsyncPaymentsSuccessful,
   AsyncPaymentsUnsuccessful,
@@ -624,5 +629,6 @@ export {
   AsyncPartners,
   AsyncPartner,
   AsyncPartnersPending,
-  AsyncPartnersVerified
+  AsyncPartnersVerified,
+  AsyncPartnerDrivers
 };

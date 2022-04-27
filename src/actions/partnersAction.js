@@ -1,25 +1,14 @@
 import axios from "axios";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
-import {sendMessage} from "./messagesAction";
 import {
-  ADMINS,
-  ADMIN_COUNT,
-  USER_COUNT,
-  USERS,
   PARTNERS,
   PARTNERS_COUNT,
-  PASSENGER_COUNT,
-  PASSENGERS,
-  PASSENGER, PARTNER, DRIVER
+  PARTNER, PARTNER_DRIVERS, PARTNER_DRIVERS_COUNT
 } from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
-import {configureStore} from "../store";
-import {changeCurrentPage, onAddUpdateUserModalClose} from "Routes/admin/admins";
-import emailMessages from "Assets/data/email-messages/emailMessages";
-import {getDriver, sendDriverMessage} from "./driverAction";
-import {onAddVehicleModalClose} from "Routes/drivers/components/driverProfile";
-import {getVehicle, sendVehicleAssignMessage, sendVehicleUnassignMessage} from "Actions/vehicleAction";
+import {sendDriverMessage} from "./driverAction";
+import {sendVehicleUnassignMessage} from "Actions/vehicleAction";
 
 export const getPartners =
   (page_no = 1, spinner, start_date = "", end_date = "", status = '') =>
@@ -187,5 +176,47 @@ export const revokePartnerVehicle = (vehicle_id, vehicleDetails, partnerDetails)
     dispatch(endStatusLoading());
     NotificationManager.error("network error, try again");
   }
+};
+
+
+export const getPartnerDrivers =
+    (partner_id, page_no = 1, spinner, start_date = "", end_date = "") =>
+        async (dispatch) => {
+          try {
+            spinner && (await dispatch(startLoading()));
+            !spinner && (await dispatch(startStatusLoading()));
+            const res = await axios.get(
+                `${api.user}/v1.1/admin/partner-drivers/${partner_id}?user_type=partner&item_per_page=20&page=${page_no}&start_date=${start_date}&end_date=${end_date}`
+            );
+            // console.log(res.data.data, 'from partners')
+            if (res.data.status === "error") {
+              NotificationManager.error(res.data.msg);
+            } else {
+              dispatch({
+                type: PARTNER_DRIVERS,
+                payload: res.data.data,
+              });
+            }
+            dispatch(endLoading());
+            dispatch(endStatusLoading());
+          } catch (err) {
+            dispatch(endLoading());
+            dispatch(endStatusLoading());
+          }
+        };
+
+
+export const getPartnerDriverCount = (partner_id, start_date = "", end_date = "") => async (dispatch) => {
+  try {
+    const res = await axios.get(`${api.user}/v1.1/admin/partner-drivers/${partner_id}?user_type=partner&component=count&start_date=${start_date}&end_date=${end_date}`);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      dispatch({
+        type: PARTNER_DRIVERS_COUNT,
+        payload: res.data.data.total ? res.data.data.total : 0,
+      });
+    }
+  } catch (err) {}
 };
 

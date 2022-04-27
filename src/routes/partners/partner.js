@@ -8,7 +8,7 @@ import { Helmet } from "react-helmet";
 import { RctCard } from 'Components/RctCard';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import PartnerProfile from "Routes/partners/components/partnerProfile";
-import {getPartner} from "Actions/partnersAction";
+import {getPartner, getPartnerDriverCount} from "Actions/partnersAction";
 
 // For Tab Content
 function TabContainer(props) {
@@ -26,7 +26,8 @@ function TabContainer(props) {
        match,
        partnerDetails,
        loading,
-       getPartner
+       getPartner,
+       getPartnerDriverCount
    } = props
 
     const [activeTab, setActiveTab] = useState(location.state ? location.state.activeTab : 0);
@@ -38,6 +39,7 @@ function TabContainer(props) {
     useEffect(()=> {
          if (match?.params?.id){
              getPartner(match?.params?.id)
+             getPartnerDriverCount(match?.params?.id)
          }
      },[match?.params?.id])
 
@@ -131,6 +133,8 @@ function TabContainer(props) {
 function mapDispatchToProps(dispatch) {
     return {
         getPartner: (id) => dispatch(getPartner(id)),
+        getPartnerDriverCount: (partner_id, start_date, end_date ) => dispatch(getPartnerDriverCount(partner_id, start_date, end_date )),
+
     };
 }
 

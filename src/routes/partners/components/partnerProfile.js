@@ -21,7 +21,7 @@ import emailMessages from "Assets/data/email-messages/emailMessages";
 import {Link} from "react-router-dom";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 
-const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartnerStatus, revokePartnerVehicle}) => {
+const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartnerStatus, revokePartnerVehicle, driversCount}) => {
 
   const [formData, setFormData] = useState({
     firstname: partnerDetails?.first_name,
@@ -33,6 +33,7 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
   const {firstname, lastname, email} = formData
   const [addVehicleModal, setAddVehicleModal] = useState(false);
   const [vIModal, setViModal] = useState(false)
+  const [CACModal, setCACModal] = useState(false)
   const [vehiclesModal, setVehiclesModal] = useState(false)
 
 
@@ -41,7 +42,7 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
     e?.target?.name ? setFormData({...formData, [e.target.name]: e.target.value}) : setFormData({...formData, vehicle: e.value});
   };
 
-
+console.log(partnerDetails)
 
   return (
     <div className="row" style={{fontSize: "0.8rem"}}>
@@ -91,10 +92,26 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
               </li>
               <li className="list-group-item text-right">
                 <span className="pull-left">
-                  <strong>Office address</strong>
+                  <strong>{partnerDetails?.partner_data?.account_type === 'individual' ? 'Home address' : 'Office address'}</strong>
                 </span>
                 {partnerDetails?.home_address}
               </li>
+              {partnerDetails?.partner_data?.account_type === 'individual' &&
+                  <>
+                    <li className="list-group-item text-right">
+                <span className="pull-left">
+                  <strong>Gender</strong>
+                </span>
+                      {partnerDetails?.gender}
+                    </li>
+                    <li className="list-group-item text-right">
+                <span className="pull-left">
+                  <strong>NIN</strong>
+                </span>
+                      {partnerDetails?.nin_id?.value}
+                    </li>
+                  </>
+              }
               <li className="list-group-item text-right">
                 <span className="pull-left">
                   <strong>Account type</strong>
@@ -135,26 +152,43 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
                 </span>
                 {calculatePostDate(partnerDetails.createdAt)}
               </li>
-              <div>
-                {partnerDetails?.partner_data?.partner_status === 4 &&
-                    <Button onClick={() => setAddVehicleModal(true)} className="bg-warning mt-3 text-white">
-                      Assign Vehicle
-                    </Button>
-                }
-                {partnerDetails?.partner_data?.partner_status !== 4 &&
-                    <Button onClick={() =>  changePartnerStatus(partnerDetails?.auth_id, "4", partnerDetails, emailMessages.approvedPartnerMessage, "Partner Approved")} className="bg-success mt-3 text-white">
-                      Verify
-                    </Button>
-                }
-              </div>
             </ul>
           </div>
+        </div>
+        <div>
+          {partnerDetails?.partner_data?.partner_status === 4 &&
+              <Button onClick={() => setAddVehicleModal(true)} className="bg-warning mt-3 text-white">
+                Assign Vehicle
+              </Button>
+          }
+          {partnerDetails?.partner_data?.partner_status !== 4 &&
+              <Button onClick={() =>  changePartnerStatus(partnerDetails?.auth_id, "4", partnerDetails, emailMessages.approvedPartnerMessage, "Partner Approved")} className="bg-success mt-3 text-white">
+                Verify
+              </Button>
+          }
         </div>
       </div>
       <div className="col-sm-6">
         <div className="tab-content px-4">
           <div className="tab-pane active" id="home">
             <ul className="list-group">
+              {partnerDetails?.partner_data?.account_type === 'individual' &&
+                  <>
+                    <li className="list-group-item text-right">
+                <span className="pull-left">
+                  <strong>State of origin</strong>
+                </span>
+                      {partnerDetails?.state}
+                    </li>
+                    <li className="list-group-item text-right">
+                <span className="pull-left">
+                  <strong>Occupation</strong>
+                </span>
+                      {partnerDetails?.occupation}
+                    </li>
+                  </>
+              }
+
               <li className="list-group-item text-right">
                 <span className="pull-left">
                   <strong>Bank name</strong>
@@ -175,6 +209,30 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
               </li>
               <li className="list-group-item text-right">
                 <span className="pull-left">
+                  <strong>Has driver?</strong>
+                </span>
+                {driversCount > 0 ? 'Yes' : 'No'}
+              </li>
+              {driversCount > 0  &&
+                  <>
+                    <li className="list-group-item text-right">
+                <span className="pull-left">
+                  <strong>No of driver(s)</strong>
+                </span>
+                      {driversCount}
+                    </li>
+                    <li className="list-group-item text-right">
+                <span className="pull-left">
+                  <strong>Driver(s)</strong>
+                </span>
+                      <Link to={`/admin/partners/partner-drivers`}>
+                        <i className="ti-eye" />
+                      </Link>
+                    </li>
+                  </>
+              }
+              <li className="list-group-item text-right">
+                <span className="pull-left">
                   <strong>Asset payment?</strong>
                 </span>
                 {partnerDetails?.partner_data?.asset_payment?.status ? 'Yes' : 'No'}
@@ -189,12 +247,28 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
               </li>
               <li className="list-group-item text-right">
                 <span className="pull-left">
+                  <strong>No of vehicle(s)</strong>
+                </span>
+                {partnerDetails?.vehicle_data?.length}
+              </li>
+              <li className="list-group-item text-right">
+                <span className="pull-left">
                   <strong>Vehicles</strong>
                 </span>
                 <button type="button" className="rct-link-btn text-primary" title="view details" onClick={() => setVehiclesModal(true)}>
                   <i className="ti-eye" />
                 </button>
               </li>
+              {partnerDetails?.partner_data?.account_type === 'organization' &&
+                  <li className="list-group-item text-right">
+                <span className="pull-left">
+                  <strong>CAC document</strong>
+                </span>
+                    <button type="button" className="rct-link-btn text-primary" title="view details" onClick={() => setCACModal(true)}>
+                      <i className="ti-eye" />
+                    </button>
+                  </li>
+              }
             </ul>
           </div>
         </div>
@@ -309,6 +383,27 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
           </div>
         </ModalBody>
       </Modal>
+
+
+      {/*CAC document  modal*/}
+      <Modal size='lg' isOpen={CACModal} toggle={() =>setCACModal(!CACModal)}>
+        <ModalHeader toggle={() =>  setCACModal(!CACModal)}>CAC document</ModalHeader>
+        <ModalBody>
+          <img
+              src={partnerDetails?.avatar}
+              style={{width: '100%'}}
+              // alt="user profile"
+              // className="rounded-circle"
+              // width="200"
+              // height="200"
+          />
+        </ModalBody>
+        <ModalFooter>
+          <Button type="submit" variant="contained" className="text-white btn-success">
+           Download
+          </Button>
+        </ModalFooter>
+      </Modal>
     </div>
   );
 };
@@ -329,6 +424,7 @@ const mapStateToProps = (state) => ({
   partnersCount: state.partners.partnersCount,
   loading: state.loading.loading,
   loadingStatus: state.loading.loadingStatus,
+  driversCount: state.partners.partnerDriversCount,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PartnerProfile)
