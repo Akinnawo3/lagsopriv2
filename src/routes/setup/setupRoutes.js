@@ -2,7 +2,7 @@ import React from "react";
 import {Route, Switch} from "react-router-dom";
 
 // async components
-import {AsyncFees, AsyncOthers, AsyncRevenueSplit, AsyncRoles, AsyncAddPersonnel, AsyncGeoFencing, AsyncOem} from "Components/AsyncComponent/AsyncComponent";
+import {AsyncFees, AsyncOthers, AsyncRevenueSplit, AsyncRoles, AsyncAddPersonnel, AsyncGeoFencing, AsyncOem, AsyncIdVerification} from "Components/AsyncComponent/AsyncComponent";
 
 const SetupRoutes = ({match}) => (
   <div className="content-wrapper">
@@ -14,6 +14,7 @@ const SetupRoutes = ({match}) => (
       <Route path={`/admin/setup/add-personnel`} component={AsyncAddPersonnel} />
       <Route path={`/admin/setup/geo-fencing`} component={AsyncGeoFencing} />
       <Route path={`/admin/setup/oem`} component={AsyncOem} />
+      <Route path={`/admin/setup/id-verification`} component={AsyncIdVerification} />
     </Switch>
   </div>
 );

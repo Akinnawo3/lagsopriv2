@@ -405,6 +405,10 @@ const AsyncPromoBeneficiaries = Loadable({
 });
 
 // for setup
+const AsyncIdVerification = Loadable({
+  loader: () => import("Routes/setup/idVerification"),
+  loading: () => <RctPageLoader />,
+});
 const AsyncFees = Loadable({
   loader: () => import("Routes/setup/fees"),
   loading: () => <RctPageLoader />,
@@ -599,5 +603,6 @@ export {
   AsyncVehiclesFeedbackDetails,
   AsyncDisbursementHolders,
   AsyncPaymentsServiceRefund,
-  AsyncWalletsRefund
+  AsyncWalletsRefund,
+  AsyncIdVerification,
 };

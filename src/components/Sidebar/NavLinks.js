@@ -8,6 +8,11 @@ export default {
       // "new_item": true,
       child_routes: [
         {
+          menu_title: "sidebar.idVerification",
+          new_item: false,
+          path: "/admin/setup/id-verification",
+        },
+        {
           menu_title: "sidebar.fees",
           new_item: false,
           path: "/admin/setup/fees",

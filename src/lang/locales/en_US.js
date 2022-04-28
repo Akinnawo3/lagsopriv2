@@ -14,6 +14,7 @@ module.exports = {
   "sidebar.areas": "Areas",
 
   //new setup arrangement
+  "sidebar.idVerification": "Id Verification",
   "sidebar.fees": "Fees",
   "sidebar.revenueSplit": "Revenue Split",
   "sidebar.roles": "Roles",
