@@ -8,7 +8,7 @@ export const sendVerificationRequest = (id_type, id_value, first_name, last_name
   const body = {id_type, id_value, first_name, last_name};
   try {
     await dispatch(startStatusLoading());
-    const res = await axios.post(`${api.idVerification}/v1.1/identities/verifghy`, body);
+    const res = await axios.post(`${api.idVerification}/v1.1/identities/verify`, body);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
       dispatch({

@@ -55,15 +55,15 @@ export const creatOEM = (body) => async (dispatch) => {
     } else {
       // await changeCurrentPage();
       await NotificationManager.success("OEM Created Successfully!");
-      await dispatch(
-        sendMessage({
-          type: "generic",
-          subject: "OEM Login Details",
-          message: emailMessages.newOemMsg(`${body.name}`, body.phone_number, body.password),
-          name: body.name,
-          email: body.email,
-        })
-      );
+      // await dispatch(
+      //   sendMessage({
+      //     type: "generic",
+      //     subject: "OEM Login Details",
+      //     message: emailMessages.newOemMsg(`${body.name}`, body.phone_number, body.password),
+      //     name: body.name,
+      //     email: body.email,
+      //   })
+      // );
       onAddUpdateOemModalClose();
       await dispatch(getOems());
       await dispatch(getOemCount());

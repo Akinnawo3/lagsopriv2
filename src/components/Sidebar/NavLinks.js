@@ -138,6 +138,29 @@ export default {
       ],
     },
     {
+      menu_title: "sidebar.partners",
+      menu_icon: "icon-user",
+      type_multi: null,
+      new_item: false,
+      child_routes: [
+        {
+          path: "/admin/partners",
+          new_item: false,
+          menu_title: "sidebar.all",
+        },
+        {
+          path: "/admin/partners/pending",
+          new_item: false,
+          menu_title: "sidebar.pending",
+        },
+        {
+          path: "/admin/partners/verified",
+          new_item: false,
+          menu_title: "sidebar.verified",
+        },
+      ],
+    },
+    {
       menu_title: "sidebar.vehicles",
       menu_icon: "zmdi zmdi-car",
       type_multi: null,

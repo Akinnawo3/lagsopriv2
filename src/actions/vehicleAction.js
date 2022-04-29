@@ -291,7 +291,7 @@ export const sendVehicleAssignMessage = (driverData, vehicleData, message_type) 
     type: "generic",
     email: driverData.email,
     name: driverData.first_name,
-    message: `Your payment has been acknowledged, and a vehicle (${vehicleData.car_number_plate}, ${vehicleData.car_color} ${vehicleData.car_make}, ${vehicleData.car_model}) has been assigned to you. Kindly log into the app to start earning. Thank you for partnering with us.`,
+    message: `Your payment has been acknowledged, and a vehicle (${vehicleData.car_number_plate}, ${vehicleData.car_make}, ${vehicleData.car_model}) has been assigned to you. Kindly log into the app to start earning. Thank you for partnering with us.`,
     phone_number: driverData.phone_number,
     subject: "Vehicle Assigned",
   };
@@ -306,7 +306,7 @@ export const sendVehicleUnassignMessage = (driverData, vehicleData, message_type
     email: driverData.email,
     name: driverData.first_name,
     message:
-      `Vehicle ${vehicleData.car_number_plate}, ${vehicleData.car_color} ${vehicleData.car_make}, ${vehicleData.car_model} has been unassigned from you. \n ` +
+      `Vehicle ${vehicleData.car_number_plate}, ${vehicleData.car_make}, ${vehicleData.car_model} has been unassigned from you. \n ` +
       "\n" +
       `You will no longer be able to receive ride request for this vehicle.\n` +
       "\n" +

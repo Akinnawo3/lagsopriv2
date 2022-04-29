@@ -500,7 +500,33 @@ const AsyncSessionPage500Component = Loadable({
   loading: () => <RctPageLoader />,
 });
 
-// terms and condition
+
+// partners
+
+const AsyncPartners = Loadable({
+  loader: () => import("Routes/partners/partners"),
+  loading: () => <RctPageLoader />,
+});
+
+const AsyncPartnersPending = Loadable({
+  loader: () => import("Routes/partners/partnersPending"),
+  loading: () => <RctPageLoader />,
+});
+
+const AsyncPartnersVerified = Loadable({
+  loader: () => import("Routes/partners/partnersVerified"),
+  loading: () => <RctPageLoader />,
+});
+
+const AsyncPartner = Loadable({
+  loader: () => import("Routes/partners/partner"),
+  loading: () => <RctPageLoader />,
+});
+
+const AsyncPartnerDrivers = Loadable({
+  loader: () => import("Routes/partners/partnerDrivers"),
+  loading: () => <RctPageLoader />,
+});
 
 export {
   AsyncPaymentsSuccessful,
@@ -605,4 +631,9 @@ export {
   AsyncPaymentsServiceRefund,
   AsyncWalletsRefund,
   AsyncIdVerification,
+  AsyncPartners,
+  AsyncPartner,
+  AsyncPartnersPending,
+  AsyncPartnersVerified,
+  AsyncPartnerDrivers
 };

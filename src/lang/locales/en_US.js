@@ -40,6 +40,8 @@ module.exports = {
   "sidebar.trips": "Trips",
   "sidebar.inactive": "Inactive",
   "sidebar.drivers": "Drivers",
+  "sidebar.partnerDrivers": "Partner Drivers",
+  "sidebar.partners": "Partners",
   "sidebar.admin-log": "Activity Log",
   "sidebar.oem": "OEM",
   "sidebar.booking-types": "Booking-Types",

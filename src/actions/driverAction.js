@@ -12,7 +12,7 @@ export const getDrivers =
       spinner && dispatch(startLoading());
       !spinner && dispatch(startStatusLoading());
       const res = await axios.get(
-        `${api.user}/v1.1/admin/users?user_type=driver&item_per_page=20&page=${page_no}&driver_account_status=${status}&driver_online_status=${driver_online_status}&asset_payment=${asset_payment}&driver_category=${driver_category}&start_date=${start_date}&end_date=${end_date}`
+        `${api.user}/v1.1/admin/users?user_type=driver&item_per_page=20&page=${page_no}&account_status=${status}&driver_online_status=${driver_online_status}&asset_payment=${asset_payment}&driver_category=${driver_category}&start_date=${start_date}&end_date=${end_date}`
       );
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
@@ -35,7 +35,7 @@ export const getDriversCount =
   (status = "", start_date = "", end_date = "") =>
   async (dispatch) => {
     try {
-      const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=driver&driver_account_status=${status}&component=count&start_date=${start_date}&end_date=${end_date}`);
+      const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=driver&account_status=${status}&component=count&start_date=${start_date}&end_date=${end_date}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -149,11 +149,11 @@ export const verifyID = (auth_id, verification_status, verification_name) => asy
 export const searchDrivers = (searchData, status) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
-    const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=driver&q=${searchData}&driver_account_status=${status}`);
+    const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=driver&q=${searchData}&account_status=${status}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      const res2 = await axios.get(`${api.user}/v1.1/admin/users?user_type=driver&driver_account_status=${status}&component=count&q=${searchData}`);
+      const res2 = await axios.get(`${api.user}/v1.1/admin/users?user_type=driver&account_status=${status}&component=count&q=${searchData}`);
       dispatch({
         type: DRIVERS_COUNT,
         payload: res2.data.data.total ? res2.data.data.total : 0,
