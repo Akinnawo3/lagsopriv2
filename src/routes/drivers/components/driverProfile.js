@@ -845,7 +845,7 @@ const DriverProfile = ({
                 </div>
               )}
               {/* to handle internal server error */}
-              {verificationResult?.code === undefined && (
+              {Object.keys(verificationResult).length !== 0 && verificationResult?.code === undefined && (
                 <div>
                   <ul className="list-group">
                     <li className="list-group-item text-center">
