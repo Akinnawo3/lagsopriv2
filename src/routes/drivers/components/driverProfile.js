@@ -94,6 +94,7 @@ const DriverProfile = ({
          NotificationManager.error("Select a vehicle");
       }
    };
+
    const onAccept = () => {
       setTitle("Are you sure you want to accept driver");
       setMessage("This driver will be accepted on the platform.");
@@ -190,7 +191,7 @@ const DriverProfile = ({
       inputEl.current.close();
    };
 
-   console.log(driver);
+   //  console.log(driver);
 
    return (
       <div className="row" style={{ fontSize: "0.8rem" }}>
