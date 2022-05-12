@@ -113,7 +113,6 @@ const DriverProfile = ({
     inputEl.current.open();
   };
 
-
   const onSuspend = (e) => {
     e.preventDefault();
     if (!suspensionReasons.length) {
@@ -494,17 +493,25 @@ const DriverProfile = ({
               </li>
               <li className="list-group-item">
                 <span className="pull-left d-flex">
-                  {driver?.driver_data?.driver_status === 1 && //this makes sure u can no longer see verify button after u pass the verification pphase
-                    driver?.driver_data?.license_id?.status && // the remaining conditions ensures you cannot verify till all the individual ids are verified
-                    driver?.driver_data?.lasdri_id?.status &&
-                    driver?.driver_data?.lassra_id?.status &&
-                    driver?.driver_data?.nin_id?.status && (
-                      <div className="text-center">
-                        <Button disabled={loadingStatus} onClick={() => verifyUserPermssion("update_driver_status", () => onVerified())} className="bg-success mt-3 text-white">
-                          Verify Driver
-                        </Button>
-                      </div>
-                    )}
+                  {driver?.driver_data?.driver_status === 0 && (
+                    <div className="text-center">
+                      <Button disabled={loadingStatus} onClick={() => verifyUserPermssion("update_driver_status", () => onAccept())} className="bg-primary mt-3 text-white">
+                        Accept Driver
+                      </Button>
+                    </div>
+                  )}
+
+                  {driver?.driver_data?.driver_status === 1 && ( //this makes sure u can no longer see verify button after u pass the verification pphase
+                    // driver?.driver_data?.license_id?.status && // the remaining conditions ensures you cannot verify till all the individual ids are verified
+                    // driver?.driver_data?.lasdri_id?.status &&
+                    // driver?.driver_data?.lassra_id?.status &&
+                    // driver?.driver_data?.nin_id?.status &&
+                    <div className="text-center">
+                      <Button disabled={loadingStatus} onClick={() => verifyUserPermssion("update_driver_status", () => onVerified())} className="bg-success mt-3 text-white">
+                        Verify Driver
+                      </Button>
+                    </div>
+                  )}
                   {driver?.driver_data?.driver_status === 2 && driver?.driver_data?.asset_payment?.status && (
                     <div className="text-center">
                       <Button disabled={loadingStatus} onClick={() => verifyUserPermssion("update_driver_status", () => onTrained())} className="bg-success mt-3 text-white">
@@ -512,7 +519,6 @@ const DriverProfile = ({
                       </Button>
                     </div>
                   )}
-
                   {driver?.driver_data?.driver_status === 4 && (
                     <div className="text-center">
                       <Button disabled={loadingStatus} onClick={() => verifyUserPermssion("update_driver_status", () => setSuspensionReasonsModalOpen(true))} className="bg-danger mt-3 text-white">
