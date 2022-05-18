@@ -3,6 +3,7 @@ import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./
 import {GEOFENCES, FENCES_COUNT} from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
+import {onGeoFenceModalClose} from "../routes/setup/geoFence";
 
 export const createGeoFence = (name, description, locations) => async (dispatch) => {
   const body = {name, description, locations};
@@ -13,6 +14,7 @@ export const createGeoFence = (name, description, locations) => async (dispatch)
       NotificationManager.error(res.data.msg);
     } else {
       await NotificationManager.success("Geo-Fence Created Successfully!");
+      onGeoFenceModalClose();
       await dispatch(getGeoFence(1, true));
     }
     dispatch(endStatusLoading());
@@ -92,6 +94,7 @@ export const updateGeoFence = (geoFence_id, name, description, locations) => asy
       NotificationManager.error(res.data.msg);
     } else {
       await NotificationManager.success("Geo-Fence Updated Successfully!");
+      onGeoFenceModalClose();
       await dispatch(getGeoFence());
     }
     dispatch(endStatusLoading());
