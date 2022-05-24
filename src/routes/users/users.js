@@ -9,15 +9,7 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import Pagination from "react-js-pagination";
 import {connect} from "react-redux";
-import {
-  deleteUser,
-  getUserCount,
-  getUsers,
-  searchUsers,
-  ResetUserDetails,
-  changeKycStatus,
-  getUserExport
-} from "Actions/userAction";
+import {deleteUser, getUserCount, getUsers, searchUsers, ResetUserDetails, changeKycStatus, getUserExport} from "Actions/userAction";
 import EmptyData from "Components/EmptyData/EmptyData";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
@@ -73,8 +65,8 @@ const Users = ({
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
   const [user, setUser] = useState("");
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const inputEl = useRef(null);
   const exportRef = useRef(null);
@@ -181,42 +173,61 @@ const Users = ({
 
   const confirmExport = () => {
     exportRef.current.close();
-    getUserExport('', '', '', startDate, endDate)
-  }
+    getUserExport("", "", "", startDate, endDate);
+  };
 
   const handleFilter = () => {
-    getUsers(1, false, startDate, endDate)
-    getUserCount(startDate, endDate)
-  }
-
+    getUsers(1, false, startDate, endDate);
+    getUserCount(startDate, endDate);
+  };
 
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Users"} match={match} />
       <RctCollapsibleCard heading="Users" fullBlock>
-       <div className="d-flex justify-content-between">
-         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-           <SearchComponent getPreviousData={getUsers} getSearchedData={searchUsers} setCurrentPage={setCurrentPage} getCount={getUserCount} />
-         </li>
-        <div>
-          <li className="list-inline-item search-icon d-inline-block mb-2">
-            <small className="fw-bold mr-2">From</small>
-            <input type="date" id="start" name="trip-start" defaultValue={startDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => {
-              setStartDate(e.target.value)
-            }} />
-          </li>
+        <div className="d-flex justify-content-between">
           <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-            <small className="fw-bold mr-2">To</small>
-            <input type="date" id="start" name="trip-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => {
-              setEndDate(e.target.value)
-            }} />
+            <SearchComponent getPreviousData={getUsers} getSearchedData={searchUsers} setCurrentPage={setCurrentPage} getCount={getUserCount} />
           </li>
-          <Button onClick={() => handleFilter()} style={{height: '30px'}} className='align-items-center justify-content-center' color='success'>Apply filter</Button>
+          <div>
+            <li className="list-inline-item search-icon d-inline-block mb-2">
+              <small className="fw-bold mr-2">From</small>
+              <input
+                type="date"
+                id="start"
+                name="trip-start"
+                defaultValue={startDate}
+                min="2018-01-01"
+                max={getTodayDate()}
+                onChange={(e) => {
+                  setStartDate(e.target.value);
+                }}
+              />
+            </li>
+            <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+              <small className="fw-bold mr-2">To</small>
+              <input
+                type="date"
+                id="start"
+                name="trip-start"
+                defaultValue={endDate}
+                min="2018-01-01"
+                max={getTodayDate()}
+                onChange={(e) => {
+                  setEndDate(e.target.value);
+                }}
+              />
+            </li>
+            <Button onClick={() => handleFilter()} style={{height: "30px"}} className="align-items-center justify-content-center" color="success">
+              Apply filter
+            </Button>
+          </div>
+          <Button onClick={() => handleExport()} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
+            {" "}
+            <i className="zmdi zmdi-download mr-2"></i> Export to Excel
+          </Button>
         </div>
-         <Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center mr-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>  Export to Excel</Button>
-
-       </div>
-          {!loading && users.length > 0 && (
+        {!loading && users.length > 0 && (
           <>
             <div className="table-responsive" style={{minHeight: "50vh"}}>
               <Table>
@@ -250,12 +261,16 @@ const Users = ({
                           </Badge>
                           {user.kyc_status === 0 && (
                             <span className="fw-bold text muted ml-1 ">
-                                      <Button onClick={() => triggerIdVerifcation("nin", user, "1")} className='align-items-center justify-content-center ml-2' color='success'>Verify</Button>
+                              <Button onClick={() => triggerIdVerifcation("nin", user, "1")} className="align-items-center justify-content-center ml-2" color="success">
+                                Verify
+                              </Button>
                             </span>
                           )}
                           {user.kyc_status === 1 && (
-                            <span className="fw-bold text muted ml-1 text-danger" >
-                              <Button onClick={() => verifyId(user?.auth_id, "2")}  className='align-items-center justify-content-center ml-2' color='danger'>Suspend</Button>
+                            <span className="fw-bold text muted ml-1 text-danger">
+                              <Button onClick={() => verifyId(user?.auth_id, "2")} className="align-items-center justify-content-center ml-2" color="danger">
+                                Suspend
+                              </Button>
                             </span>
                           )}
                           {user.kyc_status === 2 && (
@@ -289,9 +304,9 @@ const Users = ({
                   </Fragment>
                 </TableBody>
               </Table>
-            </div>
-            <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
-              <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={userCount} onChange={paginate} />
+              <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
+                <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={userCount} onChange={paginate} />
+              </div>
             </div>
           </>
         )}
@@ -433,8 +448,7 @@ const Users = ({
         </Form>
       </Modal>
       <DeleteConfirmationDialog ref={inputEl} title={title} message={message} onConfirm={onConfirm} />
-      <DeleteConfirmationDialog ref={exportRef} title={'Are you sure you want to Export File?'} message={'This will send the excel file to your email'} onConfirm={confirmExport} />
-
+      <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
     </div>
   );
 };

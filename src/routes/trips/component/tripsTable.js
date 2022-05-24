@@ -53,8 +53,10 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
 
   const confirmExport = () => {
     exportRef.current.close();
-    getTripExport(status)
-  }
+    getTripExport(status);
+  };
+
+  console.log(trips);
 
   return (
     <div>
@@ -66,7 +68,10 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
         )}
         <div className="float-right">
           {!isLoading && trips.length > 0 && (
-              <Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center mr-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>  Export to Excel</Button>
+            <Button onClick={() => handleExport()} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
+              {" "}
+              <i className="zmdi zmdi-download mr-2"></i> Export to Excel
+            </Button>
           )}
         </div>
         {!isLoading && trips.length > 0 && (
@@ -150,7 +155,7 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
         )}
         {trips.length === 0 && !isLoading && <EmptyData />}
       </RctCollapsibleCard>
-      <DeleteConfirmationDialog ref={exportRef} title={'Are you sure you want to Export File?'} message={'This will send the excel file to your email'} onConfirm={confirmExport} />
+      <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
     </div>
   );
 };
