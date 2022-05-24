@@ -24,7 +24,7 @@ const UnsuccessfulPayments = ({history, match, getPayments, getPaymentsCount, pa
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Trip Payments"} match={match} />
-      <PaymentTable status={0} header={"Unsuccessful Payments"} />
+      <PaymentTable status={2} header={"Unsuccessful Payments"} />
     </div>
   );
 };
