@@ -142,7 +142,6 @@ const DriverTrips = ({
                                         />
                                     </div>
                                 </div>
-
                             </CardBody>
                         </Card>
                     </Col>

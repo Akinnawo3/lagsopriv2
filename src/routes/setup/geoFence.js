@@ -19,7 +19,7 @@ import {CSVLink} from "react-csv";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {verifyUserPermssion} from "../../container/DefaultLayout";
 import {createGeoFence, getGeoFence, getGeoFenceCount, deleteGeoFence, updateGeoFence, searchGeoFence} from "../../actions/geoFencingAction";
-
+export let onGeoFenceModalClose;
 const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount, geofencesCount, geofences, deleteGeoFence, updateGeoFence, searchGeoFence}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [addNewGeoFenceModal, setAddNewGeoFenceModal] = useState(false);
@@ -73,7 +73,7 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
     setEditGeoFence(true);
   };
 
-  const onGeoFenceModalClose = () => {
+  onGeoFenceModalClose = () => {
     setUpdateId(null);
     setAddNewGeoFenceModal(false);
     setEditGeoFence(false);
@@ -86,7 +86,6 @@ const GeoFence = ({match, loading, createGeoFence, getGeoFence, getGeoFenceCount
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    onGeoFenceModalClose();
     !editGeoFence ? await createGeoFence(geoFenceName, geoFenceDescription, locations) : updateGeoFence(updateId, geoFenceName, geoFenceDescription, locations);
     setGeoFenceName("");
     setGeoFenceDescription("");

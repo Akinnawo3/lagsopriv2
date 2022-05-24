@@ -223,6 +223,12 @@ const DriverProfile = ({
                      </li>
                      <li className="list-group-item text-right">
                         <span className="pull-left">
+                           <strong>Work Phone Number</strong>
+                        </span>
+                        {driver?.work_phone_number}
+                     </li>
+                     <li className="list-group-item text-right">
+                        <span className="pull-left">
                            <strong>Residential Address</strong>
                         </span>
                         {driver?.home_address}
@@ -291,13 +297,13 @@ const DriverProfile = ({
                         <span className="pull-left">
                            <strong>Bank Name</strong>
                         </span>
-                        {driver?.bank_name ? driver?.bank_name : "NA"}
+                        {driver?.bank_data ? driver?.bank_data?.bank_name : "NA"}
                      </li>
                      <li className="list-group-item text-right">
                         <span className="pull-left">
-                           <strong>Bank Account</strong>
+                           <strong>Bank Account Number</strong>
                         </span>
-                        {driver?.driver_data?.bank_account ? driver?.driver_data?.bank_account : "NA"}
+                        {driver?.bank_data ? driver?.bank_data?.account_number : "NA"}
                      </li>
                   </ul>
                </div>

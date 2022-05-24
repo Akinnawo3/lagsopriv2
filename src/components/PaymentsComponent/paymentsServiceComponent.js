@@ -16,6 +16,7 @@ import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {getDriverRevenueSPlit} from "../../actions/revenueSplitAction";
 import moment from "moment";
 import {getFirstDayOfMonth, getTodayDate} from "../../helpers/helpers";
+import {Button} from "reactstrap";
 
 //driver debt service
 const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenueSplit, loading}) => {
@@ -35,10 +36,14 @@ const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenue
 
   useEffect(() => {
     getDriverRevenueSPlit(false, auth_id, startDate, endDate, dateType);
-  }, [dateType, startDate, endDate]);
+  }, []);
 
   const handleChange = (e) => {
     setDateType(e.target.value);
+  };
+
+  const handleFilter = () => {
+    getDriverRevenueSPlit(false, auth_id, startDate, endDate, dateType);
   };
 
   console.log(driverRevenueSplit);
@@ -70,6 +75,11 @@ const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenue
           <small className="fw-bold mr-2">To</small>
           <input type="date" id="start" name="trip-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setEndDate(e.target.value)} />
         </li>
+
+        <Button onClick={() => handleFilter()} style={{height: "30px"}} className="align-items-center text-light justify-content-center" color="success">
+          Apply filter
+        </Button>
+
         {!loading && driverRevenueSplit.length > 0 && (
           <>
             <div className="table-responsive" style={{minHeight: "50vh"}}>

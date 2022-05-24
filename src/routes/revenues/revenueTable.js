@@ -1,11 +1,11 @@
-import React, {useState, useEffect, Fragment} from "react";
+import React, {useState, useEffect, Fragment, useRef} from "react";
 import {connect} from "react-redux";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import {Badge} from "reactstrap";
+import {Badge, Button} from "reactstrap";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import {CSVLink} from "react-csv";
 import Pagination from "react-js-pagination";
@@ -18,6 +18,8 @@ import moment from "moment";
 import {getFirstDayOfMonth, getTodayDate} from "../../helpers/helpers";
 
 const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
+  const typeHolder = useRef();
+
   const [dateType, setDateType] = useState("daily");
   const [startDate, setStartDate] = useState(getFirstDayOfMonth());
   const [endDate, setEndDate] = useState(getTodayDate());
@@ -34,10 +36,11 @@ const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
 
   useEffect(() => {
     getChartRevenueData(true, startDate, endDate, dateType);
-  }, [dateType, startDate, endDate]);
+  }, []);
 
   const handleChange = (e) => {
-    setDateType(e.target.value);
+    // setDateType(e.target.value);
+    typeHolder.current = e.target.value;
   };
 
   const dateTypeFilter = [
@@ -46,6 +49,10 @@ const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
     {value: "monthly", label: "Monthly"},
     {value: "yearly", label: "Yearly"},
   ];
+  const handleFilter = () => {
+    setDateType(typeHolder.current);
+    getChartRevenueData(true, startDate, endDate, dateType);
+  };
   return (
     <div>
       <RctCollapsibleCard heading={"Revenues Table"} fullBlock style={{minHeight: "70vh"}}>
@@ -67,6 +74,9 @@ const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
           <small className="fw-bold mr-2">To</small>
           <input type="date" id="start" name="trip-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setEndDate(e.target.value)} />
         </li>
+        <Button onClick={() => handleFilter()} style={{height: "30px"}} className="align-items-center text-light justify-content-center" color="success">
+          Apply filter
+        </Button>
         {!loading && revenueChartData.length > 0 && (
           <>
             <div className="table-responsive" style={{minHeight: "50vh"}}>
