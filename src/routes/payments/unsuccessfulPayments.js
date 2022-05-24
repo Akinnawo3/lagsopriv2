@@ -16,8 +16,8 @@ const UnsuccessfulPayments = ({history, match, getPayments, getPaymentsCount, pa
   useEffect(() => {
     // pageNo, transaction_status, auth_id, loading
     if (pageFromQuery === undefined || payments.length < 1) {
-      getPayments(currentPage, 0, "", true);
-      getPaymentsCount(0);
+      getPayments(currentPage, 2, "", true);
+      getPaymentsCount(2);
     }
   }, []);
 
