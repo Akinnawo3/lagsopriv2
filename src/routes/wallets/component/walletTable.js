@@ -42,6 +42,7 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
   };
 
   const transactionTypeOptions = [
+    {label: "All", value: ""},
     {label: "Fund Wallet", value: "fund"},
     {label: "Wallet Share", value: "share"},
     {label: "Drivers Commission", value: "driver-commission"},
@@ -64,8 +65,7 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
   const confirmExport = () => {
     exportRef.current.close();
     getWalletsExport(status, "", true, transactionOptionType, startDate, endDate);
-  }
-
+  };
 
   return (
     <div>
@@ -92,7 +92,10 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
         </li>
         <div className="float-right">
           {!isLoading && wallets.length > 0 && (
-              <Button onClick={() => handleExport()} className='align-items-center justify-content-center mr-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>  Export to Excel</Button>
+            <Button onClick={() => handleExport()} className="align-items-center justify-content-center mr-2" color="primary">
+              {" "}
+              <i className="zmdi zmdi-download mr-2"></i> Export to Excel
+            </Button>
           )}
         </div>
         <Row className="mb-2">
@@ -186,7 +189,7 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
         )}
         {wallets.length === 0 && !isLoading && <EmptyData />}
       </RctCollapsibleCard>
-      <DeleteConfirmationDialog ref={exportRef} title={'Are you sure you want to Export File?'} message={'This will send the excel file to your email'} onConfirm={confirmExport} />
+      <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
     </div>
   );
 };

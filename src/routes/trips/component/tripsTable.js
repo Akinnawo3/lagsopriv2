@@ -18,6 +18,7 @@ import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {getCancelledTripCount, getCancelledTrips} from "../../../actions/tripAction";
 import {useHistory} from "react-router-dom";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
+import {calculatePostDate} from "../../../helpers/helpers";
 const qs = require("qs");
 
 const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, searchTrips, getTripCount, getCancelledTrips, getCancelledTripCount, getTripExport}) => {
@@ -120,7 +121,8 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
                             </TableCell>
                           )}
                           <TableCell>
-                            {new Date(trip.createdAt).toDateString()} {new Date(trip.createdAt).toLocaleTimeString()}
+                            {/* {new Date(trip.createdAt).toDateString()} {new Date(trip.createdAt).toLocaleTimeString()} */}
+                            {calculatePostDate(trip.createdAt)}
                           </TableCell>
                           <TableCell>{trip.ride_class}</TableCell>
                           <TableCell>{trip.ride_type}</TableCell>

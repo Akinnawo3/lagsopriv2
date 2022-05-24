@@ -51,6 +51,12 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
                     </li>
                     <li className="list-group-item text-right">
                       <span className="pull-left">
+                        <strong>Trip Date/Time</strong>
+                      </span>
+                      {new Date(trip.createdAt).toDateString()} {new Date(trip.createdAt).toLocaleTimeString()}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
                         <strong>Trip Class</strong>
                       </span>
                       {trip?.ride_class}
@@ -256,6 +262,18 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
               <div className="scheduleHeader mt-1">₦{riderDetails?.fare}</div>
             </div>
           </div>
+
+          <div className="row mt-4">
+            <div className="col-6">
+              <div className="schedulePickup">Estimated distance</div>
+              <div className="scheduleHeader mt-1">{riderDetails?.est_dst}km</div>
+            </div>
+            <div className="col-6">
+              <div className="schedulePickup">Pickup disatance</div>
+              <div className="scheduleHeader mt-1">{riderDetails?.pickup_distance}km</div>
+            </div>
+          </div>
+
           <div className="row mt-4">
             <div className="col-6">
               <div className="schedulePickup">Estimated Time</div>
