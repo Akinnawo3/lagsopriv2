@@ -31,7 +31,7 @@ const MainApp = () => {
     }
   })();
 
-  console.log = () => {};
+//   console.log = () => {};
   return (
     <Provider store={configureStore}>
       <MuiPickersUtilsProvider utils={MomentUtils}>
