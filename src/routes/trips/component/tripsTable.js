@@ -57,13 +57,12 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
   };
 
   console.log(trips);
-
   return (
     <div>
       <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}}>
         {status !== "cancel" && (
           <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-            <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={"Trip Id"} />
+            <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={"Trip Reference"} />
           </li>
         )}
         <div className="float-right">
@@ -80,7 +79,8 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
               <Table>
                 <TableHead>
                   <TableRow hover>
-                    <TableCell>{status === "cancel" ? "Cancellation Id" : "Trip Id"}</TableCell>
+                    {status === "cancel" && <TableCell>Cancellation Id</TableCell>}
+                    {/* <TableCell>{status === "cancel" ? "Cancellation Id" : "Trip Id"}</TableCell> */}
                     {status !== "cancel" && <TableCell>Trip Reference</TableCell>}
                     <TableCell>Date / Time</TableCell>
                     <TableCell>Class</TableCell>
@@ -94,13 +94,22 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
                     {trips.length > 0 &&
                       trips.map((trip) => (
                         <TableRow hover key={trip.trip_id}>
-                          <TableCell>
+                          {/* <TableCell>
                             <Media>
                               <Media body>
                                 <h5 className="m-0 pt-15">{status === "cancel" ? trip?.cancel_id : trip.trip_id}</h5>
                               </Media>
                             </Media>
-                          </TableCell>
+                          </TableCell> */}
+                          {status === "cancel" && (
+                            <TableCell>
+                              <Media>
+                                <Media body>
+                                  <h5 className="m-0 pt-15">{trip?.cancel_id}</h5>
+                                </Media>
+                              </Media>
+                            </TableCell>
+                          )}
                           {status !== "cancel" && (
                             <TableCell>
                               <Media>
