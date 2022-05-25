@@ -253,20 +253,22 @@ const Users = ({
                         <TableCell>{user.email}</TableCell>
                         <TableCell>{user.user_type}</TableCell>
                         <TableCell className="fw-bold text"> {user?.nin_id?.value}</TableCell>
-                        <TableCell className="d-flex align-items-center">
-                          <div>
-                            <Badge color={getStatusColorKYC(user.kyc_status)}>
-                              {user.kyc_status === 0 && "Pending"}
-                              {user.kyc_status === 1 && "Verified"}
-                              {user.kyc_status === 2 && "Suspended"}
-                            </Badge>
-                          </div>
-                          <div className="fw-bold text muted ml-1 ">
-                            {user.kyc_status === 0 && (
-                              <button onClick={() => triggerIdVerifcation("nin", user, "1")} className="ml-2 btn btn-success p-0 px-2 ">
-                                <small>Verify</small>
-                              </button>
-                            )}
+                        <TableCell className="">
+                          <div className="d-flex align-items-center ">
+                            <div>
+                              <Badge color={getStatusColorKYC(user.kyc_status)}>
+                                {user.kyc_status === 0 && "Pending"}
+                                {user.kyc_status === 1 && "Verified"}
+                                {user.kyc_status === 2 && "Suspended"}
+                              </Badge>
+                            </div>
+                            <div className="fw-bold text muted ml-1 ">
+                              {user.kyc_status === 0 && (
+                                <button onClick={() => triggerIdVerifcation("nin", user, "1")} className="ml-2 btn btn-success p-0 px-2 ">
+                                  <small>Verify</small>
+                                </button>
+                              )}
+                            </div>
                           </div>
                           {user.kyc_status === 1 && (
                             <span className="fw-bold text muted ml-1 text-danger">
