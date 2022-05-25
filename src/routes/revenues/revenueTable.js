@@ -19,11 +19,10 @@ import {getFirstDayOfMonth, getTodayDate} from "../../helpers/helpers";
 
 const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
   const typeHolder = useRef();
-
   const [dateType, setDateType] = useState("daily");
   const [startDate, setStartDate] = useState(getFirstDayOfMonth());
   const [endDate, setEndDate] = useState(getTodayDate());
-
+  
   const formatByDateType = (timeStamp) => {
     if (dateType === "daily") {
       return moment(timeStamp).format("MMMM Do YYYY");

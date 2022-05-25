@@ -135,15 +135,15 @@ export function getStatus5(status) {
   } else if (status === 3) {
     return "undecided";
   } else if (status === 4) {
-    return "refunded";
+    return "refund";
   } else {
-    return "undecided";
+    return "Debit";
   }
 }
 
 export function getStatusColor5(status) {
   if (status === 0) {
-    return "warning";
+    return "secondary";
   } else if (status === 1) {
     return "success";
   } else if (status === 2) {
@@ -153,7 +153,7 @@ export function getStatusColor5(status) {
   } else if (status === 4) {
     return "info";
   } else {
-    return "primary";
+    return "danger";
   }
 }
 
