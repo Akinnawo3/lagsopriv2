@@ -80,7 +80,7 @@ const PaymentTripComponent = ({payments, status, paymentsCount, auth_id, getPaym
               </Table>
             </div>
             <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
-              <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={paymentsCount} onChange={paginate} />
+              <Pagination activePage={currentPage} itemClass="page-item undo-folding" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={paymentsCount} onChange={paginate} />
             </div>
           </div>
         )}

@@ -199,13 +199,13 @@ console.log(partnerDetails)
                 <span className="pull-left">
                   <strong>Account name</strong>
                 </span>
-                {partnerDetails?.partner_data?.bank_data.account_name}
+                {partnerDetails?.partner_data?.bank_data?.account_name}
               </li>
               <li className="list-group-item text-right">
                 <span className="pull-left">
                   <strong>Account number</strong>
                 </span>
-                {partnerDetails?.partner_data?.bank_data.bank_account}
+                {partnerDetails?.partner_data?.bank_data?.bank_account}
               </li>
               <li className="list-group-item text-right">
                 <span className="pull-left">
