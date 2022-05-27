@@ -93,6 +93,10 @@ const AsyncPaymentsSuccessful = Loadable({
   loader: () => import("Routes/payments/successfulPayments"),
   loading: () => <RctPageLoader />,
 });
+const AsyncPaymentsUndecided = Loadable({
+  loader: () => import("Routes/payments/undecidedPayments"),
+  loading: () => <RctPageLoader />,
+});
 const AsyncPaymentsDetails = Loadable({
   loader: () => import("Routes/payments/paymentDetails"),
   loading: () => <RctPageLoader />,
@@ -500,7 +504,6 @@ const AsyncSessionPage500Component = Loadable({
   loading: () => <RctPageLoader />,
 });
 
-
 // partners
 
 const AsyncPartners = Loadable({
@@ -531,6 +534,7 @@ const AsyncPartnerDrivers = Loadable({
 export {
   AsyncPaymentsSuccessful,
   AsyncPaymentsUnsuccessful,
+  AsyncPaymentsUndecided,
   AsyncPayments,
   AsyncAdmins,
   AsyncBookingTypes,
@@ -635,5 +639,5 @@ export {
   AsyncPartner,
   AsyncPartnersPending,
   AsyncPartnersVerified,
-  AsyncPartnerDrivers
+  AsyncPartnerDrivers,
 };
