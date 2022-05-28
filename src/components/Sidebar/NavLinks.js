@@ -247,6 +247,11 @@ export default {
           menu_title: "sidebar.unsuccessful",
         },
         {
+          path: "/admin/payments/undecided",
+          new_item: false,
+          menu_title: "sidebar.undecided",
+        },
+        {
           path: "/admin/payments",
           new_item: false,
           menu_title: "sidebar.all",

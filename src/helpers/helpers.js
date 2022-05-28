@@ -101,18 +101,22 @@ export function getStatus4(status) {
     return "Pending";
   } else if (status === 1) {
     return "Successful";
-  } else {
+  } else if (status === 2) {
     return "Unsuccessful";
+  } else {
+    return "Undecided";
   }
 }
 
 export function getStatusColor4(status) {
   if (status === 0) {
-    return "warning";
+    return "secondary";
   } else if (status === 1) {
     return "success";
-  } else {
+  } else if (status === 2) {
     return "danger";
+  } else {
+    return "warning";
   }
 }
 
@@ -156,7 +160,6 @@ export function getStatusColor5(status) {
     return "danger";
   }
 }
-
 
 export function getStatusColor(status) {
   if (status === 0) {
