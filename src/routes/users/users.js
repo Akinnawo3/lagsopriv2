@@ -263,25 +263,32 @@ const Users = ({
                                              </Badge>
                                           </div>
                                           <div className="fw-bold text muted ml-1 ">
-                                             {user.kyc_status === 0 && (
-                                                <button onClick={() => triggerIdVerifcation("nin", user, "1")} className="ml-2 btn btn-success p-0 px-2 ">
+                                             {(user.kyc_status === 0 || !user.kyc_status) && (
+                                                <button onClick={() => triggerIdVerifcation("nin", user, "1")} className="ml-2 btn btn-success p-0 px-2">
                                                    <small>Verify</small>
+                                                </button>
+                                             )}
+                                             {user.kyc_status === 1 && (
+                                                // <span className="fw-bold text muted ml-1 text-danger">
+                                                //    <Button onClick={() => verifyId(user?.auth_id, "2")} className="align-items-center justify-content-center ml-2" color="danger">
+                                                //       Suspend
+                                                //    </Button>
+                                                // </span>
+                                                <button onClick={() => verifyId(user?.auth_id, "2")} className="ml-2 btn btn-danger p-0 px-2">
+                                                   <small>Suspend</small>
+                                                </button>
+                                             )}
+                                             {user.kyc_status === 2 && (
+                                                // <span className="fw-bold text muted ml-1 text-info " onClick={() => verifyId(user?.auth_id, "1")}>
+                                                //    Re-activate
+                                                // </span>
+                                                <button onClick={() => verifyId(user?.auth_id, "1")} className="ml-2 btn btn-success p-0 px-2">
+                                                   <small>Re-activate</small>
                                                 </button>
                                              )}
                                           </div>
                                        </div>
-                                       {user.kyc_status === 1 && (
-                                          <span className="fw-bold text muted ml-1 text-danger">
-                                             <Button onClick={() => verifyId(user?.auth_id, "2")} className="align-items-center justify-content-center ml-2" color="danger">
-                                                Suspend
-                                             </Button>
-                                          </span>
-                                       )}
-                                       {user.kyc_status === 2 && (
-                                          <span className="fw-bold text muted ml-1 text-info " onClick={() => verifyId(user?.auth_id, "1")}>
-                                             Re-activate
-                                          </span>
-                                       )}
+
                                     </TableCell>
                                     <TableCell>
                                        <span className="d-flex">
