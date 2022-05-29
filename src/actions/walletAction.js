@@ -30,7 +30,8 @@ export const getWalletsCount =
   async (dispatch) => {
     try {
       const res = await axios.get(
-        `${api.wallet}/v1.1/admin/wallet-transactions?component=count&status=${status}&auth_id=${auth_id}&transaction_type=${transaction_type}&start_date=${start_date}&end_date=${end_date}`
+        // `${api.wallet}/v1.1/admin/wallet-transactions?component=count&status=${status}&auth_id=${auth_id}&transaction_type=${transaction_type}&start_date=${start_date}&end_date=${end_date}`
+        `${api.wallet}/v1.1/admin/wallet-transactions?component=count&status=${status}&auth_id=${auth_id}&start_date=${start_date}&end_date=${end_date}`
       );
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
