@@ -53,7 +53,7 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
                       <span className="pull-left">
                         <strong>Trip Date/Time</strong>
                       </span>
-                      {new Date(trip.createdAt).toDateString()} {new Date(trip.createdAt).toLocaleTimeString()}
+                      {new Date(trip?.createdAt)?.toDateString()} {new Date(trip?.createdAt)?.toLocaleTimeString()}
                     </li>
                     <li className="list-group-item text-right">
                       <span className="pull-left">

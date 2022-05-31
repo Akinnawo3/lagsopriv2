@@ -24,8 +24,8 @@ const Schedule = ({history, match, getSchedule, schedule, loading, getScheduleCo
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const exportRef = useRef(null);
   useEffect(() => {
     if (pageFromQuery === undefined || schedule.length < 1) {
@@ -42,9 +42,9 @@ const Schedule = ({history, match, getSchedule, schedule, loading, getScheduleCo
   };
 
   const handleFilter = () => {
-    getSchedule(1, false, startDate, endDate)
-    getScheduleCount(startDate, endDate)
-  }
+    getSchedule(1, false, startDate, endDate);
+    getScheduleCount(startDate, endDate);
+  };
 
   const handleExport = () => {
     exportRef.current.open();
@@ -52,30 +52,52 @@ const Schedule = ({history, match, getSchedule, schedule, loading, getScheduleCo
 
   const confirmExport = () => {
     exportRef.current.close();
-    exportSchedule(startDate, endDate)
-  }
+    exportSchedule(startDate, endDate);
+  };
 
+  console.log(schedule);
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Schedules"} match={match} />
       <RctCollapsibleCard heading={"Schedules"} fullBlock style={{minHeight: "70vh"}}>
-        <div className='ml-2'>
+        <div className="ml-2">
           <li className="list-inline-item search-icon d-inline-block mb-2">
             <small className="fw-bold mr-2">From</small>
-            <input type="date" id="start" name="trip-start" defaultValue={startDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => {
-              setStartDate(e.target.value)
-            }} />
+            <input
+              type="date"
+              id="start"
+              name="trip-start"
+              defaultValue={startDate}
+              min="2018-01-01"
+              max={getTodayDate()}
+              onChange={(e) => {
+                setStartDate(e.target.value);
+              }}
+            />
           </li>
           <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
             <small className="fw-bold mr-2">To</small>
-            <input type="date" id="start" name="trip-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => {
-              setEndDate(e.target.value)
-            }} />
+            <input
+              type="date"
+              id="start"
+              name="trip-start"
+              defaultValue={endDate}
+              min="2018-01-01"
+              max={getTodayDate()}
+              onChange={(e) => {
+                setEndDate(e.target.value);
+              }}
+            />
           </li>
-          <Button onClick={() => handleFilter()} style={{height: '30px'}} className='align-items-center justify-content-center' color='success'>Apply filter</Button>
+          <Button onClick={() => handleFilter()} style={{height: "30px"}} className="align-items-center justify-content-center" color="success">
+            Apply filter
+          </Button>
 
           <div className="float-right">
-            <Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center mr-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>  Export to Excel</Button>
+            <Button onClick={() => handleExport()} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
+              {" "}
+              <i className="zmdi zmdi-download mr-2"></i> Export to Excel
+            </Button>
           </div>
         </div>
         {schedule.length > 0 && (
@@ -103,8 +125,24 @@ const Schedule = ({history, match, getSchedule, schedule, loading, getScheduleCo
                               {new Date(record.ride_data[0]?.ride_date).toDateString()} {record.ride_data[0]?.ride_time}
                             </TableCell>
                             <TableCell>
-                              <Badge color={record?.ride_status === 1 ? "success" : record?.ride_status === 2 ? "danger" : "warning"}>
-                                {record?.ride_status === 1 ? "Accepted" : record?.ride_status === 2 ? "Declined" : "Pending"}
+                              <Badge
+                                color={
+                                  record?.ride_data[0]?.ride_status === 0
+                                    ? "secondary"
+                                    : record?.ride_data[0]?.ride_status === 1
+                                    ? "success"
+                                    : record?.ride_data[0]?.ride_status === 2
+                                    ? "primary"
+                                    : "danger"
+                                }
+                              >
+                                {record?.ride_data[0]?.ride_status === 0
+                                  ? "Pending"
+                                  : record?.ride_data[0]?.ride_status === 1
+                                  ? "Acknowledged"
+                                  : record?.ride_data[0]?.ride_status === 2
+                                  ? "Group"
+                                  : "Cacelled"}
                               </Badge>
                             </TableCell>
                             <TableCell>
@@ -128,7 +166,7 @@ const Schedule = ({history, match, getSchedule, schedule, loading, getScheduleCo
         )}
         {schedule?.length < 1 && <EmptyData />}
       </RctCollapsibleCard>
-      <DeleteConfirmationDialog ref={exportRef} title={'Are you sure you want to Export File?'} message={'This will send the excel file to your email'} onConfirm={confirmExport} />
+      <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
     </div>
   );
 };
