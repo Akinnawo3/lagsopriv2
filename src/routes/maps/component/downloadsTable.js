@@ -31,11 +31,12 @@ const DownloadsTable = ({getDownloadsByArea, downloadsByArea, loading}) => {
     expandedLga === id ? setExpandedLga("") : setExpandedLga(id);
   };
   return (
-    <RctCollapsibleCard heading="Updates">
+    <RctCollapsibleCard heading="Statistics per area">
       <div className="mb-2">
         <select id="filter-dropdown" name="fiter-dropdown" onChange={(e) => setInfoType(e.target.value)} className="p-1 px-4">
           <option value="downloads">Downloads</option>
           <option value="requests">Requests</option>
+          <option value="today_schedules">Schedules</option>
         </select>
       </div>
 
@@ -65,12 +66,12 @@ const DownloadsTable = ({getDownloadsByArea, downloadsByArea, loading}) => {
                     </h2>
                   </div>
                   <div id="collapseOne" className={`collapse ${expandedLga === item._id && "show"}`} aria-labelledby="headingOne" data-parent="#accordionExample">
-                    <div className="card-body " style={{padding:"2px 5px"}}>
+                    <div className="card-body " style={{padding: "2px 5px"}}>
                       <ul className="list-inline">
                         {item.areas.map((area, index) => (
-                          <li className="text-right border-bottom m-0 " style={{padding:"2px 5px", fontSize:13}}>
+                          <li className="text-right border-bottom m-0 " style={{padding: "2px 5px", fontSize: 13}}>
                             <div className="pull-left ">{firstLetterToUpperCase(area?.area_name)}</div>
-                            <div > {area?.riders_home_area_count?.toLocaleString()}</div>
+                            <div> {area?.riders_home_area_count?.toLocaleString()}</div>
                           </li>
                         ))}
                       </ul>
@@ -83,22 +84,87 @@ const DownloadsTable = ({getDownloadsByArea, downloadsByArea, loading}) => {
           {downloadsByArea.length < 1 && <EmptyData />}
         </div>
       )}
+
       {infoType === "requests" && (
         <div>
-          {!loading && requestByArea.length > 0 && (
-            <div className="accordion" id="accordionExample">
-              {requestByArea.map((item, index) => (
-                <div className="card">
-                  <div className="card-header" id="headingOne">
+          {!loading && downloadsByArea.length > 0 && (
+            <div className="accordion " id="accordionExample">
+              <div className="card bg-secondary">
+                <div className="card-header" id="headingOne">
+                  <h2 className="mb-0">
+                    <div className=" d-flex justify-content-between text-white fw-bold ">
+                      <small>LGA</small>
+                      <small>RIDE REQUESTS</small>
+                    </div>
+                  </h2>
+                </div>
+              </div>
+
+              {downloadsByArea.map((item) => (
+                <div className="card" key={item._id}>
+                  <div className="card-header" id="headingOne" onClick={() => handleLgaClick(item?._id)}>
                     <h2 className="mb-0">
                       <div className=" d-flex justify-content-between">
-                        <span>Area</span>
-                        <span>Number</span>
+                        <small>{firstLetterToUpperCase(item?.lga)}</small>
+                        <small>{item?.ride_request?.toLocaleString()}</small>
                       </div>
                     </h2>
                   </div>
-                  <div id="collapseOne" className="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                    <div className="card-body"></div>
+                  <div id="collapseOne" className={`collapse ${expandedLga === item._id && "show"}`} aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div className="card-body " style={{padding: "2px 5px"}}>
+                      <ul className="list-inline">
+                        {item.areas.map((area, index) => (
+                          <li className="text-right border-bottom m-0 " style={{padding: "2px 5px", fontSize: 13}}>
+                            <div className="pull-left ">{firstLetterToUpperCase(area?.area_name)}</div>
+                            <div> {area?.ride_request?.toLocaleString()}</div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          {downloadsByArea.length < 1 && <EmptyData />}
+        </div>
+      )}
+      {infoType === "today_schedules" && (
+        <div>
+          {!loading && downloadsByArea.length > 0 && (
+            <div className="accordion " id="accordionExample">
+              <div className="card bg-secondary">
+                <div className="card-header" id="headingOne">
+                  <h2 className="mb-0">
+                    <div className=" d-flex justify-content-between text-white fw-bold ">
+                      <small>LGA</small>
+                      <small>TODAY'S SCHEDULES</small>
+                    </div>
+                  </h2>
+                </div>
+              </div>
+
+              {downloadsByArea.map((item) => (
+                <div className="card" key={item._id}>
+                  <div className="card-header" id="headingOne" onClick={() => handleLgaClick(item?._id)}>
+                    <h2 className="mb-0">
+                      <div className=" d-flex justify-content-between">
+                        <small>{firstLetterToUpperCase(item?.lga)}</small>
+                        <small>{item?.today_schedule?.toLocaleString()}</small>
+                      </div>
+                    </h2>
+                  </div>
+                  <div id="collapseOne" className={`collapse ${expandedLga === item._id && "show"}`} aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div className="card-body " style={{padding: "2px 5px"}}>
+                      <ul className="list-inline">
+                        {item.areas.map((area, index) => (
+                          <li className="text-right border-bottom m-0 " style={{padding: "2px 5px", fontSize: 13}}>
+                            <div className="pull-left ">{firstLetterToUpperCase(area?.area_name)}</div>
+                            <div> {area?.today_schedule?.toLocaleString()}</div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 </div>
               ))}
