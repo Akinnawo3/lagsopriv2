@@ -13,12 +13,12 @@ const revenues = ({match, getChartRevenueData, revenueChartData}) => {
   return (
     <div>
       <PageTitleBar title={"Revenue"} match={match} />
-      <RevenueChart />
+      {/* <RevenueChart /> */}
+      <RevenueTable />
     </div>
   );
 };
 
-re;
 function mapDispatchToProps(dispatch) {
   return {
     getChartRevenueData: (spinner, startDate, endDate) => dispatch(getChartRevenueData(spinner, startDate, endDate)),
