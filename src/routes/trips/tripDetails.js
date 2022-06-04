@@ -5,17 +5,19 @@ import {Helmet} from "react-helmet";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {getTrip} from "Actions/tripAction";
 import {formatTime, getActualAddress} from "Helpers/helpers";
-import {Link} from "react-router-dom";
+import {calculatePostDate} from "../../helpers/helpers";
+import { Link } from "react-router-dom";
 
 const TripDetails = ({getTrip, match, loading, trip, location}) => {
   const [isModal, setIsModal] = useState(false);
   const [riderDetails, setRiderDetails] = useState({});
   const [actualDropoffAddress, setActualDropoffAddress] = useState("");
-
   //only available for cancelled trips, serves the purpose of the trip details to show more info , it is passed along with the "Link"
-  const {trip_cancelled} = location?.state ? location?.state : "";
+  const {trip_cancelled, trip_status} = location.state;
+  console.log(trip_status);
+
   useEffect(() => {
-    getTrip(match.params.id, true);
+    getTrip(match.params.id, true, trip_status);
   }, [match.params.id]);
 
   const viewRiderDetails = async (data) => {
@@ -28,7 +30,7 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
     setActualDropoffAddress(res);
   })();
 
-  console.log(trip);
+  // console.log(trip);
   return (
     <div className="mb-5" style={{minHeight: "90vh"}}>
       <Helmet>
@@ -136,7 +138,7 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
                       {trip_cancelled?.cancel_id}
                     </li>
 
-                    <li className="list-group-item text-right">
+                    {/* <li className="list-group-item text-right">
                       <span className="pull-left">
                         <strong>Rider Name</strong>
                       </span>
@@ -173,6 +175,25 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
                         <strong>Ride Status</strong>
                       </span>
                       {trip_cancelled?.ride_status}
+                    </li> */}
+
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Time</strong>
+                      </span>
+                      {calculatePostDate(trip_cancelled?.createdAt)}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Total cancelled request (Driver ignored)</strong>
+                      </span>
+                      {trip_cancelled?.total_request?.driver_ignore}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Total cancelled request (Driver not found)</strong>
+                      </span>
+                      {trip_cancelled?.total_request?.driver_not_found}
                     </li>
                     <li className="list-group-item text-right">
                       <span className="pull-left">
@@ -372,7 +393,7 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getTrip: (trip_id, spinner) => dispatch(getTrip(trip_id, spinner)),
+    getTrip: (trip_id, spinner, trip_status) => dispatch(getTrip(trip_id, spinner, trip_status)),
     // getActualAddress: (lat, lng, spinner) =>
     //   dispatch(getActualAddress(lat, lng, spinner)),
   };

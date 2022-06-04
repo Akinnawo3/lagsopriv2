@@ -193,7 +193,7 @@ console.log(partnerDetails)
                 <span className="pull-left">
                   <strong>Bank name</strong>
                 </span>
-                {partnerDetails?.partner_data?.bank_data.bank_name}
+                {partnerDetails?.partner_data?.bank_data?.bank_name}
               </li>
               <li className="list-group-item text-right">
                 <span className="pull-left">

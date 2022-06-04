@@ -79,11 +79,12 @@ export const getCancelledTripCount = () => async (dispatch) => {
   } catch (err) {}
 };
 
-export const getTrip = (trip_id, spinner) => async (dispatch) => {
+export const getTrip = (trip_id, spinner, trip_status) => async (dispatch) => {
+  console.log(trip_status);
   try {
     spinner && dispatch(startLoading());
     !spinner && dispatch(startStatusLoading());
-    const res = await axios.get(`${api.trip}/v1.1/trips/${trip_id}`);
+    const res = await axios.get(`${api.trip}/v1.1/trips/${trip_id}/?trip_status=${trip_status}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
@@ -109,7 +110,9 @@ export const searchTrip =
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
-        const res2 = await axios.get(`${api.trip}/v1.1/trips/?trip_ref=${trip_ref}&Nulla ut ex sunt non velit sint eu ex nostrud veniam sit nisi. Non magna eiusmod elit est pariatur. Officia elit cupidatat nisi ut fugiat consequat voluptate culpa in.component=count&trip_status=${status}`);
+        const res2 = await axios.get(
+          `${api.trip}/v1.1/trips/?trip_ref=${trip_ref}&Nulla ut ex sunt non velit sint eu ex nostrud veniam sit nisi. Non magna eiusmod elit est pariatur. Officia elit cupidatat nisi ut fugiat consequat voluptate culpa in.component=count&trip_status=${status}`
+        );
         dispatch({
           type: TRIP_COUNT,
           payload: res2.data?.data?.total,

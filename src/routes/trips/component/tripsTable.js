@@ -32,12 +32,12 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
   const paginate = async (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
     await setCurrentPage(pageNumber);
-    status === "cancel" ? await getCancelledTrips(pageNumber, true) : await getTrips(pageNumber, status);
+    status === "driver_not_found" ? await getCancelledTrips(pageNumber, true) : await getTrips(pageNumber, status);
     window.scrollTo(0, 0);
   };
 
   const getPreviousData = () => {
-    status === "cancel" ? getCancelledTrips(pageNumber, true) : getTrips(1, status);
+    status === "driver_not_found" ? getCancelledTrips(pageNumber, true) : getTrips(1, status);
   };
 
   const getSearchData = (searchData) => {
@@ -45,7 +45,7 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
   };
 
   const handleCount = () => {
-    status === "cancel" ? getCancelledTripCount() : getTripCount(status);
+    status === "driver_not_found" ? getCancelledTripCount() : getTripCount(status);
   };
 
   const handleExport = () => {
@@ -57,11 +57,11 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
     getTripExport(status);
   };
 
-  console.log(trips);
+  console.log(status);
   return (
     <div>
       <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}}>
-        {status !== "cancel" && (
+        {status !== "driver_not_found" && (
           <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
             <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={"Trip Reference"} />
           </li>
@@ -80,13 +80,18 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
               <Table>
                 <TableHead>
                   <TableRow hover>
-                    {status === "cancel" && <TableCell>Cancellation Id</TableCell>}
-                    {/* <TableCell>{status === "cancel" ? "Cancellation Id" : "Trip Id"}</TableCell> */}
-                    {status !== "cancel" && <TableCell>Trip Reference</TableCell>}
+                    {status === "driver_not_found" && <TableCell>Cancellation Id</TableCell>}
+                    {/* <TableCell>{status === "driver_not_found" ? "Cancellation Id" : "Trip Id"}</TableCell> */}
+                    {status !== "driver_not_found" && <TableCell>Trip Reference</TableCell>}
                     <TableCell>Date / Time</TableCell>
-                    <TableCell>Class</TableCell>
-                    <TableCell>Type</TableCell>
-                    <TableCell>Status</TableCell>
+                    {status !== "driver_not_found" && (
+                      <>
+                        <TableCell>Class</TableCell>
+                        <TableCell>Type</TableCell>
+                        <TableCell>Status</TableCell>
+                      </>
+                    )}
+
                     <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
@@ -98,11 +103,11 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
                           {/* <TableCell>
                             <Media>
                               <Media body>
-                                <h5 className="m-0 pt-15">{status === "cancel" ? trip?.cancel_id : trip.trip_id}</h5>
+                                <h5 className="m-0 pt-15">{status === "driver_not_found" ? trip?.cancel_id : trip.trip_id}</h5>
                               </Media>
                             </Media>
                           </TableCell> */}
-                          {status === "cancel" && (
+                          {status === "driver_not_found" && (
                             <TableCell>
                               <Media>
                                 <Media body>
@@ -111,7 +116,7 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
                               </Media>
                             </TableCell>
                           )}
-                          {status !== "cancel" && (
+                          {status !== "driver_not_found" && (
                             <TableCell>
                               <Media>
                                 <Media body>
@@ -124,17 +129,30 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
                             {/* {new Date(trip.createdAt).toDateString()} {new Date(trip.createdAt).toLocaleTimeString()} */}
                             {calculatePostDate(trip.createdAt)}
                           </TableCell>
-                          <TableCell>{trip.ride_class}</TableCell>
-                          <TableCell>{trip.ride_type}</TableCell>
-                          <TableCell>
-                            <Badge color={trip.ride_status === "completed" ? "success" : trip.ride_status === "cancel" ? "danger" : trip.ride_status === "waiting" ? "warning" : "secondary"}>
-                              {trip.ride_status === "on_trip" ? "current" : trip.ride_status === "on_pickup" ? "enroute" : trip?.ride_status === "cancel" ? "cancelled" : trip.ride_status}
-                            </Badge>
-                          </TableCell>
-                          {status !== "cancel" ? (
+                          {status !== "driver_not_found" && (
+                            <>
+                              <TableCell>{trip.ride_class}</TableCell>
+                              <TableCell>{trip.ride_type}</TableCell>
+                              <TableCell>
+                                <Badge
+                                  color={trip.ride_status === "completed" ? "success" : trip.ride_status === "cancel" ? "danger" : trip.ride_status === "waiting" ? "warning" : "secondary"}
+                                >
+                                  {trip.ride_status === "on_trip"
+                                    ? "current"
+                                    : trip.ride_status === "on_pickup"
+                                    ? "enroute"
+                                    : trip?.ride_status === "cancel"
+                                    ? "cancelled"
+                                    : trip.ride_status}
+                                </Badge>
+                              </TableCell>
+                            </>
+                          )}
+
+                          {status !== "driver_not_found" ? (
                             <TableCell>
                               <button type="button" className="rct-link-btn text-primary" title="view details">
-                                <Link to={`/admin/trips/${trip.trip_id}`}>
+                                <Link to={{pathname: `/admin/trips/${trip.trip_id}`, state: {trip_status: trip?.ride_status}}}>
                                   <i className="ti-eye" />
                                 </Link>
                               </button>
@@ -145,7 +163,7 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
                                 <Link
                                   to={{
                                     pathname: `/admin/trips/${trip.cancel_id}`,
-                                    state: {trip_cancelled: trip},
+                                    state: {trip_cancelled: trip, trip_status: "driver_not_found"},
                                   }}
                                 >
                                   <i className="ti-eye" />
