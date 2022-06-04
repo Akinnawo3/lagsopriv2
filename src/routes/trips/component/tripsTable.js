@@ -66,14 +66,17 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
             <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={"Trip Reference"} />
           </li>
         )}
-        <div className="float-right">
-          {!isLoading && trips.length > 0 && (
-            <Button onClick={() => handleExport()} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
-              {" "}
-              <i className="zmdi zmdi-download mr-2"></i> Export to Excel
-            </Button>
-          )}
-        </div>
+        {status !== "driver_not_found" && (
+          <div className="float-right">
+            {!isLoading && trips.length > 0 && (
+              <Button onClick={() => handleExport()} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
+                {" "}
+                <i className="zmdi zmdi-download mr-2"></i> Export to Excel
+              </Button>
+            )}
+          </div>
+        )}
+
         {!isLoading && trips.length > 0 && (
           <div>
             <div className="table-responsive" style={{minHeight: "50vh"}}>
@@ -134,16 +137,8 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
                               <TableCell>{trip.ride_class}</TableCell>
                               <TableCell>{trip.ride_type}</TableCell>
                               <TableCell>
-                                <Badge
-                                  color={trip.ride_status === "completed" ? "success" : trip.ride_status === "cancel" ? "danger" : trip.ride_status === "waiting" ? "warning" : "secondary"}
-                                >
-                                  {trip.ride_status === "on_trip"
-                                    ? "current"
-                                    : trip.ride_status === "on_pickup"
-                                    ? "enroute"
-                                    : trip?.ride_status === "cancel"
-                                    ? "cancelled"
-                                    : trip.ride_status}
+                                <Badge color={trip.ride_status === "completed" ? "success" : trip.ride_status === "cancel" ? "danger" : trip.ride_status === "waiting" ? "warning" : "secondary"}>
+                                  {trip.ride_status === "on_trip" ? "current" : trip.ride_status === "on_pickup" ? "enroute" : trip?.ride_status === "cancel" ? "cancelled" : trip.ride_status}
                                 </Badge>
                               </TableCell>
                             </>

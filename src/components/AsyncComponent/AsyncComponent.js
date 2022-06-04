@@ -335,6 +335,10 @@ const AsyncTripsCompleted = Loadable({
   loader: () => import("Routes/trips/tripsCompleted"),
   loading: () => <RctPageLoader />,
 });
+const AsyncTripsDriverNotFound = Loadable({
+  loader: () => import("Routes/trips/driverNotFound"),
+  loading: () => <RctPageLoader />,
+});
 
 const AsyncTripsCancelled = Loadable({
   loader: () => import("Routes/trips/tripsCancelled"),
@@ -609,6 +613,7 @@ export {
   AsyncTripsCancelled,
   AsyncTripsWaiting,
   AsyncTripsCurrent,
+  AsyncTripsDriverNotFound,
   AsyncCancellationReasons,
   AsyncVehicleDetails,
   AsyncRatingsDetails,

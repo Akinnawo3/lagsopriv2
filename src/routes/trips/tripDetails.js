@@ -6,7 +6,7 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {getTrip} from "Actions/tripAction";
 import {formatTime, getActualAddress} from "Helpers/helpers";
 import {calculatePostDate} from "../../helpers/helpers";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 const TripDetails = ({getTrip, match, loading, trip, location}) => {
   const [isModal, setIsModal] = useState(false);
@@ -17,7 +17,7 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
   console.log(trip_status);
 
   useEffect(() => {
-    getTrip(match.params.id, true, trip_status);
+    trip_status !== "driver_not_found" && getTrip(match.params.id, true, trip_status);
   }, [match.params.id]);
 
   const viewRiderDetails = async (data) => {

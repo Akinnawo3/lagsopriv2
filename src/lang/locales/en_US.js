@@ -38,6 +38,7 @@ module.exports = {
   "sidebar.active": "Active",
   "sidebar.admin": "Home",
   "sidebar.trips": "Trips",
+  "sidebar.notFound": "Driver not Found",
   "sidebar.inactive": "Inactive",
   "sidebar.drivers": "Drivers",
   "sidebar.partnerDrivers": "Partner Drivers",

@@ -8,11 +8,11 @@ import {getCancelledTripCount, getCancelledTrips} from "Actions/tripAction";
 import TripsTable from "Routes/trips/component/tripsTable";
 import {fitBounds} from "google-map-react";
 
-const DriverNotFound = ({match, getCancelledTrips, getCancelledTripCount}) => {
+const TripsDriverNotFound = ({match, getCancelledTrips, getCancelledTripCount}) => {
   // this are trips for which drivers are not found
   useEffect(() => {
     getCancelledTrips(1, true);
-    getCancelledTripCount("cancelled");
+    getCancelledTripCount();
   }, []);
 
   return (
@@ -36,4 +36,4 @@ const mapStateToProps = (state) => ({
   isLoading: state.loading.loading,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(DriverNotFound);
+export default connect(mapStateToProps, mapDispatchToProps)(TripsDriverNotFound);

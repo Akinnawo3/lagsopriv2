@@ -220,6 +220,11 @@ export default {
           new_item: false,
           menu_title: "sidebar.cancelled",
         },
+        {
+          path: "/admin/trips/driver-not-found",
+          new_item: false,
+          menu_title: "sidebar.notFound",
+        },
       ],
     },
 
