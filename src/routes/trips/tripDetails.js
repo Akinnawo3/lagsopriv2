@@ -13,11 +13,10 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
   const [riderDetails, setRiderDetails] = useState({});
   const [actualDropoffAddress, setActualDropoffAddress] = useState("");
   //only available for cancelled trips, serves the purpose of the trip details to show more info , it is passed along with the "Link"
-  const {trip_cancelled, trip_status} = location.state;
-  console.log(trip_status);
+  const {trip_status} = location.state || {};
 
   useEffect(() => {
-    trip_status !== "driver_not_found" && getTrip(match.params.id, true, trip_status);
+    getTrip(match.params.id, true, trip_status);
   }, [match.params.id]);
 
   const viewRiderDetails = async (data) => {
@@ -43,102 +42,99 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
           <div className="col-sm-6">
             <div className="tab-content px-4">
               <div className="tab-pane active" id="home">
-                {!trip_cancelled ? (
-                  <ul className="list-group">
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Trip Id</strong>
-                      </span>
-                      {trip?.trip_id}
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Trip Date/Time</strong>
-                      </span>
-                      {new Date(trip?.createdAt)?.toDateString()} {new Date(trip?.createdAt)?.toLocaleTimeString()}
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Trip Class</strong>
-                      </span>
-                      {trip?.ride_class}
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Trip Type</strong>
-                      </span>
-                      {trip?.ride_type}
-                    </li>
-                    {/*{ (trip?.ride_type !== 'fdt' || trip?.ride_type !== 'schedule') && (trip?.ride_status !== 'cancel') &&*/}
-                    {/*    <>*/}
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Driver Name</strong>
-                      </span>
-                      {trip?.driver_data?.name ? <Link to={`/admin/drivers/${trip?.driver_data?.driver_id}`}>{trip?.driver_data?.name}</Link> : "N/A"}
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Driver Email</strong>
-                      </span>
-                      {trip?.driver_data?.email ? trip?.driver_data?.email : "N/A"}
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Driver Phone Number</strong>
-                      </span>
-                      {trip?.driver_data?.phone ? trip?.driver_data?.phone : "N/A"}
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Vehicle Plate Number</strong>
-                      </span>
-                      {trip?.driver_data?.car_number_plate ? trip?.driver_data?.car_number_plate : "N/A"}
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Vehicle Model</strong>
-                      </span>
-                      {trip?.driver_data?.car_model ? trip?.driver_data?.car_model : "N/A"}
-                    </li>
-                    {/*</>*/}
-                    {/*}*/}
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Trip Status</strong>
-                      </span>
-                      <Badge color={trip?.ride_status === "completed" ? "success" : trip?.ride_status === "cancel" ? "danger" : trip?.ride_status === "waiting" ? "warning" : "secondary"}>
-                        {trip?.ride_status === "on_trip" ? "current" : trip?.ride_status === "on_pickup" ? "on route" : trip?.ride_status === "cancel" ? "cancelled" : trip?.ride_status}
-                      </Badge>
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left" style={{fontSize: "1rem"}}>
-                        <strong>Rider(s)</strong>
-                      </span>
-                      {trip?.home_area}
-                    </li>
-                    {trip?.riders?.length > 0 &&
-                      trip?.riders.map((rider) => (
-                        <li key={rider.rider_id} className="list-group-item text-right">
-                          <span className="pull-left">
-                            <Link to={`/admin/passengers/${rider?.rider_id}`}>{rider?.name}</Link>
-                          </span>
-                          <button onClick={() => viewRiderDetails(rider)} type="button" className="rct-link-btn text-primary" title="view details">
-                            <i className="ti-eye" />
-                          </button>
-                        </li>
-                      ))}
-                  </ul>
-                ) : (
-                  <ul className="list-group">
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Cancellation Id</strong>
-                      </span>
-                      {trip_cancelled?.cancel_id}
-                    </li>
+                <ul className="list-group">
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Trip Id</strong>
+                    </span>
+                    {trip?.trip_id}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Trip Date/Time</strong>
+                    </span>
+                    {new Date(trip?.createdAt)?.toDateString()} {new Date(trip?.createdAt)?.toLocaleTimeString()}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Trip Class</strong>
+                    </span>
+                    {trip?.ride_class}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Trip Type</strong>
+                    </span>
+                    {trip?.ride_type}
+                  </li>
+                  {/*{ (trip?.ride_type !== 'fdt' || trip?.ride_type !== 'schedule') && (trip?.ride_status !== 'cancel') &&*/}
+                  {/*    <>*/}
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Driver Name</strong>
+                    </span>
+                    {trip?.driver_data?.name ? <Link to={`/admin/drivers/${trip?.driver_data?.driver_id}`}>{trip?.driver_data?.name}</Link> : "N/A"}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Driver Email</strong>
+                    </span>
+                    {trip?.driver_data?.email ? trip?.driver_data?.email : "N/A"}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Driver Phone Number</strong>
+                    </span>
+                    {trip?.driver_data?.phone ? trip?.driver_data?.phone : "N/A"}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Vehicle Plate Number</strong>
+                    </span>
+                    {trip?.driver_data?.car_number_plate ? trip?.driver_data?.car_number_plate : "N/A"}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Vehicle Model</strong>
+                    </span>
+                    {trip?.driver_data?.car_model ? trip?.driver_data?.car_model : "N/A"}
+                  </li>
+                  {/*</>*/}
+                  {/*}*/}
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Trip Status</strong>
+                    </span>
+                    <Badge color={trip?.ride_status === "completed" ? "success" : trip?.ride_status === "cancel" ? "danger" : trip?.ride_status === "waiting" ? "warning" : "secondary"}>
+                      {trip?.ride_status === "on_trip" ? "current" : trip?.ride_status === "on_pickup" ? "on route" : trip?.ride_status === "cancel" ? "cancelled" : trip?.ride_status}
+                    </Badge>
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left" style={{fontSize: "1rem"}}>
+                      <strong>Rider(s)</strong>
+                    </span>
+                    {trip?.home_area}
+                  </li>
+                  {trip?.riders?.length > 0 &&
+                    trip?.riders.map((rider) => (
+                      <li key={rider.rider_id} className="list-group-item text-right">
+                        <span className="pull-left">
+                          <Link to={`/admin/passengers/${rider?.rider_id}`}>{rider?.name}</Link>
+                        </span>
+                        <button onClick={() => viewRiderDetails(rider)} type="button" className="rct-link-btn text-primary" title="view details">
+                          <i className="ti-eye" />
+                        </button>
+                      </li>
+                    ))}
+                  {/* // <ul className="list-group">
+                  //   <li className="list-group-item text-right">
+                  //     <span className="pull-left">
+                  //       <strong>Cancellation Id</strong>
+                  //     </span>
+                  //     {trip_cancelled?.cancel_id}
+                  //   </li> */}
 
-                    {/* <li className="list-group-item text-right">
+                  {/* <li className="list-group-item text-right">
                       <span className="pull-left">
                         <strong>Rider Name</strong>
                       </span>
@@ -177,38 +173,37 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
                       {trip_cancelled?.ride_status}
                     </li> */}
 
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Time</strong>
-                      </span>
-                      {calculatePostDate(trip_cancelled?.createdAt)}
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Total cancelled request (Driver ignored)</strong>
-                      </span>
-                      {trip_cancelled?.total_request?.driver_ignore}
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Total cancelled request (Driver not found)</strong>
-                      </span>
-                      {trip_cancelled?.total_request?.driver_not_found}
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Start Address</strong>
-                      </span>
-                      {trip_cancelled?.start_address}
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>End Address</strong>
-                      </span>
-                      {trip_cancelled?.end_address}
-                    </li>
-                  </ul>
-                )}
+                  {/* // <li className="list-group-item text-right">
+                    //   <span className="pull-left">
+                    //     <strong>Time</strong>
+                    //   </span>
+                    //   {calculatePostDate(trip_cancelled?.createdAt)}
+                    // </li>
+                    // <li className="list-group-item text-right">
+                    //   <span className="pull-left">
+                    //     <strong>Total cancelled request (Driver ignored)</strong>
+                    //   </span>
+                    //   {trip_cancelled?.total_request?.driver_ignore}
+                    // </li>
+                    // <li className="list-group-item text-right">
+                    //   <span className="pull-left">
+                    //     <strong>Total cancelled request (Driver not found)</strong>
+                    //   </span>
+                    //   {trip_cancelled?.total_request?.driver_not_found}
+                    // </li>
+                    // <li className="list-group-item text-right">
+                    //   <span className="pull-left">
+                    //     <strong>Start Address</strong>
+                    //   </span>
+                    //   {trip_cancelled?.start_address}
+                    // </li>
+                    // <li className="list-group-item text-right">
+                    //   <span className="pull-left">
+                    //     <strong>End Address</strong>
+                    //   </span>
+                    //   {trip_cancelled?.end_address}
+                    // </li> */}
+                </ul>
               </div>
             </div>
           </div>
