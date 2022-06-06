@@ -34,7 +34,6 @@ import MaintenanceLog from "../routes/maintenance-log/maintenanceRoutes";
 import MaintenanceRoutes from "../routes/maintenance-log/maintenanceRoutes";
 import promoRoutes from "../routes/promo-discounts/promoRoutes";
 import RevenueRoute from "../routes/revenues/revenueRoutes";
-import ServiceRequestsRoutes from "../routes/service-requests/serviceRequestsRoutes";
 import PartnersRoutes from "Routes/partners/partnersRoutes";
 
 export default [
@@ -74,7 +73,7 @@ export default [
   {
     path: "wallets",
     component: WalletsRoutes,
-    permission: "view_drivers",   // to be changed
+    permission: "view_drivers", // to be changed
   },
   {
     path: "cancellation-reasons",
@@ -226,15 +225,10 @@ export default [
     component: RevenueRoute,
     permission: "view_trip_payments",
   },
-  {
-    path: "service-requests",
-    component: ServiceRequestsRoutes,
-    permission: "",
-  },
+
   {
     path: "partners",
     component: PartnersRoutes,
     permission: "view_partners",
   },
-
 ];

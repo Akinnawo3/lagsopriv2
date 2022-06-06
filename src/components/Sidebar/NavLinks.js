@@ -349,19 +349,19 @@ export default {
       ],
     },
 
-    {
-      menu_title: "sidebar.serviceRequests",
-      menu_icon: "icon-credit-card",
-      type_multi: null,
-      new_item: false,
-      child_routes: [
-        {
-          path: "/admin/service-requests",
-          new_item: false,
-          menu_title: "sidebar.all",
-        },
-      ],
-    },
+    // {
+    //   menu_title: "sidebar.serviceRequests",
+    //   menu_icon: "icon-credit-card",
+    //   type_multi: null,
+    //   new_item: false,
+    //   child_routes: [
+    //     {
+    //       path: "/admin/service-requests",
+    //       new_item: false,
+    //       menu_title: "sidebar.all",
+    //     },
+    //   ],
+    // },
     {
       menu_title: "sidebar.reconciliation",
       menu_icon: "icon-credit-card",
