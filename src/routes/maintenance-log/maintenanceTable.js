@@ -50,7 +50,7 @@ const MaintenanceTable = ({match, getServiceRequests, getServiceRequestsCount, s
             <Table>
               <TableHead>
                 <TableRow hover>
-                  <TableCell>All</TableCell>
+                  <TableCell>Type</TableCell>
                   <TableCell>Time</TableCell>
                   <TableCell>Covered by warranty</TableCell>
                   <TableCell>Driver name</TableCell>
