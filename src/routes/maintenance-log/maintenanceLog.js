@@ -11,7 +11,7 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
-import {getSOS, getSOSCount} from "Actions/emergencyAction";
+import {getServiceRequests, getServiceRequestsCount} from "Actions/serviceRequestAction";
 import EmptyData from "Components/EmptyData/EmptyData";
 import Pagination from "react-js-pagination";
 import {Badge} from "reactstrap";
@@ -150,8 +150,10 @@ const MaintenanceLog = ({match, getSOS, sos, loading, getSOSCount, sosCount}) =>
 
 function mapDispatchToProps(dispatch) {
   return {
-    getSOS: (page_no, spinner) => dispatch(getSOS(page_no, spinner)),
-    getSOSCount: () => dispatch(getSOSCount()),
+    getServiceRequests: (page_no, spinner) => dispatch(getServiceRequests(page_no, spinner)),
+    //  getServiceRequestsCount
+    // getSOS: (page_no, spinner) => dispatch(getSOS(page_no, spinner)),
+    // getSOSCount: () => dispatch(getSOSCount()),
   };
 }
 
