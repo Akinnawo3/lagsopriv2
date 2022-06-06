@@ -28,22 +28,20 @@ export const getServiceRequests =
     }
   };
 
-export const getServiceRequestsCount =
-  (page_no = 1, spinner, oem_id, status, service_type) =>
-  async (dispatch) => {
-    try {
-      const res = await axios.get(`${api.oem}/v1.1/admin/service-requests/?oem_id=${oem_id}&status=${status}&service_type=${service_type}&component=count`);
-      if (res.data.status === "error") {
-        NotificationManager.error(res.data.msg);
-      } else {
-        dispatch({
-          type: SERVICE_REQUEST_COUNT,
-          payload: res.data.data.total ? res.data.data.total : 0,
-        });
-      }
-    } catch (err) {}
-  };
-
+export const getServiceRequestsCount = (oem_id, status, service_type) => async (dispatch) => {
+  try {
+    const res = await axios.get(`${api.oem}/v1.1/admin/service-requests/?oem_id=${oem_id}&status=${status}&service_type=${service_type}&component=count`);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      dispatch({
+        type: SERVICE_REQUEST_COUNT,
+        payload: res.data.data.total ? res.data.data.total : 0,
+      });
+    }
+  } catch (err) {}
+};
+serv;
 export const getServiceRequest = (request_id, spinner) => async (dispatch) => {
   try {
     spinner && (await dispatch(startLoading()));

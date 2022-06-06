@@ -16,11 +16,11 @@ import EmptyData from "Components/EmptyData/EmptyData";
 import Pagination from "react-js-pagination";
 import {Badge} from "reactstrap";
 
-const MaintenanceLog = ({match, getSOS, sos, loading, getSOSCount, sosCount}) => {
+const MaintenanceLog = ({match, getServiceRequests, loading}) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    getSOS(1, true);
+    getServiceRequests(1, true);
     getSOSCount();
   }, []);
 
@@ -30,7 +30,6 @@ const MaintenanceLog = ({match, getSOS, sos, loading, getSOSCount, sosCount}) =>
     window.scrollTo(0, 0);
   };
 
-  console.log(sos);
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Maintenance and Repair"} match={match} />
@@ -150,8 +149,8 @@ const MaintenanceLog = ({match, getSOS, sos, loading, getSOSCount, sosCount}) =>
 
 function mapDispatchToProps(dispatch) {
   return {
-    getServiceRequests: (page_no, spinner) => dispatch(getServiceRequests(page_no, spinner)),
-    //  getServiceRequestsCount
+    getServiceRequests: (page_no, spinner, oem_id, status, service_type) => dispatch(getServiceRequests(page_no, spinner, oem_id, status, service_type)),
+    getServiceRequestsCount: (oem_id, status, service_type) => dispatch(getServiceRequests(page_no, spinner, oem_id, status, service_type)),
     // getSOS: (page_no, spinner) => dispatch(getSOS(page_no, spinner)),
     // getSOSCount: () => dispatch(getSOSCount()),
   };
