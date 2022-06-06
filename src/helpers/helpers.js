@@ -367,3 +367,18 @@ export const firstLetterToUpperCase = (string) => {
 
 // this function checks the array of the permissions of a user and returns true/false if a perticullar permission is found in the array
 // export const verifyUserPermssion = (checkedPermission, permissionsArray) => permissionsArray.includes(checkedPermission);
+
+
+export const getServiceRequestStatusColor = (status) => {
+  if (status === "pending") {
+    return "secondary";
+  } else if (status === "accepted") {
+    return "warning";
+  } else if (status === "ongoing") {
+    return "info";
+  } else if (status === "completed") {
+    return "success";
+  } else {
+    return "danger";
+  }
+};
