@@ -1,23 +1,30 @@
-import {AREA_COUNT, AREAS} from "Actions/types";
+import {SERVICE_REQUESTS, SERVICE_REQUEST_COUNT, SERVICE_REQUEST} from "Actions/types";
 
 const initialState = {
-  areas: [],
-  areaCount: 0,
+  serviceRequests: [],
+  serviceRequestsCount: 0,
+  serviceRequest: "",
 };
 
-function areasReducer(state = initialState, action) {
+function serviceRequestReducer(state = initialState, action) {
   const {type, payload} = action;
   switch (type) {
-    case AREAS: {
+    case SERVICE_REQUESTS: {
       return {
         ...state,
-        areas: payload,
+        serviceRequests: payload,
       };
     }
-    case AREA_COUNT: {
+    case SERVICE_REQUEST_COUNT: {
       return {
         ...state,
-        areaCount: payload,
+        serviceRequestsCount: payload,
+      };
+    }
+    case SERVICE_REQUEST: {
+      return {
+        ...state,
+        serviceRequest: payload,
       };
     }
     default:
@@ -25,4 +32,4 @@ function areasReducer(state = initialState, action) {
   }
 }
 
-export default areasReducer;
+export default serviceRequestReducer;
