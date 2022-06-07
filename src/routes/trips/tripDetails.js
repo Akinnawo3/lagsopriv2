@@ -24,10 +24,10 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
     setIsModal(true);
   };
 
-  (async () => {
-    const res = await getActualAddress(riderDetails?.end_lat, riderDetails?.end_lon);
+  const getAddress = async (lat, lon) => {
+    const res = await getActualAddress(lat, lon);
     setActualDropoffAddress(res);
-  })();
+  };
 
   console.log(trip_status);
   return (
@@ -252,12 +252,17 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
               <div className="scheduleHeader mt-1">{riderDetails?.end_lon}</div>
             </div>
           </div>
-          <div className="row mt-4">
-            <div className="col-6">
-              <div className="schedulePickup">Actual Drop off Address</div>
-              <div className="scheduleHeader mt-1">{actualDropoffAddress === "" ? "loading..." : actualDropoffAddress}</div>
+          {trip?.ride_status === "completed" && (
+            <div className="row mt-4">
+              <div className="col-6">
+                <div className="schedulePickup">
+                  View actual Drop off Address <i className={`ti-eye text-danger ms-2 ${actualDropoffAddress && "d-none"}`} onClick={() => getAddress(riderDetails?.end_lat, riderDetails?.end_lon)} />
+                </div>
+                <div className="scheduleHeader mt-1">{actualDropoffAddress === "" ? "" : actualDropoffAddress}</div>
+              </div>
             </div>
-          </div>
+          )}
+
           <div className="row mt-4">
             <div className="col-6">
               <div className="schedulePickup">Start Time</div>
@@ -316,8 +321,18 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
               <div className="scheduleHeader mt-1">{riderDetails?.rider}</div>
             </div>
             <div className="col-6">
+              <div className="schedulePickup">Arrive-pickup time</div>
+              <div className="scheduleHeader mt-1">{new Date(riderDetails?.arrive_pickup_at).toLocaleTimeString()}</div>
+            </div>
+          </div>
+          <div className="row mt-4">
+            <div className="col-6">
               <div className="schedulePickup">Total Distance Covered</div>
               <div className="scheduleHeader mt-1">{riderDetails?.total_distance}km</div>
+            </div>
+            <div className="col-6">
+              <div className="schedulePickup">End distance</div>
+              <div className="scheduleHeader mt-1">{riderDetails?.end_distance}km</div>
             </div>
           </div>
           <div className="row mt-4">
