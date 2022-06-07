@@ -459,7 +459,7 @@ export const getFinanceDriverPayouts =
           try {
             loading && (await dispatch(startLoading()));
             !loading && dispatch(startStatusLoading());
-            const res = await axios.get(`${api.revenueSplit}/v1.1/admin/driver-payout?item_per_page=20&page=${page_no}&date_type=${date_type}&start_date=${start_date}&end_date${end_date}`);
+            const res = await axios.get(`${api.revenueSplit}/v1.1/admin/payout?item_per_page=20&page=${page_no}&date_type=${date_type}&start_date=${start_date}&end_date${end_date}`);
             if (res.data.status === "error") {
               NotificationManager.error(res.data.msg);
             } else {
@@ -481,7 +481,7 @@ export const getFinanceDriverPayoutsCount = (loading, date_type = "",  start_dat
   try {
     loading && (await dispatch(startLoading()));
     !loading && dispatch(startStatusLoading());
-    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/driver-payout?component=count&date_type=${date_type}&start_date=${start_date}&end_date${end_date}`);
+    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/payout?component=count&date_type=${date_type}&start_date=${start_date}&end_date${end_date}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
@@ -502,11 +502,11 @@ export const getFinanceDriverPayoutsCount = (loading, date_type = "",  start_dat
 export const searchFinanceDriverPayouts = (searchData) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
-    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/driver-payout?q=${searchData}`);
+    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/payout?q=${searchData}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      const res2 = await axios.get(`${api.revenueSplit}/v1.1/admin/driver-payout?component=count&q=${searchData}`);
+      const res2 = await axios.get(`${api.revenueSplit}/v1.1/admin/payout?component=count&q=${searchData}`);
 
 
       dispatch({
