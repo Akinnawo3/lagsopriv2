@@ -29,7 +29,7 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
     setActualDropoffAddress(res);
   })();
 
-  // console.log(trip);
+  console.log(trip_status);
   return (
     <div className="mb-5" style={{minHeight: "90vh"}}>
       <Helmet>

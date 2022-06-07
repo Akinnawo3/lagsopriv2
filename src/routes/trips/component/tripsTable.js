@@ -168,7 +168,7 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
                           {status !== "driver_not_found" && (
                             <TableCell>
                               <button type="button" className="rct-link-btn text-primary" title="view details">
-                                <Link to={{pathname: `/admin/trips/${trip.trip_id}`, state: {trip_status: trip?.ride_status}}}>
+                                <Link to={{pathname: `/admin/trips/${trip.trip_id}`, state: {trip_status: status}}}>
                                   <i className="ti-eye" />
                                 </Link>
                               </button>

@@ -84,7 +84,7 @@ export const getTrip = (trip_id, spinner, trip_status) => async (dispatch) => {
   try {
     spinner && dispatch(startLoading());
     !spinner && dispatch(startStatusLoading());
-    const res = trip_status == "current" ? await axios.get(`${api.trip}/v1.1/trips/${trip_id}/?trip_status=${trip_status}`) : await axios.get(`${api.trip}/v1.1/trips/${trip_id}`);
+    const res = trip_status == "on_ride" ? await axios.get(`${api.trip}/v1.1/trips/${trip_id}/?trip_status=${trip_status}`) : await axios.get(`${api.trip}/v1.1/trips/${trip_id}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
