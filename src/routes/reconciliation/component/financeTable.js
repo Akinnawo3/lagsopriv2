@@ -54,6 +54,8 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
     {value: "monthly", label: "Monthly"},
     {value: "yearly", label: "Yearly"},
   ];
+
+  console.log(financeTrip)
   return (
     <div>
       <RctCollapsibleCard heading={"Finance Table"} fullBlock style={{minHeight: "70vh"}}>
