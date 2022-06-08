@@ -13,16 +13,14 @@ import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/Delete
 
 const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, financeTrip, financeWallet, financeService, loading, sendFinanceTripExport}) => {
   const [dateType, setDateType] = useState("daily");
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const inputEl = useRef(null);
 
-
   useEffect(() => {
-    getFinanceTrip('trip', dateType)
-    getFinanceService('service', dateType)
-    getFinanceWallet('wallet', dateType)
-
+    getFinanceTrip("trip", dateType);
+    getFinanceService("service", dateType);
+    getFinanceWallet("wallet", dateType);
   }, []);
 
   const handleExport = () => {
@@ -31,23 +29,18 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
 
   const confirmExport = () => {
     inputEl.current.close();
-    sendFinanceTripExport('trip', dateType, startDate, endDate)
-  }
-
-
-
+    sendFinanceTripExport("trip", dateType, startDate, endDate);
+  };
 
   const handleChange = (e) => {
     setDateType(e.target.value);
   };
 
   const handleSearch = () => {
-    getFinanceTrip('trip', dateType, startDate, endDate)
-    getFinanceService('service', dateType, startDate, endDate)
-    getFinanceWallet('wallet', dateType, startDate, endDate)
-  }
-
-
+    getFinanceTrip("trip", dateType, startDate, endDate);
+    getFinanceService("service", dateType, startDate, endDate);
+    getFinanceWallet("wallet", dateType, startDate, endDate);
+  };
 
   const dateTypeFilter = [
     {value: "daily", label: "Daily"},
@@ -55,7 +48,7 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
     {value: "yearly", label: "Yearly"},
   ];
 
-  console.log(financeTrip)
+  console.log(financeTrip);
   return (
     <div>
       <RctCollapsibleCard heading={"Finance Table"} fullBlock style={{minHeight: "70vh"}}>
@@ -71,42 +64,61 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
         </li>
         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
           <small className="fw-bold mr-2">From</small>
-          <input type="date" id="start" name="trip-start" defaultValue={startDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => {
-            setStartDate(e.target.value)
-          }} />
+          <input
+            type="date"
+            id="start"
+            name="trip-start"
+            defaultValue={startDate}
+            min="2018-01-01"
+            max={getTodayDate()}
+            onChange={(e) => {
+              setStartDate(e.target.value);
+            }}
+          />
         </li>
         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
           <small className="fw-bold mr-2">To</small>
-          <input type="date" id="start" name="trip-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => {
-            setEndDate(e.target.value)
-          }} />
+          <input
+            type="date"
+            id="start"
+            name="trip-start"
+            defaultValue={endDate}
+            min="2018-01-01"
+            max={getTodayDate()}
+            onChange={(e) => {
+              setEndDate(e.target.value);
+            }}
+          />
         </li>
-        <Button onClick={() => handleSearch()} style={{height: '30px'}} className='align-items-center justify-content-center' color='success'>Apply filter</Button>
+        <Button onClick={() => handleSearch()} style={{height: "30px"}} className="align-items-center justify-content-center" color="success">
+          Apply filter
+        </Button>
         {/*<Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center ml-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>Export to Excel</Button>*/}
-            <div className='row mt-3 p-2'>
-              <div className='col-sm-4 align-items-start d-flex flex-column'>
-                <div className='font-weight-bold mb-2'>Trip Payment</div>
-                <div className="table-responsive" style={{minHeight: "50vh", border: '1px solid lightgrey'}}>
-                  <Table>
-                    <TableHead>
-                      <TableRow hover>
-                        <TableCell>Date</TableCell>
-                        <TableCell>Successful</TableCell>
-                        <TableCell>Failed</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    {financeTrip.length > 0 && financeTrip.map((item, index) =>  {
-                      let success = item.data[item.data.findIndex(x => x.status ===1)]
-                      let failure = item.data[item.data.findIndex(x => x.status ===2)]
-                      return (
-                          <TableBody key={index}>
-                            <Fragment>
-                              <TableRow hover>
-                                <TableCell>{item.group_date}</TableCell>
-                                <TableCell>{success &&
+        <div className="row mt-3 p-2">
+          <div className="col-sm-4 align-items-start d-flex flex-column">
+            <div className="font-weight-bold mb-2">Trip Payment</div>
+            <div className="table-responsive" style={{minHeight: "50vh", border: "1px solid lightgrey"}}>
+              <Table>
+                <TableHead>
+                  <TableRow hover>
+                    <TableCell>Date</TableCell>
+                    <TableCell>Successful</TableCell>
+                    <TableCell>Failed</TableCell>
+                  </TableRow>
+                </TableHead>
+                {financeTrip.length > 0 &&
+                  financeTrip.map((item, index) => {
+                    let success = item.data[item.data.findIndex((x) => x.status === 1)];
+                    let failure = item.data[item.data.findIndex((x) => x.status === 2)];
+                    return (
+                      <TableBody key={index}>
+                        <Fragment>
+                          <TableRow hover>
+                            <TableCell>{item.group_date}</TableCell>
+                            <TableCell>
+                              {success && (
                                 <div>
-                                  ₦{success?.balance?.toLocaleString()} ({success?.total})
-                                  {/*<div>*/}
+                                  ₦{success?.balance?.toLocaleString()} ({success?.total}){/*<div>*/}
                                   {/*  <div>Amount</div>*/}
                                   {/*  <div className='text-success font-weight-bold'>₦{success.balance.toLocaleString()}</div>*/}
                                   {/*</div>*/}
@@ -115,11 +127,12 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
                                   {/*  <div className='text-success font-weight-bold'>{success.total}</div>*/}
                                   {/*</div>*/}
                                 </div>
-                                }</TableCell>
-                                <TableCell>{failure &&
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              {failure && (
                                 <div>
-                                  ₦{success?.failure?.toLocaleString()} ({failure?.total})
-                                  {/*<div>*/}
+                                  ₦{failure?.balance?.toLocaleString()} ({failure?.total}){/*<div>*/}
                                   {/*  <div>Amount</div>*/}
                                   {/*  <div className='text-danger font-weight-bold'>₦{failure?.balance.toLocaleString()}</div>*/}
                                   {/*</div>*/}
@@ -128,136 +141,143 @@ const FinanceTable = ({getFinanceTrip, getFinanceService, getFinanceWallet, fina
                                   {/*  <div className='text-danger font-weight-bold'>{failure?.total}</div>*/}
                                   {/*</div>*/}
                                 </div>
-                                }</TableCell>
-                              </TableRow>
-                            </Fragment>
-                          </TableBody>
-                      )
-                    })}
-                  </Table>
-                  {financeTrip.length === 0 && !loading && <div className='text-center mt-3'>No Data</div>}
-                </div>
-              </div>
-              <div className='col-sm-4 align-items-start d-flex flex-column'>
-                <div className='font-weight-bold  mb-2'>Service Payment</div>
-                <div className="table-responsive" style={{minHeight: "50vh", border: '1px solid lightgrey'}}>
-                  <Table>
-                    <TableHead>
-                      <TableRow hover>
-                        <TableCell>Date</TableCell>
-                        <TableCell>Successful</TableCell>
-                        <TableCell>Failed</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    {financeService.length > 0 && financeService.map((item, index) =>  {
-                      let success = item.data[item.data.findIndex(x => x.status ===1)]
-                      let failure = item.data[item.data.findIndex(x => x.status ===2)]
-                      return (
-                          <TableBody key={index}>
-                            <Fragment>
-                              <TableRow hover>
-                                <TableCell>{item?.group_date}</TableCell>
-                                <TableCell>{success &&
-                                <div>
-                                  ₦{success?.balance?.toLocaleString()} ({success?.total})
-                                  {/*<div>*/}
-                                  {/*  <div>Amount</div>*/}
-                                  {/*  <div className='text-success font-weight-bold'>₦{success.balance.toLocaleString()}</div>*/}
-                                  {/*</div>*/}
-                                  {/*<div className='mt-2'>*/}
-                                  {/*  <div>Count</div>*/}
-                                  {/*  <div className='text-success font-weight-bold'>{success.total}</div>*/}
-                                  {/*</div>*/}
-                                </div>
-                                }</TableCell>
-                                <TableCell>{failure &&
-                                <div>
-                                  ₦{failure?.balance?.toLocaleString()} ({failure?.total})
-                                  {/*<div>*/}
-                                  {/*  <div>Amount</div>*/}
-                                  {/*  <div className='text-danger font-weight-bold'>₦{failure?.balance.toLocaleString()}</div>*/}
-                                  {/*</div>*/}
-                                  {/*<div className='mt-2'>*/}
-                                  {/*  <div>Count</div>*/}
-                                  {/*  <div className='text-danger font-weight-bold'>{failure?.total}</div>*/}
-                                  {/*</div>*/}
-                                </div>
-                                }</TableCell>
-                              </TableRow>
-                            </Fragment>
-                          </TableBody>
-                      )
-                    })}
-                  </Table>
-                  {financeService.length === 0 && !loading && <div className='text-center mt-3'>No Data</div>}
-                </div>
-              </div>
-              <div className='col-sm-4 align-items-start d-flex flex-column'>
-                <div className='font-weight-bold  mb-2'>Wallet Payment</div>
-                <div className="table-responsive" style={{minHeight: "50vh", border: '1px solid lightgrey'}}>
-                  <Table>
-                    <TableHead>
-                      <TableRow hover>
-                        <TableCell>Date</TableCell>
-                        <TableCell>Successful</TableCell>
-                        <TableCell>Failed</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    {financeWallet.length > 0 && financeWallet.map((item, index) =>  {
-                      let success = item.data[item.data.findIndex(x => x.status ===1)]
-                      let failure = item.data[item.data.findIndex(x => x.status ===2)]
-                      return (
-                          <TableBody key={index}>
-                            <Fragment>
-                              <TableRow hover>
-                                <TableCell>{item?.group_date}</TableCell>
-                                <TableCell>{success &&
-                                <div>
-                                  ₦{success?.balance?.toLocaleString()} ({success?.total})
-                                  {/*<div>*/}
-                                  {/*  <div>Amount</div>*/}
-                                  {/*  <div className='text-success font-weight-bold'>₦{success.balance.toLocaleString()}</div>*/}
-                                  {/*</div>*/}
-                                  {/*<div className='mt-2'>*/}
-                                  {/*  <div>Count</div>*/}
-                                  {/*  <div className='text-success font-weight-bold'>{success.total}</div>*/}
-                                  {/*</div>*/}
-                                </div>
-                                }</TableCell>
-                                <TableCell>{failure &&
-                                <div>
-                                  ₦{failure?.balance?.toLocaleString()} ({failure?.total})
-                                  {/*<div>*/}
-                                  {/*  <div>Amount</div>*/}
-                                  {/*  <div className='text-danger font-weight-bold'>₦{failure?.balance.toLocaleString()}</div>*/}
-                                  {/*</div>*/}
-                                  {/*<div className='mt-2'>*/}
-                                  {/*  <div>Count</div>*/}
-                                  {/*  <div className='text-danger font-weight-bold'>{failure?.total}</div>*/}
-                                  {/*</div>*/}
-                                </div>
-                                }</TableCell>
-                              </TableRow>
-                            </Fragment>
-                          </TableBody>
-                      )
-                    })}
-                  </Table>
-                  {financeWallet.length === 0 && !loading && <div className='text-center mt-3'>No Data</div>}
-                </div>
-              </div>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        </Fragment>
+                      </TableBody>
+                    );
+                  })}
+              </Table>
+              {financeTrip.length === 0 && !loading && <div className="text-center mt-3">No Data</div>}
             </div>
+          </div>
+          <div className="col-sm-4 align-items-start d-flex flex-column">
+            <div className="font-weight-bold  mb-2">Service Payment</div>
+            <div className="table-responsive" style={{minHeight: "50vh", border: "1px solid lightgrey"}}>
+              <Table>
+                <TableHead>
+                  <TableRow hover>
+                    <TableCell>Date</TableCell>
+                    <TableCell>Successful</TableCell>
+                    <TableCell>Failed</TableCell>
+                  </TableRow>
+                </TableHead>
+                {financeService.length > 0 &&
+                  financeService.map((item, index) => {
+                    let success = item.data[item.data.findIndex((x) => x.status === 1)];
+                    let failure = item.data[item.data.findIndex((x) => x.status === 2)];
+                    return (
+                      <TableBody key={index}>
+                        <Fragment>
+                          <TableRow hover>
+                            <TableCell>{item?.group_date}</TableCell>
+                            <TableCell>
+                              {success && (
+                                <div>
+                                  ₦{success?.balance?.toLocaleString()} ({success?.total}){/*<div>*/}
+                                  {/*  <div>Amount</div>*/}
+                                  {/*  <div className='text-success font-weight-bold'>₦{success.balance.toLocaleString()}</div>*/}
+                                  {/*</div>*/}
+                                  {/*<div className='mt-2'>*/}
+                                  {/*  <div>Count</div>*/}
+                                  {/*  <div className='text-success font-weight-bold'>{success.total}</div>*/}
+                                  {/*</div>*/}
+                                </div>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              {failure && (
+                                <div>
+                                  ₦{failure?.balance?.toLocaleString()} ({failure?.total}){/*<div>*/}
+                                  {/*  <div>Amount</div>*/}
+                                  {/*  <div className='text-danger font-weight-bold'>₦{failure?.balance.toLocaleString()}</div>*/}
+                                  {/*</div>*/}
+                                  {/*<div className='mt-2'>*/}
+                                  {/*  <div>Count</div>*/}
+                                  {/*  <div className='text-danger font-weight-bold'>{failure?.total}</div>*/}
+                                  {/*</div>*/}
+                                </div>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        </Fragment>
+                      </TableBody>
+                    );
+                  })}
+              </Table>
+              {financeService.length === 0 && !loading && <div className="text-center mt-3">No Data</div>}
+            </div>
+          </div>
+          <div className="col-sm-4 align-items-start d-flex flex-column">
+            <div className="font-weight-bold  mb-2">Wallet Payment</div>
+            <div className="table-responsive" style={{minHeight: "50vh", border: "1px solid lightgrey"}}>
+              <Table>
+                <TableHead>
+                  <TableRow hover>
+                    <TableCell>Date</TableCell>
+                    <TableCell>Successful</TableCell>
+                    <TableCell>Failed</TableCell>
+                  </TableRow>
+                </TableHead>
+                {financeWallet.length > 0 &&
+                  financeWallet.map((item, index) => {
+                    let success = item.data[item.data.findIndex((x) => x.status === 1)];
+                    let failure = item.data[item.data.findIndex((x) => x.status === 2)];
+                    return (
+                      <TableBody key={index}>
+                        <Fragment>
+                          <TableRow hover>
+                            <TableCell>{item?.group_date}</TableCell>
+                            <TableCell>
+                              {success && (
+                                <div>
+                                  ₦{success?.balance?.toLocaleString()} ({success?.total}){/*<div>*/}
+                                  {/*  <div>Amount</div>*/}
+                                  {/*  <div className='text-success font-weight-bold'>₦{success.balance.toLocaleString()}</div>*/}
+                                  {/*</div>*/}
+                                  {/*<div className='mt-2'>*/}
+                                  {/*  <div>Count</div>*/}
+                                  {/*  <div className='text-success font-weight-bold'>{success.total}</div>*/}
+                                  {/*</div>*/}
+                                </div>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              {failure && (
+                                <div>
+                                  ₦{failure?.balance?.toLocaleString()} ({failure?.total}){/*<div>*/}
+                                  {/*  <div>Amount</div>*/}
+                                  {/*  <div className='text-danger font-weight-bold'>₦{failure?.balance.toLocaleString()}</div>*/}
+                                  {/*</div>*/}
+                                  {/*<div className='mt-2'>*/}
+                                  {/*  <div>Count</div>*/}
+                                  {/*  <div className='text-danger font-weight-bold'>{failure?.total}</div>*/}
+                                  {/*</div>*/}
+                                </div>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        </Fragment>
+                      </TableBody>
+                    );
+                  })}
+              </Table>
+              {financeWallet.length === 0 && !loading && <div className="text-center mt-3">No Data</div>}
+            </div>
+          </div>
+        </div>
       </RctCollapsibleCard>
-      <DeleteConfirmationDialog ref={inputEl} title={'Are you sure you want to Export File?'} message={'This will send the excel file to your email'} onConfirm={confirmExport} />
+      <DeleteConfirmationDialog ref={inputEl} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
     </div>
   );
 };
 function mapDispatchToProps(dispatch) {
   return {
-    getFinanceTrip: (payment_type, date_type, start_date , end_date) => dispatch(getFinanceTrip(payment_type, date_type, start_date , end_date)),
-    getFinanceService: (payment_type, date_type, start_date , end_date) => dispatch(getFinanceService(payment_type, date_type, start_date , end_date)),
-    sendFinanceTripExport: (payment_type, date_type, start_date , end_date) => dispatch(sendFinanceTripExport(payment_type, date_type, start_date , end_date)),
-    getFinanceWallet: (payment_type, date_type, start_date , end_date) => dispatch(getFinanceWallet(payment_type, date_type, start_date , end_date)),
+    getFinanceTrip: (payment_type, date_type, start_date, end_date) => dispatch(getFinanceTrip(payment_type, date_type, start_date, end_date)),
+    getFinanceService: (payment_type, date_type, start_date, end_date) => dispatch(getFinanceService(payment_type, date_type, start_date, end_date)),
+    sendFinanceTripExport: (payment_type, date_type, start_date, end_date) => dispatch(sendFinanceTripExport(payment_type, date_type, start_date, end_date)),
+    getFinanceWallet: (payment_type, date_type, start_date, end_date) => dispatch(getFinanceWallet(payment_type, date_type, start_date, end_date)),
   };
 }
 const mapStateToProps = (state) => ({
