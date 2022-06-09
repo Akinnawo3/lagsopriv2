@@ -84,6 +84,7 @@ const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, he
                     <TableCell>Promo</TableCell>
                     <TableCell>Rider Name</TableCell>
                     <TableCell>Date / Time</TableCell>
+                    <TableCell>Charger Date</TableCell>
                     <TableCell>Charge Method</TableCell>
                     <TableCell>Payment Method</TableCell>
                     <TableCell>Status</TableCell>
@@ -98,9 +99,12 @@ const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, he
                         <TableCell>{item.trip_ref}</TableCell>
                         <TableCell>₦{item?.amount?.toLocaleString()}</TableCell>
                         <TableCell>₦{item.actual_amount?.toLocaleString()}</TableCell>
-                        <TableCell>{item?.fare_param?.promo_discount} ({item?.fare_param?.promo_value})</TableCell>
+                        <TableCell>
+                          {item?.fare_param?.promo_discount} ({item?.fare_param?.promo_value})
+                        </TableCell>
                         <TableCell>{`${item?.first_name ? item?.first_name : ""} ${item?.last_name ? item?.last_name : ""}`}</TableCell>
                         <TableCell>{calculatePostDate(item.createdAt)}</TableCell>
+                        <TableCell>{calculatePostDate(item.updatedAt)}</TableCell>
                         <TableCell>{item.charge_method}</TableCell>
                         <TableCell>{item.payment_method}</TableCell>
                         <TableCell>
