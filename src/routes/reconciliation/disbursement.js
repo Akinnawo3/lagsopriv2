@@ -256,11 +256,20 @@ const Disbursement = (props) => {
   const [dateType, setDateType] = useState("daily");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [status, setStatus] = useState("");
   const dateTypeFilter = [
     {value: "daily", label: "Daily"},
     {value: "monthly", label: "Monthly"},
     {value: "yearly", label: "Yearly"},
   ];
+  const statusFilter = [
+    {value: "", label: "All"},
+    {value: 0, label: "Pending"},
+    {value: 1, label: "Completed"},
+    {value: 2, label: "Failed"},
+    {value: 3, label: "Processing"},
+  ];
+
   useEffect(() => {
     getFinanceDriverLogs(currentPage, true);
     getFinanceDriverLogsCount(true);
@@ -273,13 +282,13 @@ const Disbursement = (props) => {
   };
 
   const handleSearch = () => {
-    // if(type === 'receivable') {
-    getFinanceDriverLogs(currentPage, false, dateType, startDate, endDate);
-    getFinanceDriverLogsCount(false, dateType, startDate, endDate);
-    // } else {
-    getFinanceDriverPayouts(currentPage2, false, dateType, startDate, endDate);
-    getFinanceDriverPayoutsCount(false, dateType, startDate, endDate);
-    // }
+    if (type === "receivable") {
+      getFinanceDriverLogs(currentPage, false, dateType, startDate, endDate);
+      getFinanceDriverLogsCount(false, dateType, startDate, endDate);
+    } else {
+      getFinanceDriverPayouts(currentPage2, false, dateType, startDate, endDate, status);
+      getFinanceDriverPayoutsCount(false, dateType, startDate, endDate, status);
+    }
 
     // getFinanceTrip('trip', dateType, startDate, endDate)
     // getFinanceService('service', dateType, startDate, endDate)
@@ -289,13 +298,13 @@ const Disbursement = (props) => {
   const paginate = (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
-    getFinanceDriverLogs(pageNumber);
+    getFinanceDriverLogs(pageNumber, false, dateType, startDate, endDate);
     window.scrollTo(0, 0);
   };
   const paginat2 = (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
     setCurrentPage2(pageNumber);
-    getFinanceDriverPayouts(pageNumber);
+    getFinanceDriverPayouts(pageNumber, false, dateType, startDate, endDate, status);
     window.scrollTo(0, 0);
   };
 
@@ -338,17 +347,32 @@ const Disbursement = (props) => {
                 </Input>
               </div>
             </li>
-            <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-              <div className="mb-2 font-sm">Date Type</div>
-              {/* <small className="fw-bold">Date Type Filter</small> */}
-              <select name="fiter-dropdown" onChange={handleChange} className="p-1 px-4">
-                {dateTypeFilter.map((item, index) => (
-                  <option value={item.value} key={index}>
-                    {item.label}
-                  </option>
-                ))}
-              </select>
-            </li>
+            {receivable ? (
+              <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+                <div className="mb-2 font-sm">Date Type</div>
+                {/* <small className="fw-bold">Date Type Filter</small> */}
+                <select name="fiter-dropdown" onChange={handleChange} className="p-1 px-4">
+                  {dateTypeFilter.map((item, index) => (
+                    <option value={item.value} key={index}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+              </li>
+            ) : (
+              <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+                <div className="mb-2 font-sm">Status</div>
+                {/* <small className="fw-bold">Date Type Filter</small> */}
+                <select name="fiter-dropdown" onChange={(e) => setStatus(e.target.value)} className="p-1 px-4">
+                  {statusFilter.map((item, index) => (
+                    <option value={item.value} key={index}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+              </li>
+            )}
+
             <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
               <div className="mb-2 font-sm">Start Date</div>
               <input
@@ -480,7 +504,9 @@ const Disbursement = (props) => {
                               <TableCell>{item.user_data.email}</TableCell>
                               <TableCell>{item.user_data.phone_number}</TableCell>
                               <TableCell>
-                                <Badge color={item?.status === 1 ? "success" : "warning"}>{item?.status === 1 ? "Successful" : "Pending"}</Badge>
+                                <Badge color={item?.status === 0 ? "secondary" : item?.status === 1 ? "success" : item?.status === 2 ? "danger" : "warning"}>
+                                  {item?.status === 0 ? "Pending" : item?.status === 1 ? "Completed" : item?.status === 2 ? "Failed" : "Processing"}
+                                </Badge>
                               </TableCell>
                             </TableRow>
                           );
@@ -517,8 +543,8 @@ function mapDispatchToProps(dispatch) {
     getFinanceDriverLogs: (page_no, loading, date_type, start_date, end_date) => dispatch(getFinanceDriverLogs(page_no, loading, date_type, start_date, end_date)),
     getFinanceDriverLogsCount: (loading, date_type, start_date, end_date) => dispatch(getFinanceDriverLogsCount(loading, date_type, start_date, end_date)),
     searchFinanceDriverLogs: (searchData) => dispatch(searchFinanceDriverLogs(searchData)),
-    getFinanceDriverPayouts: (page_no, loading, date_type, start_date, end_date) => dispatch(getFinanceDriverPayouts(page_no, loading, date_type, start_date, end_date)),
-    getFinanceDriverPayoutsCount: (loading, date_type, start_date, end_date) => dispatch(getFinanceDriverPayoutsCount(loading, date_type, start_date, end_date)),
+    getFinanceDriverPayouts: (page_no, loading, date_type, start_date, end_date, status) => dispatch(getFinanceDriverPayouts(page_no, loading, date_type, start_date, end_date, status)),
+    getFinanceDriverPayoutsCount: (loading, date_type, start_date, end_date, status) => dispatch(getFinanceDriverPayoutsCount(loading, date_type, start_date, end_date, status)),
     searchFinanceDriverPayouts: (searchData) => dispatch(searchFinanceDriverPayouts(searchData)),
   };
 }
