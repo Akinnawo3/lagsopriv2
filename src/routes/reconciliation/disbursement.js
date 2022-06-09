@@ -209,7 +209,7 @@
 // export default connect(mapStateToProps, mapDispatchToProps)(Disbursement);
 //
 
-import React, {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState, useRef} from "react";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import Table from "@material-ui/core/Table";
@@ -220,12 +220,22 @@ import TableBody from "@material-ui/core/TableBody";
 import EmptyData from "Components/EmptyData/EmptyData";
 import Pagination from "react-js-pagination";
 import {connect} from "react-redux";
-import {getFinanceDriverLogs, getFinanceDriverLogsCount, getFinanceDriverPayouts, getFinanceDriverPayoutsCount, searchFinanceDriverLogs, searchFinanceDriverPayouts} from "Actions/paymentAction";
+import {
+  getFinanceDriverLogs,
+  getFinanceDriverLogsCount,
+  getFinanceDriverPayouts,
+  getFinanceDriverPayoutsCount,
+  searchFinanceDriverLogs,
+  searchFinanceDriverPayouts,
+  getFinanceDriverPayoutExport,
+  getFinanceDriverLogsExport,
+} from "Actions/paymentAction";
 import {Link} from "react-router-dom";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {Badge, Button, Input} from "reactstrap";
 import {getTodayDate} from "Helpers/helpers";
 const qs = require("qs");
+import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 
 const Disbursement = (props) => {
   const {
@@ -242,7 +252,10 @@ const Disbursement = (props) => {
     match,
     searchFinanceDriverLogs,
     searchFinanceDriverPayouts,
+    getFinanceDriverLogsExport,
+    getFinanceDriverPayoutExport,
   } = props;
+  const exportRef = useRef(null);
 
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -308,7 +321,13 @@ const Disbursement = (props) => {
     window.scrollTo(0, 0);
   };
 
-  console.log(financeDriverPayouts);
+  const handleExport = () => {
+    exportRef.current.open();
+  };
+  const confirmExport = () => {
+    exportRef.current.close();
+    receivable ? getFinanceDriverLogsExport(dateType, startDate, endDate) : getFinanceDriverPayoutExport(startDate, endDate, status);
+  };
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Driver Disbursement"} match={match} />
@@ -408,6 +427,24 @@ const Disbursement = (props) => {
             </li>
           </ul>
           {receivable ? (
+            <div className="float-right">
+              {financeDriverLog?.length > 0 && (
+                <Button onClick={() => handleExport()} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
+                  {" "}
+                  <i className="zmdi zmdi-download mr-2"></i> Export to Excel
+                </Button>
+              )}
+            </div>
+          ) : (
+            <div className="float-right">
+              {financeDriverPayouts?.length > 0 && (
+                <Button onClick={() => handleExport()} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
+                  <i className="zmdi zmdi-download mr-2"></i> Export to Excel
+                </Button>
+              )}
+            </div>
+          )}
+          {receivable ? (
             <>
               {financeDriverLog?.length > 0 && (
                 <div className="table-responsive" style={{minHeight: "50vh"}}>
@@ -423,33 +460,34 @@ const Disbursement = (props) => {
                     </TableHead>
                     <TableBody>
                       <Fragment>
-                        {financeDriverLog.map((item, key) => {
-                          let success = item.trip_data[item.trip_data.findIndex((x) => x.status === 1)];
-                          let failure = item.trip_data[item.trip_data.findIndex((x) => x.status === 2)];
-                          return (
-                            <TableRow hover key={key}>
-                              <TableCell>
-                                <Link to={`/admin/drivers/${item._id}`}>{item.first_name + "  " + item.last_name}</Link>
-                              </TableCell>
-                              <TableCell>₦{item?.earning?.toLocaleString()}</TableCell>
-                              <TableCell>{item.phone_number}</TableCell>
-                              <TableCell>
-                                {success && (
-                                  <div>
-                                    ₦{success?.amount?.toLocaleString()} ({success.total})
-                                  </div>
-                                )}
-                              </TableCell>
-                              <TableCell>
-                                {failure && (
-                                  <div>
-                                    ₦{failure?.amount?.toLocaleString()} ({failure.total})
-                                  </div>
-                                )}
-                              </TableCell>
-                            </TableRow>
-                          );
-                        })}
+                        {financeDriverLog.length > 0 &&
+                          financeDriverLog.map((item, key) => {
+                            let success = item.trip_data[item.trip_data.findIndex((x) => x.status === 1)];
+                            let failure = item.trip_data[item.trip_data.findIndex((x) => x.status === 2)];
+                            return (
+                              <TableRow hover key={key}>
+                                <TableCell>
+                                  <Link to={`/admin/drivers/${item._id}`}>{item.first_name + "  " + item.last_name}</Link>
+                                </TableCell>
+                                <TableCell>₦{item?.earning?.toLocaleString()}</TableCell>
+                                <TableCell>{item.phone_number}</TableCell>
+                                <TableCell>
+                                  {success && (
+                                    <div>
+                                      ₦{success?.amount?.toLocaleString()} ({success.total})
+                                    </div>
+                                  )}
+                                </TableCell>
+                                <TableCell>
+                                  {failure && (
+                                    <div>
+                                      ₦{failure?.amount?.toLocaleString()} ({failure.total})
+                                    </div>
+                                  )}
+                                </TableCell>
+                              </TableRow>
+                            );
+                          })}
                       </Fragment>
                     </TableBody>
                   </Table>
@@ -490,27 +528,28 @@ const Disbursement = (props) => {
                     </TableHead>
                     <TableBody>
                       <Fragment>
-                        {financeDriverPayouts.map((item, key) => {
-                          return (
-                            <TableRow hover key={key}>
-                              <TableCell>{item.group_date}</TableCell>
-                              <TableCell>
-                                {item.user_data.first_name} {item.user_data.last_name}
-                              </TableCell>
-                              <TableCell>{item.account_data.account_name}</TableCell>
-                              <TableCell>{item.account_data.bank_name}</TableCell>
-                              <TableCell>₦{item?.actual_amount?.toLocaleString()}</TableCell>
-                              <TableCell>₦{item?.amount?.toLocaleString()}</TableCell>
-                              <TableCell>{item.user_data.email}</TableCell>
-                              <TableCell>{item.user_data.phone_number}</TableCell>
-                              <TableCell>
-                                <Badge color={item?.status === 0 ? "secondary" : item?.status === 1 ? "success" : item?.status === 2 ? "danger" : "warning"}>
-                                  {item?.status === 0 ? "Pending" : item?.status === 1 ? "Completed" : item?.status === 2 ? "Failed" : "Processing"}
-                                </Badge>
-                              </TableCell>
-                            </TableRow>
-                          );
-                        })}
+                        {financeDriverPayouts.length > 0 &&
+                          financeDriverPayouts.map((item, key) => {
+                            return (
+                              <TableRow hover key={key}>
+                                <TableCell>{item.group_date}</TableCell>
+                                <TableCell>
+                                  {item?.user_data?.first_name} {item?.user_data?.last_name}
+                                </TableCell>
+                                <TableCell>{item.account_data.account_name}</TableCell>
+                                <TableCell>{item.account_data.bank_name}</TableCell>
+                                <TableCell>₦{item?.actual_amount?.toLocaleString()}</TableCell>
+                                <TableCell>₦{item?.amount?.toLocaleString()}</TableCell>
+                                <TableCell>{item?.user_data?.email}</TableCell>
+                                <TableCell>{item?.user_data?.phone_number}</TableCell>
+                                <TableCell>
+                                  <Badge color={item?.status === 0 ? "secondary" : item?.status === 1 ? "success" : item?.status === 2 ? "danger" : "warning"}>
+                                    {item?.status === 0 ? "Pending" : item?.status === 1 ? "Completed" : item?.status === 2 ? "Failed" : "Processing"}
+                                  </Badge>
+                                </TableCell>
+                              </TableRow>
+                            );
+                          })}
                       </Fragment>
                     </TableBody>
                   </Table>
@@ -534,6 +573,7 @@ const Disbursement = (props) => {
           )}
         </RctCollapsibleCard>
       )}
+      <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
     </div>
   );
 };
@@ -546,6 +586,8 @@ function mapDispatchToProps(dispatch) {
     getFinanceDriverPayouts: (page_no, loading, date_type, start_date, end_date, status) => dispatch(getFinanceDriverPayouts(page_no, loading, date_type, start_date, end_date, status)),
     getFinanceDriverPayoutsCount: (loading, date_type, start_date, end_date, status) => dispatch(getFinanceDriverPayoutsCount(loading, date_type, start_date, end_date, status)),
     searchFinanceDriverPayouts: (searchData) => dispatch(searchFinanceDriverPayouts(searchData)),
+    getFinanceDriverLogsExport: (date_type, start_date, end_date) => dispatch(getFinanceDriverLogsExport(date_type, start_date, end_date)),
+    getFinanceDriverPayoutExport: (start_date, end_date, status) => dispatch(getFinanceDriverPayoutExport(start_date, end_date, status)),
   };
 }
 
