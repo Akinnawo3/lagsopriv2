@@ -600,3 +600,37 @@ export const searchFinanceHolderPayouts = (searchData) => async (dispatch) => {
     dispatch(endStatusLoading());
   }
 };
+
+export const getFinanceDriverPayoutExport =
+  (start_date = "", end_date = "", status = "") =>
+  async (dispatch) => {
+    dispatch(startStatusLoading());
+    try {
+      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/payout?component=export&start_date=${start_date}&end_date${end_date}&status=${status}`);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        NotificationManager.success("Excel file sent to your email successfully");
+      }
+      dispatch(endStatusLoading());
+    } catch (err) {
+      dispatch(endStatusLoading());
+    }
+  };
+
+export const getFinanceDriverLogsExport =
+  (date_type = "", start_date = "", end_date = "") =>
+  async (dispatch) => {
+    dispatch(startStatusLoading());
+    try {
+      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/driver-disbursement-preview?component=export&date_type=${date_type}&start_date=${start_date}&end_date${end_date}`);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        NotificationManager.success("Excel file sent to your email successfully");
+      }
+      dispatch(endStatusLoading());
+    } catch (err) {
+      dispatch(endStatusLoading());
+    }
+  };
