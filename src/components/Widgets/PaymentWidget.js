@@ -37,9 +37,13 @@ const PaymentWidget = () => {
   const successfulPayment = paymentData?.data?.find((item) => item?.status === 1);
   const unsuccessfulPayment = paymentData?.data?.find((item) => item?.status === 2);
   const undecidedPayment = paymentData?.data?.find((item) => item?.status === 3);
+
+  console.log(successfulPayment);
+  console.log(unsuccessfulPayment);
+  console.log(undecidedPayment);
   const total = {
-    balance: successfulPayment?.balance + unsuccessfulPayment?.balance + undecidedPayment?.balance || 0,
-    total: successfulPayment?.total + unsuccessfulPayment?.total + undecidedPayment?.total || 0,
+    balance: successfulPayment?.balance || 0 + unsuccessfulPayment?.balance || 0 + undecidedPayment?.balance || 0,
+    total: successfulPayment?.total || 0 + unsuccessfulPayment?.total || 0 + undecidedPayment?.total || 0,
   };
   return (
     <Card className="rct-block">

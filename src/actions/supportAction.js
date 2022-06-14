@@ -185,7 +185,3 @@ export const getContactUsDetails = (id) => async dispatch => {
         dispatch(endLoading());
     }
 };
-
-
-
-
