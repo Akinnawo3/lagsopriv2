@@ -158,7 +158,7 @@ export const getContactUsCount = () => async dispatch => {
         }else {
             dispatch({
                 type: CONTACT_US_COUNT,
-                payload: res.data?.data[0].total ? res.data.data[0].total : 0
+                payload: res.data?.data.total ? res.data.data.total : 0
             });
         }
     } catch (err) {
