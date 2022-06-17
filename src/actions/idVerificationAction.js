@@ -20,6 +20,8 @@ export const sendVerificationRequest = (id_type, id_value, first_name, last_name
         type: VERIFICATION_RESULT,
         payload: res.data.data,
       });
+      dispatch(endStatusLoading());
+      return res.data.data;
     }
     dispatch(endStatusLoading());
   } catch (err) {

@@ -36,32 +36,39 @@ const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, he
 
   const confirmExport = () => {
     exportRef.current.close();
-    getPaymentsExport(status)
-  }
+    getPaymentsExport(status);
+  };
 
- const  handleGetPreviousData = () => {
-   getPayments(currentPage, status, auth_id);
- }
+  const handleGetPreviousData = () => {
+    getPayments(currentPage, status, auth_id);
+  };
 
-  const  handleGetCount = () => {
+  const handleGetCount = () => {
     getPaymentsCount(status, auth_id);
-  }
+  };
 
-    const  handleGetSearch = (data) => {
-        searchPayment(data, status);
-    }
+  const handleGetSearch = (data) => {
+    searchPayment(data, status);
+  };
 
-
-
-    return (
+  return (
     <div>
       <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}}>
         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-          <SearchComponent getPreviousData={handleGetPreviousData} getSearchedData={handleGetSearch} setCurrentPage={setCurrentPage} getCount={handleGetCount} placeHolder={'email, phone, trip reference'} />
+          <SearchComponent
+            getPreviousData={handleGetPreviousData}
+            getSearchedData={handleGetSearch}
+            setCurrentPage={setCurrentPage}
+            getCount={handleGetCount}
+            placeHolder={"email, phone, trip reference"}
+          />
         </li>
         <div className="float-right">
           {!loading && payments.length > 0 && (
-              <Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center mr-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>  Export to Excel</Button>
+            <Button onClick={() => handleExport()} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
+              {" "}
+              <i className="zmdi zmdi-download mr-2"></i> Export to Excel
+            </Button>
           )}
         </div>
         {!loading && payments?.length > 0 && (
@@ -77,6 +84,7 @@ const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, he
                     <TableCell>Promo</TableCell>
                     <TableCell>Rider Name</TableCell>
                     <TableCell>Date / Time</TableCell>
+                    <TableCell>Charger Date</TableCell>
                     <TableCell>Charge Method</TableCell>
                     <TableCell>Payment Method</TableCell>
                     <TableCell>Status</TableCell>
@@ -91,9 +99,12 @@ const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, he
                         <TableCell>{item.trip_ref}</TableCell>
                         <TableCell>₦{item?.amount?.toLocaleString()}</TableCell>
                         <TableCell>₦{item.actual_amount?.toLocaleString()}</TableCell>
-                        <TableCell>{item?.is_promo ? "True" : "False"}</TableCell>
+                        <TableCell>
+                          {item?.fare_param?.promo_discount} ({item?.fare_param?.promo_value})
+                        </TableCell>
                         <TableCell>{`${item?.first_name ? item?.first_name : ""} ${item?.last_name ? item?.last_name : ""}`}</TableCell>
                         <TableCell>{calculatePostDate(item.createdAt)}</TableCell>
+                        <TableCell>{calculatePostDate(item.updatedAt)}</TableCell>
                         <TableCell>{item.charge_method}</TableCell>
                         <TableCell>{item.payment_method}</TableCell>
                         <TableCell>
@@ -120,8 +131,7 @@ const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, he
         )}
         {!loading && payments?.length < 1 && <EmptyData />}
       </RctCollapsibleCard>
-      <DeleteConfirmationDialog ref={exportRef} title={'Are you sure you want to Export File?'} message={'This will send the excel file to your email'} onConfirm={confirmExport} />
-
+      <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
     </div>
   );
 };
@@ -129,11 +139,9 @@ const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, he
 function mapDispatchToProps(dispatch) {
   return {
     getPayments: (pageNo, transaction_status, auth_id) => dispatch(getPayments(pageNo, transaction_status, auth_id)),
-    getPaymentsExport: (status,  auth_id, userType) => dispatch(getPaymentsExport(status,  auth_id, userType)),
+    getPaymentsExport: (status, auth_id, userType) => dispatch(getPaymentsExport(status, auth_id, userType)),
     getPaymentsCount: (transaction_status, auth_id) => dispatch(getPaymentsCount(transaction_status, auth_id)),
-      searchPayment: (searchData, status) => dispatch(searchPayment(searchData, status)),
-
-
+    searchPayment: (searchData, status) => dispatch(searchPayment(searchData, status)),
   };
 }
 

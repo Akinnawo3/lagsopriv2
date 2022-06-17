@@ -8,6 +8,11 @@ export default {
       // "new_item": true,
       child_routes: [
         {
+          menu_title: "sidebar.idVerification",
+          new_item: false,
+          path: "/admin/setup/id-verification",
+        },
+        {
           menu_title: "sidebar.fees",
           new_item: false,
           path: "/admin/setup/fees",
@@ -215,6 +220,11 @@ export default {
           new_item: false,
           menu_title: "sidebar.cancelled",
         },
+        {
+          path: "/admin/trips/driver-not-found",
+          new_item: false,
+          menu_title: "sidebar.notFound",
+        },
       ],
     },
 
@@ -240,6 +250,11 @@ export default {
           path: "/admin/payments/unsuccessful",
           new_item: false,
           menu_title: "sidebar.unsuccessful",
+        },
+        {
+          path: "/admin/payments/undecided",
+          new_item: false,
+          menu_title: "sidebar.undecided",
         },
         {
           path: "/admin/payments",
@@ -334,19 +349,19 @@ export default {
       ],
     },
 
-    {
-      menu_title: "sidebar.serviceRequests",
-      menu_icon: "icon-credit-card",
-      type_multi: null,
-      new_item: false,
-      child_routes: [
-        {
-          path: "/admin/service-requests",
-          new_item: false,
-          menu_title: "sidebar.all",
-        },
-      ],
-    },
+    // {
+    //   menu_title: "sidebar.serviceRequests",
+    //   menu_icon: "icon-credit-card",
+    //   type_multi: null,
+    //   new_item: false,
+    //   child_routes: [
+    //     {
+    //       path: "/admin/service-requests",
+    //       new_item: false,
+    //       menu_title: "sidebar.all",
+    //     },
+    //   ],
+    // },
     {
       menu_title: "sidebar.reconciliation",
       menu_icon: "icon-credit-card",

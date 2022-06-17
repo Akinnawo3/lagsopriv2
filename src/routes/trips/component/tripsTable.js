@@ -18,6 +18,7 @@ import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {getCancelledTripCount, getCancelledTrips} from "../../../actions/tripAction";
 import {useHistory} from "react-router-dom";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
+import {calculatePostDate} from "../../../helpers/helpers";
 const qs = require("qs");
 
 const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, searchTrips, getTripCount, getCancelledTrips, getCancelledTripCount, getTripExport}) => {
@@ -31,12 +32,12 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
   const paginate = async (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
     await setCurrentPage(pageNumber);
-    status === "cancel" ? await getCancelledTrips(pageNumber, true) : await getTrips(pageNumber, status);
+    status === "driver_not_found" ? await getCancelledTrips(pageNumber, true) : await getTrips(pageNumber, status);
     window.scrollTo(0, 0);
   };
 
   const getPreviousData = () => {
-    status === "cancel" ? getCancelledTrips(pageNumber, true) : getTrips(1, status);
+    status === "driver_not_found" ? getCancelledTrips(pageNumber, true) : getTrips(1, status);
   };
 
   const getSearchData = (searchData) => {
@@ -44,7 +45,7 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
   };
 
   const handleCount = () => {
-    status === "cancel" ? getCancelledTripCount() : getTripCount(status);
+    status === "driver_not_found" ? getCancelledTripCount() : getTripCount(status);
   };
 
   const handleExport = () => {
@@ -53,35 +54,55 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
 
   const confirmExport = () => {
     exportRef.current.close();
-    getTripExport(status)
-  }
+    getTripExport(status);
+  };
 
+  console.log(status);
   return (
     <div>
       <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}}>
-        {status !== "cancel" && (
+        {status !== "driver_not_found" && (
           <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-            <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={"Trip Id"} />
+            <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={"Trip Reference"} />
           </li>
         )}
-        <div className="float-right">
-          {!isLoading && trips.length > 0 && (
-              <Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center mr-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>  Export to Excel</Button>
-          )}
-        </div>
+        {status !== "driver_not_found" && (
+          <div className="float-right">
+            {!isLoading && trips.length > 0 && (
+              <Button onClick={() => handleExport()} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
+                {" "}
+                <i className="zmdi zmdi-download mr-2"></i> Export to Excel
+              </Button>
+            )}
+          </div>
+        )}
+
         {!isLoading && trips.length > 0 && (
           <div>
             <div className="table-responsive" style={{minHeight: "50vh"}}>
               <Table>
                 <TableHead>
                   <TableRow hover>
-                    <TableCell>{status === "cancel" ? "Cancellation Id" : "Trip Id"}</TableCell>
-                    {status !== "cancel" && <TableCell>Trip Reference</TableCell>}
+                    {status === "driver_not_found" && <TableCell>Start Address</TableCell>}
+                    {status === "driver_not_found" && <TableCell>End Address</TableCell>}
+                    {/* <TableCell>{status === "driver_not_found" ? "Cancellation Id" : "Trip Id"}</TableCell> */}
+                    {status !== "driver_not_found" && <TableCell>Trip Reference</TableCell>}
                     <TableCell>Date / Time</TableCell>
-                    <TableCell>Class</TableCell>
-                    <TableCell>Type</TableCell>
-                    <TableCell>Status</TableCell>
-                    <TableCell>Action</TableCell>
+                    {status !== "driver_not_found" && (
+                      <>
+                        <TableCell>Class</TableCell>
+                        <TableCell>Type</TableCell>
+                        <TableCell>Status</TableCell>
+                      </>
+                    )}
+                    {status === "driver_not_found" && (
+                      <>
+                        <TableCell>Total cancelled request (Driver not found)</TableCell>
+                        <TableCell>Total cancelled request (Driver ignored)</TableCell>
+                      </>
+                    )}
+
+                    {status !== "driver_not_found" && <TableCell>Action</TableCell>}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -89,14 +110,32 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
                     {trips.length > 0 &&
                       trips.map((trip) => (
                         <TableRow hover key={trip.trip_id}>
-                          <TableCell>
+                          {/* <TableCell>
                             <Media>
                               <Media body>
-                                <h5 className="m-0 pt-15">{status === "cancel" ? trip?.cancel_id : trip.trip_id}</h5>
+                                <h5 className="m-0 pt-15">{status === "driver_not_found" ? trip?.cancel_id : trip.trip_id}</h5>
                               </Media>
                             </Media>
-                          </TableCell>
-                          {status !== "cancel" && (
+                          </TableCell> */}
+                          {status === "driver_not_found" && (
+                            <TableCell>
+                              <Media>
+                                <Media body>
+                                  <h5 className="m-0 pt-15">{trip?.start_address}</h5>
+                                </Media>
+                              </Media>
+                            </TableCell>
+                          )}
+                          {status === "driver_not_found" && (
+                            <TableCell>
+                              <Media>
+                                <Media body>
+                                  <h5 className="m-0 pt-15">{trip?.end_address}</h5>
+                                </Media>
+                              </Media>
+                            </TableCell>
+                          )}
+                          {status !== "driver_not_found" && (
                             <TableCell>
                               <Media>
                                 <Media body>
@@ -106,32 +145,30 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
                             </TableCell>
                           )}
                           <TableCell>
-                            {new Date(trip.createdAt).toDateString()} {new Date(trip.createdAt).toLocaleTimeString()}
+                            {/* {new Date(trip.createdAt).toDateString()} {new Date(trip.createdAt).toLocaleTimeString()} */}
+                            {calculatePostDate(trip.createdAt)}
                           </TableCell>
-                          <TableCell>{trip.ride_class}</TableCell>
-                          <TableCell>{trip.ride_type}</TableCell>
-                          <TableCell>
-                            <Badge color={trip.ride_status === "completed" ? "success" : trip.ride_status === "cancel" ? "danger" : trip.ride_status === "waiting" ? "warning" : "secondary"}>
-                              {trip.ride_status === "on_trip" ? "current" : trip.ride_status === "on_pickup" ? "enroute" : trip?.ride_status === "cancel" ? "cancelled" : trip.ride_status}
-                            </Badge>
-                          </TableCell>
-                          {status !== "cancel" ? (
+                          {status !== "driver_not_found" && (
+                            <>
+                              <TableCell>{trip.ride_class}</TableCell>
+                              <TableCell>{trip.ride_type}</TableCell>
+                              <TableCell>
+                                <Badge color={trip.ride_status === "completed" ? "success" : trip.ride_status === "cancel" ? "danger" : trip.ride_status === "waiting" ? "warning" : "secondary"}>
+                                  {trip.ride_status === "on_trip" ? "current" : trip.ride_status === "on_pickup" ? "enroute" : trip?.ride_status === "cancel" ? "cancelled" : trip.ride_status}
+                                </Badge>
+                              </TableCell>
+                            </>
+                          )}
+                          {status === "driver_not_found" && (
+                            <>
+                              <TableCell>{trip?.total_request?.driver_not_found}</TableCell>
+                              <TableCell>{trip?.total_request?.driver_ignore}</TableCell>
+                            </>
+                          )}
+                          {status !== "driver_not_found" && (
                             <TableCell>
                               <button type="button" className="rct-link-btn text-primary" title="view details">
-                                <Link to={`/admin/trips/${trip.trip_id}`}>
-                                  <i className="ti-eye" />
-                                </Link>
-                              </button>
-                            </TableCell>
-                          ) : (
-                            <TableCell>
-                              <button type="button" className="rct-link-btn text-primary" title="view details">
-                                <Link
-                                  to={{
-                                    pathname: `/admin/trips/${trip.cancel_id}`,
-                                    state: {trip_cancelled: trip},
-                                  }}
-                                >
+                                <Link to={{pathname: `/admin/trips/${trip.trip_id}`, state: {trip_status: status}}}>
                                   <i className="ti-eye" />
                                 </Link>
                               </button>
@@ -150,7 +187,7 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
         )}
         {trips.length === 0 && !isLoading && <EmptyData />}
       </RctCollapsibleCard>
-      <DeleteConfirmationDialog ref={exportRef} title={'Are you sure you want to Export File?'} message={'This will send the excel file to your email'} onConfirm={confirmExport} />
+      <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
     </div>
   );
 };

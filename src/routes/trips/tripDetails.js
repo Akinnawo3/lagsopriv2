@@ -5,17 +5,18 @@ import {Helmet} from "react-helmet";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {getTrip} from "Actions/tripAction";
 import {formatTime, getActualAddress} from "Helpers/helpers";
+import {calculatePostDate} from "../../helpers/helpers";
 import {Link} from "react-router-dom";
 
 const TripDetails = ({getTrip, match, loading, trip, location}) => {
   const [isModal, setIsModal] = useState(false);
   const [riderDetails, setRiderDetails] = useState({});
   const [actualDropoffAddress, setActualDropoffAddress] = useState("");
-
   //only available for cancelled trips, serves the purpose of the trip details to show more info , it is passed along with the "Link"
-  const {trip_cancelled} = location?.state ? location?.state : "";
+  const {trip_status} = location.state || {};
+
   useEffect(() => {
-    getTrip(match.params.id, true);
+    getTrip(match.params.id, true, trip_status);
   }, [match.params.id]);
 
   const viewRiderDetails = async (data) => {
@@ -23,12 +24,12 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
     setIsModal(true);
   };
 
-  (async () => {
-    const res = await getActualAddress(riderDetails?.end_lat, riderDetails?.end_lon);
+  const getAddress = async (lat, lon) => {
+    const res = await getActualAddress(lat, lon);
     setActualDropoffAddress(res);
-  })();
+  };
 
-  console.log(trip);
+  console.log(trip_status);
   return (
     <div className="mb-5" style={{minHeight: "90vh"}}>
       <Helmet>
@@ -41,96 +42,99 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
           <div className="col-sm-6">
             <div className="tab-content px-4">
               <div className="tab-pane active" id="home">
-                {!trip_cancelled ? (
-                  <ul className="list-group">
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Trip Id</strong>
-                      </span>
-                      {trip?.trip_id}
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Trip Class</strong>
-                      </span>
-                      {trip?.ride_class}
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Trip Type</strong>
-                      </span>
-                      {trip?.ride_type}
-                    </li>
-                    {/*{ (trip?.ride_type !== 'fdt' || trip?.ride_type !== 'schedule') && (trip?.ride_status !== 'cancel') &&*/}
-                    {/*    <>*/}
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Driver Name</strong>
-                      </span>
-                      {trip?.driver_data?.name ? <Link to={`/admin/drivers/${trip?.driver_data?.driver_id}`}>{trip?.driver_data?.name}</Link> : "N/A"}
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Driver Email</strong>
-                      </span>
-                      {trip?.driver_data?.email ? trip?.driver_data?.email : "N/A"}
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Driver Phone Number</strong>
-                      </span>
-                      {trip?.driver_data?.phone ? trip?.driver_data?.phone : "N/A"}
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Vehicle Plate Number</strong>
-                      </span>
-                      {trip?.driver_data?.car_number_plate ? trip?.driver_data?.car_number_plate : "N/A"}
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Vehicle Model</strong>
-                      </span>
-                      {trip?.driver_data?.car_model ? trip?.driver_data?.car_model : "N/A"}
-                    </li>
-                    {/*</>*/}
-                    {/*}*/}
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Trip Status</strong>
-                      </span>
-                      <Badge color={trip?.ride_status === "completed" ? "success" : trip?.ride_status === "cancel" ? "danger" : trip?.ride_status === "waiting" ? "warning" : "secondary"}>
-                        {trip?.ride_status === "on_trip" ? "current" : trip?.ride_status === "on_pickup" ? "on route" : trip?.ride_status === "cancel" ? "cancelled" : trip?.ride_status}
-                      </Badge>
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left" style={{fontSize: "1rem"}}>
-                        <strong>Rider(s)</strong>
-                      </span>
-                      {trip?.home_area}
-                    </li>
-                    {trip?.riders?.length > 0 &&
-                      trip?.riders.map((rider) => (
-                        <li key={rider.rider_id} className="list-group-item text-right">
-                          <span className="pull-left">
-                            <Link to={`/admin/passengers/${rider?.rider_id}`}>{rider?.name}</Link>
-                          </span>
-                          <button onClick={() => viewRiderDetails(rider)} type="button" className="rct-link-btn text-primary" title="view details">
-                            <i className="ti-eye" />
-                          </button>
-                        </li>
-                      ))}
-                  </ul>
-                ) : (
-                  <ul className="list-group">
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Cancellation Id</strong>
-                      </span>
-                      {trip_cancelled?.cancel_id}
-                    </li>
+                <ul className="list-group">
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Trip Id</strong>
+                    </span>
+                    {trip?.trip_id}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Trip Date/Time</strong>
+                    </span>
+                    {new Date(trip?.createdAt)?.toDateString()} {new Date(trip?.createdAt)?.toLocaleTimeString()}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Trip Class</strong>
+                    </span>
+                    {trip?.ride_class}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Trip Type</strong>
+                    </span>
+                    {trip?.ride_type}
+                  </li>
+                  {/*{ (trip?.ride_type !== 'fdt' || trip?.ride_type !== 'schedule') && (trip?.ride_status !== 'cancel') &&*/}
+                  {/*    <>*/}
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Driver Name</strong>
+                    </span>
+                    {trip?.driver_data?.name ? <Link to={`/admin/drivers/${trip?.driver_data?.driver_id}`}>{trip?.driver_data?.name}</Link> : "N/A"}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Driver Email</strong>
+                    </span>
+                    {trip?.driver_data?.email ? trip?.driver_data?.email : "N/A"}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Driver Phone Number</strong>
+                    </span>
+                    {trip?.driver_data?.phone ? trip?.driver_data?.phone : "N/A"}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Vehicle Plate Number</strong>
+                    </span>
+                    {trip?.driver_data?.car_number_plate ? trip?.driver_data?.car_number_plate : "N/A"}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Vehicle Model</strong>
+                    </span>
+                    {trip?.driver_data?.car_model ? trip?.driver_data?.car_model : "N/A"}
+                  </li>
+                  {/*</>*/}
+                  {/*}*/}
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Trip Status</strong>
+                    </span>
+                    <Badge color={trip?.ride_status === "completed" ? "success" : trip?.ride_status === "cancel" ? "danger" : trip?.ride_status === "waiting" ? "warning" : "secondary"}>
+                      {trip?.ride_status === "on_trip" ? "current" : trip?.ride_status === "on_pickup" ? "on route" : trip?.ride_status === "cancel" ? "cancelled" : trip?.ride_status}
+                    </Badge>
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left" style={{fontSize: "1rem"}}>
+                      <strong>Rider(s)</strong>
+                    </span>
+                    {trip?.home_area}
+                  </li>
+                  {trip?.riders?.length > 0 &&
+                    trip?.riders.map((rider) => (
+                      <li key={rider.rider_id} className="list-group-item text-right">
+                        <span className="pull-left">
+                          <Link to={`/admin/passengers/${rider?.rider_id}`}>{rider?.name}</Link>
+                        </span>
+                        <button onClick={() => viewRiderDetails(rider)} type="button" className="rct-link-btn text-primary" title="view details">
+                          <i className="ti-eye" />
+                        </button>
+                      </li>
+                    ))}
+                  {/* // <ul className="list-group">
+                  //   <li className="list-group-item text-right">
+                  //     <span className="pull-left">
+                  //       <strong>Cancellation Id</strong>
+                  //     </span>
+                  //     {trip_cancelled?.cancel_id}
+                  //   </li> */}
 
-                    <li className="list-group-item text-right">
+                  {/* <li className="list-group-item text-right">
                       <span className="pull-left">
                         <strong>Rider Name</strong>
                       </span>
@@ -167,21 +171,39 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
                         <strong>Ride Status</strong>
                       </span>
                       {trip_cancelled?.ride_status}
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Start Address</strong>
-                      </span>
-                      {trip_cancelled?.start_address}
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>End Address</strong>
-                      </span>
-                      {trip_cancelled?.end_address}
-                    </li>
-                  </ul>
-                )}
+                    </li> */}
+
+                  {/* // <li className="list-group-item text-right">
+                    //   <span className="pull-left">
+                    //     <strong>Time</strong>
+                    //   </span>
+                    //   {calculatePostDate(trip_cancelled?.createdAt)}
+                    // </li>
+                    // <li className="list-group-item text-right">
+                    //   <span className="pull-left">
+                    //     <strong>Total cancelled request (Driver ignored)</strong>
+                    //   </span>
+                    //   {trip_cancelled?.total_request?.driver_ignore}
+                    // </li>
+                    // <li className="list-group-item text-right">
+                    //   <span className="pull-left">
+                    //     <strong>Total cancelled request (Driver not found)</strong>
+                    //   </span>
+                    //   {trip_cancelled?.total_request?.driver_not_found}
+                    // </li>
+                    // <li className="list-group-item text-right">
+                    //   <span className="pull-left">
+                    //     <strong>Start Address</strong>
+                    //   </span>
+                    //   {trip_cancelled?.start_address}
+                    // </li>
+                    // <li className="list-group-item text-right">
+                    //   <span className="pull-left">
+                    //     <strong>End Address</strong>
+                    //   </span>
+                    //   {trip_cancelled?.end_address}
+                    // </li> */}
+                </ul>
               </div>
             </div>
           </div>
@@ -230,12 +252,17 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
               <div className="scheduleHeader mt-1">{riderDetails?.end_lon}</div>
             </div>
           </div>
-          <div className="row mt-4">
-            <div className="col-6">
-              <div className="schedulePickup">Actual Drop off Address</div>
-              <div className="scheduleHeader mt-1">{actualDropoffAddress === "" ? "loading..." : actualDropoffAddress}</div>
+          {trip?.ride_status === "completed" && (
+            <div className="row mt-4">
+              <div className="col-6">
+                <div className="schedulePickup">
+                  View actual Drop off Address <i className={`ti-eye text-danger ms-2 ${actualDropoffAddress && "d-none"}`} onClick={() => getAddress(riderDetails?.end_lat, riderDetails?.end_lon)} />
+                </div>
+                <div className="scheduleHeader mt-1">{actualDropoffAddress === "" ? "" : actualDropoffAddress}</div>
+              </div>
             </div>
-          </div>
+          )}
+
           <div className="row mt-4">
             <div className="col-6">
               <div className="schedulePickup">Start Time</div>
@@ -256,6 +283,18 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
               <div className="scheduleHeader mt-1">₦{riderDetails?.fare}</div>
             </div>
           </div>
+
+          <div className="row mt-4">
+            <div className="col-6">
+              <div className="schedulePickup">Estimated distance</div>
+              <div className="scheduleHeader mt-1">{riderDetails?.est_dst}km</div>
+            </div>
+            <div className="col-6">
+              <div className="schedulePickup">Pickup disatance</div>
+              <div className="scheduleHeader mt-1">{riderDetails?.pickup_distance}km</div>
+            </div>
+          </div>
+
           <div className="row mt-4">
             <div className="col-6">
               <div className="schedulePickup">Estimated Time</div>
@@ -282,8 +321,18 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
               <div className="scheduleHeader mt-1">{riderDetails?.rider}</div>
             </div>
             <div className="col-6">
+              <div className="schedulePickup">Arrive-pickup time</div>
+              <div className="scheduleHeader mt-1">{new Date(riderDetails?.arrive_pickup_at).toLocaleTimeString()}</div>
+            </div>
+          </div>
+          <div className="row mt-4">
+            <div className="col-6">
               <div className="schedulePickup">Total Distance Covered</div>
               <div className="scheduleHeader mt-1">{riderDetails?.total_distance}km</div>
+            </div>
+            <div className="col-6">
+              <div className="schedulePickup">End distance</div>
+              <div className="scheduleHeader mt-1">{riderDetails?.end_distance}km</div>
             </div>
           </div>
           <div className="row mt-4">
@@ -354,7 +403,7 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getTrip: (trip_id, spinner) => dispatch(getTrip(trip_id, spinner)),
+    getTrip: (trip_id, spinner, trip_status) => dispatch(getTrip(trip_id, spinner, trip_status)),
     // getActualAddress: (lat, lng, spinner) =>
     //   dispatch(getActualAddress(lat, lng, spinner)),
   };

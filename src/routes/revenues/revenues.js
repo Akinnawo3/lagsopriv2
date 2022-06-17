@@ -9,7 +9,7 @@ import RevenueChart from "./revenueChart";
 import RevenueTable from "./revenueTable";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
-const revenues = ({match, getChartRevenueData, revenueChartData}) => {
+const Revenues = ({match, getChartRevenueData, revenueChartData}) => {
   return (
     <div>
       <PageTitleBar title={"Revenue"} match={match} />
@@ -28,4 +28,4 @@ const mapStateToProps = (state) => ({
   loadingStatus: state.loading.loadingStatus,
   revenueChartData: state.revenueSplit.chartRevenueData,
 });
-export default connect(mapStateToProps, mapDispatchToProps)(revenues);
+export default connect(mapStateToProps, mapDispatchToProps)(Revenues);

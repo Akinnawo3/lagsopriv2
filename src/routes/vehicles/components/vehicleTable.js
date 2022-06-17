@@ -277,7 +277,7 @@ const VehicleTable = ({
                 </Label>
                 <Input type="select" name="oemVehicle" value={oemVehicle} onChange={onChange} required>
                   <option value="" selected hidden>
-                    --Select Vehicle --
+                    --Select Vehicle Model --
                   </option>
                   {oemVehicles.length > 0 &&
                     oemVehicles?.map((item) => (

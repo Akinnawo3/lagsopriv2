@@ -1,7 +1,7 @@
 import {VERIFICATION_RESULT} from "Actions/types";
 
 const initialState = {
-  verificationResult: "",
+  verificationResult: {},
 };
 
 function idVerificationReducer(state = initialState, action) {

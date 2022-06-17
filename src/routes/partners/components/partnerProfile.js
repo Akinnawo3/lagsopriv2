@@ -162,7 +162,7 @@ console.log(partnerDetails)
               </Button>
           }
           {partnerDetails?.partner_data?.partner_status !== 4 &&
-              <Button onClick={() =>  changePartnerStatus(partnerDetails?.auth_id, "4", partnerDetails, emailMessages.approvedPartnerMessage, "Account verified")} className="bg-success mt-3 text-white">
+              <Button onClick={() =>  changePartnerStatus(partnerDetails?.auth_id, "4", partnerDetails, emailMessages.approvedPartnerMessage, "Partner Approved")} className="bg-success mt-3 text-white">
                 Verify
               </Button>
           }
@@ -205,7 +205,7 @@ console.log(partnerDetails)
                 <span className="pull-left">
                   <strong>Account number</strong>
                 </span>
-                {partnerDetails?.partner_data?.bank_data?.bank_account}
+            {partnerDetails?.partner_data?.bank_data?.bank_account}
               </li>
               <li className="list-group-item text-right">
                 <span className="pull-left">

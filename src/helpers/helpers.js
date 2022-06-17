@@ -101,18 +101,22 @@ export function getStatus4(status) {
     return "Pending";
   } else if (status === 1) {
     return "Successful";
-  } else {
+  } else if (status === 2) {
     return "Unsuccessful";
+  } else {
+    return "Undecided";
   }
 }
 
 export function getStatusColor4(status) {
   if (status === 0) {
-    return "warning";
+    return "secondary";
   } else if (status === 1) {
     return "success";
-  } else {
+  } else if (status === 2) {
     return "danger";
+  } else {
+    return "warning";
   }
 }
 
@@ -135,15 +139,15 @@ export function getStatus5(status) {
   } else if (status === 3) {
     return "undecided";
   } else if (status === 4) {
-    return "refunded";
+    return "refund";
   } else {
-    return "undecided";
+    return "Debit";
   }
 }
 
 export function getStatusColor5(status) {
   if (status === 0) {
-    return "warning";
+    return "secondary";
   } else if (status === 1) {
     return "success";
   } else if (status === 2) {
@@ -153,10 +157,9 @@ export function getStatusColor5(status) {
   } else if (status === 4) {
     return "info";
   } else {
-    return "primary";
+    return "danger";
   }
 }
-
 
 export function getStatusColor(status) {
   if (status === 0) {
@@ -344,7 +347,7 @@ export const getActualAddress = async (lat, lng) => {
   const res = await fetch("https://maps.googleapis.com/maps/api/geocode/json?address=" + lat + "," + lng + "&key=" + "AIzaSyCw_5YoOp78lvq1Dgfri-TnDjRSf1cguf0")
     .then((response) => response.json())
     .then((responseJson) => {
-      return responseJson.results[0].formatted_address;
+      return responseJson?.results[0]?.formatted_address;
     });
 
   return res;
@@ -364,3 +367,18 @@ export const firstLetterToUpperCase = (string) => {
 
 // this function checks the array of the permissions of a user and returns true/false if a perticullar permission is found in the array
 // export const verifyUserPermssion = (checkedPermission, permissionsArray) => permissionsArray.includes(checkedPermission);
+
+
+export const getServiceRequestStatusColor = (status) => {
+  if (status === "pending") {
+    return "secondary";
+  } else if (status === "accepted") {
+    return "warning";
+  } else if (status === "ongoing") {
+    return "info";
+  } else if (status === "completed") {
+    return "success";
+  } else {
+    return "danger";
+  }
+};

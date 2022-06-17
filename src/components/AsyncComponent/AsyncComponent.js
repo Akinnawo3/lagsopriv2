@@ -93,6 +93,10 @@ const AsyncPaymentsSuccessful = Loadable({
   loader: () => import("Routes/payments/successfulPayments"),
   loading: () => <RctPageLoader />,
 });
+const AsyncPaymentsUndecided = Loadable({
+  loader: () => import("Routes/payments/undecidedPayments"),
+  loading: () => <RctPageLoader />,
+});
 const AsyncPaymentsDetails = Loadable({
   loader: () => import("Routes/payments/paymentDetails"),
   loading: () => <RctPageLoader />,
@@ -311,10 +315,6 @@ const AsyncSupportContactUsDetails = Loadable({
   loader: () => import("Routes/support/contactUsDetails"),
   loading: () => <RctPageLoader />,
 });
-const AsyncServiceRequests = Loadable({
-  loader: () => import("Routes/service-requests/serviceRequests"),
-  loading: () => <RctPageLoader />,
-});
 
 // home dashboard
 const AsyncHomeDashboardComponent = Loadable({
@@ -329,6 +329,10 @@ const AsyncTrips = Loadable({
 
 const AsyncTripsCompleted = Loadable({
   loader: () => import("Routes/trips/tripsCompleted"),
+  loading: () => <RctPageLoader />,
+});
+const AsyncTripsDriverNotFound = Loadable({
+  loader: () => import("Routes/trips/driverNotFound"),
   loading: () => <RctPageLoader />,
 });
 
@@ -405,6 +409,10 @@ const AsyncPromoBeneficiaries = Loadable({
 });
 
 // for setup
+const AsyncIdVerification = Loadable({
+  loader: () => import("Routes/setup/idVerification"),
+  loading: () => <RctPageLoader />,
+});
 const AsyncFees = Loadable({
   loader: () => import("Routes/setup/fees"),
   loading: () => <RctPageLoader />,
@@ -496,7 +504,6 @@ const AsyncSessionPage500Component = Loadable({
   loading: () => <RctPageLoader />,
 });
 
-
 // partners
 
 const AsyncPartners = Loadable({
@@ -527,6 +534,7 @@ const AsyncPartnerDrivers = Loadable({
 export {
   AsyncPaymentsSuccessful,
   AsyncPaymentsUnsuccessful,
+  AsyncPaymentsUndecided,
   AsyncPayments,
   AsyncAdmins,
   AsyncBookingTypes,
@@ -536,7 +544,6 @@ export {
   AsyncInactiveVehicles,
   AsyncVehicles,
   AsyncVerifiedDrivers,
-  AsyncServiceRequests,
   AsyncPendingDrivers,
   AsyncAcceptedDrivers,
   AsyncTrainedDrivers,
@@ -601,6 +608,7 @@ export {
   AsyncTripsCancelled,
   AsyncTripsWaiting,
   AsyncTripsCurrent,
+  AsyncTripsDriverNotFound,
   AsyncCancellationReasons,
   AsyncVehicleDetails,
   AsyncRatingsDetails,
@@ -626,9 +634,10 @@ export {
   AsyncDisbursementHolders,
   AsyncPaymentsServiceRefund,
   AsyncWalletsRefund,
+  AsyncIdVerification,
   AsyncPartners,
   AsyncPartner,
   AsyncPartnersPending,
   AsyncPartnersVerified,
-  AsyncPartnerDrivers
+  AsyncPartnerDrivers,
 };

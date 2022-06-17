@@ -8,7 +8,7 @@ import {getPayments, getPaymentsCount} from "Actions/paymentAction";
 import PaymentTable from "Routes/payments/component/paymentTable";
 const qs = require("qs");
 
-const UnsuccessfulPayments = ({history, match, getPayments, getPaymentsCount, payments, paymentsCount}) => {
+const UndecidedPayments = ({history, match, getPayments, getPaymentsCount, payments, paymentsCount}) => {
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
@@ -16,15 +16,15 @@ const UnsuccessfulPayments = ({history, match, getPayments, getPaymentsCount, pa
   useEffect(() => {
     // pageNo, transaction_status, auth_id, loading
     if (pageFromQuery === undefined || payments.length < 1) {
-      getPayments(currentPage, 2, "", true);
-      getPaymentsCount(2);
+      getPayments(currentPage, 3, "", true);
+      getPaymentsCount(3);
     }
   }, []);
 
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Trip Payments"} match={match} />
-      <PaymentTable status={2} header={"Unsuccessful Payments"} />
+      <PaymentTable status={3} header={"Undecided Payments"} />
     </div>
   );
 };
@@ -43,4 +43,4 @@ const mapStateToProps = (state) => ({
   sosUserDetails: state.sos.sosUserDetails,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UnsuccessfulPayments);
+export default connect(mapStateToProps, mapDispatchToProps)(UndecidedPayments);

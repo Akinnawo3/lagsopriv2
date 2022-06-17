@@ -45,7 +45,7 @@ export const getUserCount = (start_date = '', end_date = '') => async (dispatch)
 export const getUserExport = (user_type = '', driver_category = '', driver_account_status = '', start_date = '', end_date = '') => async (dispatch) => {
   dispatch(startStatusLoading());
   try {
-    const res = await axios.get(`${api.user}/v1.1/admin/users?component=export&user_type=${user_type}&driver_category=${driver_category}&driver_account_status=${driver_account_status}&start_date=${start_date}&end_date=${end_date}`);
+    const res = await axios.get(`${api.user}/v1.1/admin/users?component=export&user_type=${user_type}&driver_category=${driver_category}&account_status=${driver_account_status}&start_date=${start_date}&end_date=${end_date}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {

@@ -14,6 +14,7 @@ module.exports = {
   "sidebar.areas": "Areas",
 
   //new setup arrangement
+  "sidebar.idVerification": "Id Verification",
   "sidebar.fees": "Fees",
   "sidebar.revenueSplit": "Revenue Split",
   "sidebar.roles": "Roles",
@@ -37,6 +38,7 @@ module.exports = {
   "sidebar.active": "Active",
   "sidebar.admin": "Home",
   "sidebar.trips": "Trips",
+  "sidebar.notFound": "Driver not Found",
   "sidebar.inactive": "Inactive",
   "sidebar.drivers": "Drivers",
   "sidebar.partnerDrivers": "Partner Drivers",

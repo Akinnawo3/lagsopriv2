@@ -34,6 +34,7 @@ import notificationReducer from "./notificationReducer";
 import geoFenceReducer from "./geoFenceReducer";
 import oemReducer from "./oemReducer";
 import partnersReducer from "./partnersReducer";
+import serviceRequestReducer from "./serviceRequestReducer";
 
 const reducers = combineReducers({
   settings,
@@ -68,6 +69,7 @@ const reducers = combineReducers({
   geoFence: geoFenceReducer,
   oem: oemReducer,
   partners: partnersReducer,
+  serviceRequests: serviceRequestReducer,
 });
 
 export default reducers;

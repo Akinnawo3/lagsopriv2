@@ -14,16 +14,15 @@ import {getPayments, getPaymentsCount} from "Actions/paymentAction";
 import {Link} from "react-router-dom";
 
 const PaymentTripComponent = ({payments, status, paymentsCount, auth_id, getPayments, header, loading, getPaymentsCount}) => {
-
   const [currentPage, setCurrentPage] = useState(1);
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
-    getPayments(pageNumber, status, auth_id, false, 'driver_id');
+    getPayments(pageNumber, status, auth_id, false, "driver_id");
     window.scrollTo(0, 0);
   };
 
-    console.log(payments, "sssssopopopopopopopopopopopopop");
+  console.log(payments);
 
   // console.log(payments);
 
@@ -43,6 +42,7 @@ const PaymentTripComponent = ({payments, status, paymentsCount, auth_id, getPaym
                     <TableCell>Promo</TableCell>
                     <TableCell>Rider Name</TableCell>
                     <TableCell>Date / Time</TableCell>
+                    <TableCell>Charge Date</TableCell>
                     <TableCell>Charge Method</TableCell>
                     <TableCell>Payment Method</TableCell>
                     <TableCell>Status</TableCell>
@@ -60,6 +60,7 @@ const PaymentTripComponent = ({payments, status, paymentsCount, auth_id, getPaym
                         <TableCell>{item?.is_promo ? "True" : "False"}</TableCell>
                         <TableCell>{`${item?.first_name ? item?.first_name : ""} ${item?.last_name ? item?.last_name : ""}`}</TableCell>
                         <TableCell>{calculatePostDate(item.createdAt)}</TableCell>
+                        <TableCell>{calculatePostDate(item.updatedAt)}</TableCell>
                         <TableCell>{item.charge_method}</TableCell>
                         <TableCell>{item.payment_method}</TableCell>
                         <TableCell>
@@ -80,7 +81,7 @@ const PaymentTripComponent = ({payments, status, paymentsCount, auth_id, getPaym
               </Table>
             </div>
             <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
-              <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={paymentsCount} onChange={paginate} />
+              <Pagination activePage={currentPage} itemClass="page-item undo-folding" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={paymentsCount} onChange={paginate} />
             </div>
           </div>
         )}
@@ -94,7 +95,6 @@ function mapDispatchToProps(dispatch) {
   return {
     getPayments: (pageNo, transaction_status, auth_id, loading, userType) => dispatch(getPayments(pageNo, transaction_status, auth_id, loading, userType)),
     getPaymentsCount: (transaction_status, auth_id, userType) => dispatch(getPaymentsCount(transaction_status, auth_id, userType)),
-
   };
 }
 
