@@ -19,11 +19,17 @@
 @import "./custom/themes/themes";
 
 .item-active {
-   background-color: rgb(70, 74, 94) !important;
+  background-color: rgb(70, 74, 94) !important;
 }
 
 button {
-   cursor: pointer;
+  cursor: pointer;
+}
+
+.modals-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
 }
 
 // .page-item{

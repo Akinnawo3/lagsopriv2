@@ -70,7 +70,9 @@ const MaintenanceTable = ({match, getServiceRequests, getServiceRequestsCount, s
                         <TableCell className={`fw-bold text-${data?.covered_by_warranty ? "success" : "danger"}`}>{data?.covered_by_warranty ? "Yes" : "No"}</TableCell>
                         <TableCell>{data.driver_name}</TableCell>
                         <TableCell>{data.plate_number}</TableCell>
-                        <TableCell className={`fw-bold text-capitalize text-${data.urgency === "low" ? "warning" : data.urgency === "high" ? "danger" : "secondary"}`}>{data.urgency ? data.urgency : "N/A"}</TableCell>
+                        <TableCell className={`fw-bold text-capitalize text-${data.urgency === "low" ? "warning" : data.urgency === "high" ? "danger" : "secondary"}`}>
+                          {data.urgency ? data.urgency : "N/A"}
+                        </TableCell>
                         <TableCell>
                           <Badge color={getServiceRequestStatusColor(data?.status)} style={{minWidth: 80}}>
                             {data.status}
