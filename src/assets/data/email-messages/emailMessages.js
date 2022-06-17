@@ -29,7 +29,7 @@ export default {
   userDetailResetMsg: (name, detailType, update) => {
     return `Dear ${name}, your ${detailType} has been changed to ${update}`;
   },
-  approvedPartnerMessage: "Dear Partner, your details have been verified as a partner with LagosRide, you can go ahead to make payment for the cost of the asset. Kindly click on the link below to make payment.",
+  approvedPartnerMessage: `Dear Partner, you are verified to become a partner with LagosRide, you can go ahead to make payment for the cost of the asset. Kindly click on the link to access the dashboard and make payment. <a href="https://partners.lagosride.com">https://partners.lagosride.com</a>`,
 
   // "You have been suspended from LagosRide for the following reasons;\n" +
   // "\n" +

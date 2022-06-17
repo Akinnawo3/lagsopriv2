@@ -9,6 +9,7 @@ import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 import {sendDriverMessage} from "./driverAction";
 import {sendVehicleUnassignMessage} from "Actions/vehicleAction";
+import emailMessages from "Assets/data/email-messages/emailMessages";
 
 export const getPartners =
   (page_no = 1, spinner, start_date = "", end_date = "", status = '') =>
@@ -139,6 +140,7 @@ export const assignVehicleToPartner = (vehicle_id, auth_id, setAddVehicleModal) 
 };
 
 export const changePartnerStatus = (auth_id, partner_status, partnerData, message_type, subject) => async (dispatch) => {
+  // partnerDetails?.auth_id, "4", partnerDetails, emailMessages.approvedPartnerMessage, "Partner Approved"
   const body = {component: "partner_status", auth_id, partner_status};
   try {
     dispatch(startStatusLoading());
