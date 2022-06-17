@@ -8,9 +8,17 @@ import {Link} from "react-router-dom";
 import {Badge, ModalHeader, Modal, ModalBody, Form, FormGroup, Label, Input, ModalFooter, Button, Card, CardTitle, CardBody} from "reactstrap";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import {getServiceRequest} from "../../actions/serviceRequestAction";
+import {fullDateTime} from "../../helpers/helpers";
 
-const MaintenanceDetails = ({match, loading, serviceRequest, getServiceRequest}) => {
+const MaintenanceDetails = ({match, loading, serviceRequest, getServiceRequest, maintenanceHistory}) => {
   const inputEl = useRef(null);
+  const [imageModal, setImageModal] = useState(null);
+  const [imageSrc, setImageSrc] = useState("");
+
+  const showImages = (images) => {
+    setImageSrc(images);
+    setImageModal(true);
+  };
 
   useEffect(() => {
     if (match.params.id) {
@@ -39,12 +47,165 @@ const MaintenanceDetails = ({match, loading, serviceRequest, getServiceRequest})
                 </small>
               </div>
               <div className="modals-grid col col-md-7">
-                
+                <div className="">
+                  <small>Request Type</small>
+                  <div className="capitlize">{viewedDetail?.service_type}</div>
+                </div>
+                {viewedDetail?.image && (
+                  <div className="">
+                    <small>Image where applicable</small>
+                    <div style={{color: "#5D92F4"}}>
+                      <u onClick={() => showImages(viewedDetail?.image)}>view image</u>
+                    </div>
+                  </div>
+                )}
+                {viewedDetail?.description && (
+                  <div className="">
+                    <small>Description</small>
+                    <div>{viewedDetail?.description}</div>
+                  </div>
+                )}
+                {viewedDetail?.measures && (
+                  <div className="">
+                    <small>Measures taken</small>
+                    <div>{viewedDetail?.measures}</div>
+                  </div>
+                )}
+                <div className="">
+                  <small>Service center assigned to</small>
+                  <div className="capitlize"> {viewedDetail?.service_center_name}</div>
+                </div>
+                <div className="">
+                  <small>Driver name</small>
+                  <div>{viewedDetail?.driver_name}</div>
+                </div>
+                {viewedDetail?.service_type !== "maintenance" && (
+                  <div className="">
+                    <small>Urgency</small>
+                    <div className={`${viewedDetail?.urgency === "high" ? "text-danger" : "text-warning"} capitlize fw-bold `}>{viewedDetail?.urgency}</div>
+                  </div>
+                )}
+                <div className="">
+                  <small>Vehice Model</small>
+                  <div className="capitlize">{viewedDetail?.vehicle_model}</div>
+                </div>
+                <div className="">
+                  <small>Time of request</small>
+                  <div>{fullDateTime(viewedDetail?.createdAt).fullDateTime}</div>
+                </div>
+                {viewedDetail?.status === "rejected" && (
+                  <div className="">
+                    <small>Rejection reason</small>
+                    <div className="text-danger">{viewedDetail?.reason}</div>
+                  </div>
+                )}
+                {viewedDetail?.status === "accepted" && (
+                  <div className="">
+                    <small>Service center availability time</small>
+                    <div className="">{fullDateTime(viewedDetail?.availabily_date).fullDateTime}</div>
+                  </div>
+                )}
+
+                <div className="">
+                  <small>Covered by warranty</small>
+                  <div className={`${viewedDetail?.covered_by_warranty ? "Text-primary" : "text-danger"} fw-bold`}>{viewedDetail?.covered_by_warranty ? "Yes" : "No"}</div>
+                </div>
+                <div className="">
+                  <small>Plate number</small>
+                  <div>{viewedDetail?.plate_number}</div>
+                </div>
+                {!maintenanceHistory && (
+                  <div className="">
+                    <small>Vehice maintenance and Repairs history</small>
+                    <div style={{color: "#5D92F4"}}>
+                      <Link to={`/maintenance-history/${viewedDetail?.vehicle_id}`} style={{textDecoration: "none"}}>
+                        <u>view maintenance history</u>
+                      </Link>
+                    </div>
+                  </div>
+                )}
               </div>
+              {viewedDetail?.status === "completed" && (
+                <>
+                  <div className="mt-4">
+                    <small className="text-primary">DIAGNOSTIC INFORMATION</small>{" "}
+                  </div>
+                  <small className="mt-4 text-muted">Diagnostic activity carried out </small>
+                  <div className="mt-0">{viewedDetail?.diagnostics_data?.diagnostics_act}</div>
+                  <small className="mt-4">Specific activity carried out </small>
+                  <div className="mt-0">{viewedDetail?.diagnostics_data?.specific_act}</div>
+                  <small className="mt-4">Recommendation </small>
+                  <div className="mt-0">{viewedDetail?.diagnostics_data?.recommendation}</div>
+                  <div className="mt-4">
+                    <div className="modals-grid col col-md-7">
+                      <div className="">
+                        <small>Start time</small>
+                        <div className="capitlize">{fullDateTime(viewedDetail?.start_time).fullDateTime}</div>
+                      </div>
+                      <div className="">
+                        <small>Discharge time</small>
+                        <div className="capitlize">{fullDateTime(viewedDetail?.completion_time).fullDateTime}</div>
+                      </div>
+                      {viewedDetail?.diagnostics_data?.before_images.length > 0 && (
+                        <div className="">
+                          <small>Before images</small>
+                          <div className="py-2 px-3 rounded d-flex justify-content-between" style={{backgroundColor: "#F5F5F5"}}>
+                            <small>Image file</small>
+                            <div className="text-teal">
+                              <u className="cursor-pointer" onClick={() => showImages(viewedDetail?.diagnostics_data?.before_images)} style={{color: "#5D92F4"}}>
+                                View
+                              </u>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      {viewedDetail?.diagnostics_data?.after_images.length > 0 && (
+                        <div className="">
+                          <small>After images</small>
+                          <div className="py-2 px-3 rounded d-flex justify-content-between" style={{backgroundColor: "#F5F5F5"}}>
+                            <small>image file</small>
+                            <div className="text-teal">
+                              <u className="cursor-pointer" onClick={() => showImages(viewedDetail?.diagnostics_data?.after_images)} style={{color: "#5D92F4"}}>
+                                View
+                              </u>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      <div className="">
+                        <small>Rep name</small>
+                        <div className="capitlize">{viewedDetail?.diagnostics_data?.name}</div>
+                      </div>
+                      {viewedDetail?.diagnostics_data?.signature && (
+                        <div className="">
+                          <small>Rep signature</small>
+                          <div className="py-2 px-3 rounded d-flex justify-content-between" style={{backgroundColor: "#F5F5F5"}}>
+                            <small>image file</small>
+                            <div className="text-teal">
+                              <u onClick={() => showImages(viewedDetail?.diagnostics_data?.signature)} style={{color: "#5D92F4"}}>
+                                View
+                              </u>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </CardBody>
         </Card>
       )}
+      {/* image modal */}
+      <Modal isOpen={imageModal} toggle={() => setImageModal(false)} size="md" scrollable>
+        {/* <ModalHeader toggle={() => setImageModal(false)}>
+          <div className="">
+            <div>view image</div>
+          </div>
+        </ModalHeader> */}
+        <ModalBody className="text-center">{imageSrc !== "" && <img src={imageSrc} style={{maxWidth: "100%"}} />}</ModalBody>
+      </Modal>
     </div>
   );
 };
