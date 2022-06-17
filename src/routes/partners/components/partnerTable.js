@@ -51,10 +51,11 @@ const PartnerTable = ({
     phone_number: '',
     email: '',
     account_type: 'individual',
-    user_type: 'partner'
+    user_type: 'partner',
+    account_class: '',
   })
 
-  const {last_name, first_name, account_type, email, password, phone_number, user_type} = formData
+  const {last_name, first_name, account_type, email, password, phone_number, user_type, account_class} = formData
 
   const data =
       {
@@ -63,7 +64,8 @@ const PartnerTable = ({
         account_type,
         email,
         phone_number,
-        user_type
+        user_type,
+        account_class
       }
 
 
@@ -100,7 +102,8 @@ const PartnerTable = ({
       email: '',
       password: '',
       account_type: 'individual',
-      user_type: 'partner'
+      user_type: 'partner',
+      account_class: ''
     });
     setOrg_name('')
   }
@@ -204,6 +207,14 @@ const PartnerTable = ({
               <Input type="select" value={account_type} onChange={onChange} name='account_type' required>
                 <option value="individual">Individual</option>
                 <option value="organization">Organisation</option>
+              </Input>
+            </FormGroup>
+            <FormGroup>
+              <Label>Register as an</Label>
+              <Input type="select" value={account_class} onChange={onChange} name='account_class' required>
+                <option value="">Select Account class</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
               </Input>
             </FormGroup>
             {account_type === 'organization' &&
