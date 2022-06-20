@@ -10,7 +10,7 @@ import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/Delete
 import {getServiceRequest} from "../../actions/serviceRequestAction";
 import {fullDateTime} from "../../helpers/helpers";
 
-const MaintenanceDetails = ({match, loading, serviceRequest, getServiceRequest, maintenanceHistory}) => {
+const MaintenanceDetails = ({match, location, loading, serviceRequest, getServiceRequest, maintenanceHistory}) => {
   const inputEl = useRef(null);
   const [imageModal, setImageModal] = useState(null);
   const [imageSrc, setImageSrc] = useState("");
@@ -27,6 +27,8 @@ const MaintenanceDetails = ({match, loading, serviceRequest, getServiceRequest, 
   }, [match.params.id]);
 
   const viewedDetail = serviceRequest;
+
+  const maintenanceHistory = location?.state?.maintenanceHistory;
 
   return (
     <div style={{minHeight: "90vh"}}>
