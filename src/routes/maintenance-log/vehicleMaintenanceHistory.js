@@ -20,6 +20,8 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 const qs = require("qs");
 
 const VehicleMaintenanceHistory = ({match, getServiceRequests, getServiceRequestsCount, serviceRequests, serviceRequestsCount, loading}) => {
+  const [serviceType, setServiceType] = useState("");
+
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -27,12 +29,13 @@ const VehicleMaintenanceHistory = ({match, getServiceRequests, getServiceRequest
   });
 
   useEffect(() => {
-    if (pageFromQuery === undefined || serviceRequests.length < 1) {
-      getServiceRequests(currentPage, true, "", "completed", serviceType);
-
-      getServiceRequestsCount("", "completed", serviceType);
+    if (match.params.id) {
+      if (pageFromQuery === undefined || serviceRequests.length < 1) {
+        getServiceRequests(currentPage, true, "", "completed", serviceType, match.params.id);
+        getServiceRequestsCount("", "completed", serviceType, match.params.id);
+      }
     }
-  }, []);
+  }, [currentPage]);
 
   const paginate = (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
@@ -116,8 +119,8 @@ const VehicleMaintenanceHistory = ({match, getServiceRequests, getServiceRequest
 
 function mapDispatchToProps(dispatch) {
   return {
-    getServiceRequests: (page_no, spinner, oem_id, status, service_type) => dispatch(getServiceRequests(page_no, spinner, oem_id, status, service_type)),
-    getServiceRequestsCount: (oem_id, status, service_type) => dispatch(getServiceRequestsCount(oem_id, status, service_type)),
+    getServiceRequests: (page_no, spinner, oem_id, status, service_type, vehicle_id) => dispatch(getServiceRequests(page_no, spinner, oem_id, status, service_type, vehicle_id)),
+    getServiceRequestsCount: (oem_id, status, service_type, vehicle_id) => dispatch(getServiceRequestsCount(oem_id, status, service_type, vehicle_id)),
   };
 }
 
