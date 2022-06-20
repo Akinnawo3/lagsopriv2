@@ -392,3 +392,18 @@ export const fullDateTime = (timeStamp) => {
     fullDateTime,
   };
 };
+
+export const serviceRequestType = [
+  {name: "Maintenance", value: "maintenance"},
+  {name: "Repair", value: "repair"},
+  {name: "Servicing", value: "servicing"},
+  {name: "Defect", value: "defect"},
+];
+
+export const serviceRequestStatuses = [
+  {name: "Pending", value: "pending"},
+  {name: "Accepted", value: "accepted"},
+  {name: "Ongoing", value: "ongoing"},
+  {name: "Completed", value: "completed"},
+  {name: "Rejected", value: "rejected"},
+];
