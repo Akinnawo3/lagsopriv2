@@ -43,7 +43,7 @@ const MaintenanceDetails = ({match, location, loading, serviceRequest, getServic
           <CardBody>
             <div>
               <div className="d-flex justify-content-between mb-4">
-                <div className="fw-bold"> Service Request Detail</div>
+                <div className="fw-bold"> Service Request Details</div>
                 <small className="px-3 py-1 rounded capitlize" style={{backgroundColor: "#FCF4E8", color: "#E5870D"}}>
                   {viewedDetail?.status}
                 </small>

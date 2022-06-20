@@ -35,12 +35,12 @@ const VehicleMaintenanceHistory = ({match, getServiceRequests, getServiceRequest
         getServiceRequestsCount("", "completed", serviceType, match.params.id);
       }
     }
-  }, [currentPage]);
+  }, [currentPage, serviceType]);
 
   const paginate = (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
+    getServiceRequests(currentPage, true, "", "completed", serviceType, match.params.id);
     setCurrentPage(pageNumber);
-    // getOems(pageNumber);
     window.scrollTo(0, 0);
   };
 

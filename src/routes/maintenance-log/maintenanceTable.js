@@ -24,11 +24,13 @@ const MaintenanceTable = ({match, getServiceRequests, getServiceRequestsCount, s
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
+  const [serviceType, setServiceType] = useState("");
+  const [status, setStatus] = useState("");
 
   useEffect(() => {
     if (pageFromQuery === undefined || serviceRequests.length < 1) {
-      getServiceRequests(currentPage, true);
-      getServiceRequestsCount();
+      getServiceRequests(currentPage, true, "", status, serviceType);
+      getServiceRequestsCount("", status, serviceType);
     }
   }, []);
 
@@ -111,8 +113,8 @@ const MaintenanceTable = ({match, getServiceRequests, getServiceRequestsCount, s
 
 function mapDispatchToProps(dispatch) {
   return {
-    getServiceRequests: (page_no, spinner, oem_id, status, service_type) => dispatch(getServiceRequests(page_no, spinner, oem_id, status, service_type)),
-    getServiceRequestsCount: (oem_id, status, service_type) => dispatch(getServiceRequestsCount(oem_id, status, service_type)),
+    getServiceRequests: (page_no, spinner, oem_id, status, service_type, vehicle_id) => dispatch(getServiceRequests(page_no, spinner, oem_id, status, service_type, vehicle_id)),
+    getServiceRequestsCount: (oem_id, status, service_type, vehicle_id) => dispatch(getServiceRequestsCount(oem_id, status, service_type, vehicle_id)),
   };
 }
 
