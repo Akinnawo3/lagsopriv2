@@ -28,8 +28,9 @@ const VehicleMaintenanceHistory = ({match, getServiceRequests, getServiceRequest
 
   useEffect(() => {
     if (pageFromQuery === undefined || serviceRequests.length < 1) {
-      getServiceRequests(currentPage, true);
-      getServiceRequestsCount();
+      getServiceRequests(currentPage, true, "", "completed", serviceType);
+
+      getServiceRequestsCount("", "completed", serviceType);
     }
   }, []);
 

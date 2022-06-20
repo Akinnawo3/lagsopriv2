@@ -11,9 +11,9 @@ import {AsyncMaintenanceLog, AsyncMaintenanceDetails, AsyncVehicleMaintenanceHis
 const MaintenanceLog = ({match}) => (
   <div className="content-wrapper">
     <Switch>
-      <Route path={`/admin/maintenance/history`} component={AsyncVehicleMaintenanceHistory} />
+      <Route path={`/admin/maintenance/history/:id`} component={AsyncVehicleMaintenanceHistory} />
       <Route path={`/admin/maintenance/:id`} component={AsyncMaintenanceDetails} />
-      <Route path={`/admin/maintenance`} component={AsyncVehicleMaintenanceHistory} />
+      <Route exact path={`/admin/maintenance`} component={AsyncMaintenanceLog} />
     </Switch>
   </div>
 );
