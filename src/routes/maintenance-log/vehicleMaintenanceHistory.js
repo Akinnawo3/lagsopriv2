@@ -16,6 +16,7 @@ import Pagination from "react-js-pagination";
 import {Badge} from "reactstrap";
 import {calculatePostDate, getServiceRequestStatusColor} from "Helpers/helpers";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import {serviceRequestStatuses, serviceRequestType} from "../../helpers/helpers";
 
 const qs = require("qs");
 
@@ -35,7 +36,7 @@ const VehicleMaintenanceHistory = ({match, getServiceRequests, getServiceRequest
         getServiceRequestsCount("", "completed", serviceType, match.params.id);
       }
     }
-  }, [currentPage, serviceType]);
+  }, [serviceType]);
 
   const paginate = (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
@@ -44,30 +45,38 @@ const VehicleMaintenanceHistory = ({match, getServiceRequests, getServiceRequest
     window.scrollTo(0, 0);
   };
 
-  console.log(serviceRequests);
-  console.log(serviceRequestsCount);
-
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Maintenance History"} match={match} />
+
       <div>
-        {!loading && serviceRequests?.length > 0 && (
-          <RctCollapsibleCard heading="Maintenance History" fullBlock style={{minHeight: "70vh"}}>
-            <div className="table-responsive" style={{minHeight: "50vh"}}>
-              <Table>
-                <TableHead>
-                  <TableRow hover>
-                    <TableCell>Type</TableCell>
-                    <TableCell>Time</TableCell>
-                    <TableCell>Covered by warranty</TableCell>
-                    <TableCell>Driver name</TableCell>
-                    <TableCell>plate number </TableCell>
-                    <TableCell>Urgency </TableCell>
-                    <TableCell>status </TableCell>
-                    <TableCell>Action</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
+        <RctCollapsibleCard heading="Maintenance History" fullBlock style={{minHeight: "70vh"}}>
+          <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
+            <select type="select" className="p-1 px-4" value={serviceType} onChange={(e) => setServiceType(e.target.value)}>
+              <option value="">Request type </option>
+              {serviceRequestType.map((item) => (
+                <option value={item.value} key={item.value}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+          </li>
+          <div className="table-responsive" style={{minHeight: "50vh"}}>
+            <Table>
+              <TableHead>
+                <TableRow hover>
+                  <TableCell>Type</TableCell>
+                  <TableCell>Time</TableCell>
+                  <TableCell>Covered by warranty</TableCell>
+                  <TableCell>Driver name</TableCell>
+                  <TableCell>plate number </TableCell>
+                  <TableCell>Urgency </TableCell>
+                  <TableCell>Status</TableCell>
+                  <TableCell>Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {!loading && (
                   <Fragment>
                     {serviceRequests.length > 0 &&
                       serviceRequests.map((data) => (
@@ -103,14 +112,14 @@ const VehicleMaintenanceHistory = ({match, getServiceRequests, getServiceRequest
                         </TableRow>
                       ))}
                   </Fragment>
-                </TableBody>
-              </Table>
-            </div>
-            <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
-              <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={serviceRequestsCount} onChange={paginate} />
-            </div>
-          </RctCollapsibleCard>
-        )}
+                )}
+              </TableBody>
+            </Table>
+          </div>
+          <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
+            <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={serviceRequestsCount} onChange={paginate} />
+          </div>
+        </RctCollapsibleCard>
         {serviceRequests.length < 1 && <EmptyData />}
       </div>
     </div>

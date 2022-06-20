@@ -13,8 +13,9 @@ import {connect} from "react-redux";
 import {getServiceRequests, getServiceRequestsCount} from "Actions/serviceRequestAction";
 import EmptyData from "Components/EmptyData/EmptyData";
 import Pagination from "react-js-pagination";
-import {Badge} from "reactstrap";
+import {Badge, Button} from "reactstrap";
 import {calculatePostDate, getServiceRequestStatusColor} from "Helpers/helpers";
+import {serviceRequestStatuses, serviceRequestType} from "../../helpers/helpers";
 
 const qs = require("qs");
 
@@ -29,7 +30,7 @@ const MaintenanceTable = ({match, getServiceRequests, getServiceRequestsCount, s
 
   useEffect(() => {
     if (pageFromQuery === undefined || serviceRequests.length < 1) {
-      getServiceRequests(currentPage, true, "", status, serviceType);
+      getServiceRequests(currentPage, false, "", status, serviceType);
       getServiceRequestsCount("", status, serviceType);
     }
   }, []);
@@ -40,73 +41,101 @@ const MaintenanceTable = ({match, getServiceRequests, getServiceRequestsCount, s
     // getOems(pageNumber);
     window.scrollTo(0, 0);
   };
-
-  console.log(serviceRequests);
-  console.log(serviceRequestsCount);
+  const handleFilter = () => {
+    getServiceRequests(currentPage, false, "", status, serviceType);
+    getServiceRequestsCount("", status, serviceType);
+  };
 
   return (
     <div>
-      {!loading && serviceRequests?.length > 0 && (
-        <RctCollapsibleCard heading="Service Requests" fullBlock style={{minHeight: "70vh"}}>
-          <div className="table-responsive" style={{minHeight: "50vh"}}>
-            <Table>
-              <TableHead>
-                <TableRow hover>
-                  <TableCell>Type</TableCell>
-                  <TableCell>Time</TableCell>
-                  <TableCell>Covered by warranty</TableCell>
-                  <TableCell>Driver name</TableCell>
-                  <TableCell>plate number </TableCell>
-                  <TableCell>Urgency </TableCell>
-                  <TableCell>status </TableCell>
-                  <TableCell>Action</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <Fragment>
-                  {serviceRequests.length > 0 &&
-                    serviceRequests.map((data) => (
-                      <TableRow hover key={data._id}>
-                        <TableCell className="text-capitalize">{data?.service_type}</TableCell>
-                        <TableCell>{calculatePostDate(data?.createdAt)}</TableCell>
-                        <TableCell className={`fw-bold text-${data?.covered_by_warranty ? "success" : "danger"}`}>{data?.covered_by_warranty ? "Yes" : "No"}</TableCell>
-                        <TableCell>{data.driver_name}</TableCell>
-                        <TableCell>{data.plate_number}</TableCell>
-                        <TableCell className={`fw-bold text-capitalize text-${data.urgency === "low" ? "warning" : data.urgency === "high" ? "danger" : "secondary"}`}>
-                          {data.urgency ? data.urgency : "N/A"}
-                        </TableCell>
-                        <TableCell>
-                          <Badge color={getServiceRequestStatusColor(data?.status)} style={{minWidth: 80}}>
-                            {data.status}
-                          </Badge>
-                        </TableCell>
+      <RctCollapsibleCard heading="Service Requests" fullBlock style={{minHeight: "70vh"}}>
+        <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
+          <select type="select" className="p-1 px-4" value={serviceType} onChange={(e) => setServiceType(e.target.value)}>
+            <option value="">Request type </option>
+            {serviceRequestType.map((item) => (
+              <option value={item.value} key={item.value}>
+                {item.name}
+              </option>
+            ))}
+          </select>
+        </li>
 
-                        {/* 
+        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+          <select type="select" className="p-1 px-4" onChange={(e) => setStatus(e.target.value)} value={status}>
+            <option value="">Status</option>
+            {serviceRequestStatuses.map((item) => (
+              <option value={item.value} key={item.value}>
+                {item.name}
+              </option>
+            ))}
+          </select>
+        </li>
+
+        <Button onClick={() => handleFilter()} style={{height: "30px"}} className="align-items-center text-light justify-content-center" color="success">
+          Apply filter
+        </Button>
+        {serviceRequests.length > 0 && (
+          <>
+            <div className="table-responsive" style={{minHeight: "50vh"}}>
+              <Table>
+                <TableHead>
+                  <TableRow hover>
+                    <TableCell> Type</TableCell>
+                    <TableCell>Time</TableCell>
+                    <TableCell>Covered by warranty</TableCell>
+                    <TableCell>Driver name</TableCell>
+                    <TableCell>plate number </TableCell>
+                    <TableCell>Urgency </TableCell>
+                    <TableCell>Status</TableCell>
+                    <TableCell>Action</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <Fragment>
+                    {serviceRequests.length > 0 &&
+                      serviceRequests.map((data) => (
+                        <TableRow hover key={data._id}>
+                          <TableCell className="text-capitalize">{data?.service_type}</TableCell>
+                          <TableCell>{calculatePostDate(data?.createdAt)}</TableCell>
+                          <TableCell className={`fw-bold text-${data?.covered_by_warranty ? "success" : "danger"}`}>{data?.covered_by_warranty ? "Yes" : "No"}</TableCell>
+                          <TableCell>{data.driver_name}</TableCell>
+                          <TableCell>{data.plate_number}</TableCell>
+                          <TableCell className={`fw-bold text-capitalize text-${data.urgency === "low" ? "warning" : data.urgency === "high" ? "danger" : "secondary"}`}>
+                            {data.urgency ? data.urgency : "N/A"}
+                          </TableCell>
+                          <TableCell>
+                            <Badge color={getServiceRequestStatusColor(data?.status)} style={{minWidth: 80}}>
+                              {data.status}
+                            </Badge>
+                          </TableCell>
+
+                          {/* 
                           <TableCell>{data.latitude}</TableCell>
                           <TableCell>{data.longitude}</TableCell>
                           <TableCell>{"Time of Report"}</TableCell>
                           <TableCell>
                             <Badge color={data.status === 0 ? "danger" : "success"}>{data.status === 0 ? "Unresolved" : "Resolved"}</Badge>
                           </TableCell> */}
-                        <TableCell>
-                          <button type="button" className="rct-link-btn text-primary" title="view details">
-                            <Link to={`/admin/maintenance/${data?._id}`}>
-                              <i className="ti-eye" />
-                            </Link>
-                          </button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </Fragment>
-              </TableBody>
-            </Table>
-          </div>
-          <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
-            <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={serviceRequestsCount} onChange={paginate} />
-          </div>
-        </RctCollapsibleCard>
-      )}
-      {serviceRequests.length < 1 && <EmptyData />}
+                          <TableCell>
+                            <button type="button" className="rct-link-btn text-primary" title="view details">
+                              <Link to={`/admin/maintenance/${data?._id}`}>
+                                <i className="ti-eye" />
+                              </Link>
+                            </button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </Fragment>
+                </TableBody>
+              </Table>
+            </div>
+            <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
+              <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={serviceRequestsCount} onChange={paginate} />
+            </div>
+          </>
+        )}
+        {serviceRequests.length < 1 && <EmptyData />}
+      </RctCollapsibleCard>
     </div>
   );
 };
