@@ -45,7 +45,7 @@ const VehicleMaintenanceHistory = ({match, getServiceRequests, getServiceRequest
 
   return (
     <div className="table-wrapper">
-      <PageTitleBar title={"Service Requests"} match={match} />
+      <PageTitleBar title={"Maintenance History"} match={match} />
       <div>
         {!loading && serviceRequests?.length > 0 && (
           <RctCollapsibleCard heading="Maintenance History" fullBlock style={{minHeight: "70vh"}}>
@@ -91,7 +91,7 @@ const VehicleMaintenanceHistory = ({match, getServiceRequests, getServiceRequest
                            </TableCell> */}
                           <TableCell>
                             <button type="button" className="rct-link-btn text-primary" title="view details">
-                              <Link to={`/admin/maintenance/${data?._id}`}>
+                              <Link to={{pathname: `/admin/maintenance/${data?._id}`, state: {maintenanceHistory: true}}}>
                                 <i className="ti-eye" />
                               </Link>
                             </button>
