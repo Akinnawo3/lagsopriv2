@@ -36,7 +36,8 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
   const paginate = (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
-    getDrivers(status, pageNumber, 1, appStatus);
+    getDrivers(status, pageNumber, false, appStatus, paymentStatus, driverCategory, startDate, endDate);
+    // getDrivers(status, pageNumber, 1, appStatus);
     window.scrollTo(0, 0);
   };
   const getPreviousData = () => {
@@ -83,7 +84,7 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
   ];
 
   const partnershipStatus = [
-    {value: "", label: "- - Filter by App Status - -"},
+    {value: "", label: "- - Filter by Partnership Status - -"},
     {value: 0, label: "Not Interested"},
     {value: 1, label: "Interested"},
     {value: 2, label: "In partnership"},
@@ -274,10 +275,11 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
 
 function mapDispatchToProps(dispatch) {
   return {
-    getDrivers: (status, page_no, spinner, driver_online_status, asset_payment, driver_category, start_date, end_date) =>
-      dispatch(getDrivers(status, page_no, spinner, driver_online_status, asset_payment, driver_category, start_date, end_date)),
+    getDrivers: (status, page_no, spinner, driver_online_status, asset_payment, driver_category, start_date, end_date, partnershipStatus) =>
+      dispatch(getDrivers(status, page_no, spinner, driver_online_status, asset_payment, driver_category, start_date, end_date, partnershipStatus)),
     searchDrivers: (searchData, status) => dispatch(searchDrivers(searchData, status)),
-    getDriversCount: (status, start_date, end_date) => dispatch(getDriversCount(status, start_date, end_date)),
+    getDriversCount: (status, start_date, end_date, driver_online_status, asset_payment, driver_category, partnershipStatus) =>
+      dispatch(getDriversCount(status, start_date, end_date, driver_online_status, asset_payment, driver_category, partnershipStatus)),
     getUserExport: (user_type, driver_category, driver_account_status, start_date, end_date) => dispatch(getUserExport(user_type, driver_category, driver_account_status, start_date, end_date)),
   };
 }
