@@ -28,10 +28,10 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
   const [appStatus, setAppStatus] = useState("");
   const [paymentStatus, setPaymentStatus] = useState("");
   const [driverCategory, setDriverCategory] = useState("");
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [partnership, setPartnership] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const exportRef = useRef(null);
-
 
   const paginate = (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
@@ -51,17 +51,18 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
   const handleChange = (e) => {
     setCurrentPage(1);
     setAppStatus(e.target.value);
-    getDrivers(status, currentPage, 1, e.target.value, paymentStatus);
   };
   const handlePaymentChange = (e) => {
     setCurrentPage(1);
     setPaymentStatus(e.target.value);
-    getDrivers(status, currentPage, 1, appStatus, e.target.value);
   };
   const handleCategoryChange = (e) => {
     setCurrentPage(1);
     setDriverCategory(e.target.value);
-    getDrivers(status, currentPage, 1, appStatus, paymentStatus, e.target.value);
+  };
+  const handlePartnerhipChange = (e) => {
+    setCurrentPage(1);
+    setPartnership(e.target.value);
   };
 
   const driverCategoryOptions = [
@@ -81,21 +82,26 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
     {value: 0, label: "Offline"},
   ];
 
+  const partnershipStatus = [
+    {value: "", label: "- - Filter by App Status - -"},
+    {value: 0, label: "Not Interested"},
+    {value: 1, label: "Interested"},
+    {value: 2, label: "In partnership"},
+  ];
+
   const handleExport = () => {
     exportRef.current.open();
   };
 
   const confirmExport = () => {
     exportRef.current.close();
-    getUserExport('driver', driverCategory, status, startDate, endDate)
-  }
+    getUserExport("driver", driverCategory, status, startDate, endDate);
+  };
 
   const handleFilter = () => {
-    getDrivers(status, 1, false, appStatus, '', driverCategory, startDate, endDate);
-    getDriversCount(status, startDate, endDate)
-  }
-
-
+    getDrivers(status, 1, false, appStatus, paymentStatus, driverCategory, startDate, endDate);
+    getDriversCount(status, startDate, endDate);
+  };
 
   return (
     <div>
@@ -103,9 +109,16 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
           <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} />
         </li>
-        <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
+        {/* <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
           <select id="filter-dropdown" name="fiter-dropdown" onChange={handleCategoryChange} className="p-1 px-4">
             {driverCategoryOptions.map((item) => (
+              <option value={item.value}>{item.label}</option>
+            ))}
+          </select>
+        </li> */}
+        <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
+          <select id="filter-dropdown" name="fiter-dropdown" onChange={handlePartnerhipChange} className="p-1 px-4">
+            {partnershipStatus.map((item) => (
               <option value={item.value}>{item.label}</option>
             ))}
           </select>
@@ -131,21 +144,42 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
         {/*<div>*/}
         <li className="list-inline-item search-icon d-inline-block mb-2">
           <small className="fw-bold mr-2">From</small>
-          <input type="date" id="start" name="trip-start" defaultValue={startDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => {
-            setStartDate(e.target.value)
-          }} />
+          <input
+            type="date"
+            id="start"
+            name="trip-start"
+            defaultValue={startDate}
+            min="2018-01-01"
+            max={getTodayDate()}
+            onChange={(e) => {
+              setStartDate(e.target.value);
+            }}
+          />
         </li>
         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
           <small className="fw-bold mr-2">To</small>
-          <input type="date" id="start" name="trip-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => {
-            setEndDate(e.target.value)
-          }} />
+          <input
+            type="date"
+            id="start"
+            name="trip-start"
+            defaultValue={endDate}
+            min="2018-01-01"
+            max={getTodayDate()}
+            onChange={(e) => {
+              setEndDate(e.target.value);
+            }}
+          />
         </li>
-        <Button onClick={() => handleFilter()} style={{height: '30px'}} className='align-items-center justify-content-center' color='success'>Apply filter</Button>
+        <Button onClick={() => handleFilter()} style={{height: "30px"}} className="align-items-center justify-content-center" color="success">
+          Apply filter
+        </Button>
         {/*</div>*/}
         <div className="float-right">
           {!isLoading && drivers.length > 0 && (
-              <Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center mr-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>  Export to Excel</Button>
+            <Button onClick={() => handleExport()} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
+              {" "}
+              <i className="zmdi zmdi-download mr-2"></i> Export to Excel
+            </Button>
           )}
         </div>
         {!isLoading && drivers.length > 0 && (
@@ -156,11 +190,13 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
                   <TableRow hover>
                     <TableCell>First Name</TableCell>
                     <TableCell>Last Name</TableCell>
-                    <TableCell>Date / Time of Registration</TableCell>
+                    <TableCell>Registered</TableCell>
+
                     {status != 4 && <TableCell>Status</TableCell>}
                     {status === 3 && <TableCell>Vehicle Assigned</TableCell>}
                     {status === 2 && <TableCell>One-off Payment Status</TableCell>}
                     <TableCell> Driver Category</TableCell>
+                    <TableCell> Partnership Status</TableCell>
                     <TableCell>App Status</TableCell>
                     <TableCell>Action</TableCell>
                   </TableRow>
@@ -188,6 +224,27 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
                           <span className={`fw-bold ${driver.driver_data.driver_category === "commercial" ? "text-primary" : "text-danger"}`}>{driver.driver_data.driver_category}</span>
                         </TableCell>
                         <TableCell>
+                          <span
+                            className={`fw-bold ${
+                              driver.driver_data.partnership_status === 0
+                                ? "text-success"
+                                : driver.driver_data.partnership_status === 1
+                                ? "text-danger"
+                                : driver.driver_data.partnership_status === 2
+                                ? "text-info"
+                                : "text-secondary"
+                            }`}
+                          >
+                            {driver.driver_data.partnership_status === 0
+                              ? "Not Interested"
+                              : driver.driver_data.partnership_status === 1
+                              ? "Interested"
+                              : driver.driver_data.partnership_status === 2
+                              ? "In partnership"
+                              : "N/A"}
+                          </span>
+                        </TableCell>
+                        <TableCell>
                           <Badge color={driver.driver_data.online ? "success" : "danger"}>{driver.driver_data.online ? "Online" : "Offline"}</Badge>
                         </TableCell>
                         <TableCell>
@@ -210,7 +267,7 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
         )}
         {drivers.length === 0 && !isLoading && <EmptyData />}
       </RctCollapsibleCard>
-      <DeleteConfirmationDialog ref={exportRef} title={'Are you sure you want to Export File?'} message={'This will send the excel file to your email'} onConfirm={confirmExport} />
+      <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
     </div>
   );
 };
@@ -222,7 +279,6 @@ function mapDispatchToProps(dispatch) {
     searchDrivers: (searchData, status) => dispatch(searchDrivers(searchData, status)),
     getDriversCount: (status, start_date, end_date) => dispatch(getDriversCount(status, start_date, end_date)),
     getUserExport: (user_type, driver_category, driver_account_status, start_date, end_date) => dispatch(getUserExport(user_type, driver_category, driver_account_status, start_date, end_date)),
-
   };
 }
 
