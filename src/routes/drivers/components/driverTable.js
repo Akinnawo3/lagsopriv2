@@ -100,8 +100,8 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
   };
 
   const handleFilter = () => {
-    getDrivers(status, 1, false, appStatus, paymentStatus, driverCategory, startDate, endDate);
-    getDriversCount(status, startDate, endDate);
+    getDrivers(status, 1, false, appStatus, paymentStatus, driverCategory, startDate, endDate, partnership);
+    getDriversCount(status, startDate, endDate, appStatus, paymentStatus, driverCategory, partnership);
   };
 
   return (

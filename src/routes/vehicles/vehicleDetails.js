@@ -13,6 +13,7 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
   const inputEl = useRef(null);
   useEffect(() => {
     getVehicle(match.params.id, true);
+    
   }, [match.params.id]);
 
   const opnRevokeVehicleModal = () => {
