@@ -5,106 +5,208 @@ import {getSOSDetails, changeSOStatus, assignSOSToAdmin} from "Actions/emergency
 import {connect} from "react-redux";
 import {calculatePostDate} from "Helpers/helpers";
 import {Link} from "react-router-dom";
-import {Badge, ModalHeader, Modal, ModalBody, Form, FormGroup, Label, Input, ModalFooter, Button} from "reactstrap";
+import {Badge, ModalHeader, Modal, ModalBody, Form, FormGroup, Label, Input, ModalFooter, Button, Card, CardTitle, CardBody} from "reactstrap";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
+import {getServiceRequest} from "../../actions/serviceRequestAction";
+import {fullDateTime} from "../../helpers/helpers";
 
-const MaintenanceDetails = ({match, loading, sosDetails, getSOSDetails, sosUserDetails, changeSOStatus, assignSOSToAdmin}) => {
+const MaintenanceDetails = ({match, location, loading, serviceRequest, getServiceRequest}) => {
   const inputEl = useRef(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const [adminEmail, setAdminEmail] = useState("");
+  const [imageModal, setImageModal] = useState(null);
+  const [imageSrc, setImageSrc] = useState("");
+
+  const showImages = (images) => {
+    setImageSrc(images);
+    setImageModal(true);
+  };
 
   useEffect(() => {
     if (match.params.id) {
-      getSOSDetails(match.params.id, true);
+      getServiceRequest(match.params.id, true);
     }
   }, [match.params.id]);
 
-  const onConfirm = () => {
-    changeSOStatus(sosDetails.sos_id, 1);
-    inputEl.current.close();
-  };
-  const assignSOS = (e) => {
-    e.preventDefault();
-    setIsOpen(false);
-    assignSOSToAdmin(adminEmail);
-    setAdminEmail("");
-  };
+  const viewedDetail = serviceRequest;
+
+  const maintenanceHistory = location?.state?.maintenanceHistory;
+
   return (
     <div style={{minHeight: "90vh"}}>
       <Helmet>
         <title>Driver Profile</title>
-        <meta name="description" content="Driver Profile" />
+        <meta name="description" content="Service Requests" />
       </Helmet>
-      <PageTitleBar title={"Emergency details"} match={match} />
+      <PageTitleBar title={"Service request details"} match={match} />
       {!loading && (
-        <div className="row" style={{fontSize: "0.8rem"}}>
-          <div className="col-sm-6">
-            <div className="tab-content">
-              <div className="tab-pane active" id="home">
-                <ul className="list-group">
-                  <li className="list-group-item text-right">
-                    <span className="pull-left">
-                      <strong>Name</strong>
-                    </span>
-                    <Link to={sosDetails?.type === "driver" ? `/admin/drivers/${sosUserDetails.auth_id}` : `/admin/passengers/${sosUserDetails?.auth_id}`}>Victor Akinnawo</Link>
-                  </li>
-                  <li className="list-group-item text-right">
-                    <span className="pull-left">
-                      <strong> car number</strong>
-                    </span>
-                    12
-                  </li>
-                  <li className="list-group-item text-right">
-                    <span className="pull-left">
-                      <strong> car plate number</strong>
-                    </span>
-                    KBW-2232
-                  </li>
-                  <li className="list-group-item text-right">
-                    <span className="pull-left">
-                      <strong>Date/Time</strong>
-                    </span>
-                    {calculatePostDate(sosDetails?.timestamp)}
-                  </li>
-                  <li className="list-group-item text-right">
-                    <span className="pull-left">
-                      <strong>Status</strong>
-                    </span>
-                    <Badge color={sosDetails.status === 0 ? "danger" : "success"}>{sosDetails.status === 0 ? "Pending" : "Completed"}</Badge>
-                  </li>
-                  {/* {sosDetails.status === 0 && ( */}
-                    <div className="mt-3">
-                      <button className="btn btn-info mr-4" onClick={() => setIsOpen(true)}>
-                        Assign to an Admin
-                      </button>
-                      <button className="btn btn-warning" onClick={() => inputEl.current.open()}>
-                        Mark as resolved
-                      </button>
-                    </div>
-                  {/* )} */}
-                </ul>
+        <Card>
+          <CardTitle></CardTitle>
+          <CardBody>
+            <div>
+              <div className="d-flex justify-content-between mb-4">
+                <div className="fw-bold"> Service Request Details</div>
+                <small className="px-3 py-1 rounded capitlize" style={{backgroundColor: "#FCF4E8", color: "#E5870D"}}>
+                  {viewedDetail?.status}
+                </small>
               </div>
-            </div>
-          </div>
-          <DeleteConfirmationDialog ref={inputEl} title={"Are you sure you want to mark this SOS as resolved?"} message={"Request will be marked as resolved"} onConfirm={onConfirm} />
-        </div>
-      )}
+              <div className="modals-grid col col-md-7">
+                <div className="">
+                  <small>Request Type</small>
+                  <div className="capitlize">{viewedDetail?.service_type}</div>
+                </div>
+                {viewedDetail?.image && (
+                  <div className="">
+                    <small>Image where applicable</small>
+                    <div style={{color: "#5D92F4"}}>
+                      <u onClick={() => showImages(viewedDetail?.image)}>view image</u>
+                    </div>
+                  </div>
+                )}
+                {viewedDetail?.description && (
+                  <div className="">
+                    <small>Description</small>
+                    <div>{viewedDetail?.description}</div>
+                  </div>
+                )}
+                {viewedDetail?.measures && (
+                  <div className="">
+                    <small>Measures taken</small>
+                    <div>{viewedDetail?.measures}</div>
+                  </div>
+                )}
+                <div className="">
+                  <small>Service center assigned to</small>
+                  <div className="capitlize"> {viewedDetail?.service_center_name}</div>
+                </div>
+                <div className="">
+                  <small>Driver name</small>
+                  <div>{viewedDetail?.driver_name}</div>
+                </div>
+                {viewedDetail?.service_type !== "maintenance" && (
+                  <div className="">
+                    <small>Urgency</small>
+                    <div className={`${viewedDetail?.urgency === "high" ? "text-danger" : "text-warning"} capitlize fw-bold `}>{viewedDetail?.urgency}</div>
+                  </div>
+                )}
+                <div className="">
+                  <small>Vehice Model</small>
+                  <div className="capitlize">{viewedDetail?.vehicle_model}</div>
+                </div>
+                <div className="">
+                  <small>Time of request</small>
+                  <div>{fullDateTime(viewedDetail?.createdAt).fullDateTime}</div>
+                </div>
+                {viewedDetail?.status === "rejected" && (
+                  <div className="">
+                    <small>Rejection reason</small>
+                    <div className="text-danger">{viewedDetail?.reason}</div>
+                  </div>
+                )}
+                {viewedDetail?.status === "accepted" && (
+                  <div className="">
+                    <small>Service center availability time</small>
+                    <div className="">{fullDateTime(viewedDetail?.availabily_date).fullDateTime}</div>
+                  </div>
+                )}
 
-      <Modal isOpen={isOpen} toggle={() => setIsOpen(!isOpen)}>
-        <ModalHeader toggle={() => setIsOpen(!isOpen)}>Assign to an Admin</ModalHeader>
-        <Form onSubmit={assignSOS}>
-          <ModalBody>
-            <FormGroup>
-              <Label for="Email">Enter Admin Email</Label>
-              <Input type="email" name="Email" value={adminEmail} onChange={(e) => setAdminEmail(e.target.value)} required />
-            </FormGroup>
-          </ModalBody>
-          <ModalFooter>
-            <Button type="submit" variant="contained" className="text-white btn-success">
-              Submit
-            </Button>
-          </ModalFooter>
-        </Form>
+                <div className="">
+                  <small>Covered by warranty</small>
+                  <div className={`${viewedDetail?.covered_by_warranty ? "Text-primary" : "text-danger"} fw-bold`}>{viewedDetail?.covered_by_warranty ? "Yes" : "No"}</div>
+                </div>
+                <div className="">
+                  <small>Plate number</small>
+                  <div>{viewedDetail?.plate_number}</div>
+                </div>
+                {!maintenanceHistory && (
+                  <div className="">
+                    <small>Vehice maintenance and Repairs history</small>
+                    <div style={{color: "#5D92F4"}}>
+                      <Link to={`/admin/maintenance/history/${viewedDetail?.vehicle_id}`} style={{textDecoration: "none"}}>
+                        <u>view maintenance history</u>
+                      </Link>
+                    </div>
+                  </div>
+                )}
+              </div>
+              {viewedDetail?.status === "completed" && (
+                <>
+                  <div className="mt-4">
+                    <small className="text-primary">DIAGNOSTIC INFORMATION</small>{" "}
+                  </div>
+                  <small className="mt-4 text-muted">Diagnostic activity carried out </small>
+                  <div className="mt-0">{viewedDetail?.diagnostics_data?.diagnostics_act}</div>
+                  <small className="mt-4">Specific activity carried out </small>
+                  <div className="mt-0">{viewedDetail?.diagnostics_data?.specific_act}</div>
+                  <small className="mt-4">Recommendation </small>
+                  <div className="mt-0">{viewedDetail?.diagnostics_data?.recommendation}</div>
+                  <div className="mt-4">
+                    <div className="modals-grid col col-md-7">
+                      <div className="">
+                        <small>Start time</small>
+                        <div className="capitlize">{fullDateTime(viewedDetail?.start_time).fullDateTime}</div>
+                      </div>
+                      <div className="">
+                        <small>Discharge time</small>
+                        <div className="capitlize">{fullDateTime(viewedDetail?.completion_time).fullDateTime}</div>
+                      </div>
+                      {viewedDetail?.diagnostics_data?.before_images.length > 0 && (
+                        <div className="">
+                          <small>Before images</small>
+                          <div className="py-2 px-3 rounded d-flex justify-content-between" style={{backgroundColor: "#F5F5F5"}}>
+                            <small>Image file</small>
+                            <div className="text-teal">
+                              <u className="cursor-pointer" onClick={() => showImages(viewedDetail?.diagnostics_data?.before_images)} style={{color: "#5D92F4"}}>
+                                View
+                              </u>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      {viewedDetail?.diagnostics_data?.after_images.length > 0 && (
+                        <div className="">
+                          <small>After images</small>
+                          <div className="py-2 px-3 rounded d-flex justify-content-between" style={{backgroundColor: "#F5F5F5"}}>
+                            <small>image file</small>
+                            <div className="text-teal">
+                              <u className="cursor-pointer" onClick={() => showImages(viewedDetail?.diagnostics_data?.after_images)} style={{color: "#5D92F4"}}>
+                                View
+                              </u>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      <div className="">
+                        <small>Rep name</small>
+                        <div className="capitlize">{viewedDetail?.diagnostics_data?.name}</div>
+                      </div>
+                      {viewedDetail?.diagnostics_data?.signature && (
+                        <div className="">
+                          <small>Rep signature</small>
+                          <div className="py-2 px-3 rounded d-flex justify-content-between" style={{backgroundColor: "#F5F5F5"}}>
+                            <small>image file</small>
+                            <div className="text-teal">
+                              <u onClick={() => showImages(viewedDetail?.diagnostics_data?.signature)} style={{color: "#5D92F4"}}>
+                                View
+                              </u>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          </CardBody>
+        </Card>
+      )}
+      {/* image modal */}
+      <Modal isOpen={imageModal} toggle={() => setImageModal(false)} size="md" scrollable>
+        {/* <ModalHeader toggle={() => setImageModal(false)}>
+          <div className="">
+            <div>view image</div>
+          </div>
+        </ModalHeader> */}
+        <ModalBody className="text-center">{imageSrc !== "" && <img src={imageSrc} style={{maxWidth: "100%"}} />}</ModalBody>
       </Modal>
     </div>
   );
@@ -112,15 +214,12 @@ const MaintenanceDetails = ({match, loading, sosDetails, getSOSDetails, sosUserD
 
 function mapDispatchToProps(dispatch) {
   return {
-    getSOSDetails: (sos_id, spinner) => dispatch(getSOSDetails(sos_id, spinner)),
-    changeSOStatus: (sos_id, status) => dispatch(changeSOStatus(sos_id, status)),
-    assignSOSToAdmin: (email) => dispatch(assignSOSToAdmin(email)),
+    getServiceRequest: (sos_id, spinner) => dispatch(getServiceRequest(sos_id, spinner)),
   };
 }
 
 const mapStateToProps = (state) => ({
-  sosDetails: state.sos.sosDetails,
-  sosUserDetails: state.sos.sosUserDetails,
+  serviceRequest: state.serviceRequests.serviceRequest,
   loading: state.loading.loading,
 });
 

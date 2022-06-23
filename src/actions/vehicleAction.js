@@ -1,5 +1,5 @@
 import axios from "axios";
-import {VEHICLES, VEHICLES_COUNT, VEHICLE, DRIVER, VEHICLES_FEEDBACK, VEHICLES_FEEDBACK_COUNT, VEHICLES_FEEDBACK_DETAILS} from "./types";
+import {VEHICLES, VEHICLES_COUNT, VEHICLE, DRIVER, VEHICLES_FEEDBACK, VEHICLES_FEEDBACK_COUNT, VEHICLES_FEEDBACK_DETAILS, VEHICLE_MILEAGE} from "./types";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
@@ -68,6 +68,27 @@ export const getVehicle = (vehicle_id, spinner) => async (dispatch) => {
       }
       dispatch({
         type: VEHICLE,
+        payload: res.data.data,
+      });
+    }
+    spinner && dispatch(endLoading());
+    !spinner && dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endLoading());
+    dispatch(endStatusLoading());
+  }
+};
+
+export const getVehicleMileage = (vehicle_id, spinner) => async (dispatch) => {
+  try {
+    spinner && dispatch(startLoading());
+    !spinner && dispatch(startStatusLoading());
+    const res = await axios.get(`${api.vehicles}/v1.1/vehicles/warranty/${vehicle_id}`);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      dispatch({
+        type: VEHICLE_MILEAGE,
         payload: res.data.data,
       });
     }

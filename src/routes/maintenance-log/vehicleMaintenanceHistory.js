@@ -13,84 +13,70 @@ import {connect} from "react-redux";
 import {getServiceRequests, getServiceRequestsCount} from "Actions/serviceRequestAction";
 import EmptyData from "Components/EmptyData/EmptyData";
 import Pagination from "react-js-pagination";
-import {Badge, Button} from "reactstrap";
+import {Badge} from "reactstrap";
 import {calculatePostDate, getServiceRequestStatusColor} from "Helpers/helpers";
+import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {serviceRequestStatuses, serviceRequestType} from "../../helpers/helpers";
 
 const qs = require("qs");
 
-const MaintenanceTable = ({match, getServiceRequests, getServiceRequestsCount, serviceRequests, serviceRequestsCount, loading}) => {
+const VehicleMaintenanceHistory = ({match, getServiceRequests, getServiceRequestsCount, serviceRequests, serviceRequestsCount, loading}) => {
+  const [serviceType, setServiceType] = useState("");
+
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
-  const [serviceType, setServiceType] = useState("");
-  const [status, setStatus] = useState("");
 
   useEffect(() => {
-    if (pageFromQuery === undefined || serviceRequests.length < 1) {
-      getServiceRequests(currentPage, false, "", status, serviceType);
-      getServiceRequestsCount("", status, serviceType);
+    if (match.params.id) {
+      if (pageFromQuery === undefined || serviceRequests.length < 1) {
+        getServiceRequests(currentPage, true, "", "completed", serviceType, match.params.id);
+        getServiceRequestsCount("", "completed", serviceType, match.params.id);
+      }
     }
-  }, []);
+  }, [serviceType]);
 
   const paginate = (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
+    getServiceRequests(currentPage, true, "", "completed", serviceType, match.params.id);
     setCurrentPage(pageNumber);
-    // getOems(pageNumber);
     window.scrollTo(0, 0);
-  };
-  const handleFilter = () => {
-    getServiceRequests(currentPage, false, "", status, serviceType);
-    getServiceRequestsCount("", status, serviceType);
   };
 
   return (
-    <div>
-      <RctCollapsibleCard heading="Service Requests" fullBlock style={{minHeight: "70vh"}}>
-        <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
-          <select type="select" className="p-1 px-4" value={serviceType} onChange={(e) => setServiceType(e.target.value)}>
-            <option value="">Request type </option>
-            {serviceRequestType.map((item) => (
-              <option value={item.value} key={item.value}>
-                {item.name}
-              </option>
-            ))}
-          </select>
-        </li>
+    <div className="table-wrapper">
+      <PageTitleBar title={"Maintenance History"} match={match} />
 
-        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-          <select type="select" className="p-1 px-4" onChange={(e) => setStatus(e.target.value)} value={status}>
-            <option value="">Status</option>
-            {serviceRequestStatuses.map((item) => (
-              <option value={item.value} key={item.value}>
-                {item.name}
-              </option>
-            ))}
-          </select>
-        </li>
-
-        <Button onClick={() => handleFilter()} style={{height: "30px"}} className="align-items-center text-light justify-content-center" color="success">
-          Apply filter
-        </Button>
-        {serviceRequests.length > 0 && (
-          <>
-            <div className="table-responsive" style={{minHeight: "50vh"}}>
-              <Table>
-                <TableHead>
-                  <TableRow hover>
-                    <TableCell> Type</TableCell>
-                    <TableCell>Time</TableCell>
-                    <TableCell>Covered by warranty</TableCell>
-                    <TableCell>Driver name</TableCell>
-                    <TableCell>plate number </TableCell>
-                    <TableCell>Urgency </TableCell>
-                    <TableCell>Status</TableCell>
-                    <TableCell>Action</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
+      <div>
+        <RctCollapsibleCard heading="Maintenance History" fullBlock style={{minHeight: "70vh"}}>
+          <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
+            <select type="select" className="p-1 px-4" value={serviceType} onChange={(e) => setServiceType(e.target.value)}>
+              <option value="">Request type </option>
+              {serviceRequestType.map((item) => (
+                <option value={item.value} key={item.value}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+          </li>
+          <div className="table-responsive" style={{minHeight: "50vh"}}>
+            <Table>
+              <TableHead>
+                <TableRow hover>
+                  <TableCell>Type</TableCell>
+                  <TableCell>Time</TableCell>
+                  <TableCell>Covered by warranty</TableCell>
+                  <TableCell>Driver name</TableCell>
+                  <TableCell>plate number </TableCell>
+                  <TableCell>Urgency </TableCell>
+                  <TableCell>Status</TableCell>
+                  <TableCell>Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {!loading && (
                   <Fragment>
                     {serviceRequests.length > 0 &&
                       serviceRequests.map((data) => (
@@ -110,15 +96,15 @@ const MaintenanceTable = ({match, getServiceRequests, getServiceRequestsCount, s
                           </TableCell>
 
                           {/* 
-                          <TableCell>{data.latitude}</TableCell>
-                          <TableCell>{data.longitude}</TableCell>
-                          <TableCell>{"Time of Report"}</TableCell>
-                          <TableCell>
-                            <Badge color={data.status === 0 ? "danger" : "success"}>{data.status === 0 ? "Unresolved" : "Resolved"}</Badge>
-                          </TableCell> */}
+                           <TableCell>{data.latitude}</TableCell>
+                           <TableCell>{data.longitude}</TableCell>
+                           <TableCell>{"Time of Report"}</TableCell>
+                           <TableCell>
+                             <Badge color={data.status === 0 ? "danger" : "success"}>{data.status === 0 ? "Unresolved" : "Resolved"}</Badge>
+                           </TableCell> */}
                           <TableCell>
                             <button type="button" className="rct-link-btn text-primary" title="view details">
-                              <Link to={`/admin/maintenance/${data?._id}`}>
+                              <Link to={{pathname: `/admin/maintenance/${data?._id}`, state: {maintenanceHistory: true}}}>
                                 <i className="ti-eye" />
                               </Link>
                             </button>
@@ -126,16 +112,16 @@ const MaintenanceTable = ({match, getServiceRequests, getServiceRequestsCount, s
                         </TableRow>
                       ))}
                   </Fragment>
-                </TableBody>
-              </Table>
-            </div>
-            <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
-              <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={serviceRequestsCount} onChange={paginate} />
-            </div>
-          </>
-        )}
+                )}
+              </TableBody>
+            </Table>
+          </div>
+          <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
+            <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={serviceRequestsCount} onChange={paginate} />
+          </div>
+        </RctCollapsibleCard>
         {serviceRequests.length < 1 && <EmptyData />}
-      </RctCollapsibleCard>
+      </div>
     </div>
   );
 };
@@ -153,4 +139,4 @@ const mapStateToProps = (state) => ({
   loading: state.loading.loading,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(MaintenanceTable);
+export default connect(mapStateToProps, mapDispatchToProps)(VehicleMaintenanceHistory);

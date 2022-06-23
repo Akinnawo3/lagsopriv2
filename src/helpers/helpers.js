@@ -368,7 +368,6 @@ export const firstLetterToUpperCase = (string) => {
 // this function checks the array of the permissions of a user and returns true/false if a perticullar permission is found in the array
 // export const verifyUserPermssion = (checkedPermission, permissionsArray) => permissionsArray.includes(checkedPermission);
 
-
 export const getServiceRequestStatusColor = (status) => {
   if (status === "pending") {
     return "secondary";
@@ -382,3 +381,29 @@ export const getServiceRequestStatusColor = (status) => {
     return "danger";
   }
 };
+
+export const fullDateTime = (timeStamp) => {
+  const fullDate = (() => moment(timeStamp).format("LL"))();
+  const fullDateTime = (() => moment(timeStamp).format("MMMM Do YYYY, h:mm a"))();
+
+  //   const timeAgo=()=>
+  return {
+    fullDate,
+    fullDateTime,
+  };
+};
+
+export const serviceRequestType = [
+  {name: "Maintenance", value: "maintenance"},
+  {name: "Repair", value: "repair"},
+  {name: "Servicing", value: "servicing"},
+  {name: "Defect", value: "defect"},
+];
+
+export const serviceRequestStatuses = [
+  {name: "Pending", value: "pending"},
+  {name: "Accepted", value: "accepted"},
+  {name: "Ongoing", value: "ongoing"},
+  {name: "Completed", value: "completed"},
+  {name: "Rejected", value: "rejected"},
+];
