@@ -521,6 +521,11 @@ const AsyncPartnersVerified = Loadable({
   loading: () => <RctPageLoader />,
 });
 
+const AsyncPartnersApproved = Loadable({
+  loader: () => import("Routes/partners/partnersApproved"),
+  loading: () => <RctPageLoader />,
+});
+
 const AsyncPartner = Loadable({
   loader: () => import("Routes/partners/partner"),
   loading: () => <RctPageLoader />,
@@ -640,4 +645,5 @@ export {
   AsyncPartnersPending,
   AsyncPartnersVerified,
   AsyncPartnerDrivers,
+  AsyncPartnersApproved
 };

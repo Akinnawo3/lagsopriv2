@@ -5,7 +5,7 @@ import api from "../../../environments/environment";
 import { debounce } from "lodash";
 import useDebounce from "../../../helpers/debounceHelper";
 
-const AsyncSelectComponent = ({ onChange }) => {
+const AsyncSelectComponent = ({ onChange, partner_assigned_status = '' }) => {
    const [debouncer] = useDebounce();
    const [value, setValue] = useState("");
 
@@ -18,11 +18,10 @@ const AsyncSelectComponent = ({ onChange }) => {
 
    const searchVehicle = async (data, callback) => {
       try {
-         const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicles?q=${data}&assign=${0}`);
-         console.log(res);
+         const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicles?q=${data}&assign=0&partner_assign=${partner_assigned_status}`);
          return res.data.data.map((item) => ({
             value: item,
-            label: `${item.car_number_plate} - ${item.car_make} - ${item.car_model} (${item.car_color})`,
+            label: `${item.car_number_plate} - ${item.car_make} - ${item.car_model} ${item.car_color} (${item?.partner_assigned ? 'Assigned to partner' : ''})`,
          }));
       } catch (err) {
          console.log(err);

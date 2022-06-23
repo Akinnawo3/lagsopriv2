@@ -10,7 +10,7 @@ import {
     AsyncPartners,
     AsyncPartner,
     AsyncPartnersPending,
-    AsyncPartnersVerified, AsyncPartnerDrivers
+    AsyncPartnersVerified, AsyncPartnerDrivers, AsyncPartnersApproved
 } from 'Components/AsyncComponent/AsyncComponent';
 
 const PartnersRoutes = ({ match }) => (
@@ -18,6 +18,7 @@ const PartnersRoutes = ({ match }) => (
         <Switch>
             <Route path={`/admin/partners/pending`} component={AsyncPartnersPending} />
             <Route path={`/admin/partners/partner-drivers`} component={AsyncPartnerDrivers} />
+            <Route path={`/admin/partners/approved`} component={AsyncPartnersApproved} />
             <Route path={`/admin/partners/verified`} component={AsyncPartnersVerified} />
             <Route path={`/admin/partners/:id`} component={AsyncPartner} />
             <Route path={`/admin/partners`} component={AsyncPartners} />

@@ -20,8 +20,9 @@ import {connect} from "react-redux";
 import emailMessages from "Assets/data/email-messages/emailMessages";
 import {Link} from "react-router-dom";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
+import {getFees} from "Actions/feesAction";
 
-const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartnerStatus, revokePartnerVehicle, driversCount}) => {
+const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartnerStatus, revokePartnerVehicle, driversCount, fees}) => {
 
   const [formData, setFormData] = useState({
     firstname: partnerDetails?.first_name,
@@ -36,13 +37,31 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
   const [CACModal, setCACModal] = useState(false)
   const [vehiclesModal, setVehiclesModal] = useState(false)
 
+  const messageData = {
+    bankName: partnerDetails?.payment_data?.bank_name,
+    accountName: partnerDetails?.payment_data?.account_name,
+    accountNumber: partnerDetails?.payment_data?.account_number,
+    amount: `₦${(fees?.com_driver_fee?.total && partnerDetails?.partner_data?.vehicle_interested.length > 0) && (fees?.com_driver_fee?.total * partnerDetails?.partner_data?.vehicle_interested[0].unit * 0.2).toLocaleString()}`,
+    vehicles: partnerDetails?.partner_data?.vehicle_interested.length
+  }
+  // const messageData = {
+  //   bankName: 'First bank',
+  //   accountName: 'Lagosride/Tope Ajibuwa',
+  //   accountNumber: '12345678',
+  //   amount: `₦2000000`,
+  //   vehicles: '2'
+  // }
+
+  console.log(messageData, 'lllll')
+
 
   const onChange = (e) => {
     // checking if the argument "e" is from a form input element or from the asyncSelect component, i checked for e.target.name.. if its not defined then the argument isnt passed from a form input
     e?.target?.name ? setFormData({...formData, [e.target.name]: e.target.value}) : setFormData({...formData, vehicle: e.value});
   };
 
-console.log(partnerDetails)
+  // console.log(fees, 'www')
+  // com_driver_fee.total
 
   return (
     <div className="row" style={{fontSize: "0.8rem"}}>
@@ -144,7 +163,7 @@ console.log(partnerDetails)
                 <span className="pull-left">
                   <strong>Status</strong>
                 </span>
-                <Badge color={partnerDetails?.partner_data?.partner_status === 4 ? "success" : "warning"}>{partnerDetails?.partner_data?.partner_status === 4 ? "Verified" : "Pending"}</Badge>
+                <Badge color={partnerDetails?.partner_data?.partner_status === 4 ? "success" : partnerDetails?.partner_data?.partner_status === 2 ? 'primary' : "warning"}>{partnerDetails?.partner_data?.partner_status === 4 ? "Approved" : partnerDetails?.partner_data?.partner_status === 2 ? 'Verified' : "Pending"}</Badge>
               </li>
               <li className="list-group-item text-right">
                 <span className="pull-left">
@@ -161,11 +180,27 @@ console.log(partnerDetails)
                 Assign Vehicle
               </Button>
           }
-          {partnerDetails?.partner_data?.partner_status !== 4 &&
-              <Button onClick={() =>  changePartnerStatus(partnerDetails?.auth_id, "4", partnerDetails, emailMessages.approvedPartnerMessage, "Partner Approved")} className="bg-success mt-3 text-white">
+          {partnerDetails?.partner_data?.partner_status === 0 &&
+              <Button onClick={() => {
+                if(partnerDetails?.partner_data?.vehicle_interested?.length === 0) {
+                  return NotificationManager.error('Partner must have number of vehicle interested')
+                }
+                changePartnerStatus(partnerDetails?.auth_id, "2", partnerDetails, emailMessages.verifiedPartnerMsg(messageData), "Verified")
+              }
+              } className="bg-success mt-3 text-white">
                 Verify
               </Button>
           }
+          {/*{partnerDetails?.partner_data?.partner_status === 2 &&*/}
+          {/*    <Button onClick={() => {*/}
+          {/*      if(!partnerDetails?.partner_data?.asset_payment?.status) {*/}
+          {/*        return NotificationManager.error('Partner must pay cost of asset before approval')*/}
+          {/*      }*/}
+          {/*      changePartnerStatus(partnerDetails?.auth_id, "4", partnerDetails, emailMessages.approvedPartnerMessage, "Approved")*/}
+          {/*    }} className="bg-success mt-3 text-white">*/}
+          {/*      Approve*/}
+          {/*    </Button>*/}
+          {/*}*/}
         </div>
       </div>
       <div className="col-sm-6">
@@ -193,19 +228,19 @@ console.log(partnerDetails)
                 <span className="pull-left">
                   <strong>Bank name</strong>
                 </span>
-                {partnerDetails?.partner_data?.bank_data?.bank_name}
+                {partnerDetails?.bank_data?.bank_name}
               </li>
               <li className="list-group-item text-right">
                 <span className="pull-left">
                   <strong>Account name</strong>
                 </span>
-                {partnerDetails?.partner_data?.bank_data?.account_name}
+                {partnerDetails?.bank_data?.account_name}
               </li>
               <li className="list-group-item text-right">
                 <span className="pull-left">
                   <strong>Account number</strong>
                 </span>
-            {partnerDetails?.partner_data?.bank_data?.bank_account}
+            {partnerDetails?.bank_data?.account_number}
               </li>
               <li className="list-group-item text-right">
                 <span className="pull-left">
@@ -372,7 +407,7 @@ console.log(partnerDetails)
                 <Label for="userEmail">Email</Label>
                 <Input onChange={onChange} type="email" name="email" readOnly={true} value={email} />
               </FormGroup>
-              <AsyncSelectComponent onChange={onChange} />
+              <AsyncSelectComponent partner_assigned_status='0' onChange={onChange} />
               {/* <AsyncSelect cacheOptions defaultOptions loadOptions={() => [{label: "one", value: 1},{label: "two", value: 2}]} onChange={() => null} />; */}
               <ModalFooter>
                 <Button type="submit" variant="contained" className="text-white btn-success">
@@ -425,6 +460,7 @@ const mapStateToProps = (state) => ({
   loading: state.loading.loading,
   loadingStatus: state.loading.loadingStatus,
   driversCount: state.partners.partnerDriversCount,
+  fees: state.customerCare.customerCareNumbers,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PartnerProfile)

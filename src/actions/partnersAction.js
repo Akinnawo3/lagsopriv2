@@ -152,7 +152,7 @@ export const changePartnerStatus = (auth_id, partner_status, partnerData, messag
         await dispatch(sendDriverMessage(partnerData, message_type, subject));
       }
 
-      await NotificationManager.success("Partner approved!");
+      await NotificationManager.success("Partner updated!");
       await dispatch(getPartner(auth_id, false));
     }
     dispatch(endStatusLoading());

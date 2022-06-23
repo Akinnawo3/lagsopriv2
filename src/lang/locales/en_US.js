@@ -77,6 +77,7 @@ module.exports = {
   "sidebar.driverRatings": "Driver Ratings",
   "sidebar.refunds": "Refunds",
   "sidebar.pending": "Pending",
+  "sidebar.approvedPartner": "Approved",
   "sidebar.undecided": "Undecided",
   "sidebar.refund": "Refund",
   "sidebar.cancellations": "Cancellations",

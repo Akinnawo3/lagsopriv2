@@ -170,7 +170,7 @@ const PartnerTable = ({
                                 <TableCell>{calculatePostDate(partner.createdAt)}</TableCell>
                                 <TableCell>{partner?.partner_data?.account_type}</TableCell>
                                 <TableCell>
-                                  <Badge color={partner?.partner_data?.partner_status === 4 ? "success" : "warning"}>{partner?.partner_data?.partner_status === 4 ? "Verified" : "Pending"}</Badge>
+                                  <Badge color={partner?.partner_data?.partner_status === 4 ? "success" : partner?.partner_data?.partner_status === 2 ? 'primary' : "warning"}>{partner?.partner_data?.partner_status === 4 ? "Approved" : partner?.partner_data?.partner_status === 2 ? "Verified" : "Pending"}</Badge>
                                 </TableCell>
                                 <TableCell>
                                   <button type="button" className="rct-link-btn text-primary" title="view details">
