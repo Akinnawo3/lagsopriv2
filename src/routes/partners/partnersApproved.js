@@ -6,21 +6,21 @@ import {getPartners, getPartnersCount} from "Actions/partnersAction";
 import {getUserExport} from "Actions/userAction";
 const qs = require("qs");
 
-const PartnersVerified = ({history, match, getPartners, getPartnersCount, partners}) => {
+const PartnersApproved = ({history, match, getPartners, getPartnersCount, partners}) => {
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
   useEffect(() => {
     if (pageFromQuery === undefined || partners.length < 1) {
-      getPartners(currentPage, true, '', '', 2);
-      getPartnersCount('', '', 2);
+      getPartners(currentPage, true, '', '', 4);
+      getPartnersCount('', '', 4);
     }
   }, []);
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Partners"} match={match} />
-      <PartnerTable status={2} header="Verified Partners" />
+      <PartnerTable status={4} header="Approved Partners" />
     </div>
   );
 };
@@ -40,4 +40,4 @@ const mapStateToProps = (state) => ({
   loadingStatus: state.loading.loadingStatus,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PartnersVerified);
+export default connect(mapStateToProps, mapDispatchToProps)(PartnersApproved);

@@ -29,7 +29,10 @@ export default {
   userDetailResetMsg: (name, detailType, update) => {
     return `Dear ${name}, your ${detailType} has been changed to ${update}`;
   },
-  approvedPartnerMessage: `Dear Partner, you are verified to become a partner with LagosRide, you can go ahead to make payment for the cost of the asset. Kindly click on the link to access the dashboard and make payment. <a href="https://partners.lagosride.com">https://partners.lagosride.com</a>`,
+  verifiedPartnerMsg: (data) => {
+    return `You have been verified and now eligible to become a LagosRide partner, Your partnership allows you earn 20% of the net earnings on trips made with the vehicle(s) daily. Kindly make payment of the sum of ${data?.amount} for the investment on ${data?.vehicles}vehicles to the account details below;\nAccount name: ${data?.accountName},\nAccount number: ${data?.accountNumber},\nBank name: ${data?.bankName}.\nAfter payment, the vehicle(s) will be assigned to driver(s) and you can start earning.`;
+  },
+  approvedPartnerMessage: `Congratulations you have paid 20% of the equity contribution for the vehicles, and you are now approved as a partner on LagosRide.`,
 
   // "You have been suspended from LagosRide for the following reasons;\n" +
   // "\n" +

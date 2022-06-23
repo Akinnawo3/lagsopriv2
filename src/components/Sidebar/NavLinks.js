@@ -149,6 +149,11 @@ export default {
           menu_title: "sidebar.all",
         },
         {
+          path: "/admin/partners/approved",
+          new_item: false,
+          menu_title: "sidebar.approvedPartner",
+        },
+        {
           path: "/admin/partners/pending",
           new_item: false,
           menu_title: "sidebar.pending",

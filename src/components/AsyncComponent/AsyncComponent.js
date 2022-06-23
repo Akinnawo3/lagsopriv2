@@ -258,10 +258,6 @@ const AsyncMaintenanceLog = Loadable({
   loader: () => import("Routes/maintenance-log/maintenanceLog"),
   loading: () => <RctPageLoader />,
 });
-const AsyncVehicleMaintenanceHistory = Loadable({
-  loader: () => import("Routes/maintenance-log/vehicleMaintenanceHistory"),
-  loading: () => <RctPageLoader />,
-});
 
 const AsyncMaintenanceDetails = Loadable({
   loader: () => import("Routes/maintenance-log/maintenanceDetails"),
@@ -525,6 +521,11 @@ const AsyncPartnersVerified = Loadable({
   loading: () => <RctPageLoader />,
 });
 
+const AsyncPartnersApproved = Loadable({
+  loader: () => import("Routes/partners/partnersApproved"),
+  loading: () => <RctPageLoader />,
+});
+
 const AsyncPartner = Loadable({
   loader: () => import("Routes/partners/partner"),
   loading: () => <RctPageLoader />,
@@ -644,5 +645,5 @@ export {
   AsyncPartnersPending,
   AsyncPartnersVerified,
   AsyncPartnerDrivers,
-  AsyncVehicleMaintenanceHistory,
+  AsyncPartnersApproved
 };
