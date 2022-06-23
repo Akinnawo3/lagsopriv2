@@ -118,6 +118,16 @@ const PaymentDetails = ({match, payment, getPaymentDetails, sosUserDetails}) => 
                   </span>
                   <Badge color={getStatusColor4(payment?.status)}>{getStatus4(payment?.status)}</Badge>
                 </li>
+                {
+                  payment?.status === 2 && (
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Reason for failed paymnet</strong>
+                      </span>
+                      {payment?.failure_reason}
+                    </li>
+                  )
+                }
               </ul>
             </div>
           </div>
