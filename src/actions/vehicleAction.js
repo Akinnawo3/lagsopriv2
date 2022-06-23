@@ -83,7 +83,7 @@ export const getVehicleMileage = (vehicle_id, spinner) => async (dispatch) => {
   try {
     spinner && dispatch(startLoading());
     !spinner && dispatch(startStatusLoading());
-    const res = await axios.get(`${api.vehicles}/v1.1/vehicles/warranty/${vehicle_id}`);
+    const res = await axios.get(`${api.oem}/v1.1/vehicles/mileage/?vehicle_id=${vehicle_id}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {

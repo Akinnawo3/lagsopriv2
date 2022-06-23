@@ -84,7 +84,7 @@ const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, he
                     <TableCell>Promo</TableCell>
                     <TableCell>Rider Name</TableCell>
                     <TableCell>Date / Time</TableCell>
-                    <TableCell>Charger Date</TableCell>
+                    <TableCell>Charge Date</TableCell>
                     <TableCell>Charge Method</TableCell>
                     <TableCell>Payment Method</TableCell>
                     <TableCell>Status</TableCell>
@@ -104,7 +104,7 @@ const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, he
                         </TableCell>
                         <TableCell>{`${item?.first_name ? item?.first_name : ""} ${item?.last_name ? item?.last_name : ""}`}</TableCell>
                         <TableCell>{calculatePostDate(item.createdAt)}</TableCell>
-                        <TableCell>{calculatePostDate(item.updatedAt)}</TableCell>
+                        <TableCell>{calculatePostDate(item?.charge_at)}</TableCell>
                         <TableCell>{item.charge_method}</TableCell>
                         <TableCell>{item.payment_method}</TableCell>
                         <TableCell>
