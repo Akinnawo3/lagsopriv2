@@ -21,7 +21,7 @@ const AsyncSelectComponent = ({ onChange, partner_assigned_status = '' }) => {
          const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicles?q=${data}&assign=0&partner_assign=${partner_assigned_status}`);
          return res.data.data.map((item) => ({
             value: item,
-            label: `${item.car_number_plate} - ${item.car_make} - ${item.car_model} ${item.car_color} (${item?.partner_assigned ? 'Assigned to partner' : ''})`,
+            label: `${item.car_number_plate} - ${item.car_make} - ${item.car_model} ${item.car_color}  (${item?.partner_assigned ? 'Assigned to partner' : ''})`,
          }));
       } catch (err) {
          console.log(err);
