@@ -22,7 +22,7 @@ const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
   const [dateType, setDateType] = useState("daily");
   const [startDate, setStartDate] = useState(getFirstDayOfMonth());
   const [endDate, setEndDate] = useState(getTodayDate());
-  
+
   const formatByDateType = (timeStamp) => {
     if (dateType === "daily") {
       return moment(timeStamp).format("MMMM Do YYYY");
@@ -89,6 +89,9 @@ const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
                     <TableCell>Maintenance</TableCell>
                     <TableCell>Refleeting</TableCell>
                     <TableCell>Tech Co</TableCell>
+                    <TableCell>Asset Repayment</TableCell>
+                    <TableCell>Dashcam</TableCell>
+                    <TableCell>Mobile Phone</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -103,6 +106,10 @@ const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
                           <TableCell>{`₦${item?.maintenance.toLocaleString()}`}</TableCell>
                           <TableCell>{`₦${item?.refleeting.toLocaleString()}`}</TableCell>
                           <TableCell>{`₦${item?.tech_co.toLocaleString()}`}</TableCell>
+
+                          <TableCell>{`₦${item?.debt_service_split?.asset_repayment?.toLocaleString() || 0}`}</TableCell>
+                          <TableCell>{`₦${item?.debt_service_split?.dashcam?.toLocaleString() || 0}`}</TableCell>
+                          <TableCell>{`₦${item?.debt_service_split?.mobile_phone?.toLocaleString() || 0}`}</TableCell>
                         </TableRow>
                       ))}
                   </Fragment>

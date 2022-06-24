@@ -397,7 +397,7 @@ export const getFinanceHolderLogs =
       loading && (await dispatch(startLoading()));
       !loading && dispatch(startStatusLoading());
       const res = await axios.get(
-        `${api.revenueSplit}/v1.1/admin/stack-holder-disbursement-preview?item_per_page=20&page=${page_no}&date_type=${date_type}&start_date=${start_date}&end_date${end_date}`
+        `${api.revenueSplit}/v1.1/admin//stake-holder-disbursement-preview?item_per_page=20&page=${page_no}&date_type=${date_type}&start_date=${start_date}&end_date${end_date}`
       );
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
@@ -421,7 +421,7 @@ export const getFinanceHolderLogsCount =
     try {
       loading && (await dispatch(startLoading()));
       !loading && dispatch(startStatusLoading());
-      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/stack-holder-disbursement-preview?component=count&date_type=${date_type}&start_date=${start_date}&end_date${end_date}`);
+      const res = await axios.get(`${api.revenueSplit}/v1.1/admin//stake-holder-disbursement-preview?component=count&date_type=${date_type}&start_date=${start_date}&end_date${end_date}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -441,11 +441,11 @@ export const getFinanceHolderLogsCount =
 export const searchFinanceHolderLogs = (searchData) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
-    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/stack-holder-disbursement-preview?q=${searchData}`);
+    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/stake-holder-disbursement-preview?q=${searchData}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      const res2 = await axios.get(`${api.revenueSplit}/v1.1/admin/stack-holder-disbursement-preview?component=count&q=${searchData}`);
+      const res2 = await axios.get(`${api.revenueSplit}/v1.1/admin/stake-holder-disbursement-preview?component=count&q=${searchData}`);
 
       dispatch({
         type: FINANCE_HOLDER_LOG_COUNT,
@@ -537,7 +537,7 @@ export const getFinanceHolderPayouts =
     try {
       loading && (await dispatch(startLoading()));
       !loading && dispatch(startStatusLoading());
-      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/stack-holder-payout?item_per_page=20&page=${page_no}&date_type=${date_type}&start_date=${start_date}&end_date${end_date}`);
+      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/payout?item_per_page=20&page=${page_no}&date_type=${date_type}&start_date=${start_date}&end_date${end_date}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -560,7 +560,7 @@ export const getFinanceHolderPayoutsCount =
     try {
       loading && (await dispatch(startLoading()));
       !loading && dispatch(startStatusLoading());
-      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/stack-holder-payout?component=count&date_type=${date_type}&start_date=${start_date}&end_date${end_date}`);
+      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/payout?component=count&date_type=${date_type}&start_date=${start_date}&end_date${end_date}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -580,11 +580,11 @@ export const getFinanceHolderPayoutsCount =
 export const searchFinanceHolderPayouts = (searchData) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
-    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/stack-holder-payout?q=${searchData}`);
+    const res = await axios.get(`${api.revenueSplit}/v1.1/admin/payout?q=${searchData}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      const res2 = await axios.get(`${api.revenueSplit}/v1.1/admin/stack-holder-payout?component=count&q=${searchData}`);
+      const res2 = await axios.get(`${api.revenueSplit}/v1.1/admin/payout?component=count&q=${searchData}`);
 
       dispatch({
         type: FINANCE_HOLDER_PAYOUTS_COUNT,
