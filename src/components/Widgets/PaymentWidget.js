@@ -42,9 +42,11 @@ const PaymentWidget = () => {
   console.log(unsuccessfulPayment);
   console.log(undecidedPayment);
   const total = {
-    balance: successfulPayment?.balance || 0 + unsuccessfulPayment?.balance || 0 + undecidedPayment?.balance || 0,
-    total: successfulPayment?.total || 0 + unsuccessfulPayment?.total || 0 + undecidedPayment?.total || 0,
+    balance: (successfulPayment?.balance || 0) + (unsuccessfulPayment?.balance || 0) + (undecidedPayment?.balance || 0),
+    total: (successfulPayment?.total || 0) + (unsuccessfulPayment?.total || 0) + (undecidedPayment?.total || 0),
   };
+
+  console.log(total);
   return (
     <Card className="rct-block">
       <List className="p-0 fs-14">

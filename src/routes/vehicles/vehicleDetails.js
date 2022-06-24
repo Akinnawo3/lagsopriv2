@@ -3,17 +3,17 @@ import {connect} from "react-redux";
 import {Helmet} from "react-helmet";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {Link} from "react-router-dom";
-import {getVehicle, revokeVehicle} from "Actions/vehicleAction";
+import {getVehicle, getVehicleMileage, revokeVehicle} from "Actions/vehicleAction";
 import {Badge} from "reactstrap";
 import Button from "@material-ui/core/Button";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import download from "downloadjs";
 
-const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetails, loadingStatus, revokeVehicle}) => {
+const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetails, loadingStatus, revokeVehicle, getVehicleMileage, vehicleMileage}) => {
   const inputEl = useRef(null);
   useEffect(() => {
     getVehicle(match.params.id, true);
-    
+    getVehicleMileage(match.params.id, true);
   }, [match.params.id]);
 
   const opnRevokeVehicleModal = () => {
@@ -73,27 +73,33 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
                     </span>
                     {vehicleDetails?.car_color}
                   </li>
-                    <li className="list-group-item text-right">
+                  <li className="list-group-item text-right">
                     <span className="pull-left">
                       <strong>Purchase Year</strong>
                     </span>
-                        {vehicleDetails?.purchase_year}
-                    </li>
-                    <li className="list-group-item text-right">
+                    {vehicleDetails?.purchase_year}
+                  </li>
+                  <li className="list-group-item text-right">
                     <span className="pull-left">
                       <strong>Chassis Number</strong>
                     </span>
-                        {vehicleDetails?.chassis_number}
-                    </li>
-                    <li className="list-group-item text-right">
+                    {vehicleDetails?.chassis_number}
+                  </li>
+                  <li className="list-group-item text-right">
                     <span className="pull-left">
                       <strong>Engine Number</strong>
                     </span>
-                        {vehicleDetails?.engine_number}
-                    </li>
-                    {/*purchase_year, chassis_number, engine_number*/}
+                    {vehicleDetails?.engine_number}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Vehicle Mileage</strong>
+                    </span>
+                    {vehicleMileage?.total_mileage}
+                  </li>
+                  {/*purchase_year, chassis_number, engine_number*/}
 
-                    {/*<li className="list-group-item text-right"><span*/}
+                  {/*<li className="list-group-item text-right"><span*/}
                   {/*    className="pull-left"><strong>Vehicle Description</strong></span>{vehicleDetails?.car_desc}*/}
                   {/*</li>*/}
                   {driverDetails?.driver_data?.vehicle_id === vehicleDetails?.vehicle_id && (
@@ -126,12 +132,12 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
                     </span>
                     <Badge color={vehicleDetails?.assigned ? "success" : "danger"}>{vehicleDetails?.assigned ? "Assigned" : "Unassigned"}</Badge>
                   </li>
-                    <li className="list-group-item text-right">
+                  <li className="list-group-item text-right">
                     <span className="pull-left">
                       <strong>Partner Status</strong>
                     </span>
-                        <Badge color={vehicleDetails?.partner_assigned ? "success" : "danger"}>{vehicleDetails?.partner_assigned ? "Assigned" : "Unassigned"}</Badge>
-                    </li>
+                    <Badge color={vehicleDetails?.partner_assigned ? "success" : "danger"}>{vehicleDetails?.partner_assigned ? "Assigned" : "Unassigned"}</Badge>
+                  </li>
                   <li className="list-group-item text-right">
                     <div className="d-flex justify-content-between align-items-start ">
                       <strong>QR Code</strong>
@@ -180,12 +186,14 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
 function mapDispatchToProps(dispatch) {
   return {
     getVehicle: (vehicle_id, spinner) => dispatch(getVehicle(vehicle_id, spinner)),
+    getVehicleMileage: (vehicle_id, spinner) => dispatch(getVehicleMileage(vehicle_id, spinner)),
     revokeVehicle: (vehicle_id, vehicleDetails, driverDetails) => dispatch(revokeVehicle(vehicle_id, vehicleDetails, driverDetails)),
   };
 }
 
 const mapStateToProps = (state) => ({
   vehicleDetails: state.vehicle.vehicleDetails,
+  vehicleMileage: state.vehicle.vehicleMileage,
   loading: state.loading.loading,
   loadingStatus: state.loading.loadingStatus,
   driverDetails: state.driver.driver,
