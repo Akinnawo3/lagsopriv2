@@ -148,9 +148,9 @@ export const changePartnerStatus = (auth_id, partner_status, partnerData, messag
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      if (partnerData && message_type) {
-        await dispatch(sendDriverMessage(partnerData, message_type, subject));
-      }
+      // if (partnerData && message_type) {
+      //   await dispatch(sendDriverMessage(partnerData, message_type, subject));
+      // }
 
       await NotificationManager.success("Partner updated!");
       await dispatch(getPartner(auth_id, false));

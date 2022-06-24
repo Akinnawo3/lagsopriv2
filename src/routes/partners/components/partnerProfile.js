@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useRef, useState} from "react";
 import {Badge, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import {calculatePostDate} from "Helpers/helpers";
 import AsyncSelectComponent from "Routes/drivers/components/AsyncSelect";
@@ -23,6 +23,7 @@ import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/Delete
 import {getFees} from "Actions/feesAction";
 
 const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartnerStatus, revokePartnerVehicle, driversCount, fees}) => {
+  const inputEl = useRef(null);
 
   const [formData, setFormData] = useState({
     firstname: partnerDetails?.first_name,
@@ -44,16 +45,6 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
     amount: `₦${(fees?.com_driver_fee?.total && partnerDetails?.partner_data?.vehicle_interested.length > 0) && (fees?.com_driver_fee?.total * partnerDetails?.partner_data?.vehicle_interested[0].unit * 0.2).toLocaleString()}`,
     vehicles: partnerDetails?.partner_data?.vehicle_interested.length
   }
-  // const messageData = {
-  //   bankName: 'First bank',
-  //   accountName: 'Lagosride/Tope Ajibuwa',
-  //   accountNumber: '12345678',
-  //   amount: `₦2000000`,
-  //   vehicles: '2'
-  // }
-
-  console.log(messageData, 'lllll')
-
 
   const onChange = (e) => {
     // checking if the argument "e" is from a form input element or from the asyncSelect component, i checked for e.target.name.. if its not defined then the argument isnt passed from a form input
@@ -185,7 +176,7 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
                 if(partnerDetails?.partner_data?.vehicle_interested?.length === 0) {
                   return NotificationManager.error('Partner must have number of vehicle interested')
                 }
-                changePartnerStatus(partnerDetails?.auth_id, "2", partnerDetails, emailMessages.verifiedPartnerMsg(messageData), "Verified")
+                inputEl.current.open();
               }
               } className="bg-success mt-3 text-white">
                 Verify
@@ -439,6 +430,17 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
           </Button>
         </ModalFooter>
       </Modal>
+
+      {/*verify modal*/}
+      <DeleteConfirmationDialog
+          ref={inputEl}
+          title="Are You Sure You want to verify this partner"
+          message="This will verify the partner."
+          onConfirm={() => {
+            changePartnerStatus(partnerDetails?.auth_id, "2", partnerDetails, emailMessages.verifiedPartnerMsg(messageData), "Verified")
+            inputEl.current.close();
+          }}
+      />
     </div>
   );
 };
