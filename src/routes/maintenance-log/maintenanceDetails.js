@@ -178,6 +178,24 @@ const MaintenanceDetails = ({match, location, loading, serviceRequest, getServic
                         <small>Rep name</small>
                         <div className="capitlize">{viewedDetail?.diagnostics_data?.name}</div>
                       </div>
+
+                      {viewedDetail?.invoice && (
+                        <div className="">
+                          <small>Invoice</small>
+                          <div className="py-2 px-3 rounded d-flex justify-content-between" style={{backgroundColor: "#F5F5F5"}}>
+                            <small>image file</small>
+                            <div className="text-teal">
+                              <u>
+                                <a href={viewedDetail?.invoice} download>
+                                  Download Invoice
+                                </a>
+                              </u>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      
                       {viewedDetail?.diagnostics_data?.signature && (
                         <div className="">
                           <small>Rep signature</small>

@@ -44,6 +44,8 @@ const DriverProfile = ({
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
   const [suspensionReasons, setSuspensionReasons] = useState([]);
+  const [medicalRecordsModal, setMedicalRecordsModal] = useState();
+
   const inputEl = useRef(null);
   const [formData, setFormData] = useState({
     firstname: driver?.first_name,
@@ -105,7 +107,7 @@ const DriverProfile = ({
     setTitle("Are you sure you want to verify driver");
     setMessage("This driver will be verified on the platform.");
     setArgument(2);
-    inputEl.current.open();
+    // inputEl.current.open();
   };
   const onTrained = () => {
     setTitle("Are you sure you want to confirm this driver trained");
@@ -550,7 +552,7 @@ const DriverProfile = ({
                     // driver?.driver_data?.lassra_id?.status &&
                     // driver?.driver_data?.nin_id?.status &&
                     <div className="text-center">
-                      <Button disabled={loadingStatus} onClick={() => verifyUserPermssion("update_driver_status", () => onVerified())} className="bg-success mt-3 text-white">
+                      <Button disabled={loadingStatus} onClick={() => verifyUserPermssion("update_driver_status", () => setMedicalRecordsModal(true))} className="bg-success mt-3 text-white">
                         Verify Driver
                       </Button>
                     </div>
@@ -601,6 +603,25 @@ const DriverProfile = ({
       {/* modal that changes the driver category  */}
       <Modal size="sm" isOpen={categoryModalOpen} toggle={() => setCategoryModalOpen(!categoryModalOpen)}>
         <ModalHeader toggle={() => setCategoryModalOpen(!categoryModalOpen)}>Change Driver Category</ModalHeader>
+        <ModalBody>
+          <Form onSubmit={handleCategorySubmit}>
+            <div className="px-3">
+              <Input type="radio" name="driver_category" value="social" checked={driverCategory === "social"} onChange={() => setDriverCategory("social")} />
+              Social Driver
+            </div>
+            <div className="px-3">
+              <Input type="radio" name="driver_category" value="commercial" checked={driverCategory === "commercial"} onChange={() => setDriverCategory("commercial")} />
+              Commercial Driver
+            </div>
+            <div className="mt-2 text-right">
+              <button className=" btn rounded btn-primary">Change</button>
+            </div>
+          </Form>
+        </ModalBody>
+      </Modal>
+      {/* Medical Records Modal */}
+      <Modal size="sm" isOpen={medicalRecordsModal} toggle={() => setMedicalRecordsModal(false)}>
+        <ModalHeader toggle={() => setMedicalRecordsModal(false)}>Add Medical Records</ModalHeader>
         <ModalBody>
           <Form onSubmit={handleCategorySubmit}>
             <div className="px-3">
