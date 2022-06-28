@@ -115,6 +115,7 @@ export const updateMedicalRecord = (auth_id, medical_record) => async (dispatch)
       await NotificationManager.success("Medical Record updated");
       closeMedicalRecordModal();
     }
+    dispatch(endStatusLoading());
   } catch (err) {
     dispatch(endStatusLoading());
     NotificationManager.error(err.response.data.message);
