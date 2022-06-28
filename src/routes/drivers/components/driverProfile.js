@@ -18,6 +18,7 @@ import AsyncSelectComponent from "./AsyncSelect";
 import {calculatePostDate} from "../../../helpers/helpers";
 export let onAddVehicleModalClose;
 export let closeMedicalRecordModal;
+export let onVerified;
 const DriverProfile = ({
   driver,
   changeDriverStatus,
@@ -47,8 +48,8 @@ const DriverProfile = ({
   const [message, setMessage] = useState("");
   const [suspensionReasons, setSuspensionReasons] = useState([]);
   const [medicalRecordsModal, setMedicalRecordsModal] = useState();
-  const [tuberculosis, setTuberculosis] = useState("");
-  const [hepatitis, setHepatitis] = useState("");
+  const [tuberculosis, setTuberculosis] = useState(driver?.driver_data?.medical_record?.tuberculosis || "");
+  const [hepatitis, setHepatitis] = useState(driver?.driver_data?.medical_record?.hepatitis || "");
 
   const inputEl = useRef(null);
   const [formData, setFormData] = useState({
@@ -107,11 +108,11 @@ const DriverProfile = ({
     setArgument(1);
     inputEl.current.open();
   };
-  const onVerified = () => {
+  onVerified = () => {
     setTitle("Are you sure you want to verify driver");
     setMessage("This driver will be verified on the platform.");
     setArgument(2);
-    // inputEl.current.open();
+    inputEl.current.open();
   };
   const onTrained = () => {
     setTitle("Are you sure you want to confirm this driver trained");
@@ -292,6 +293,23 @@ const DriverProfile = ({
                 </span>
                 {driver?.blood_group}
               </li>
+              {driver?.driver_data?.driver_status >= 2 && (
+                <>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Tuberculosis Status</strong>
+                    </span>
+                    <span className="text-capitalize"> {driver?.driver_data?.medical_record?.tuberculosis}</span>
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Hepatitis Status</strong>
+                    </span>
+                    <span className="text-capitalize"> {driver?.driver_data?.medical_record?.hepatitis}</span>
+                  </li>
+                </>
+              )}
+
               <li className="list-group-item text-right">
                 <span className="pull-left">
                   <strong>Eye Glasses</strong>
@@ -310,6 +328,14 @@ const DriverProfile = ({
                 </span>
                 {driver?.driver_data?.disability === 0 ? "No" : "Yes"}
               </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div className="col-sm-10 col-lg-5 offset-lg-1">
+        <div className="tab-content">
+          <div className="tab-pane active" id="home">
+            <ul className="list-group">
               <li className="list-group-item text-right">
                 <span className="pull-left">
                   <strong>Bank Name</strong>
@@ -322,14 +348,6 @@ const DriverProfile = ({
                 </span>
                 {driver?.bank_data ? driver?.bank_data?.account_number : "NA"}
               </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div className="col-sm-10 col-lg-5 offset-lg-1">
-        <div className="tab-content">
-          <div className="tab-pane active" id="home">
-            <ul className="list-group">
               <li className="list-group-item text-right">
                 <span className="pull-left">
                   <strong>Driver Category</strong>

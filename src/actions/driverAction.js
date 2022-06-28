@@ -4,7 +4,7 @@ import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 import {getVehicle} from "Actions/vehicleAction";
-import {closeMedicalRecordModal} from "../routes/drivers/components/driverProfile";
+import {closeMedicalRecordModal, onVerified} from "../routes/drivers/components/driverProfile";
 
 export const getDrivers =
   (status = "", page_no = 1, spinner, driver_online_status = "", asset_payment = "", driver_category = "", start_date = "", end_date = "", partnershipStatus = "") =>
@@ -114,6 +114,7 @@ export const updateMedicalRecord = (auth_id, medical_record) => async (dispatch)
     } else {
       await NotificationManager.success("Medical Record updated");
       closeMedicalRecordModal();
+      onVerified();
     }
     dispatch(endStatusLoading());
   } catch (err) {
