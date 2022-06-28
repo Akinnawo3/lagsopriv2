@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from "react";
 import {Badge, ModalHeader, Modal, ModalBody, Form, FormGroup, Label, Input, ModalFooter} from "reactstrap";
 import Button from "@material-ui/core/Button";
 import {getStatus, getStatusColor, idVerificationType} from "Helpers/helpers";
-import {changeDriverStatus, changeDriverCategory, verifyID} from "Actions/driverAction";
+import {changeDriverStatus, changeDriverCategory, verifyID, updateMedicalRecord} from "Actions/driverAction";
 import {getCustomerCare} from "Actions/customerCareAction";
 import {sendVerificationRequest} from "Actions/idVerificationAction";
 import {connect} from "react-redux";
@@ -17,9 +17,11 @@ import {verifyUserPermssion} from "../../../container/DefaultLayout";
 import AsyncSelectComponent from "./AsyncSelect";
 import {calculatePostDate} from "../../../helpers/helpers";
 export let onAddVehicleModalClose;
+export let closeMedicalRecordModal;
 const DriverProfile = ({
   driver,
   changeDriverStatus,
+  updateMedicalRecord,
   changeDriverCategory,
   sendVerificationRequest,
   loadingStatus,
@@ -165,6 +167,16 @@ const DriverProfile = ({
       setSuspensionReasons(removeReason);
     }
   };
+
+  const medicalRecordUpdate = (e) => {
+    e.preventDefault();
+    updateMedicalRecord(driver?.auth_id, {tuberculosis, hepatitis});
+  };
+
+  closeMedicalRecordModal = () => {
+    setMedicalRecordsModal(false);
+  };
+
   const onConfirm = () => {
     if (argument === 1) {
       changeDriverStatus(driver?.auth_id, "1", driver, emailMessages.acceptMsg, "Driver Reactivated");
@@ -625,7 +637,7 @@ const DriverProfile = ({
       <Modal size="sm" isOpen={medicalRecordsModal} toggle={() => setMedicalRecordsModal(false)}>
         <ModalHeader toggle={() => setMedicalRecordsModal(false)}>Medical Records</ModalHeader>
         <ModalBody>
-          <Form onSubmit={handleCategorySubmit}>
+          <Form onSubmit={medicalRecordUpdate}>
             <FormGroup>
               <Label for="tb">Tuberculosis Status </Label>
               <Input type="select" name="tuberculosis" value={tuberculosis} onChange={(e) => setTuberculosis(e.target.value)} required>
@@ -638,7 +650,7 @@ const DriverProfile = ({
             </FormGroup>
             <FormGroup>
               <Label for="hbsag">Hepatitis B Status </Label>
-              <Input type="select" name="hbsag" value={tuberculosis} onChange={(e) => setTuberculosis(e.target.value)} required>
+              <Input type="select" name="hbsag" value={hepatitis} onChange={(e) => setHepatitis(e.target.value)} required>
                 <option value="" selected hidden>
                   -- select Hepatitis B status --
                 </option>
@@ -957,6 +969,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getCustomerCare: (spinner) => dispatch(getCustomerCare(spinner)),
     changeDriverStatus: (auth_id, driver_status, driverData, message_type, subject) => dispatch(changeDriverStatus(auth_id, driver_status, driverData, message_type, subject)),
+    updateMedicalRecord: (auth_id, medical_record) => dispatch(updateMedicalRecord(auth_id, medical_record)),
     changeDriverCategory: (auth_id, category, driverData, message_type, subject) => dispatch(changeDriverCategory(auth_id, category, driverData, message_type, subject)),
     verifyID: (auth_id, verification_status, verification_name) => dispatch(verifyID(auth_id, verification_status, verification_name)),
     assignVehicle: (vehicle_id, driver_auth_id, driverData, vehicleData, message_type) => dispatch(assignVehicleOnProfile(vehicle_id, driver_auth_id, driverData, vehicleData, message_type)),
