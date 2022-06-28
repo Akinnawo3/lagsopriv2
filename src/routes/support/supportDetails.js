@@ -99,9 +99,9 @@ const SupportDetails = ({getSupportTicket, match, updateSupportTicket, supportDe
 
                 <li className="list-group-item text-right">
                   <span className="pull-left">
-                    <strong>View Trip Detais</strong>
+                    <strong>View Trip Details</strong>
                   </span>
-                  <Link to={`/admin/vehicles/${supportDetails.trip_data?.trip_id}`}>
+                  <Link to={`/admin/trips/${supportDetails.trip_data?.trip_id}`}>
                     <i className="ti-eye" />
                   </Link>
                 </li>
