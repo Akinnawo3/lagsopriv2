@@ -45,6 +45,8 @@ const DriverProfile = ({
   const [message, setMessage] = useState("");
   const [suspensionReasons, setSuspensionReasons] = useState([]);
   const [medicalRecordsModal, setMedicalRecordsModal] = useState();
+  const [tuberculosis, setTuberculosis] = useState("");
+  const [hepatitis, setHepatitis] = useState("");
 
   const inputEl = useRef(null);
   const [formData, setFormData] = useState({
@@ -621,19 +623,31 @@ const DriverProfile = ({
       </Modal>
       {/* Medical Records Modal */}
       <Modal size="sm" isOpen={medicalRecordsModal} toggle={() => setMedicalRecordsModal(false)}>
-        <ModalHeader toggle={() => setMedicalRecordsModal(false)}>Add Medical Records</ModalHeader>
+        <ModalHeader toggle={() => setMedicalRecordsModal(false)}>Medical Records</ModalHeader>
         <ModalBody>
           <Form onSubmit={handleCategorySubmit}>
-            <div className="px-3">
-              <Input type="radio" name="driver_category" value="social" checked={driverCategory === "social"} onChange={() => setDriverCategory("social")} />
-              Social Driver
-            </div>
-            <div className="px-3">
-              <Input type="radio" name="driver_category" value="commercial" checked={driverCategory === "commercial"} onChange={() => setDriverCategory("commercial")} />
-              Commercial Driver
-            </div>
+            <FormGroup>
+              <Label for="tb">Tuberculosis Status </Label>
+              <Input type="select" name="tuberculosis" value={tuberculosis} onChange={(e) => setTuberculosis(e.target.value)} required>
+                <option value="" selected hidden>
+                  -- select Tuberculosis status --
+                </option>
+                <option value="positive">Positive</option>
+                <option value="negative">Negative</option>
+              </Input>
+            </FormGroup>
+            <FormGroup>
+              <Label for="hbsag">Hepatitis B Status </Label>
+              <Input type="select" name="hbsag" value={tuberculosis} onChange={(e) => setTuberculosis(e.target.value)} required>
+                <option value="" selected hidden>
+                  -- select Hepatitis B status --
+                </option>
+                <option value="positive">Positive</option>
+                <option value="negative">Negative</option>
+              </Input>
+            </FormGroup>
             <div className="mt-2 text-right">
-              <button className=" btn rounded btn-primary">Change</button>
+              <button className=" btn rounded btn-primary">Submit</button>
             </div>
           </Form>
         </ModalBody>
