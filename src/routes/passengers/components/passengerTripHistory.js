@@ -130,7 +130,7 @@ const PassengerTripHistory = ({
                                     <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
                                         <Pagination
                                             activePage={currentPage}
-                                            itemClass="page-item"
+                                            itemClass="page-item undo-folding"
                                             linkClass="page-link"
                                             itemsCountPerPage={20}
                                             totalItemsCount={tripCountPassenger}
