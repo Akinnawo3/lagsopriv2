@@ -4,6 +4,7 @@ import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 import {getVehicle} from "Actions/vehicleAction";
+import {closeMedicalRecordModal, onVerified} from "../routes/drivers/components/driverProfile";
 
 export const getDrivers =
   (status = "", page_no = 1, spinner, driver_online_status = "", asset_payment = "", driver_category = "", start_date = "", end_date = "", partnershipStatus = "") =>
@@ -32,7 +33,7 @@ export const getDrivers =
   };
 
 export const getDriversCount =
-  (status = "", start_date = "", end_date = "", driver_online_status="", asset_payment="", driver_category="", partnershipStatus="") =>
+  (status = "", start_date = "", end_date = "", driver_online_status = "", asset_payment = "", driver_category = "", partnershipStatus = "") =>
   async (dispatch) => {
     try {
       const res = await axios.get(
@@ -96,6 +97,24 @@ export const changeDriverStatus = (auth_id, driver_status, driverData, message_t
         await NotificationManager.success("Driver is now active!");
       }
       await dispatch(getDriver(auth_id, true));
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+    NotificationManager.error(err.response.data.message);
+  }
+};
+export const updateMedicalRecord = (auth_id, medical_record) => async (dispatch) => {
+  const body = {component: "medical", medical_record, auth_id};
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.put(`${api.user}/v1.1/admin/users`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success("Medical Record updated");
+      closeMedicalRecordModal();
+      onVerified();
     }
     dispatch(endStatusLoading());
   } catch (err) {

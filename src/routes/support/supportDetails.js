@@ -96,6 +96,16 @@ const SupportDetails = ({getSupportTicket, match, updateSupportTicket, supportDe
                   </span>
                   {supportDetails?.admin_data?.first_name} {supportDetails?.admin_data?.first_last}
                 </li>
+
+                <li className="list-group-item text-right">
+                  <span className="pull-left">
+                    <strong>View Trip Details</strong>
+                  </span>
+                  <Link to={`/admin/trips/${supportDetails.trip_data?.trip_id}`}>
+                    <i className="ti-eye" />
+                  </Link>
+                </li>
+
                 <li className="list-group-item text-right">
                   <span className="pull-left">
                     <strong>Status</strong>

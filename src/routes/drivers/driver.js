@@ -15,15 +15,9 @@ import DriverTrips from "Routes/drivers/components/driverTrips";
 import {getDriverTripCount, getDriverTripCountDisplayAll, getDriverTripCountDisplayCancelled, getDriverTripCountDisplayCompleted, getDriverTrips} from "Actions/tripAction";
 import {getWalletBalance, getWallets, getWalletsCount} from "Actions/walletAction";
 import Wallets from "Components/Wallets/wallets";
-import {
-  getPayments, getPaymentsCount,
-  getPaymentsService,
-  getPaymentsServiceBalanceForIndividual,
-  getPaymentsServiceCount
-} from "Actions/paymentAction";
+import {getPayments, getPaymentsCount, getPaymentsService, getPaymentsServiceBalanceForIndividual, getPaymentsServiceCount} from "Actions/paymentAction";
 import PaymentsServiceComponent from "Components/PaymentsComponent/paymentsServiceComponent";
 import PaymentTripComponent from "Components/PaymentsComponent/paymentTripComponent";
-
 
 // For Tab Content
 function TabContainer(props) {
@@ -59,7 +53,7 @@ const Driver = (props) => {
     getPaymentsServiceCount,
     getPaymentsServiceBalanceForIndividual,
     getPayments,
-    getPaymentsCount
+    getPaymentsCount,
   } = props;
 
   const [activeTab, setActiveTab] = useState(location.state ? location.state.activeTab : 0);
@@ -85,7 +79,7 @@ const Driver = (props) => {
     }
   }, [match.params.id, activeTab]);
 
-//called only when on rating tab
+  //called only when on rating tab
   useEffect(() => {
     if (match.params.id && activeTab === 2) {
       getUserRating(1, "driver", match.params.id);
@@ -94,7 +88,7 @@ const Driver = (props) => {
     }
   }, [match.params.id, activeTab]);
 
-//called only when on wallet tab
+  //called only when on wallet tab
   useEffect(() => {
     if (match.params.id && activeTab === 3) {
       getWallets(1, "", match.params.id, true);
@@ -103,16 +97,15 @@ const Driver = (props) => {
     }
   }, [match.params.id, activeTab]);
 
-//called only when on trip payment tab
+  //called only when on trip payment tab
   useEffect(() => {
     if (match.params.id && activeTab === 5) {
-      getPayments(1, "", match.params.id, false, 'driver_id');
-      getPaymentsCount("", match.params.id, 'driver_id');
+      getPayments(1, "", match.params.id, false, "driver_id");
+      getPaymentsCount("", match.params.id, "driver_id");
     }
   }, [match.params.id, activeTab]);
 
-
-//called only when on service payment tab
+  //called only when on service payment tab
   useEffect(() => {
     if (match.params.id && activeTab === 4) {
       getPaymentsService(1, "", match.params.id);
@@ -121,8 +114,11 @@ const Driver = (props) => {
     }
   }, [match.params.id, activeTab]);
 
+  console.log(driverDetails);
 
 
+
+  
 
   return (
     <div className="userProfile-wrapper">
@@ -178,17 +174,13 @@ const Driver = (props) => {
             )}
             {activeTab === 4 && (
               <TabContainer>
-                <PaymentsServiceComponent
-                  auth_id={match.params.id}
-                />
+                <PaymentsServiceComponent auth_id={match.params.id} />
               </TabContainer>
             )}
             {activeTab === 5 && (
-                <TabContainer>
-                  <PaymentTripComponent
-                      auth_id={match.params.id}
-                  />
-                </TabContainer>
+              <TabContainer>
+                <PaymentTripComponent auth_id={match.params.id} />
+              </TabContainer>
             )}
           </div>
         </RctCard>

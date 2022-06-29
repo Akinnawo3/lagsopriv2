@@ -64,6 +64,9 @@ const SupportTable = ({support, getSupportTickets, loading, support_type, suppor
               <TableHead>
                 <TableRow hover>
                   <TableCell>Status</TableCell>
+                  <TableCell>User Name</TableCell>
+                  <TableCell>User Type</TableCell>
+
                   <TableCell>Date/ Time</TableCell>
                   <TableCell>Assigned</TableCell>
                   <TableCell>Action</TableCell>
@@ -74,6 +77,10 @@ const SupportTable = ({support, getSupportTickets, loading, support_type, suppor
                   {support.map((sup, key) => (
                     <TableRow hover key={key}>
                       <TableCell>{getTicketStatus(sup.status)}</TableCell>
+                      <TableCell>
+                        {sup?.user_data?.first_name} {sup?.user_data?.first_last}
+                      </TableCell>
+                      <TableCell className="text-capitalize">{sup?.user_data?.user_type}</TableCell>
                       <TableCell>
                         {calculatePostDate(sup.createdAt)}
                         {/*{new Date(sup.timestamp.setHours(sup.timestamp.getHours() + 1))}*/}
