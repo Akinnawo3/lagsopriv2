@@ -258,6 +258,10 @@ const AsyncMaintenanceLog = Loadable({
   loader: () => import("Routes/maintenance-log/maintenanceLog"),
   loading: () => <RctPageLoader />,
 });
+const AsyncVehicleMaintenanceHistory = Loadable({
+  loader: () => import("Routes/maintenance-log/vehicleMaintenanceHistory"),
+  loading: () => <RctPageLoader />,
+});
 
 const AsyncMaintenanceDetails = Loadable({
   loader: () => import("Routes/maintenance-log/maintenanceDetails"),
@@ -591,6 +595,7 @@ export {
   AsyncEmergencyDetails,
   AsyncMaintenanceLog,
   AsyncMaintenanceDetails,
+  AsyncVehicleMaintenanceHistory,
   AsyncUsers,
   AsyncSupportDetails,
   AsyncSupportSetup,
