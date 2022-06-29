@@ -406,11 +406,13 @@ const DriverProfile = ({
                   <strong>Driving License</strong>
                 </span>
                 {driver?.driver_data?.license_id?.value}
+
                 {driver?.driver_data?.license_id?.status ? (
                   <i className="ti-check ml-3" />
                 ) : (
                   <Button
-                    className={`btn-warning rounded fw-bold p-2 ml-3 ${driver?.driver_data?.driver_status > 1 && "d-none"}`}
+                    // className={`btn-warning rounded fw-bold p-2 ml-3 ${driver?.driver_data?.driver_status > 1 && "d-none"}`}
+                    className={`btn-warning rounded fw-bold p-2 ml-3`}
                     onClick={() =>
                       driver?.driver_data?.license_id?.value
                         ? triggerIdVerifcation("driver_license", driver?.driver_data?.license_id?.value, driver?.first_name, driver?.last_name)
@@ -430,7 +432,8 @@ const DriverProfile = ({
                   <i className="ti-check ml-3" />
                 ) : (
                   <Button
-                    className={`btn-warning rounded fw-bold p-2 ml-3 ${driver?.driver_data?.driver_status > 1 && "d-none"}`}
+                    // className={`btn-warning rounded fw-bold p-2 ml-3 ${driver?.driver_data?.driver_status > 1 && "d-none"}`}
+                    className={`btn-warning rounded fw-bold p-2 ml-3`}
                     onClick={() =>
                       driver?.driver_data?.lasdri_id?.value
                         ? triggerIdVerifcation("lasdri", driver?.driver_data?.lasdri_id?.value, driver?.first_name, driver?.last_name)
@@ -450,7 +453,8 @@ const DriverProfile = ({
                   <i className="ti-check ml-3" />
                 ) : (
                   <Button
-                    className={`btn-warning rounded fw-bold p-2 ml-3 ${driver?.driver_data?.driver_status > 1 && "d-none"}`}
+                    // className={`btn-warning rounded fw-bold p-2 ml-3 ${driver?.driver_data?.driver_status > 1 && "d-none"}`}
+                    className={`btn-warning rounded fw-bold p-2 ml-3`}
                     onClick={() =>
                       driver?.driver_data?.license_id?.value
                         ? triggerIdVerifcation("lassra", driver?.driver_data?.lassra_id?.value, driver?.first_name, driver?.last_name)
@@ -470,7 +474,8 @@ const DriverProfile = ({
                   <i className="ti-check ml-3" />
                 ) : (
                   <Button
-                    className={`btn-warning rounded fw-bold p-2 ml-3 ${driver?.driver_data?.driver_status > 1 && "d-none"}`}
+                    // className={`btn-warning rounded fw-bold p-2 ml-3 ${driver?.driver_data?.driver_status > 1 && "d-none"}`}
+                    className={`btn-warning rounded fw-bold p-2 ml-3`}
                     onClick={() =>
                       driver?.driver_data?.nin_id?.value
                         ? triggerIdVerifcation("nin", driver?.driver_data?.nin_id?.value, driver?.first_name, driver?.last_name)
