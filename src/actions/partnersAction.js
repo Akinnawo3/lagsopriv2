@@ -7,7 +7,7 @@ import {
 } from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
-import {sendDriverMessage} from "./driverAction";
+import {getDriver, sendDriverMessage} from "./driverAction";
 import {sendVehicleUnassignMessage} from "Actions/vehicleAction";
 import emailMessages from "Assets/data/email-messages/emailMessages";
 
@@ -139,7 +139,7 @@ export const assignVehicleToPartner = (vehicle_id, auth_id, setAddVehicleModal) 
   }
 };
 
-export const changePartnerStatus = (auth_id, partner_status, partnerData, message_type, subject) => async (dispatch) => {
+export const changePartnerStatus = (auth_id, partner_status) => async (dispatch) => {
   // partnerDetails?.auth_id, "4", partnerDetails, emailMessages.approvedPartnerMessage, "Partner Approved"
   const body = {component: "partner_status", auth_id, partner_status};
   try {
@@ -148,10 +148,6 @@ export const changePartnerStatus = (auth_id, partner_status, partnerData, messag
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      // if (partnerData && message_type) {
-      //   await dispatch(sendDriverMessage(partnerData, message_type, subject));
-      // }
-
       await NotificationManager.success("Partner updated!");
       await dispatch(getPartner(auth_id, false));
     }
@@ -220,5 +216,27 @@ export const getPartnerDriverCount = (partner_id, start_date = "", end_date = ""
       });
     }
   } catch (err) {}
+};
+
+
+export const verifyPartnerNIN = (auth_id, verification_status, verification_name) => async (dispatch) => {
+  const body = {
+    auth_id,
+    kyc_status: verification_status,
+  };
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.post(`${api.user}/v1.1/admin/user-kyc-status`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success("NIN verified  Successfully!");
+      await dispatch(getPartner(auth_id, false));
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+    NotificationManager.error(err.response.data.message);
+  }
 };
 
