@@ -52,6 +52,24 @@ const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
     setDateType(typeHolder.current);
     getChartRevenueData(true, startDate, endDate, dateType);
   };
+
+  const findprop = (obj, path) => {
+    var args = path.split("."),
+      i,
+      l;
+    for (i = 0, l = args.length; i < l; i++) {
+      if (!obj.hasOwnProperty(args[i])) return;
+      obj = obj[args[i]];
+    }
+    return obj;
+  };
+
+  const getColumnSum = (path) => {
+    let sum = 0;
+    revenueChartData.map((item) => (sum += findprop(item, path) || 0));
+    return sum;
+  };
+
   return (
     <div>
       <RctCollapsibleCard heading={"Revenues Table"} fullBlock style={{minHeight: "70vh"}}>
@@ -112,6 +130,20 @@ const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
                           <TableCell>{`₦${item?.debt_service_split?.mobile_phone?.toLocaleString() || 0}`}</TableCell>
                         </TableRow>
                       ))}
+                    {revenueChartData.length > 0 && (
+                      <TableRow>
+                        <TableCell className="fw-bold">Total</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("asset_co").toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("comms").toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("daily_tax").toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("maintenance").toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("refleeting").toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("tech_co").toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("debt_service_split.asset_repayment").toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("debt_service_split.dashcam").toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("debt_service_split.mobile_phone").toLocaleString()}`}</TableCell>
+                      </TableRow>
+                    )}
                   </Fragment>
                 </TableBody>
               </Table>
