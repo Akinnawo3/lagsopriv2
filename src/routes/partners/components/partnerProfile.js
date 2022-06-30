@@ -1,6 +1,6 @@
 import React, {Fragment, useRef, useState} from "react";
 import {Badge, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
-import {calculatePostDate} from "Helpers/helpers";
+import {calculatePostDate, idVerificationType} from "Helpers/helpers";
 import AsyncSelectComponent from "Routes/drivers/components/AsyncSelect";
 import Button from "@material-ui/core/Button";
 import TableHead from "@material-ui/core/TableHead";
@@ -12,18 +12,20 @@ import Table from "@material-ui/core/Table";
 import {
   assignVehicleToPartner,
   changePartnerStatus,
-  getPartners,
-  getPartnersCount,
-  revokePartnerVehicle
+  revokePartnerVehicle,
+  verifyPartnerNIN
 } from "Actions/partnersAction";
 import {connect} from "react-redux";
-import emailMessages from "Assets/data/email-messages/emailMessages";
+
 import {Link} from "react-router-dom";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
-import {getFees} from "Actions/feesAction";
+import {sendVerificationRequest} from "Actions/idVerificationAction";
+import Spinner from "Components/spinner/Spinner";
 
-const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartnerStatus, revokePartnerVehicle, driversCount, fees}) => {
+
+const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartnerStatus, revokePartnerVehicle, driversCount, dataMode, sendVerificationRequest, verificationResult, loadingStatus, verifyPartnerNIN}) => {
   const inputEl = useRef(null);
+  const inputEl2 = useRef(null);
 
   const [formData, setFormData] = useState({
     firstname: partnerDetails?.first_name,
@@ -37,27 +39,29 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
   const [vIModal, setViModal] = useState(false)
   const [CACModal, setCACModal] = useState(false)
   const [vehiclesModal, setVehiclesModal] = useState(false)
+  const [idType, setIdType] = useState("");
+  const [idVerificationModalOpen, setIdVerificationModalOpen] = useState(false);
+  const isTest = dataMode === "test";
 
-  const messageData = {
-    bankName: partnerDetails?.payment_data?.bank_name,
-    accountName: partnerDetails?.payment_data?.account_name,
-    accountNumber: partnerDetails?.payment_data?.account_number,
-    amount: `₦${(fees?.com_driver_fee?.total && partnerDetails?.partner_data?.vehicle_interested.length > 0) && (fees?.com_driver_fee?.total * partnerDetails?.partner_data?.vehicle_interested[0].unit * 0.2).toLocaleString()}`,
-    vehicles: partnerDetails?.partner_data?.vehicle_interested.length
-  }
 
   const onChange = (e) => {
     // checking if the argument "e" is from a form input element or from the asyncSelect component, i checked for e.target.name.. if its not defined then the argument isnt passed from a form input
     e?.target?.name ? setFormData({...formData, [e.target.name]: e.target.value}) : setFormData({...formData, vehicle: e.value});
   };
 
-  // console.log(fees, 'www')
-  // com_driver_fee.total
+  const triggerIdVerifcation = (type, value, firstName, lastName) => {
+    setIdType(type);
+    !isTest && sendVerificationRequest(type, value, firstName, lastName);
+    setIdVerificationModalOpen(true);
+  };
+
+  const verifyId = () => {
+    setIdVerificationModalOpen(false);
+    inputEl2.current.open();
+  };
 
   return (
     <div className="row" style={{fontSize: "0.8rem"}}>
-
-
       <div className="col-sm-6">
         <div className="tab-content px-4">
           <div className="tab-pane active" id="home">
@@ -285,6 +289,36 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
                   <i className="ti-eye" />
                 </button>
               </li>
+              <li className="list-group-item text-right">
+                        <span className="pull-left">
+                           <strong>NIN ID</strong>
+                        </span>
+                {partnerDetails?.nin_id?.value}
+                {partnerDetails?.nin_id?.status ? (
+                    <i className="ti-check ml-3" />
+                ) : (
+                    <Button
+                        className={`btn-warning rounded fw-bold p-2 ml-3`}
+                        onClick={() =>
+                            partnerDetails?.nin_id?.value
+                                ? triggerIdVerifcation("nin", partnerDetails?.nin_id?.value, partnerDetails?.first_name, partnerDetails?.last_name)
+                                : NotificationManager.error("No provided ID number")
+                        }
+                    >
+                      Run Check
+                    </Button>
+                )}
+              </li>
+              {/*<li className="list-group-item text-right">*/}
+              {/*  <span className="pull-left">*/}
+              {/*    <strong>NIN</strong>*/}
+              {/*  </span>*/}
+              {/*  /!*nin_id: {value: '29292929293', status: false}*!/*/}
+              {/*  {partnerDetails?.nin_id?.value}*/}
+              {/*  /!*<button type="button" className="rct-link-btn text-primary" title="view details" onClick={() => setVehiclesModal(true)}>*!/*/}
+              {/*  /!*  <i className="ti-eye" />*!/*/}
+              {/*  /!*</button>*!/*/}
+              {/*</li>*/}
               {partnerDetails?.partner_data?.account_type === 'organization' &&
                   <li className="list-group-item text-right">
                 <span className="pull-left">
@@ -437,10 +471,123 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
           title="Are You Sure You want to verify this partner"
           message="This will verify the partner."
           onConfirm={() => {
-            changePartnerStatus(partnerDetails?.auth_id, "2", partnerDetails, emailMessages.verifiedPartnerMsg(messageData), "Verified")
+            changePartnerStatus(partnerDetails?.auth_id, "2", partnerDetails, {}, "Verified")
             inputEl.current.close();
           }}
       />
+
+      {/* modal for verifying each of the IDs */}
+      <Modal size="md" isOpen={idVerificationModalOpen} toggle={() => setIdVerificationModalOpen(!idVerificationModalOpen)}>
+        <ModalHeader toggle={() => setIdVerificationModalOpen(!idVerificationModalOpen)}>Verify {idVerificationType(idType)}</ModalHeader>
+        <ModalBody style={{ minHeight: 100 }}>
+          {loadingStatus && (
+              <div className="d-flex flex-column justify-content-center align-items-center">
+                <Spinner />
+                <h3 className="fw-bold mt-3">verifying id </h3>
+              </div>
+          )}
+          {!loadingStatus && (
+              <div>
+                {isTest && (
+                    <div>
+                      <div className="d-flex flex-column justify-content-center align-items-center">
+                        <div className="fw-bold text-danger">This is test enironment so there is no verification API call </div>
+                      </div>
+                      <div className="mt-2 text-right">
+                        <button className=" btn rounded btn-primary" onClick={() => verifyId(idType)}>
+                          Verify {idVerificationType(idType)}
+                        </button>
+                      </div>
+                    </div>
+                )}
+                {verificationResult?.status === "error" && (
+                    <div className="d-flex flex-column justify-content-center align-items-center">
+                      <div className="fw-bold text-danger">{verificationResult?.msg} </div>
+                    </div>
+                )}
+                {verificationResult?.status === "error" && (
+                    <div className="d-flex flex-column justify-content-center align-items-center">
+                      <div className="fw-bold text-danger">{verificationResult?.message} </div>
+                    </div>
+                )}
+                {verificationResult?.status === "success" && (
+                    <div>
+                      <ul className="list-group">
+                        <div className="rounded rounded-circle">
+                          <img src={`data:image/png;base64, ${verificationResult?.data?.photo}`} alt="Red dot" />
+                          {/* <img alt="" src={verificationResult?.data?.photo} /> */}
+                        </div>
+                        <li className="list-group-item text-right">
+                                 <span className="pull-left">
+                                    <strong>Name</strong>
+                                 </span>
+                          {`${verificationResult?.data?.firstname} ${verificationResult?.data?.middlename} ${verificationResult?.data?.lastname}`}
+                        </li>
+
+                        <li className="list-group-item text-right">
+                                 <span className="pull-left">
+                                    <strong>First Name Matches Reg. Details</strong>
+                                 </span>
+                          {`${verificationResult?.data?.firstname?.toUpperCase() === partnerDetails?.first_name?.toUpperCase() ? "Yes" : "No"} `}
+                        </li>
+                        <li className="list-group-item text-right">
+                                 <span className="pull-left">
+                                    <strong>Last Name Matches Reg. Details</strong>
+                                 </span>
+                          {`${verificationResult?.data?.lastname?.toUpperCase() === partnerDetails?.last_name?.toUpperCase() ? "Yes" : "No"} `}
+                        </li>
+                        <li className="list-group-item text-right">
+                                 <span className="pull-left">
+                                    <strong>Phone Number Matches Reg. Details</strong>
+                                 </span>
+                          {`${verificationResult?.data?.phone === partnerDetails?.phone_number ? "Yes" : "No"} `}
+                        </li>
+                        <li className="list-group-item text-right">
+                                 <span className="pull-left">
+                                    <strong>Birth Date</strong>
+                                 </span>
+                          {`${verificationResult?.data?.birthdate} `}
+                        </li>
+                        <li className="list-group-item text-right">
+                                 <span className="pull-left">
+                                    <strong>Gender</strong>
+                                 </span>
+                          {`${verificationResult?.data?.gender} `}
+                        </li>
+                        <div className="mt-2 text-right">
+                          <button className=" btn rounded btn-primary" onClick={() => verifyId(idType)}>
+                            Verify {idVerificationType(idType)}
+                          </button>
+                        </div>
+                      </ul>
+                    </div>
+                )}
+
+                {/* to handle internal server error */}
+                {Object.keys(verificationResult).length !== 0 && verificationResult?.code === undefined && (
+                    <div>
+                      <ul className="list-group">
+                        <li className="list-group-item text-center">
+                          <div className="text-danger fw-bold">{`${verificationResult}`}</div>
+                        </li>
+                      </ul>
+                    </div>
+                )}
+              </div>
+          )}
+        </ModalBody>
+      </Modal>
+      {/*nin verify modal*/}
+      <DeleteConfirmationDialog
+          ref={inputEl2}
+          title="Are You Sure You want to change this partner nin status?"
+          message="This will verify the partner nin"
+          onConfirm={() => {
+            verifyPartnerNIN(partnerDetails?.auth_id, "1", idType);
+            inputEl2.current.close();
+          }}
+      />
+
     </div>
   );
 };
@@ -448,8 +595,12 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
 function mapDispatchToProps(dispatch) {
   return {
     assignVehicleToPartner: (vehicle_id, auth_id, setAddVehicleModal) => dispatch(assignVehicleToPartner(vehicle_id, auth_id, setAddVehicleModal)),
-    changePartnerStatus: (auth_id, partner_status, partnerData, message_type, subject) => dispatch(changePartnerStatus(auth_id, partner_status, partnerData, message_type, subject)),
+    changePartnerStatus: (auth_id, partner_status) => dispatch(changePartnerStatus(auth_id, partner_status)),
     revokePartnerVehicle: (vehicle_id, vehicleDetails, partnerDetails) => dispatch(revokePartnerVehicle(vehicle_id, vehicleDetails, partnerDetails)),
+    sendVerificationRequest: (id_type, id_value, first_name, last_name) => dispatch(sendVerificationRequest(id_type, id_value, first_name, last_name)),
+    verifyPartnerNIN: (auth_id, verification_status, verification_name) => dispatch(verifyPartnerNIN(auth_id, verification_status, verification_name)),
+
+
 
 
 
@@ -463,6 +614,9 @@ const mapStateToProps = (state) => ({
   loadingStatus: state.loading.loadingStatus,
   driversCount: state.partners.partnerDriversCount,
   fees: state.customerCare.customerCareNumbers,
+  dataMode: state.authUser.userProfile.data_mode,
+  verificationResult: state.idVerification.verificationResult,
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PartnerProfile)
