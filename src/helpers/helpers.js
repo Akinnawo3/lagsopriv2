@@ -193,6 +193,8 @@ export function getStatus2(status) {
     return "Failed";
   } else if (status === -1) {
     return "Debited";
+  } else if (status === 3) {
+    return "Abandoned";
   } else {
     return "Failed";
   }
@@ -207,6 +209,8 @@ export function getStatusColor2(status) {
     return "success";
   } else if (status === 2) {
     return "danger";
+  } else if (status === 3) {
+    return "secondary";
   } else {
     return "danger";
   }

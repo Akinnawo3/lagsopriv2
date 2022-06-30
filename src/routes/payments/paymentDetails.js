@@ -94,12 +94,12 @@ const PaymentDetails = ({match, payment, getPaymentDetails, sosUserDetails}) => 
                   </span>
                   {payment?.trip_class}
                 </li>
-                <li className="list-group-item text-right">
+                {/* <li className="list-group-item text-right">
                   <span className="pull-left">
                     <strong>Promo</strong>
                   </span>
                   {payment?.is_promo ? "True" : "False"}
-                </li>
+                </li> */}
                 <li className="list-group-item text-right">
                   <span className="pull-left">
                     <strong>Number of Trails</strong>

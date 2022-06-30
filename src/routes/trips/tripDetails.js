@@ -278,9 +278,21 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
               <div className="schedulePickup">Estimated Fare</div>
               <div className="scheduleHeader mt-1">₦{riderDetails?.est_fare}</div>
             </div>
+       
             <div className="col-6">
               <div className="schedulePickup">Fare</div>
               <div className="scheduleHeader mt-1">₦{riderDetails?.fare}</div>
+            </div>
+          </div>
+          <div className="row mt-4">
+        
+            <div className="col-6">
+              <div className="schedulePickup">Amount</div>
+              <div className="scheduleHeader mt-1">₦{riderDetails?.amount}</div>
+            </div>
+            <div className="col-6">
+              <div className="schedulePickup">Cash Status</div>
+              <div className="scheduleHeader mt-1 text-capitalize">{riderDetails?.cash_status?.status}</div>
             </div>
           </div>
 

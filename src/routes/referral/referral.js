@@ -15,6 +15,7 @@ const qs = require("qs");
 import {getReferral, getReferralCount, getReferralPaymentDetails} from "Actions/referrerAction";
 import EmptyData from "Components/EmptyData/EmptyData";
 import Pagination from "react-js-pagination";
+import {calculatePostDate} from "../../helpers/helpers";
 
 const Referral = ({history, match, referrals, referralCount, getReferral, getReferralCount, getReferralPaymentDetails, referralPaymentDetails, loading}) => {
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
@@ -59,6 +60,7 @@ const Referral = ({history, match, referrals, referralCount, getReferral, getRef
             <Table>
               <TableHead>
                 <TableRow hover>
+                  <TableCell>Date</TableCell>
                   <TableCell>Referrer Name</TableCell>
                   <TableCell>Referrer Number</TableCell>
                   <TableCell>Referee Name</TableCell>
@@ -71,6 +73,7 @@ const Referral = ({history, match, referrals, referralCount, getReferral, getRef
                 <Fragment>
                   {referrals.map((item, key) => (
                     <TableRow hover key={item.id}>
+                      <TableCell>{calculatePostDate(item?.createdAt)}</TableCell>
                       <TableCell>{item.referrer.first_name + " " + item.referrer.last_name}</TableCell>
                       <TableCell>{item.referrer.phone_number}</TableCell>
                       <TableCell>{item.referee.first_name + " " + item.referee.last_name}</TableCell>
@@ -78,7 +81,10 @@ const Referral = ({history, match, referrals, referralCount, getReferral, getRef
                       <TableCell>
                         <Badge color={item.status === 0 ? "warning" : "success"}>{item.status === 0 ? "Pending" : "Confirmed"}</Badge>
                       </TableCell>
-                      <TableCell>{item.status === 1 && <i className="ti-eye" onClick={() => showReferralDetails(item.referral_id)} />}</TableCell>
+                      {/* <TableCell>{item.status === 1 && <i className="ti-eye" onClick={() => showReferralDetails(item.referral_id)} />}</TableCell> */}
+                      <TableCell>
+                        <i className="ti-eye" onClick={() => showReferralDetails(item.referral_id)} />
+                      </TableCell>
                     </TableRow>
                   ))}
                 </Fragment>

@@ -58,6 +58,7 @@ const SupportDetails = ({getSupportTicket, match, updateSupportTicket, supportDe
     onAddUpdateUserModalClose2();
   };
 
+  console.log(supportDetails);
   return (
     <div style={{minHeight: "90vh"}}>
       <Helmet>
@@ -95,6 +96,13 @@ const SupportDetails = ({getSupportTicket, match, updateSupportTicket, supportDe
                     <strong>Assigned To</strong>
                   </span>
                   {supportDetails?.admin_data?.first_name} {supportDetails?.admin_data?.first_last}
+                </li>
+
+                <li className="list-group-item text-right">
+                  <span className="pull-left">
+                    <strong>Trip Reference </strong>
+                  </span>
+                  {supportDetails.trip_data?.trip_ref}
                 </li>
 
                 <li className="list-group-item text-right">

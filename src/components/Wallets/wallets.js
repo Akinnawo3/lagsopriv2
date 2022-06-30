@@ -40,8 +40,8 @@ const Wallets = ({wallets, walletsCount, auth_id, getWallets, loading, wallet}) 
             </div>
           </Card>
         </Col> */}
-        <Col xs="12" sm="6" lg="3">
-          <Card className="text-success bg-light p-3">
+        <Col xs="12" sm="6" lg="4">
+          <Card className="text-success bg-light p-2">
             <CardBody className="pb-0">
               <div className="text-value text-muted fw-bold">Balance</div>
             </CardBody>

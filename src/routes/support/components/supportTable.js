@@ -66,8 +66,8 @@ const SupportTable = ({support, getSupportTickets, loading, support_type, suppor
                   <TableCell>Status</TableCell>
                   <TableCell>User Name</TableCell>
                   <TableCell>User Type</TableCell>
-
                   <TableCell>Date/ Time</TableCell>
+                  <TableCell>Trip Reference</TableCell>
                   <TableCell>Assigned</TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
@@ -85,6 +85,7 @@ const SupportTable = ({support, getSupportTickets, loading, support_type, suppor
                         {calculatePostDate(sup.createdAt)}
                         {/*{new Date(sup.timestamp.setHours(sup.timestamp.getHours() + 1))}*/}
                       </TableCell>
+                      <TableCell>{sup?.trip_data?.trip_ref}</TableCell>
                       <TableCell>
                         <Badge color={sup.assign_to ? "success" : "danger"}>{sup.assign_to ? "Yes" : "No"}</Badge>
                       </TableCell>
