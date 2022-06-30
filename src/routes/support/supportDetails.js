@@ -87,6 +87,12 @@ const SupportDetails = ({getSupportTicket, match, updateSupportTicket, supportDe
                 </li>
                 <li className="list-group-item text-right">
                   <span className="pull-left">
+                    <strong>User Phone number</strong>
+                  </span>
+                    {supportDetails?.user_data?.phone_number}
+                </li>
+                <li className="list-group-item text-right">
+                  <span className="pull-left">
                     <strong>User type</strong>
                   </span>
                   {supportDetails?.user_data?.user_type}
