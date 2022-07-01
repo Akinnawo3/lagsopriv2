@@ -453,6 +453,10 @@ const AsyncNotifications = Loadable({
   loader: () => import("Routes/notifications/notifications"),
   loading: () => <RctPageLoader />,
 });
+const AsyncSendNotifications = Loadable({
+  loader: () => import("Routes/notifications/sendNotifications/sendNotifications"),
+  loading: () => <RctPageLoader />,
+});
 
 // report
 
@@ -561,6 +565,7 @@ export {
   AsyncTrips,
   AsyncRevenues,
   AsyncNotifications,
+  AsyncSendNotifications,
   AsyncPassengers,
   AsyncDrivers,
   AsyncDriver,
@@ -650,5 +655,5 @@ export {
   AsyncPartnersPending,
   AsyncPartnersVerified,
   AsyncPartnerDrivers,
-  AsyncPartnersApproved
+  AsyncPartnersApproved,
 };
