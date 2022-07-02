@@ -12,6 +12,7 @@ import {
   AsyncCancellationReasons,
   AsyncActivityLog,
   AsyncNotifications,
+  AsyncSendNotifications,
   AsyncDisbursement,
   AsyncFinance,
   AsyncDisbursementHolders,
@@ -183,6 +184,11 @@ export default [
   {
     path: "notifications",
     component: AsyncNotifications,
+    permission: "view_notifications",
+  },
+  {
+    path: "send-notifications",
+    component: AsyncSendNotifications,
     permission: "view_notifications",
   },
   // {

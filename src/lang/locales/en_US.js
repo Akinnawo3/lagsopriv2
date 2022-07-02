@@ -19,7 +19,6 @@ module.exports = {
   "sidebar.revenueSplit": "Revenue Split",
   "sidebar.roles": "Roles",
   "sidebar.others": "Others",
-
   "sidebar.schedule": "Schedule",
   "sidebar.passengers": "Riders",
   "sidebar.approved": "Active",
@@ -158,7 +157,6 @@ module.exports = {
   "sidebar.dateAndTimePicker": "Date & Time Picker",
   "sidebar.tabs": "Tabs",
   "sidebar.stepper": "Stepper",
-  "sidebar.notification": "Notification",
   "sidebar.sweetAlert": "Sweet Alert",
   "sidebar.autoComplete": "Auto Complete",
   "sidebar.aboutUs": "About Us",
@@ -271,6 +269,7 @@ module.exports = {
   "widgets.commments": "Comments",
   "widgets.newCustomers": "New Customers",
   "widgets.recentNotifications": "Recent Notifications",
+  
   "widgets.appNotifications": "App Notifications",
   "widgets.ratings": "Ratings",
   "widgets.newEmails": "New Emails",
@@ -898,4 +897,5 @@ module.exports = {
   "sidebar.projectDetail": "project Detail",
   "sidebar.clients": "clients",
   "sidebar.reports": "reports",
+  "sidebar.notifications": "Send Notification",
 };

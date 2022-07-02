@@ -2,6 +2,12 @@
 export default {
   category1: [
     {
+      menu_title: "sidebar.notifications",
+      new_item: false,
+      path: "/admin/send-notifications",
+      menu_icon: "icon-bell",
+    },
+    {
       menu_title: "sidebar.setup",
       menu_icon: "icon-settings",
       type_multi: null,
