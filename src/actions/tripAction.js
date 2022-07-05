@@ -146,11 +146,11 @@ export const getTripCount =
   };
 
 export const getTripExport =
-  (status = "") =>
+  (status = "", driver_auth_id= '', start_date= '', end_date = '') =>
   async (dispatch) => {
     dispatch(startStatusLoading());
     try {
-      const res = await axios.get(`${api.trip}/v1.1/trips/?component=export&trip_status=${status}`);
+      const res = await axios.get(`${api.trip}/v1.1/trips/?component=export&trip_status=${status}&driver_auth_id=${driver_auth_id}&start_date=${start_date}&end_date=${end_date}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {

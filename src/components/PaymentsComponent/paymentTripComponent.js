@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useEffect, useRef, useState} from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -9,12 +9,14 @@ import {connect} from "react-redux";
 import Pagination from "react-js-pagination";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {calculatePostDate, getStatus4, getStatusColor4} from "Helpers/helpers";
-import {Badge} from "reactstrap";
-import {getPayments, getPaymentsCount} from "Actions/paymentAction";
+import {Badge, Button} from "reactstrap";
+import {getPayments, getPaymentsCount, getPaymentsExport} from "Actions/paymentAction";
 import {Link} from "react-router-dom";
+import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 
-const PaymentTripComponent = ({payments, status, paymentsCount, auth_id, getPayments, header, loading, getPaymentsCount}) => {
+const PaymentTripComponent = ({payments, status, paymentsCount, auth_id, getPayments, header, loading, getPaymentsCount, getPaymentsExport}) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const exportRef = useRef(null);
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -22,15 +24,25 @@ const PaymentTripComponent = ({payments, status, paymentsCount, auth_id, getPaym
     window.scrollTo(0, 0);
   };
 
-  console.log(payments);
+  const handleExport = () => {
+    exportRef.current.open();
+  };
 
-  // console.log(payments);
+  const confirmExport = () => {
+    exportRef.current.close();
+    getPaymentsExport(status, auth_id, "driver_id");
+  };
+
 
   return (
     <div>
       <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}}>
         {!loading && payments?.length > 0 && (
           <div>
+            <Button onClick={() => handleExport()} style={{height: "30px"}} className="align-items-center justify-content-center mr-2 float-right text-white" color="primary">
+              {" "}
+              <i className="zmdi zmdi-download mr-2"></i> Export to Excel
+            </Button>
             <div className="table-responsive" style={{minHeight: "50vh"}}>
               <Table>
                 <TableHead>
@@ -87,6 +99,8 @@ const PaymentTripComponent = ({payments, status, paymentsCount, auth_id, getPaym
         )}
         {!loading && payments?.length < 1 && <EmptyData />}
       </RctCollapsibleCard>
+      <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
+
     </div>
   );
 };
@@ -95,6 +109,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getPayments: (pageNo, transaction_status, auth_id, loading, userType) => dispatch(getPayments(pageNo, transaction_status, auth_id, loading, userType)),
     getPaymentsCount: (transaction_status, auth_id, userType) => dispatch(getPaymentsCount(transaction_status, auth_id, userType)),
+    getPaymentsExport: (status, auth_id, userType) => dispatch(getPaymentsExport(status, auth_id, userType)),
   };
 }
 

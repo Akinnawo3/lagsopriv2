@@ -1,5 +1,5 @@
-import React, {Fragment, useEffect, useState} from "react";
-import {Badge, Card, CardBody, Col, Input, Media, Row, Table} from "reactstrap";
+import React, {Fragment, useEffect, useRef, useState} from "react";
+import {Badge, Button, Card, CardBody, Col, Input, Media, Row, Table} from "reactstrap";
 import {connect} from "react-redux";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
@@ -7,12 +7,14 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import {Link} from "react-router-dom";
 import Pagination from "react-js-pagination";
-import {getDriverTripCount, getDriverTrips, getDriverTripsByTripStatus} from "Actions/tripAction";
+import {getDriverTripCount, getDriverTrips, getDriverTripsByTripStatus, getTripExport} from "Actions/tripAction";
 import EmptyData from "Components/EmptyData/EmptyData";
+import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 
-const DriverTrips = ({driverTrips, isLoading, tripCountDriver, getDriverTrips, driver_id, getDriverTripsByTripStatus, tripCountDriverAll, tripCountDriverCompleted, tripCountDriverCancelled}) => {
+const DriverTrips = ({driverTrips, isLoading, tripCountDriver, getDriverTrips, driver_id, getDriverTripsByTripStatus, tripCountDriverAll, tripCountDriverCompleted, tripCountDriverCancelled, getTripExport}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [trip_status, setTrip_status] = useState("");
+  const exportRef = useRef(null);
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -25,6 +27,15 @@ const DriverTrips = ({driverTrips, isLoading, tripCountDriver, getDriverTrips, d
     setTrip_status(e.target.value);
     setCurrentPage(1);
     getDriverTripsByTripStatus(1, driver_id, e.target.value);
+  };
+
+  const handleExport = () => {
+    exportRef.current.open();
+  };
+
+  const confirmExport = () => {
+    exportRef.current.close();
+    getTripExport(trip_status, driver_id);
   };
 
   return (
@@ -65,12 +76,18 @@ const DriverTrips = ({driverTrips, isLoading, tripCountDriver, getDriverTrips, d
             </Card>
           </Col>
         </Row>
-        <Input className="shadow mb-5" type="select" required style={{width: "120px", marginTop: "50px"}} name="trip_status" value={trip_status} onChange={onChange}>
-          <option value="">All</option>
-          <option value="completed">Completed</option>
-          <option value="cancel">Cancelled</option>
-          <option value="waiting">Waiting</option>
-        </Input>
+        <div className='d-flex justify-content-between' style={{marginTop: "50px"}}>
+          <Input className="shadow mb-5" type="select" required style={{width: "120px"}} name="trip_status" value={trip_status} onChange={onChange}>
+            <option value="">All</option>
+            <option value="completed">Completed</option>
+            <option value="cancel">Cancelled</option>
+            <option value="waiting">Waiting</option>
+          </Input>
+          <Button onClick={() => handleExport()} style={{height: "30px"}} className="align-items-center justify-content-center mr-2 text-white" color="primary">
+            {" "}
+            <i className="zmdi zmdi-download mr-2"></i> Export to Excel
+          </Button>
+        </div>
         {!isLoading && driverTrips?.length > 0 && (
           <Row>
             <Col xl={12}>
@@ -141,6 +158,7 @@ const DriverTrips = ({driverTrips, isLoading, tripCountDriver, getDriverTrips, d
         )}
         {driverTrips?.length === 0 && !isLoading && <EmptyData />}
       </div>
+      <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
     </div>
   );
 };
@@ -150,6 +168,7 @@ function mapDispatchToProps(dispatch) {
     getDriverTrips: (pageNo, authId, spinner, trip_status) => dispatch(getDriverTrips(pageNo, authId, spinner, trip_status)),
     getDriverTripsByTripStatus: (pageNo, authId, trip_status) => dispatch(getDriverTripsByTripStatus(pageNo, authId, trip_status)),
     getTripCount: (authId, trip_status) => dispatch(getDriverTripCount(authId, trip_status)),
+    getTripExport: (status, driver_id, start_date, end_date) => dispatch(getTripExport(status, driver_id, start_date, end_date)),
   };
 }
 
