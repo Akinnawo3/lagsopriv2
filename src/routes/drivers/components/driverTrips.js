@@ -10,11 +10,14 @@ import Pagination from "react-js-pagination";
 import {getDriverTripCount, getDriverTrips, getDriverTripsByTripStatus, getTripExport} from "Actions/tripAction";
 import EmptyData from "Components/EmptyData/EmptyData";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
+import {getTodayDate} from "Helpers/helpers";
 
-const DriverTrips = ({driverTrips, isLoading, tripCountDriver, getDriverTrips, driver_id, getDriverTripsByTripStatus, tripCountDriverAll, tripCountDriverCompleted, tripCountDriverCancelled, getTripExport}) => {
+const DriverTrips = ({driverTrips, isLoading, tripCountDriver, getDriverTrips, driver_id, getDriverTripsByTripStatus, tripCountDriverAll, tripCountDriverCompleted, tripCountDriverCancelled, getTripExport, getTripCount}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [trip_status, setTrip_status] = useState("");
   const exportRef = useRef(null);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -35,7 +38,12 @@ const DriverTrips = ({driverTrips, isLoading, tripCountDriver, getDriverTrips, d
 
   const confirmExport = () => {
     exportRef.current.close();
-    getTripExport(trip_status, driver_id);
+    getTripExport(trip_status, driver_id, 'driver_auth_id', startDate, endDate );
+  };
+
+  const applyFilter = () => {
+    getDriverTrips(1, driver_id, false, trip_status, startDate, endDate);
+    getTripCount(driver_id, trip_status, startDate, endDate)
   };
 
   return (
@@ -77,12 +85,27 @@ const DriverTrips = ({driverTrips, isLoading, tripCountDriver, getDriverTrips, d
           </Col>
         </Row>
         <div className='d-flex justify-content-between' style={{marginTop: "50px"}}>
-          <Input className="shadow mb-5" type="select" required style={{width: "120px"}} name="trip_status" value={trip_status} onChange={onChange}>
-            <option value="">All</option>
-            <option value="completed">Completed</option>
-            <option value="cancel">Cancelled</option>
-            <option value="waiting">Waiting</option>
-          </Input>
+          <div className='d-flex'>
+            <Input className="shadow mb-5" type="select" required style={{width: "120px"}} name="trip_status" value={trip_status} onChange={onChange}>
+              <option value="">All</option>
+              <option value="completed">Completed</option>
+              <option value="cancel">Cancelled</option>
+              <option value="waiting">Waiting</option>
+            </Input>
+            <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+              <small className="fw-bold mr-2">From</small>
+              <input type="date" id="start" name="wallet-start" defaultValue={startDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setStartDate(e.target.value)} />
+            </li>
+            <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+              <small className="fw-bold mr-2">To</small>
+              <input type="date" id="start" name="wallet-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setEndDate(e.target.value)} />
+            </li>
+            <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
+              <button className="btn btn-primary text-white" onClick={applyFilter}>
+                Apply Filter
+              </button>
+            </li>
+          </div>
           <Button onClick={() => handleExport()} style={{height: "30px"}} className="align-items-center justify-content-center mr-2 text-white" color="primary">
             {" "}
             <i className="zmdi zmdi-download mr-2"></i> Export to Excel
@@ -165,10 +188,10 @@ const DriverTrips = ({driverTrips, isLoading, tripCountDriver, getDriverTrips, d
 
 function mapDispatchToProps(dispatch) {
   return {
-    getDriverTrips: (pageNo, authId, spinner, trip_status) => dispatch(getDriverTrips(pageNo, authId, spinner, trip_status)),
+    getDriverTrips: (pageNo, authId, spinner, trip_status, start_end, end_date) => dispatch(getDriverTrips(pageNo, authId, spinner, trip_status, start_end, end_date)),
     getDriverTripsByTripStatus: (pageNo, authId, trip_status) => dispatch(getDriverTripsByTripStatus(pageNo, authId, trip_status)),
-    getTripCount: (authId, trip_status) => dispatch(getDriverTripCount(authId, trip_status)),
-    getTripExport: (status, driver_id, start_date, end_date) => dispatch(getTripExport(status, driver_id, start_date, end_date)),
+    getTripCount: (authId, trip_status, start_end, end_date) => dispatch(getDriverTripCount(authId, trip_status, start_end, end_date)),
+    getTripExport: (status, auth_id, userType, start_date, end_date) => dispatch(getTripExport(status, auth_id, userType, start_date, end_date)),
   };
 }
 

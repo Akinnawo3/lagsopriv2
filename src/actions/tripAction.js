@@ -24,12 +24,12 @@ import api from "../environments/environment";
 import {NotificationManager} from "react-notifications";
 
 export const getTrips =
-  (pageNo, status = "", spinner) =>
+  (pageNo, status = "", spinner, start_date = '', end_date = '') =>
   async (dispatch) => {
     try {
       spinner && dispatch(startLoading());
       !spinner && dispatch(startStatusLoading());
-      const res = await axios.get(`${api.trip}/v1.1/trips/?item_per_page=20&page=${pageNo}&trip_status=${status}`);
+      const res = await axios.get(`${api.trip}/v1.1/trips/?item_per_page=20&page=${pageNo}&trip_status=${status}&start_date=${start_date}&end_date=${end_date}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -130,10 +130,10 @@ export const searchTrip =
   };
 
 export const getTripCount =
-  (status = "") =>
+  (status = "", start_date = '', end_date = '') =>
   async (dispatch) => {
     try {
-      const res = await axios.get(`${api.trip}/v1.1/trips/?component=count&trip_status=${status}`);
+      const res = await axios.get(`${api.trip}/v1.1/trips/?component=count&trip_status=${status}&start_date=${start_date}&end_date=${end_date}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -146,11 +146,11 @@ export const getTripCount =
   };
 
 export const getTripExport =
-  (status = "", driver_auth_id= '', start_date= '', end_date = '') =>
+  (status = "", auth_id= '', userType, start_date= '', end_date = '') =>
   async (dispatch) => {
     dispatch(startStatusLoading());
     try {
-      const res = await axios.get(`${api.trip}/v1.1/trips/?component=export&trip_status=${status}&driver_auth_id=${driver_auth_id}&start_date=${start_date}&end_date=${end_date}`);
+      const res = await axios.get(`${api.trip}/v1.1/trips/?component=export&trip_status=${status}&${userType}=${auth_id}&start_date=${start_date}&end_date=${end_date}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -162,11 +162,11 @@ export const getTripExport =
     }
   };
 
-export const getDriverTrips = (pageNo, authId, spinner, trip_status) => async (dispatch) => {
+export const getDriverTrips = (pageNo, authId, spinner, trip_status, start_end = '', end_date = '') => async (dispatch) => {
   try {
     spinner && dispatch(startLoading());
     !spinner && dispatch(startStatusLoading());
-    const res = await axios.get(`${api.trip}/v1.1/trips/?item_per_page=20&page=${pageNo}&driver_auth_id=${authId}&trip_status=${trip_status}`);
+    const res = await axios.get(`${api.trip}/v1.1/trips/?item_per_page=20&page=${pageNo}&driver_auth_id=${authId}&trip_status=${trip_status}&start_date=${start_end}&end_date=${end_date}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
@@ -202,9 +202,9 @@ export const getDriverTripsByTripStatus = (pageNo, authId, trip_status) => async
   }
 };
 
-export const getDriverTripCount = (authId, trip_status) => async (dispatch) => {
+export const getDriverTripCount = (authId, trip_status, start_end = '', end_date = '') => async (dispatch) => {
   try {
-    const res = await axios.get(`${api.trip}/v1.1/trips/?driver_auth_id=${authId}&component=count&trip_status=${trip_status}`);
+    const res = await axios.get(`${api.trip}/v1.1/trips/?driver_auth_id=${authId}&component=count&trip_status=${trip_status}&start_date=${start_end}&end_date=${end_date}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
@@ -256,11 +256,11 @@ export const getDriverTripCountDisplayCancelled = (authId) => async (dispatch) =
   } catch (err) {}
 };
 
-export const getPassengerTrips = (pageNo, authId, spinner, trip_status) => async (dispatch) => {
+export const getPassengerTrips = (pageNo, authId, spinner, trip_status, start_date = '', end_date = '') => async (dispatch) => {
   try {
     spinner && dispatch(startLoading());
     !spinner && dispatch(startStatusLoading());
-    const res = await axios.get(`${api.trip}/v1.1/trips/?item_per_page=20&page=${pageNo}&rider_auth_id=${authId}&trip_status=${trip_status}`);
+    const res = await axios.get(`${api.trip}/v1.1/trips/?item_per_page=20&page=${pageNo}&rider_auth_id=${authId}&trip_status=${trip_status}&start_date=${start_date}&end_date=${end_date}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
@@ -296,10 +296,10 @@ export const getPassengerTripsByTripStatus = (pageNo, authId, trip_status) => as
   }
 };
 
-export const getPassengerTripCount = (authId, trip_status) => async (dispatch) => {
+export const getPassengerTripCount = (authId, trip_status, start_date = '', end_date = '') => async (dispatch) => {
   try {
     // dispatch(startLoading());
-    const res = await axios.get(`${api.trip}/v1.1/trips/?rider_auth_id=${authId}&component=count&trip_status=${trip_status}`);
+    const res = await axios.get(`${api.trip}/v1.1/trips/?rider_auth_id=${authId}&component=count&trip_status=${trip_status}&start_date=${start_date}&end_date=${end_date}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {

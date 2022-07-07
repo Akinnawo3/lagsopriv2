@@ -8,7 +8,7 @@ import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard
 import {connect} from "react-redux";
 import Pagination from "react-js-pagination";
 import EmptyData from "Components/EmptyData/EmptyData";
-import {calculatePostDate, getStatus4, getStatusColor4} from "Helpers/helpers";
+import {calculatePostDate, getStatus4, getStatusColor4, getTodayDate} from "Helpers/helpers";
 import {Badge, Button} from "reactstrap";
 import {getPayments, getPaymentsCount, getPaymentsExport} from "Actions/paymentAction";
 import {Link} from "react-router-dom";
@@ -17,6 +17,8 @@ import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/Delete
 const PaymentTripComponent = ({payments, status, paymentsCount, auth_id, getPayments, header, loading, getPaymentsCount, getPaymentsExport}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const exportRef = useRef(null);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -30,19 +32,40 @@ const PaymentTripComponent = ({payments, status, paymentsCount, auth_id, getPaym
 
   const confirmExport = () => {
     exportRef.current.close();
-    getPaymentsExport(status, auth_id, "driver_id");
+    getPaymentsExport(status, auth_id, "driver_id", startDate, endDate);
   };
+
+  const applyFilter = () => {
+    getPayments(1, status, auth_id, false, 'driver_id', startDate, endDate);
+    getPaymentsCount(status, auth_id, 'driver_id', startDate, endDate)
+  };
+
 
 
   return (
     <div>
       <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}}>
+        <div>
+          <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+            <small className="fw-bold mr-2">From</small>
+            <input type="date" id="start" name="wallet-start" defaultValue={startDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setStartDate(e.target.value)} />
+          </li>
+          <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+            <small className="fw-bold mr-2">To</small>
+            <input type="date" id="start" name="wallet-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setEndDate(e.target.value)} />
+          </li>
+          <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
+            <button className="btn btn-primary text-white" onClick={applyFilter}>
+              Apply Filter
+            </button>
+          </li>
+          <Button onClick={() => handleExport()} style={{height: "30px"}} className="align-items-center justify-content-center mr-2 float-right text-white" color="primary">
+            {" "}
+            <i className="zmdi zmdi-download mr-2"></i> Export to Excel
+          </Button>
+        </div>
         {!loading && payments?.length > 0 && (
           <div>
-            <Button onClick={() => handleExport()} style={{height: "30px"}} className="align-items-center justify-content-center mr-2 float-right text-white" color="primary">
-              {" "}
-              <i className="zmdi zmdi-download mr-2"></i> Export to Excel
-            </Button>
             <div className="table-responsive" style={{minHeight: "50vh"}}>
               <Table>
                 <TableHead>
@@ -107,9 +130,10 @@ const PaymentTripComponent = ({payments, status, paymentsCount, auth_id, getPaym
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPayments: (pageNo, transaction_status, auth_id, loading, userType) => dispatch(getPayments(pageNo, transaction_status, auth_id, loading, userType)),
-    getPaymentsCount: (transaction_status, auth_id, userType) => dispatch(getPaymentsCount(transaction_status, auth_id, userType)),
-    getPaymentsExport: (status, auth_id, userType) => dispatch(getPaymentsExport(status, auth_id, userType)),
+    getPayments: (pageNo, transaction_status, auth_id, loading, userType, start_date, end_date) => dispatch(getPayments(pageNo, transaction_status, auth_id, loading, userType, start_date, end_date)),
+    getPaymentsCount: (transaction_status, auth_id, userType, start_date, end_date) => dispatch(getPaymentsCount(transaction_status, auth_id, userType, start_date, end_date)),
+    getPaymentsExport: (status, auth_id, userType, start_date, end_date) => dispatch(getPaymentsExport(status, auth_id, userType, start_date, end_date)),
+
   };
 }
 
