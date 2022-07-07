@@ -8,7 +8,7 @@ import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard
 import {connect} from "react-redux";
 import Pagination from "react-js-pagination";
 import EmptyData from "Components/EmptyData/EmptyData";
-import {calculatePostDate, getStatus4, getStatusColor4} from "Helpers/helpers";
+import {calculatePostDate, getStatus4, getStatusColor4, getTodayDate} from "Helpers/helpers";
 import {Badge, Button} from "reactstrap";
 import {getPayments, getPaymentsCount, getPaymentsExport, searchPayment} from "Actions/paymentAction";
 import {Link} from "react-router-dom";
@@ -23,6 +23,8 @@ const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, he
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
   const exportRef = useRef(null);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const paginate = (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
@@ -36,7 +38,7 @@ const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, he
 
   const confirmExport = () => {
     exportRef.current.close();
-    getPaymentsExport(status);
+    getPaymentsExport(status, '', '', startDate, endDate);
   };
 
   const handleGetPreviousData = () => {
@@ -51,6 +53,12 @@ const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, he
     searchPayment(data, status);
   };
 
+  const applyFilter = () => {
+    history.push(`${history.location.pathname}?page=${1}`);
+   getPayments(1, status, auth_id, false, 'rider_id', startDate, endDate);
+   getPaymentsCount(status, auth_id, 'rider_id', startDate, endDate)
+  };
+
   return (
     <div>
       <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}}>
@@ -62,6 +70,19 @@ const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, he
             getCount={handleGetCount}
             placeHolder={"email, phone, trip reference"}
           />
+        </li>
+        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+          <small className="fw-bold mr-2">From</small>
+          <input type="date" id="start" name="wallet-start" defaultValue={startDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setStartDate(e.target.value)} />
+        </li>
+        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+          <small className="fw-bold mr-2">To</small>
+          <input type="date" id="start" name="wallet-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setEndDate(e.target.value)} />
+        </li>
+        <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
+          <button className="btn btn-primary" onClick={applyFilter}>
+            Apply Filter
+          </button>
         </li>
         <div className="float-right">
           {!loading && payments.length > 0 && (
@@ -138,9 +159,9 @@ const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, he
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPayments: (pageNo, transaction_status, auth_id) => dispatch(getPayments(pageNo, transaction_status, auth_id)),
-    getPaymentsExport: (status, auth_id, userType) => dispatch(getPaymentsExport(status, auth_id, userType)),
-    getPaymentsCount: (transaction_status, auth_id) => dispatch(getPaymentsCount(transaction_status, auth_id)),
+    getPayments: (pageNo, transaction_status, auth_id, loading, userType, start_date, end_date) => dispatch(getPayments(pageNo, transaction_status, auth_id, loading, userType, start_date, end_date)),
+    getPaymentsExport: (status, auth_id, userType, start_date, end_date) => dispatch(getPaymentsExport(status, auth_id, userType, start_date, end_date)),
+    getPaymentsCount: (transaction_status, auth_id, userType, start_date, end_date) => dispatch(getPaymentsCount(transaction_status, auth_id, userType, start_date, end_date)),
     searchPayment: (searchData, status) => dispatch(searchPayment(searchData, status)),
   };
 }

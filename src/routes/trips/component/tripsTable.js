@@ -18,7 +18,7 @@ import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {getCancelledTripCount, getCancelledTrips} from "../../../actions/tripAction";
 import {useHistory} from "react-router-dom";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
-import {calculatePostDate} from "../../../helpers/helpers";
+import {calculatePostDate, getTodayDate} from "../../../helpers/helpers";
 const qs = require("qs");
 
 const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, searchTrips, getTripCount, getCancelledTrips, getCancelledTripCount, getTripExport}) => {
@@ -28,6 +28,8 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
   const [postsPerPage] = useState(20);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const exportRef = useRef(null);
   const paginate = async (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
@@ -38,6 +40,12 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
 
   const getPreviousData = () => {
     status === "driver_not_found" ? getCancelledTrips(pageNumber, true) : getTrips(1, status);
+  };
+
+  const applyFilter = () => {
+    history.push(`${history.location.pathname}?page=${1}`);
+    getTrips(1, status, false, startDate, endDate)
+    getTripCount(status, startDate, endDate)
   };
 
   const getSearchData = (searchData) => {
@@ -54,7 +62,7 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
 
   const confirmExport = () => {
     exportRef.current.close();
-    getTripExport(status);
+    getTripExport(status, '', '', startDate, endDate);
   };
 
   console.log(status);
@@ -62,10 +70,24 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
     <div>
       <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}}>
         {status !== "driver_not_found" && (
-          <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-            <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={"Trip Reference"} />
-          </li>
+            <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+              <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={"Trip Reference"} />
+            </li>
         )}
+        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+          <small className="fw-bold mr-2">From</small>
+          <input type="date" id="start" name="wallet-start" defaultValue={startDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setStartDate(e.target.value)} />
+        </li>
+        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+          <small className="fw-bold mr-2">To</small>
+          <input type="date" id="start" name="wallet-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setEndDate(e.target.value)} />
+        </li>
+        <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
+          <button className="btn btn-primary" onClick={applyFilter}>
+            Apply Filter
+          </button>
+        </li>
+
         {status !== "driver_not_found" && (
           <div className="float-right">
             {!isLoading && trips.length > 0 && (
@@ -194,9 +216,9 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
 
 function mapDispatchToProps(dispatch) {
   return {
-    getTrips: (pageNo, status, spinner) => dispatch(getTrips(pageNo, status, spinner)),
-    getTripCount: (status) => dispatch(getTripCount(status)),
-    getTripExport: (status) => dispatch(getTripExport(status)),
+    getTrips: (pageNo, status, spinner, start_date, end_date) => dispatch(getTrips(pageNo, status, spinner, start_date, end_date)),
+    getTripCount: (status, start_date, end_date) => dispatch(getTripCount(status, start_date, end_date)),
+    getTripExport: (status, auth_id, userType, start_date, end_date) => dispatch(getTripExport(status, auth_id, userType, start_date, end_date)),
     searchTrips: (trip_id, status) => dispatch(searchTrip(trip_id, status)),
     getCancelledTrips: (pageNo, spinner) => dispatch(getCancelledTrips(pageNo, spinner)),
     getCancelledTripCount: () => dispatch(getCancelledTripCount()),

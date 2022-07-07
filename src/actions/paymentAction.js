@@ -26,12 +26,12 @@ import api from "../environments/environment";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "Actions/loadingAction";
 
 export const getPayments =
-  (page_no, status = "", auth_id = "", loading, userType = "rider_id") =>
+  (page_no, status = "", auth_id = "", loading, userType = "rider_id", start_date = '', end_date = '') =>
   async (dispatch) => {
     try {
       loading && dispatch(startLoading());
       !loading && dispatch(startStatusLoading());
-      const res = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?item_per_page=20&page=${page_no}&status=${status}&${userType}=${auth_id}`);
+      const res = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?item_per_page=20&page=${page_no}&status=${status}&${userType}=${auth_id}&start_date=${start_date}&end_date=${end_date}`);
       // console.log(res.data, auth_id, 'qqqqqqqq')
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
@@ -50,10 +50,10 @@ export const getPayments =
   };
 
 export const getPaymentsCount =
-  (status = "", auth_id = "", userType = "rider_id") =>
+  (status = "", auth_id = "", userType = "rider_id", start_date = '', end_date = '') =>
   async (dispatch) => {
     try {
-      const res = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?component=count&status=${status}&${userType}=${auth_id}`);
+      const res = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?component=count&status=${status}&${userType}=${auth_id}&start_date=${start_date}&end_date=${end_date}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -90,11 +90,11 @@ export const searchPayment = (searchData, status) => async (dispatch) => {
 };
 
 export const getPaymentsExport =
-  (status = "", auth_id = "", userType = "rider_id") =>
+  (status = "", auth_id = "", userType = "rider_id", start_date = '', end_date = '') =>
   async (dispatch) => {
     dispatch(startStatusLoading());
     try {
-      const res = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?component=export&status=${status}&${userType}=${auth_id}`);
+      const res = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?component=export&status=${status}&${userType}=${auth_id}&start_date=${start_date}&end_date=${end_date}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
