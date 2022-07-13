@@ -48,7 +48,6 @@ const PageTitleBar = ({title, match, enableBreadCrumb, home}) => {
             return (
               <BreadcrumbItem active={subPath.length === index + 1} tag={subPath.length === index + 1 ? "span" : Link} key={index} to={getUrlString(path, sub, index)}>
                 {sub}
-                
                 {/* {getDisplayString(sub)} */}
               </BreadcrumbItem>
             );

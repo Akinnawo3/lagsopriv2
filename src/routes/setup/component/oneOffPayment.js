@@ -17,17 +17,28 @@ import {
 import {verifyUserPermssion} from "../../../container/DefaultLayout";
 
 const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCustomerCare, createWaitingTime, createVerificationFee, createSocialDriverFee, createCommercialDriverFee, loading}) => {
-  const [parameterModalOpen, setParameterModalOpen] = useState(false);
   const [breakDownModalOpen, setBreakDownModalOpen] = useState(false);
+  const [breakDownModalOpenLoan, setBreakDownModalOpenLoan] = useState(false);
 
+  // non-loan driver total amount
   const [costAssetComm, setCostAssetComm] = useState("");
+
+  // loan driver total amount
   const [costAssetSoc, setCostAssetSoc] = useState("");
+
   const [insurance, setInsurance] = useState("");
   const [dashcam, setDashcam] = useState("");
   const [softSkillsPlusOthers, setSoftSkillsPlusOthers] = useState("");
   const [lasdri, setLasdri] = useState("");
   const [dmsSub, setDmsSub] = useState("");
   const [eTaxi, setEtaxi] = useState("");
+
+  const [insuranceLoan, setInsuranceLoan] = useState("");
+  const [dashcamLoan, setDashcamLoan] = useState("");
+  const [softSkillsPlusOthersLoan, setSoftSkillsPlusOthersLoan] = useState("");
+  const [lasdriLoan, setLasdriLoan] = useState("");
+  const [dmsSubLoan, setDmsSubLoan] = useState("");
+  const [eTaxiLoan, setEtaxiLoan] = useState("");
 
   const updateOneOffPayment = async (e) => {
     e.preventDefault();
@@ -41,34 +52,44 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
       dms_subscription: dmsSub,
       e_taxi_sub: eTaxi,
     };
+    const general_payload_loan = {
+      cost_of_asset: "",
+      insuranceLoan,
+      dashcamLoan,
+      soft_skills_plus_others_loan: softSkillsPlusOthers_Loan,
+      lasdriLoan,
+      dms_subscription_loan: dmsSubLoan,
+      e_taxi_sub_loan: eTaxiLoan,
+    };
 
-    // to update for socail driver take note of the cost_of_asset (thets were the ajor difference is)
+        // to update for commercial driver take note of the cost_of_asset (thets were the ajor difference is)
+        await createCommercialDriverFee({
+          ...general_payload,
+          cost_of_asset: costAssetComm,
+          total:
+            stringToNumber(costAssetComm) +
+            stringToNumber(insurance) +
+            stringToNumber(dashcam) +
+            stringToNumber(softSkillsPlusOthers) +
+            stringToNumber(lasdri) +
+            stringToNumber(dmsSub) +
+            stringToNumber(eTaxi),
+        });
+      };
+    // to update for socail driver take note of the cost_of_asset (thets where the major difference is)
     await createSocialDriverFee({
       ...general_payload,
       cost_of_asset: costAssetSoc,
       total:
         stringToNumber(costAssetSoc) +
-        stringToNumber(insurance) +
-        stringToNumber(dashcam) +
-        stringToNumber(softSkillsPlusOthers) +
-        stringToNumber(lasdri) +
-        stringToNumber(dmsSub) +
-        stringToNumber(eTaxi),
+        stringToNumber(insuranceLoan) +
+        stringToNumber(dashcamLoan) +
+        stringToNumber(softSkillsPlusOthersLoan) +
+        stringToNumber(lasdriLoan) +
+        stringToNumber(dmsSubLoan) +
+        stringToNumber(eTaxiLoan),
     });
-    // to update for commercial driver take note of the cost_of_asset (thets were the ajor difference is)
-    await createCommercialDriverFee({
-      ...general_payload,
-      cost_of_asset: costAssetComm,
-      total:
-        stringToNumber(costAssetComm) +
-        stringToNumber(insurance) +
-        stringToNumber(dashcam) +
-        stringToNumber(softSkillsPlusOthers) +
-        stringToNumber(lasdri) +
-        stringToNumber(dmsSub) +
-        stringToNumber(eTaxi),
-    });
-  };
+
 
   const openBreakDownModal = () => {
     setBreakDownModalOpen(true);
@@ -95,7 +116,7 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
               <div className="col col-sm-12 col-md-4 mr-3 d-flex flex-column">
                 <Card className="text-primary bg-light p-2 mb-3">
                   <CardBody className="pb-0">
-                    <div className="text-value text-left text-muted fw-bold">Commercial Driver Fee</div>
+                    <div className="text-value text-left text-muted fw-bold">Drivers fee </div>
                   </CardBody>
                   <div className="chart-wrapper mx-3 d-flex align-items-center justify-content-between" style={{height: "70px"}}>
                     <span className="pr-2 font-xl" style={{fontSize: "2.5rem"}}>
@@ -105,7 +126,7 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
                 </Card>
                 <Card className="text-primary bg-light p-2">
                   <CardBody className="pb-0">
-                    <div className="text-value text-muted fw-bold">Social Driver Fee</div>
+                    <div className="text-value text-muted fw-bold">Loan Drivers Fee</div>
                   </CardBody>
                   <div className="chart-wrapper mx-3 d-flex align-items-center  justify-content-between" style={{height: "70px"}}>
                     <span className=" font-xl" style={{fontSize: "2.5rem"}}>
@@ -175,15 +196,19 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
                         <strong>{customerCareNumbers?.com_driver_fee?.e_taxi_sub}</strong>
                       </li>
                     </ul>
-                    <div classsName="d-flex">
+                    <div classsName="d-flex mt-2">
                       {/* <button
                         className="btn border-info mr-3"
                         onClick={() => setParameterModalOpen(true)}
                       >
                         Add Parameter
                       </button> */}
-                      <button className="btn border-info" className="btn btn-info " onClick={() => verifyUserPermssion("create_setup", () => openBreakDownModal(true))}>
-                        Edit Breakdown
+                      <button className="btn border-info" onClick={() => verifyUserPermssion("create_setup", () => openBreakDownModal(true))}>
+                        Edit Breakdown (Non-Loan)
+                      </button>
+
+                      <button className="btn border-info btn-info ml-3 " onClick={() => verifyUserPermssion("create_setup", () => setBreakDownModalOpenLoan(true))}>
+                        Edit Breakdown (Loan)
                       </button>
                     </div>
                   </div>
@@ -193,55 +218,64 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
           </div>
         </RctCollapsibleCard>
       </div>
-      {/* parameter modal */}
-      <Modal isOpen={parameterModalOpen} toggle={() => setParameterModalOpen(false)} size="sm" scrollable>
-        <ModalHeader toggle={() => setParameterModalOpen(false)}>Add Parameter</ModalHeader>
-        <Form onSubmit={() => null}>
+
+      {/*driver breakdown modal (non-loan)*/}
+      <Modal isOpen={breakDownModalOpen} toggle={() => setBreakDownModalOpen(false)} size="md">
+        <ModalHeader toggle={() => setBreakDownModalOpen(false)}>One-off fee Breakdown (Non-Loan)</ModalHeader>
+        <Form onSubmit={updateOneOffPayment}>
           <ModalBody>
+            <small className="fw-bold">Percentage Cost of Asset</small>
             <FormGroup>
-              <Label for="lastName">Name</Label>
-              <Input
-                type="text"
-                name="name"
-                // value={customerCare}
-                // onChange={onChange}
-                required
-              />
+              <Label for="lastName"> Driver (Non-loan Driver)</Label>
+              <Input type="text" name="name" value={costAssetComm} onChange={(e) => setCostAssetComm(e.target.value)} required />
+            </FormGroup>
+
+            <small className="fw-bold mt-3">Others</small>
+            <FormGroup>
+              <Label for="lastName">Registration and Insurance</Label>
+              <Input type="text" name="name" value={insurance} onChange={(e) => setInsurance(e.target.value)} required />
             </FormGroup>
             <FormGroup>
-              <Label for="lastName">Amount</Label>
-              <Input
-                type="text"
-                name="number"
-                // value={customerCare}
-                // onChange={onChange}
-                required
-              />
+              <Label for="lastName">Dashcam 1st month rent</Label>
+              <Input type="text" name="number" value={dashcam} onChange={(e) => setDashcam(e.target.value)} required />
+            </FormGroup>
+            <FormGroup>
+              <Label for="lastName">Softskills training, medicals, security check..</Label>
+              <Input type="text" name="number" value={softSkillsPlusOthers} onChange={(e) => setSoftSkillsPlusOthers(e.target.value)} required />
+            </FormGroup>
+            <FormGroup>
+              <Label for="lastName">LASDRI</Label>
+              <Input type="text" name="number" value={lasdri} onChange={(e) => setLasdri(e.target.value)} required />
+            </FormGroup>
+            <FormGroup>
+              <Label for="lastName">DMS Subscription</Label>
+              <Input type="text" name="number" value={dmsSub} onChange={(e) => setDmsSub(e.target.value)} required />
+            </FormGroup>
+            <FormGroup>
+              <Label for="lastName">E-taxi License</Label>
+              <Input type="text" name="number" value={eTaxi} onChange={(e) => setEtaxi(e.target.value)} required />
             </FormGroup>
           </ModalBody>
           <ModalFooter>
-            <Button type="submit" variant="contained" className="text-white btn-info mr-2">
-              Add Parameter
+            <Button type="submit" variant="contained" className="text-white  btn-info mr-2">
+              Save Update
             </Button>
-            <Button variant="contained" className="btn btn-outline-danger" onClick={() => setParameterModalOpen(false)}>
+            <Button variant="contained" className="btn btn-outline-danger" onClick={() => setBreakDownModalOpen(false)}>
               Cancel
             </Button>
           </ModalFooter>
         </Form>
       </Modal>
 
-      {/* breakdoen modal     */}
-      <Modal isOpen={breakDownModalOpen} toggle={() => setBreakDownModalOpen(false)} size="md">
-        <ModalHeader toggle={() => setBreakDownModalOpen(false)}>One-off fee Breakdown</ModalHeader>
+      {/*driver breakdown modal (loan)*/}
+      <Modal isOpen={breakDownModalOpenLoan} toggle={() => setBreakDownModalOpenLoan(false)} size="md">
+        <ModalHeader toggle={() => setBreakDownModalOpenLoan(false)}>One-off fee Breakdown (Loan)</ModalHeader>
         <Form onSubmit={updateOneOffPayment}>
           <ModalBody>
             <small className="fw-bold">Percentage Cost of Asset</small>
+
             <FormGroup>
-              <Label for="lastName">Commercial Driver</Label>
-              <Input type="text" name="name" value={costAssetComm} onChange={(e) => setCostAssetComm(e.target.value)} required />
-            </FormGroup>
-            <FormGroup>
-              <Label for="lastName">Social Driver</Label>
+              <Label for="lastName"> Driver (Loan Driver)</Label>
               <Input type="text" name="number" value={costAssetSoc} onChange={(e) => setCostAssetSoc(e.target.value)} required />
             </FormGroup>
             <small className="fw-bold mt-3">Others</small>
@@ -274,7 +308,7 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
             <Button type="submit" variant="contained" className="text-white  btn-info mr-2">
               Save Update
             </Button>
-            <Button variant="contained" className="btn btn-outline-danger" onClick={() => setBreakDownModalOpen(false)}>
+            <Button variant="contained" className="btn btn-outline-danger" onClick={() => setBreakDownModalOpenLoan(false)}>
               Cancel
             </Button>
           </ModalFooter>
