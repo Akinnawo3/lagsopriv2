@@ -182,7 +182,7 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
                       >
                         Add Parameter
                       </button> */}
-                      <button className="btn border-info" className="btn btn-info " onClick={() => verifyUserPermssion("create_setup", () => openBreakDownModal(true))}>
+                      <button className="btn border-info" onClick={() => verifyUserPermssion("create_setup", () => openBreakDownModal(true))}>
                         Edit Breakdown
                       </button>
                     </div>
