@@ -63,6 +63,7 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
     };
 
         // to update for commercial driver take note of the cost_of_asset (thets were the ajor difference is)
+        // NowNon-Loan Drivers
         await createCommercialDriverFee({
           ...general_payload,
           cost_of_asset: costAssetComm,
@@ -77,8 +78,9 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
         });
       };
     // to update for socail driver take note of the cost_of_asset (thets where the major difference is)
+    //Now Loan Drivers
     await createSocialDriverFee({
-      ...general_payload,
+      ...general_payload_loan,
       cost_of_asset: costAssetSoc,
       total:
         stringToNumber(costAssetSoc) +
