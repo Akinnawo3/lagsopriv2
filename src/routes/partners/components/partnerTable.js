@@ -52,7 +52,7 @@ const PartnerTable = ({
     email: '',
     account_type: 'individual',
     user_type: 'partner',
-    account_class: '',
+    account_class: 'B',
   })
 
   const {last_name, first_name, account_type, email, password, phone_number, user_type, account_class} = formData
@@ -167,7 +167,7 @@ const PartnerTable = ({
                                 {/*<TableCell>{partner.last_name}</TableCell>*/}
                                 <TableCell>{partner.email}</TableCell>
                                 <TableCell>{partner.phone_number}</TableCell>
-                                <TableCell>{calculatePostDate(partner.createdAt)}</TableCell>
+                                <TableCell>{calculatePostDate(partner?.partner_data?.createdAt)}</TableCell>
                                 <TableCell>{partner?.partner_data?.account_type}</TableCell>
                                 <TableCell>
                                   <Badge color={partner?.partner_data?.partner_status === 4 ? "success" : partner?.partner_data?.partner_status === 2 ? 'primary' : "warning"}>{partner?.partner_data?.partner_status === 4 ? "Approved" : partner?.partner_data?.partner_status === 2 ? "Verified" : "Pending"}</Badge>
@@ -209,14 +209,14 @@ const PartnerTable = ({
                 <option value="organization">Organisation</option>
               </Input>
             </FormGroup>
-            <FormGroup>
-              <Label>Register as an</Label>
-              <Input type="select" value={account_class} onChange={onChange} name='account_class' required>
-                <option value="">Select Account class</option>
-                <option value="A">A</option>
-                <option value="B">B</option>
-              </Input>
-            </FormGroup>
+            {/*<FormGroup>*/}
+            {/*  <Label>Register as an</Label>*/}
+            {/*  <Input type="select" value={account_class} onChange={onChange} name='account_class' required>*/}
+            {/*    <option value="">Select Account class</option>*/}
+            {/*    <option value="A">A</option>*/}
+            {/*    <option value="B">B</option>*/}
+            {/*  </Input>*/}
+            {/*</FormGroup>*/}
             {account_type === 'organization' &&
                 <FormGroup>
                   <Label for="firstName">Organisation Name</Label>
