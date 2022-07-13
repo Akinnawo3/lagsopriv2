@@ -19,7 +19,7 @@ import {verifyUserPermssion} from "../../../container/DefaultLayout";
 const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCustomerCare, createWaitingTime, createVerificationFee, createSocialDriverFee, createCommercialDriverFee, loading}) => {
   const [parameterModalOpen, setParameterModalOpen] = useState(false);
   const [breakDownModalOpen, setBreakDownModalOpen] = useState(false);
-
+  const [breakDownModalOpenLoan, setBreakDownModalOpenLoan] = useState(false);
   const [costAssetComm, setCostAssetComm] = useState("");
   const [costAssetSoc, setCostAssetSoc] = useState("");
   const [insurance, setInsurance] = useState("");
@@ -95,7 +95,7 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
               <div className="col col-sm-12 col-md-4 mr-3 d-flex flex-column">
                 <Card className="text-primary bg-light p-2 mb-3">
                   <CardBody className="pb-0">
-                    <div className="text-value text-left text-muted fw-bold">Commercial Driver Fee</div>
+                    <div className="text-value text-left text-muted fw-bold">Drivers fee </div>
                   </CardBody>
                   <div className="chart-wrapper mx-3 d-flex align-items-center justify-content-between" style={{height: "70px"}}>
                     <span className="pr-2 font-xl" style={{fontSize: "2.5rem"}}>
@@ -105,7 +105,7 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
                 </Card>
                 <Card className="text-primary bg-light p-2">
                   <CardBody className="pb-0">
-                    <div className="text-value text-muted fw-bold">Social Driver Fee</div>
+                    <div className="text-value text-muted fw-bold">Loan Drivers Fee</div>
                   </CardBody>
                   <div className="chart-wrapper mx-3 d-flex align-items-center  justify-content-between" style={{height: "70px"}}>
                     <span className=" font-xl" style={{fontSize: "2.5rem"}}>
@@ -230,7 +230,7 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
         </Form>
       </Modal>
 
-      {/* breakdoen modal     */}
+      {/*driver breakdown modal (non-loan)*/}
       <Modal isOpen={breakDownModalOpen} toggle={() => setBreakDownModalOpen(false)} size="md">
         <ModalHeader toggle={() => setBreakDownModalOpen(false)}>One-off fee Breakdown</ModalHeader>
         <Form onSubmit={updateOneOffPayment}>
@@ -240,6 +240,51 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
               <Label for="lastName">Commercial Driver</Label>
               <Input type="text" name="name" value={costAssetComm} onChange={(e) => setCostAssetComm(e.target.value)} required />
             </FormGroup>
+
+            <small className="fw-bold mt-3">Others</small>
+            <FormGroup>
+              <Label for="lastName">Registration and Insurance</Label>
+              <Input type="text" name="name" value={insurance} onChange={(e) => setInsurance(e.target.value)} required />
+            </FormGroup>
+            <FormGroup>
+              <Label for="lastName">Dashcam 1st month rent</Label>
+              <Input type="text" name="number" value={dashcam} onChange={(e) => setDashcam(e.target.value)} required />
+            </FormGroup>
+            <FormGroup>
+              <Label for="lastName">Softskills training, medicals, security check..</Label>
+              <Input type="text" name="number" value={softSkillsPlusOthers} onChange={(e) => setSoftSkillsPlusOthers(e.target.value)} required />
+            </FormGroup>
+            <FormGroup>
+              <Label for="lastName">LASDRI</Label>
+              <Input type="text" name="number" value={lasdri} onChange={(e) => setLasdri(e.target.value)} required />
+            </FormGroup>
+            <FormGroup>
+              <Label for="lastName">DMS Subscription</Label>
+              <Input type="text" name="number" value={dmsSub} onChange={(e) => setDmsSub(e.target.value)} required />
+            </FormGroup>
+            <FormGroup>
+              <Label for="lastName">E-taxi License</Label>
+              <Input type="text" name="number" value={eTaxi} onChange={(e) => setEtaxi(e.target.value)} required />
+            </FormGroup>
+          </ModalBody>
+          <ModalFooter>
+            <Button type="submit" variant="contained" className="text-white  btn-info mr-2">
+              Save Update
+            </Button>
+            <Button variant="contained" className="btn btn-outline-danger" onClick={() => setBreakDownModalOpen(false)}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Form>
+      </Modal>
+
+      {/*driver breakdown modal (loan)*/}
+      <Modal isOpen={breakDownModalOpenLoan} toggle={() => setBreakDownModalOpenLoan(false)} size="md">
+        <ModalHeader toggle={() => setBreakDownModalOpenLoan(false)}>One-off fee Breakdown</ModalHeader>
+        <Form onSubmit={updateOneOffPayment}>
+          <ModalBody>
+            <small className="fw-bold">Percentage Cost of Asset</small>
+
             <FormGroup>
               <Label for="lastName">Social Driver</Label>
               <Input type="text" name="number" value={costAssetSoc} onChange={(e) => setCostAssetSoc(e.target.value)} required />
@@ -274,7 +319,7 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
             <Button type="submit" variant="contained" className="text-white  btn-info mr-2">
               Save Update
             </Button>
-            <Button variant="contained" className="btn btn-outline-danger" onClick={() => setBreakDownModalOpen(false)}>
+            <Button variant="contained" className="btn btn-outline-danger" onClick={() => setBreakDownModalOpenLoan(false)}>
               Cancel
             </Button>
           </ModalFooter>
