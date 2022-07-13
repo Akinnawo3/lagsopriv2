@@ -17,17 +17,28 @@ import {
 import {verifyUserPermssion} from "../../../container/DefaultLayout";
 
 const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCustomerCare, createWaitingTime, createVerificationFee, createSocialDriverFee, createCommercialDriverFee, loading}) => {
-  const [parameterModalOpen, setParameterModalOpen] = useState(false);
   const [breakDownModalOpen, setBreakDownModalOpen] = useState(false);
   const [breakDownModalOpenLoan, setBreakDownModalOpenLoan] = useState(false);
+
+  // non-loan driver total amount
   const [costAssetComm, setCostAssetComm] = useState("");
+
+  // loan driver total amount
   const [costAssetSoc, setCostAssetSoc] = useState("");
+
   const [insurance, setInsurance] = useState("");
   const [dashcam, setDashcam] = useState("");
   const [softSkillsPlusOthers, setSoftSkillsPlusOthers] = useState("");
   const [lasdri, setLasdri] = useState("");
   const [dmsSub, setDmsSub] = useState("");
   const [eTaxi, setEtaxi] = useState("");
+
+  const [insuranceLoan, setInsuranceLoan] = useState("");
+  const [dashcamLoan, setDashcamLoan] = useState("");
+  const [softSkillsPlusOthersLoan, setSoftSkillsPlusOthersLoan] = useState("");
+  const [lasdriLoan, setLasdriLoan] = useState("");
+  const [dmsSubLoan, setDmsSubLoan] = useState("");
+  const [eTaxiLoan, setEtaxiLoan] = useState("");
 
   const updateOneOffPayment = async (e) => {
     e.preventDefault();
@@ -41,34 +52,44 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
       dms_subscription: dmsSub,
       e_taxi_sub: eTaxi,
     };
+    const general_payload_loan = {
+      cost_of_asset: "",
+      insuranceLoan,
+      dashcamLoan,
+      soft_skills_plus_others_loan: softSkillsPlusOthers_Loan,
+      lasdriLoan,
+      dms_subscription_loan: dmsSubLoan,
+      e_taxi_sub_loan: eTaxiLoan,
+    };
 
-    // to update for socail driver take note of the cost_of_asset (thets were the ajor difference is)
+        // to update for commercial driver take note of the cost_of_asset (thets were the ajor difference is)
+        await createCommercialDriverFee({
+          ...general_payload,
+          cost_of_asset: costAssetComm,
+          total:
+            stringToNumber(costAssetComm) +
+            stringToNumber(insurance) +
+            stringToNumber(dashcam) +
+            stringToNumber(softSkillsPlusOthers) +
+            stringToNumber(lasdri) +
+            stringToNumber(dmsSub) +
+            stringToNumber(eTaxi),
+        });
+      };
+    // to update for socail driver take note of the cost_of_asset (thets where the major difference is)
     await createSocialDriverFee({
       ...general_payload,
       cost_of_asset: costAssetSoc,
       total:
         stringToNumber(costAssetSoc) +
-        stringToNumber(insurance) +
-        stringToNumber(dashcam) +
-        stringToNumber(softSkillsPlusOthers) +
-        stringToNumber(lasdri) +
-        stringToNumber(dmsSub) +
-        stringToNumber(eTaxi),
+        stringToNumber(insuranceLoan) +
+        stringToNumber(dashcamLoan) +
+        stringToNumber(softSkillsPlusOthersLoan) +
+        stringToNumber(lasdriLoan) +
+        stringToNumber(dmsSubLoan) +
+        stringToNumber(eTaxiLoan),
     });
-    // to update for commercial driver take note of the cost_of_asset (thets were the ajor difference is)
-    await createCommercialDriverFee({
-      ...general_payload,
-      cost_of_asset: costAssetComm,
-      total:
-        stringToNumber(costAssetComm) +
-        stringToNumber(insurance) +
-        stringToNumber(dashcam) +
-        stringToNumber(softSkillsPlusOthers) +
-        stringToNumber(lasdri) +
-        stringToNumber(dmsSub) +
-        stringToNumber(eTaxi),
-    });
-  };
+
 
   const openBreakDownModal = () => {
     setBreakDownModalOpen(true);
@@ -197,42 +218,6 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
           </div>
         </RctCollapsibleCard>
       </div>
-      {/* parameter modal */}
-      <Modal isOpen={parameterModalOpen} toggle={() => setParameterModalOpen(false)} size="sm" scrollable>
-        <ModalHeader toggle={() => setParameterModalOpen(false)}>Add Parameter</ModalHeader>
-        <Form onSubmit={() => null}>
-          <ModalBody>
-            <FormGroup>
-              <Label for="lastName">Name</Label>
-              <Input
-                type="text"
-                name="name"
-                // value={customerCare}
-                // onChange={onChange}
-                required
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label for="lastName">Amount</Label>
-              <Input
-                type="text"
-                name="number"
-                // value={customerCare}
-                // onChange={onChange}
-                required
-              />
-            </FormGroup>
-          </ModalBody>
-          <ModalFooter>
-            <Button type="submit" variant="contained" className="text-white btn-info mr-2">
-              Add Parameter
-            </Button>
-            <Button variant="contained" className="btn btn-outline-danger" onClick={() => setParameterModalOpen(false)}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </Form>
-      </Modal>
 
       {/*driver breakdown modal (non-loan)*/}
       <Modal isOpen={breakDownModalOpen} toggle={() => setBreakDownModalOpen(false)} size="md">
