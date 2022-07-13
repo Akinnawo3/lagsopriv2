@@ -175,7 +175,7 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
                         <strong>{customerCareNumbers?.com_driver_fee?.e_taxi_sub}</strong>
                       </li>
                     </ul>
-                    <div classsName="d-flex">
+                    <div classsName="d-flex mt-2">
                       {/* <button
                         className="btn border-info mr-3"
                         onClick={() => setParameterModalOpen(true)}
@@ -183,7 +183,11 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
                         Add Parameter
                       </button> */}
                       <button className="btn border-info" onClick={() => verifyUserPermssion("create_setup", () => openBreakDownModal(true))}>
-                        Edit Breakdown
+                        Edit Breakdown (Non-Loan)
+                      </button>
+
+                      <button className="btn border-info btn-info ml-3 " onClick={() => verifyUserPermssion("create_setup", () => setBreakDownModalOpenLoan(true))}>
+                        Edit Breakdown (Loan)
                       </button>
                     </div>
                   </div>
@@ -237,7 +241,7 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
           <ModalBody>
             <small className="fw-bold">Percentage Cost of Asset</small>
             <FormGroup>
-              <Label for="lastName">Commercial Driver</Label>
+              <Label for="lastName"> Driver (Non-loan Driver)</Label>
               <Input type="text" name="name" value={costAssetComm} onChange={(e) => setCostAssetComm(e.target.value)} required />
             </FormGroup>
 
@@ -286,7 +290,7 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
             <small className="fw-bold">Percentage Cost of Asset</small>
 
             <FormGroup>
-              <Label for="lastName">Social Driver</Label>
+              <Label for="lastName"> Driver (Loan Driver)</Label>
               <Input type="text" name="number" value={costAssetSoc} onChange={(e) => setCostAssetSoc(e.target.value)} required />
             </FormGroup>
             <small className="fw-bold mt-3">Others</small>
