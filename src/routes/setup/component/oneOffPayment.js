@@ -236,7 +236,7 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
 
       {/*driver breakdown modal (non-loan)*/}
       <Modal isOpen={breakDownModalOpen} toggle={() => setBreakDownModalOpen(false)} size="md">
-        <ModalHeader toggle={() => setBreakDownModalOpen(false)}>One-off fee Breakdown</ModalHeader>
+        <ModalHeader toggle={() => setBreakDownModalOpen(false)}>One-off fee Breakdown (Non-Loan)</ModalHeader>
         <Form onSubmit={updateOneOffPayment}>
           <ModalBody>
             <small className="fw-bold">Percentage Cost of Asset</small>
@@ -284,7 +284,7 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
 
       {/*driver breakdown modal (loan)*/}
       <Modal isOpen={breakDownModalOpenLoan} toggle={() => setBreakDownModalOpenLoan(false)} size="md">
-        <ModalHeader toggle={() => setBreakDownModalOpenLoan(false)}>One-off fee Breakdown</ModalHeader>
+        <ModalHeader toggle={() => setBreakDownModalOpenLoan(false)}>One-off fee Breakdown (Loan)</ModalHeader>
         <Form onSubmit={updateOneOffPayment}>
           <ModalBody>
             <small className="fw-bold">Percentage Cost of Asset</small>
