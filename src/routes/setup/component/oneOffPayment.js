@@ -362,7 +362,7 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
             <small className="fw-bold">Percentage Cost of Asset</small>
 
             <FormGroup>
-              <Label for="lastName"> Driver (Loan Driver)</Label>
+              {/* <Label for="lastName"> Driver (Loan Driver)</Label> */}
               <Input type="text" name="number" value={costAssetSoc} onChange={(e) => setCostAssetSoc(e.target.value)} required />
             </FormGroup>
             <small className="fw-bold mt-3">Others</small>

@@ -222,7 +222,9 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
                           </TableCell>
                         )}
                         <TableCell>
-                          <span className={`fw-bold ${driver.driver_data.driver_category === "commercial" ? "text-primary" : "text-danger"}`}>{driver.driver_data.driver_category}</span>
+                          <span className={`fw-bold ${driver.driver_data.driver_category === "commercial" ? "text-primary" : "text-danger"}`}>
+                            {driver.driver_data.driver_category === "commercial" ? "Self Sponsored" : "Loan"}
+                          </span>
                         </TableCell>
                         <TableCell>
                           <span
@@ -236,7 +238,7 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
                                 : "text-secondary"
                             }`}
                           >
-                            {driver.driver_data.partnership_status === 0
+                            {(driver.driver_data.partnership_status === undefined || driver.driver_data.partnership_status) === 0
                               ? "Not Interested"
                               : driver.driver_data.partnership_status === 1
                               ? "Interested"
