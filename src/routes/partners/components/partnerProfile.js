@@ -42,6 +42,8 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
   const [idType, setIdType] = useState("");
   const [idVerificationModalOpen, setIdVerificationModalOpen] = useState(false);
   const isTest = dataMode === "test";
+  const filteredVehicles = partnerDetails?.partner_data?.vehicle_interested?.filter(x => x.status === 1)
+
 
 
   const onChange = (e) => {
@@ -59,6 +61,19 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
     setIdVerificationModalOpen(false);
     inputEl2.current.open();
   };
+
+  const totalPaidVehicles = () => {
+    let count = 0;
+    if(filteredVehicles?.length > 0) {
+      filteredVehicles.forEach(item => {
+        count = count + item.unit
+      })
+    }
+    return count
+  }
+
+  console.log(totalPaidVehicles(), 'lllllll')
+
 
   return (
     <div className="row" style={{fontSize: "0.8rem"}}>
@@ -170,7 +185,7 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
           </div>
         </div>
         <div>
-          {partnerDetails?.partner_data?.partner_status === 4 &&
+          {partnerDetails?.partner_data?.partner_status === 4 && partnerDetails?.vehicle_data?.length < totalPaidVehicles() &&
               <Button onClick={() => setAddVehicleModal(true)} className="bg-warning mt-3 text-white">
                 Assign Vehicle
               </Button>
