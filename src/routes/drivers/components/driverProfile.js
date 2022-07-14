@@ -41,6 +41,7 @@ const DriverProfile = ({
   const [idType, setIdType] = useState("");
   const [driverCategory, setDriverCategory] = useState(driver?.driver_data?.driver_category);
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+  const [repaymentModalOpen, setRepaymentModalOpen] = useState(false);
   const [suspensionReasonsModalOpen, setSuspensionReasonsModalOpen] = useState(false);
   const [vehicleData, setVehicleData] = useState({});
   const [argument, setArgument] = useState(null);
@@ -50,6 +51,9 @@ const DriverProfile = ({
   const [medicalRecordsModal, setMedicalRecordsModal] = useState();
   const [tuberculosis, setTuberculosis] = useState(driver?.driver_data?.medical_record?.tuberculosis || "");
   const [hepatitis, setHepatitis] = useState(driver?.driver_data?.medical_record?.hepatitis || "");
+
+  const [debtService, setDebtService] = useState("");
+  const [loanRepayment, setLoanRepayment] = useState("");
 
   const inputEl = useRef(null);
   const [formData, setFormData] = useState({
@@ -364,6 +368,21 @@ const DriverProfile = ({
                   <strong>Daily debt service Amt</strong>
                 </span>
                 {driver?.driver_data?.payment_plan?.plan ? "₦" + driver?.driver_data?.payment_plan?.plan : "NA"}
+
+                <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => setRepaymentModalOpen(true)}>
+                  Change
+                </span>
+              </li>
+              <li className="list-group-item text-right">
+                <span className="pull-left">
+                  <strong>Loan Reepayment Amt</strong>
+                </span>
+
+                {/* {driver?.driver_data?.payment_plan?.plan ? "₦" + driver?.driver_data?.payment_plan?.plan : "NA"} */}
+
+                <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => setRepaymentModalOpen(true)}>
+                  Change
+                </span>
               </li>
 
               {driver?.driver_data?.driver_status === 4 && (
@@ -655,6 +674,27 @@ const DriverProfile = ({
           </Form>
         </ModalBody>
       </Modal>
+
+      {/* modal that changes the driver repayment stuffs */}
+      <Modal size="md" isOpen={repaymentModalOpen} toggle={() => setRepaymentModalOpen(!repaymentModalOpen)}>
+        <ModalHeader toggle={() => setRepaymentModalOpen(!repaymentModalOpen)}>Repayment Amounts</ModalHeader>
+        <ModalBody>
+          <Form onSubmit={handleCategorySubmit}>
+            <div>
+              <Label>Debt Service Amount</Label>
+              <Input type="text" name="debt_service" value="social" defaultChecked={driverCategory === "social"} onChange={() => setDriverCategory("social")} />
+            </div>
+            <div className="mt-3">
+              <Label>Loan Repayment Amount</Label>
+              <Input type="text" name="loan_repayment" value="commercial" defaultChecked={driverCategory === "commercial"} onChange={() => setDriverCategory("commercial")} />
+            </div>
+            <div className="mt-2 text-right">
+              <button className=" btn rounded btn-primary cursor-pointer">Change</button>
+            </div>
+          </Form>
+        </ModalBody>
+      </Modal>
+
       {/* Medical Records Modal */}
       <Modal size="sm" isOpen={medicalRecordsModal} toggle={() => setMedicalRecordsModal(false)}>
         <ModalHeader toggle={() => setMedicalRecordsModal(false)}>Medical Records</ModalHeader>
