@@ -1,4 +1,4 @@
-import React, {Fragment, useRef, useState} from "react";
+import React, {Fragment, useEffect, useRef, useState} from "react";
 import {Badge, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import {calculatePostDate, idVerificationType} from "Helpers/helpers";
 import AsyncSelectComponent from "Routes/drivers/components/AsyncSelect";
@@ -28,9 +28,9 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
   const inputEl2 = useRef(null);
 
   const [formData, setFormData] = useState({
-    firstname: partnerDetails?.first_name,
-    lastname: partnerDetails?.last_name,
-    email: partnerDetails?.email,
+    firstname: '',
+    lastname: '',
+    email: '',
     vehicle: "",
   });
 
@@ -71,8 +71,6 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
     }
     return count
   }
-
-  console.log(totalPaidVehicles(), 'lllllll')
 
 
   return (
@@ -186,7 +184,13 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
         </div>
         <div>
           {partnerDetails?.partner_data?.partner_status === 4 && partnerDetails?.vehicle_data?.length < totalPaidVehicles() &&
-              <Button onClick={() => setAddVehicleModal(true)} className="bg-warning mt-3 text-white">
+              <Button onClick={() => {
+                setFormData({...formData,
+                  firstname: partnerDetails?.first_name,
+                  lastname: partnerDetails?.last_name,
+                  email: partnerDetails?.email})
+                setAddVehicleModal(true)
+              }} className="bg-warning mt-3 text-white">
                 Assign Vehicle
               </Button>
           }
