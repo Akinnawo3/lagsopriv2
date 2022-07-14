@@ -352,12 +352,11 @@ const DriverProfile = ({
                 <span className="pull-left">
                   <strong>Driver Category</strong>
                 </span>
-                {driver?.driver_data?.driver_category}
-                {driver?.driver_data?.driver_status < 2 && (
-                  <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => setCategoryModalOpen(true)}>
-                    Change
-                  </span>
-                )}
+                {driver?.driver_data?.driver_category === "commercial" ? "Non-loan" : "Loan"}
+
+                <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => setCategoryModalOpen(true)}>
+                  Change
+                </span>
               </li>
 
               <li className="list-group-item text-right">
@@ -643,15 +642,15 @@ const DriverProfile = ({
         <ModalBody>
           <Form onSubmit={handleCategorySubmit}>
             <div className="px-3">
-              <Input type="radio" name="driver_category" value="social" checked={driverCategory === "social"} onChange={() => setDriverCategory("social")} />
-              Social Driver
+              <Input type="radio" name="driver_category" value="social" defaultChecked={driverCategory === "social"} onChange={() => setDriverCategory("social")} />
+              Loan Driver
             </div>
             <div className="px-3">
-              <Input type="radio" name="driver_category" value="commercial" checked={driverCategory === "commercial"} onChange={() => setDriverCategory("commercial")} />
-              Commercial Driver
+              <Input type="radio" name="driver_category" value="commercial" defaultChecked={driverCategory === "commercial"} onChange={() => setDriverCategory("commercial")} />
+              Non-loan Driver
             </div>
             <div className="mt-2 text-right">
-              <button className=" btn rounded btn-primary">Change</button>
+              <button className=" btn rounded btn-primary cursor-pointer">Change</button>
             </div>
           </Form>
         </ModalBody>
