@@ -52,6 +52,7 @@ const DriverProfile = ({
   const [tuberculosis, setTuberculosis] = useState(driver?.driver_data?.medical_record?.tuberculosis || "");
   const [hepatitis, setHepatitis] = useState(driver?.driver_data?.medical_record?.hepatitis || "");
 
+  const [oneOff, setOneOff] = useState("");
   const [debtService, setDebtService] = useState("");
   const [loanRepayment, setLoanRepayment] = useState("");
 
@@ -356,9 +357,35 @@ const DriverProfile = ({
                 <span className="pull-left">
                   <strong>Driver Category</strong>
                 </span>
-                {driver?.driver_data?.driver_category === "commercial" ? "Non-loan" : "Loan"}
+                {driver?.driver_data?.driver_category === "commercial" ? "Self Sponsored" : "Loan"}
 
                 <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => setCategoryModalOpen(true)}>
+                  Change
+                </span>
+              </li>
+
+              {driver?.driver_data?.asset_payment?.status && (
+                <li className="list-group-item text-right">
+                  <span className="pull-left">
+                    <strong>One-off Payment ID</strong>
+                  </span>
+                  {driver?.driver_data?.asset_payment?.payment_id}
+                </li>
+              )}
+              <li className="list-group-item text-right">
+                <span className="pull-left">
+                  <strong>One-off Payment</strong>
+                </span>
+                {driver?.driver_data?.asset_payment?.status ? "Paid" : "Not Paid"}
+              </li>
+              <li className="list-group-item text-right">
+                <span className="pull-left">
+                  <strong>One-off Payment Amount</strong>
+                </span>
+                {driver?.driver_data?.driver_category === "social"
+                  ? ` ₦ ${customerCareNumbers?.soc_driver_fee.total?.toLocaleString()}`
+                  : ` ₦ ${customerCareNumbers?.com_driver_fee?.total?.toLocaleString()}`}
+                <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => setRepaymentModalOpen(true)}>
                   Change
                 </span>
               </li>
@@ -375,7 +402,7 @@ const DriverProfile = ({
               </li>
               <li className="list-group-item text-right">
                 <span className="pull-left">
-                  <strong>Loan Reepayment Amt</strong>
+                  <strong>Loan Repayment Amt</strong>
                 </span>
 
                 {/* {driver?.driver_data?.payment_plan?.plan ? "₦" + driver?.driver_data?.payment_plan?.plan : "NA"} */}
@@ -518,28 +545,7 @@ const DriverProfile = ({
                   {driver?.driver_data?.verification_payment?.payment_id}
                 </li>
               )}
-              <li className="list-group-item text-right">
-                <span className="pull-left">
-                  <strong>One-off Payment Amount</strong>
-                </span>
-                {driver?.driver_data?.driver_category === "social"
-                  ? ` ₦ ${customerCareNumbers?.soc_driver_fee.total?.toLocaleString()}`
-                  : ` ₦ ${customerCareNumbers?.com_driver_fee?.total?.toLocaleString()}`}
-              </li>
-              <li className="list-group-item text-right">
-                <span className="pull-left">
-                  <strong>One-off Payment</strong>
-                </span>
-                {driver?.driver_data?.asset_payment?.status ? "Paid" : "Not Paid"}
-              </li>
-              {driver?.driver_data?.asset_payment?.status && (
-                <li className="list-group-item text-right">
-                  <span className="pull-left">
-                    <strong>One-off Payment ID</strong>
-                  </span>
-                  {driver?.driver_data?.asset_payment?.payment_id}
-                </li>
-              )}
+
               <li className="list-group-item text-right">
                 <span className="pull-left">
                   <strong> Years of Experience</strong>
@@ -666,7 +672,7 @@ const DriverProfile = ({
             </div>
             <div className="px-3">
               <Input type="radio" name="driver_category" value="commercial" defaultChecked={driverCategory === "commercial"} onChange={() => setDriverCategory("commercial")} />
-              Non-loan Driver
+              Self Sponsored Driver
             </div>
             <div className="mt-2 text-right">
               <button className=" btn rounded btn-primary cursor-pointer">Change</button>
@@ -681,12 +687,16 @@ const DriverProfile = ({
         <ModalBody>
           <Form onSubmit={handleCategorySubmit}>
             <div>
+              <Label>One-off Payment</Label>
+              <Input type="text" name="one_off" value="social" onChange={(e) => setOneOff(e.target.value)} />
+            </div>
+            <div>
               <Label>Debt Service Amount</Label>
-              <Input type="text" name="debt_service" value="social" defaultChecked={driverCategory === "social"} onChange={() => setDriverCategory("social")} />
+              <Input type="text" name="debt_service" value="social" onChange={(e) => setDebtService(e.target.value)} />
             </div>
             <div className="mt-3">
               <Label>Loan Repayment Amount</Label>
-              <Input type="text" name="loan_repayment" value="commercial" defaultChecked={driverCategory === "commercial"} onChange={() => setDriverCategory("commercial")} />
+              <Input type="text" name="loan_repayment" value="commercial" onChange={(e) => setLoanRepayment(e.target.value)} />
             </div>
             <div className="mt-2 text-right">
               <button className=" btn rounded btn-primary cursor-pointer">Change</button>

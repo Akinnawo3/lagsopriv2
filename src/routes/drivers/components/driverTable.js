@@ -68,8 +68,8 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
 
   const driverCategoryOptions = [
     {value: "", label: "- - Filter by Driver Category - -"},
-    {value: "commercial ", label: "Commercial"},
-    {value: "social", label: "Social"},
+    {value: "commercial ", label: "Self Sponsored"},
+    {value: "social", label: "Loan"},
   ];
 
   const paymentFilterOptions = [
@@ -110,13 +110,13 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
           <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} />
         </li>
-        {/* <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
+        <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
           <select id="filter-dropdown" name="fiter-dropdown" onChange={handleCategoryChange} className="p-1 px-4">
             {driverCategoryOptions.map((item) => (
               <option value={item.value}>{item.label}</option>
             ))}
           </select>
-        </li> */}
+        </li>
         <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
           <select id="filter-dropdown" name="fiter-dropdown" onChange={handlePartnerhipChange} className="p-1 px-4">
             {partnershipStatus.map((item) => (

@@ -411,3 +411,15 @@ export const serviceRequestStatuses = [
   {name: "Completed", value: "completed"},
   {name: "Rejected", value: "rejected"},
 ];
+
+export const clculateDailyLoanRepayment = (amount) => {
+  let bankLoan = 700000 - amount;
+  let interestRate = 0.19; //19% interest
+  let paymentTenureInMonth = 24; //2 years
+  let workDays = 26; //26 days in a monthly
+
+  let dailyLoanRepayment = (bankLoan + interestRate * bankLoan) / (paymentTenureInMonth * workDays);
+  return dailyLoanRepayment;
+
+  // let dailyDebtService = 6561;
+};
