@@ -145,10 +145,10 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
 
               <div className=" col-sm-12 col-md-6">
                 <div>
-                  <h3 className="fw-bold">Breakdown (Non-Loan Driver)</h3>
+                  <h3 className="fw-bold">Breakdown (Self Sponsored Drivers)</h3>
                   <Card className="text-primary bg-light p-2 mb-3">
                     <CardBody className="pb-0">
-                      <div className="text-value text-left text-muted fw-bold">Total Drivers fee </div>
+                      <div className="text-value text-left text-muted fw-bold">Total fee </div>
                     </CardBody>
                     <div className="chart-wrapper mx-3 d-flex align-items-center justify-content-between" style={{height: "70px"}}>
                       <span className="pr-2 font-xl" style={{fontSize: "2.5rem"}}>
@@ -161,7 +161,7 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
                     <ul className="list-group">
                       <li className="list-group-item text-right">
                         <span className="pull-left">
-                          <div> Non-Loan Driver </div>
+                          <div> Self Sponsored Drivers </div>
                         </span>
                         <strong>{customerCareNumbers?.com_driver_fee?.cost_of_asset}</strong>
                       </li>
@@ -215,7 +215,7 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
                         Add Parameter
                       </button> */}
                       <button className="btn border-info my-3" onClick={() => verifyUserPermssion("create_setup", () => openBreakDownModal("non-loan"))}>
-                        Edit Breakdown (Non-Loan)
+                        Edit Breakdown
                       </button>
                     </div>
                   </div>
@@ -227,7 +227,7 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
                   <h3 className="fw-bold">Breakdown (Loan Drivers)</h3>
                   <Card className="text-primary bg-light p-2 mb-3">
                     <CardBody className="pb-0">
-                      <div className="text-value text-muted fw-bold">Total Loan Drivers Fee</div>
+                      <div className="text-value text-muted fw-bold">Total Fee</div>
                     </CardBody>
                     <div className="chart-wrapper mx-3 d-flex align-items-center  justify-content-between" style={{height: "70px"}}>
                       <span className=" font-xl" style={{fontSize: "2.5rem"}}>
@@ -240,7 +240,7 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
                     <ul className="list-group">
                       <li className="list-group-item text-right">
                         <span className="pull-left">
-                          <div>Social Driver </div>
+                          <div>Loan Drivers </div>
                         </span>
                         <strong>{customerCareNumbers?.soc_driver_fee?.cost_of_asset}</strong>
                       </li>
@@ -253,37 +253,37 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
                         <span className="pull-left">
                           <div>Registration and Insurance </div>
                         </span>
-                        <strong>{customerCareNumbers?.com_driver_fee?.insurance_loan}</strong>
+                        <strong>{customerCareNumbers?.soc_driver_fee?.insurance_loan}</strong>
                       </li>
                       <li className="list-group-item text-right">
                         <span className="pull-left">
                           <div>Dashcam 1st month rent </div>
                         </span>
-                        <strong>{customerCareNumbers?.com_driver_fee?.dashcam_loan}</strong>
+                        <strong>{customerCareNumbers?.soc_driver_fee?.dashcam_loan}</strong>
                       </li>
                       <li className="list-group-item text-right">
                         <span className="pull-left">
                           <div>Soft Skill training,medicals,security check..</div>
                         </span>
-                        <strong>{customerCareNumbers?.com_driver_fee?.soft_skills_plus_others_loan}</strong>
+                        <strong>{customerCareNumbers?.soc_driver_fee?.soft_skills_plus_others_loan}</strong>
                       </li>
                       <li className="list-group-item text-right">
                         <span className="pull-left">
                           <div> LASDRI </div>
                         </span>
-                        <strong>{customerCareNumbers?.com_driver_fee?.lasdri_loan}</strong>
+                        <strong>{customerCareNumbers?.soc_driver_fee?.lasdri_loan}</strong>
                       </li>
                       <li className="list-group-item text-right">
                         <span className="pull-left">
                           <div> DMS Subscription </div>
                         </span>
-                        <strong>{customerCareNumbers?.com_driver_fee?.dms_subscription_loan}</strong>
+                        <strong>{customerCareNumbers?.soc_driver_fee?.dms_subscription_loan}</strong>
                       </li>
                       <li className="list-group-item text-right">
                         <span className="pull-left">
                           <div> E-taxi License </div>
                         </span>
-                        <strong>{customerCareNumbers?.com_driver_fee?.e_taxi_sub_loan}</strong>
+                        <strong>{customerCareNumbers?.soc_driver_fee?.e_taxi_sub_loan}</strong>
                       </li>
                     </ul>
                     <div classsName="d-flex mt-2">
@@ -295,7 +295,7 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
                       </button> */}
 
                       <button className="btn border-info btn-info mt-3 " onClick={() => verifyUserPermssion("create_setup", () => openBreakDownModal("loan"))}>
-                        Edit Breakdown (Loan)
+                        Edit Breakdown
                       </button>
                     </div>
                   </div>
@@ -308,12 +308,12 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
 
       {/*driver breakdown modal (non-loan)*/}
       <Modal isOpen={breakDownModalOpen} toggle={() => setBreakDownModalOpen(false)} size="md">
-        <ModalHeader toggle={() => setBreakDownModalOpen(false)}>One-off fee Breakdown (Non-Loan)</ModalHeader>
+        <ModalHeader toggle={() => setBreakDownModalOpen(false)}>One-off fee Breakdown (Self Sponsored Drivers)</ModalHeader>
         <Form onSubmit={updateOneOffPayment}>
           <ModalBody>
             <small className="fw-bold">Percentage Cost of Asset</small>
             <FormGroup>
-              <Label for="lastName"> Driver (Non-loan Driver)</Label>
+              {/* <Label for="lastName" > Driver (Non-loan Driver)</Label> */}
               <Input type="text" name="name" value={costAssetComm} onChange={(e) => setCostAssetComm(e.target.value)} required />
             </FormGroup>
 
@@ -356,7 +356,7 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
 
       {/*driver breakdown modal (loan)*/}
       <Modal isOpen={breakDownModalOpenLoan} toggle={() => setBreakDownModalOpenLoan(false)} size="md">
-        <ModalHeader toggle={() => setBreakDownModalOpenLoan(false)}>One-off fee Breakdown (Loan)</ModalHeader>
+        <ModalHeader toggle={() => setBreakDownModalOpenLoan(false)}>One-off fee Breakdown (Loan Drivers)</ModalHeader>
         <Form onSubmit={updateOneOffPayment}>
           <ModalBody>
             <small className="fw-bold">Percentage Cost of Asset</small>
