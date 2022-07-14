@@ -238,7 +238,7 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
                                 : "text-secondary"
                             }`}
                           >
-                            {(driver.driver_data.partnership_status === undefined || driver.driver_data.partnership_status) === 0
+                            {driver.driver_data.partnership_status === undefined || driver.driver_data.partnership_status === 0
                               ? "Not Interested"
                               : driver.driver_data.partnership_status === 1
                               ? "Interested"
