@@ -1,4 +1,4 @@
-import React, {Fragment, useRef, useState} from "react";
+import React, {Fragment, useEffect, useRef, useState} from "react";
 import {Badge, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import {calculatePostDate, idVerificationType} from "Helpers/helpers";
 import AsyncSelectComponent from "Routes/drivers/components/AsyncSelect";
@@ -28,9 +28,9 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
   const inputEl2 = useRef(null);
 
   const [formData, setFormData] = useState({
-    firstname: partnerDetails?.first_name,
-    lastname: partnerDetails?.last_name,
-    email: partnerDetails?.email,
+    firstname: '',
+    lastname: '',
+    email: '',
     vehicle: "",
   });
 
@@ -42,6 +42,8 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
   const [idType, setIdType] = useState("");
   const [idVerificationModalOpen, setIdVerificationModalOpen] = useState(false);
   const isTest = dataMode === "test";
+  const filteredVehicles = partnerDetails?.partner_data?.vehicle_interested?.filter(x => x.status === 1)
+
 
 
   const onChange = (e) => {
@@ -59,6 +61,17 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
     setIdVerificationModalOpen(false);
     inputEl2.current.open();
   };
+
+  const totalPaidVehicles = () => {
+    let count = 0;
+    if(filteredVehicles?.length > 0) {
+      filteredVehicles.forEach(item => {
+        count = count + item.unit
+      })
+    }
+    return count
+  }
+
 
   return (
     <div className="row" style={{fontSize: "0.8rem"}}>
@@ -170,8 +183,14 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
           </div>
         </div>
         <div>
-          {partnerDetails?.partner_data?.partner_status === 4 &&
-              <Button onClick={() => setAddVehicleModal(true)} className="bg-warning mt-3 text-white">
+          {partnerDetails?.partner_data?.partner_status === 4 && partnerDetails?.vehicle_data?.length < totalPaidVehicles() &&
+              <Button onClick={() => {
+                setFormData({...formData,
+                  firstname: partnerDetails?.first_name,
+                  lastname: partnerDetails?.last_name,
+                  email: partnerDetails?.email})
+                setAddVehicleModal(true)
+              }} className="bg-warning mt-3 text-white">
                 Assign Vehicle
               </Button>
           }
