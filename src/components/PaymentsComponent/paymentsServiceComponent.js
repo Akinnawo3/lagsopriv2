@@ -13,16 +13,18 @@ import {calculatePostDate, getStatus, getStatusColor} from "Helpers/helpers";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {Link} from "react-router-dom";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
-import {getDriverRevenueSPlit} from "../../actions/revenueSplitAction";
+import {getDriverRevenueSPlit, exportDriverRevenueSplit} from "../../actions/revenueSplitAction";
 import moment from "moment";
 import {getFirstDayOfMonth, getTodayDate} from "../../helpers/helpers";
 import {Button} from "reactstrap";
+import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 
 //driver debt service
-const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenueSplit, loading}) => {
+const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenueSplit, loading, exportDriverRevenueSplit}) => {
   const [dateType, setDateType] = useState("daily");
   const [startDate, setStartDate] = useState(getFirstDayOfMonth());
   const [endDate, setEndDate] = useState(getTodayDate());
+  const exportRef = useRef(null);
 
   const formatByDateType = (timeStamp) => {
     if (dateType === "daily") {
@@ -54,6 +56,16 @@ const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenue
     {value: "monthly", label: "Monthly"},
     {value: "yearly", label: "Yearly"},
   ];
+
+  const handleExport = () => {
+    exportRef.current.open();
+  };
+
+  const confirmExport = () => {
+    exportRef.current.close();
+    exportDriverRevenueSplit(auth_id, startDate, endDate, dateType);
+  };
+
   return (
     <div>
       <RctCollapsibleCard heading={"Debt Service History"} fullBlock style={{minHeight: "70vh"}}>
@@ -82,6 +94,11 @@ const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenue
 
         {!loading && driverRevenueSplit.length > 0 && (
           <>
+            <div className="d-flex justify-content-end mb-2">
+              <Button onClick={handleExport} style={{height: "30px"}} className="align-items-center text-light justify-content-center" color="primary">
+                Export to Excel
+              </Button>
+            </div>
             <div className="table-responsive" style={{minHeight: "50vh"}}>
               <Table>
                 <TableHead>
@@ -134,12 +151,14 @@ const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenue
         )}
         {driverRevenueSplit.length === 0 && !loading && <EmptyData />}
       </RctCollapsibleCard>
+      <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
     </div>
   );
 };
 function mapDispatchToProps(dispatch) {
   return {
     getDriverRevenueSPlit: (spinner, driverID, startDate, endDate, dateType) => dispatch(getDriverRevenueSPlit(spinner, driverID, startDate, endDate, dateType)),
+    exportDriverRevenueSplit: (driverID, startDate, endDate, dateType) => dispatch(exportDriverRevenueSplit(driverID, startDate, endDate, dateType)),
   };
 }
 const mapStateToProps = (state) => ({
