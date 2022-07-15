@@ -19,6 +19,7 @@ import {calculatePostDate, clculateDailyLoanRepayment} from "../../../helpers/he
 export let onAddVehicleModalClose;
 export let closeMedicalRecordModal;
 export let onVerified;
+export let closeRepaymentModal;
 const DriverProfile = ({
   driver,
   changeDriverStatus,
@@ -53,9 +54,9 @@ const DriverProfile = ({
   const [tuberculosis, setTuberculosis] = useState(driver?.driver_data?.medical_record?.tuberculosis || "");
   const [hepatitis, setHepatitis] = useState(driver?.driver_data?.medical_record?.hepatitis || "");
 
-  const [oneOff, setOneOff] = useState("");
-  const [debtService, setDebtService] = useState("");
-  const [loanRepayment, setLoanRepayment] = useState("");
+  const [oneOff, setOneOff] = useState(driver?.driver_data?.asset_payment?.amount || "");
+  const [debtService, setDebtService] = useState(driver?.driver_data?.payment_plan?.plan);
+  const [loanRepayment, setLoanRepayment] = useState(driver?.driver_data?.payment_plan?.loan);
 
   const inputEl = useRef(null);
   const [formData, setFormData] = useState({
@@ -183,6 +184,9 @@ const DriverProfile = ({
   closeMedicalRecordModal = () => {
     setMedicalRecordsModal(false);
   };
+  closeRepaymentModal = () => {
+    setRepaymentModalOpen(false);
+  };
 
   const onConfirm = () => {
     if (argument === 1) {
@@ -216,14 +220,13 @@ const DriverProfile = ({
   const handleRepaymentsUpdate = (e) => {
     e.preventDefault();
     updateDriver({
+      component: "debt_service",
       one_off_amount: oneOff,
       loan_service_fee: loanRepayment,
       debt_service_fee: debtService,
       auth_id: driver?.auth_id,
     });
   };
-
-  //console.log(driver);
 
   return (
     <div className="row" style={{fontSize: "0.8rem"}}>
@@ -393,7 +396,10 @@ const DriverProfile = ({
                 <span className="pull-left">
                   <strong>One-off Payment Amount</strong>
                 </span>
-                {driver?.driver_data?.driver_category === "social"
+
+                {oneOff
+                  ? ` ₦ ${oneOff.toLocaleString()}`
+                  : driver?.driver_data?.driver_category === "social"
                   ? ` ₦ ${customerCareNumbers?.soc_driver_fee.total?.toLocaleString()}`
                   : ` ₦ ${customerCareNumbers?.com_driver_fee?.total?.toLocaleString()}`}
                 <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => setRepaymentModalOpen(true)}>
@@ -415,6 +421,7 @@ const DriverProfile = ({
                 <span className="pull-left">
                   <strong>Loan Repayment Amt</strong>
                 </span>
+                {driver?.driver_data?.payment_plan?.loan ? "₦" + driver?.driver_data?.payment_plan?.loan : "NA"}
 
                 {/* {driver?.driver_data?.payment_plan?.plan ? "₦" + driver?.driver_data?.payment_plan?.plan : "NA"} */}
 
@@ -702,6 +709,8 @@ const DriverProfile = ({
               <Input
                 required
                 type="number"
+                min={140000}
+                max={700000}
                 name="one_off"
                 value={oneOff}
                 onChange={(e) => {
