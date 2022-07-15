@@ -329,11 +329,10 @@ const Disbursement = (props) => {
                       <TableRow hover>
                         <TableCell>Date</TableCell>
                         <TableCell>Name</TableCell>
-                        <TableCell>Account No</TableCell>
                         <TableCell>Bank Name</TableCell>
+                        <TableCell>Total Cash Collected</TableCell>
                         <TableCell>Actual Amount</TableCell>
                         <TableCell>Amount</TableCell>
-                        <TableCell>Email</TableCell>
                         <TableCell>Phone No</TableCell>
                         <TableCell>Status</TableCell>
                       </TableRow>
@@ -349,10 +348,10 @@ const Disbursement = (props) => {
                                   {item?.user_data?.first_name} {item?.user_data?.last_name}
                                 </TableCell>
                                 <TableCell>{item.account_data.account_name}</TableCell>
-                                <TableCell>{item.account_data.bank_name}</TableCell>
+                                {/* <TableCell>{item.account_data.bank_name}</TableCell> */}
+                                <TableCell>₦{item?.payment_summary?.total_cash_collected?.toLocaleString()}</TableCell>
                                 <TableCell>₦{item?.actual_amount?.toLocaleString()}</TableCell>
-                                <TableCell>₦{item?.amount?.toLocaleString()}</TableCell>
-                                <TableCell>{item?.user_data?.email}</TableCell>
+                                <TableCell>₦{item?.payment_summary?.total_net_balance?.toLocaleString()}</TableCell>
                                 <TableCell>{item?.user_data?.phone_number}</TableCell>
                                 <TableCell>
                                   <Badge color={item?.status === 0 ? "secondary" : item?.status === 1 ? "success" : item?.status === 2 ? "danger" : "warning"}>
