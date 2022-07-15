@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from "react";
 import {Badge, ModalHeader, Modal, ModalBody, Form, FormGroup, Label, Input, ModalFooter} from "reactstrap";
 import Button from "@material-ui/core/Button";
 import {getStatus, getStatusColor, idVerificationType} from "Helpers/helpers";
-import {changeDriverStatus, changeDriverCategory, verifyID, updateMedicalRecord} from "Actions/driverAction";
+import {changeDriverStatus, changeDriverCategory, verifyID, updateMedicalRecord, updateDriver} from "Actions/driverAction";
 import {getCustomerCare} from "Actions/customerCareAction";
 import {sendVerificationRequest} from "Actions/idVerificationAction";
 import {connect} from "react-redux";
@@ -34,6 +34,7 @@ const DriverProfile = ({
   customerCareNumbers,
   verifyID,
   dataMode,
+  updateDriver,
 }) => {
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const [addVehicleModal, setAddVehicleModal] = useState(false);
@@ -210,6 +211,16 @@ const DriverProfile = ({
       }
     }
     inputEl.current.close();
+  };
+
+  const handleRepaymentsUpdate = (e) => {
+    e.preventDefault();
+    updateDriver({
+      one_off_amount: oneOff,
+      loan_service_fee: loanRepayment,
+      debt_service_fee: debtService,
+      auth_id: driver?.auth_id,
+    });
   };
 
   //console.log(driver);
@@ -685,11 +696,12 @@ const DriverProfile = ({
       <Modal size="md" isOpen={repaymentModalOpen} toggle={() => setRepaymentModalOpen(!repaymentModalOpen)}>
         <ModalHeader toggle={() => setRepaymentModalOpen(!repaymentModalOpen)}>Repayment Amounts</ModalHeader>
         <ModalBody>
-          <Form onSubmit={handleCategorySubmit}>
+          <Form onSubmit={handleRepaymentsUpdate}>
             <div>
               <Label>One-off Payment</Label>
               <Input
-                type="text"
+                required
+                type="number"
                 name="one_off"
                 value={oneOff}
                 onChange={(e) => {
@@ -700,11 +712,11 @@ const DriverProfile = ({
             </div>
             <div>
               <Label>Debt Service Amount</Label>
-              <Input type="text" name="debt_service" value={debtService} onChange={(e) => setDebtService(e.target.value)} />
+              <Input required type="text" name="debt_service" value={debtService} onChange={(e) => setDebtService(e.target.value)} />
             </div>
             <div className="mt-3">
               <Label>Loan Repayment Amount</Label>
-              <Input type="text" name="loan_repayment" value={loanRepayment} onChange={(e) => setLoanRepayment(e.target.value)} />
+              <Input required type="number" name="loan_repayment" value={loanRepayment} onChange={(e) => setLoanRepayment(e.target.value)} />
             </div>
             <div className="mt-2 text-right">
               <button className=" btn rounded btn-primary cursor-pointer">Change</button>
@@ -1055,6 +1067,7 @@ function mapDispatchToProps(dispatch) {
     assignVehicle: (vehicle_id, driver_auth_id, driverData, vehicleData, message_type) => dispatch(assignVehicleOnProfile(vehicle_id, driver_auth_id, driverData, vehicleData, message_type)),
     getVehicle: (vehicle_id, spinner) => dispatch(getVehicle(vehicle_id, spinner)),
     sendVerificationRequest: (id_type, id_value, first_name, last_name) => dispatch(sendVerificationRequest(id_type, id_value, first_name, last_name)),
+    updateDriver: (data) => dispatch(updateDriver(data)),
   };
 }
 const mapStateToProps = (state) => ({

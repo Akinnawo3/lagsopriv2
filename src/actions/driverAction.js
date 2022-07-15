@@ -241,3 +241,21 @@ export const getDriverLocation = (driverData, vehicleData) => async (dispatch) =
     dispatch(endStatusLoading());
   }
 };
+
+// pass the parameters from the page.. this can be used in a way that it can update any detail / component
+export const updateDriver = (body) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.put(`${api.user}/v1.1/admin/users`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success("Updated Successfully");
+      await dispatch(getDriver(body.auth_id, true));
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+    NotificationManager.error(err.response.data.message);
+  }
+};

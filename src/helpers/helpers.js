@@ -419,7 +419,7 @@ export const clculateDailyLoanRepayment = (amount) => {
   let workDays = 26; //26 days in a monthly
 
   let dailyLoanRepayment = (bankLoan + interestRate * bankLoan) / (paymentTenureInMonth * workDays);
-  return dailyLoanRepayment;
+  return dailyLoanRepayment.toFixed(2);
 
   // let dailyDebtService = 6561;
 };

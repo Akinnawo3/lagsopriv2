@@ -70,19 +70,16 @@ export const getDriverRevenueSPlit =
 
 //driver debt service
 export const exportDriverRevenueSplit =
-  ( driverID, startDate, endDate, dateType = "daily") =>
+  (driverID, startDate, endDate, dateType = "daily") =>
   async (dispatch) => {
     try {
       // spinner && dispatch(startLoading());
       // !spinner && dispatch(startStatusLoading());
-      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/revenue-splits/?driver_id=${driverID}&start_date=${startDate}&end_date=${endDate}&date_type=${dateType}&component=export`);
+      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/revenue-splits/?driver_id=${driverID}&start_date=${startDate}&end_date=${endDate}&component=export`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
-        dispatch({
-          type: DRIVER_REVENUE_SPLIT,
-          payload: res.data.data,
-        });
+        await NotificationManager.success("Data Exported Successfully");
       }
       // dispatch(endLoading());
       // dispatch(endStatusLoading());
