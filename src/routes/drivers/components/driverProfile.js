@@ -15,7 +15,7 @@ import suspensionReasonsList from "../../../assets/data/suspension-reasons/suspe
 import Spinner from "Components/spinner/Spinner";
 import {verifyUserPermssion} from "../../../container/DefaultLayout";
 import AsyncSelectComponent from "./AsyncSelect";
-import {calculatePostDate} from "../../../helpers/helpers";
+import {calculatePostDate, clculateDailyLoanRepayment} from "../../../helpers/helpers";
 export let onAddVehicleModalClose;
 export let closeMedicalRecordModal;
 export let onVerified;
@@ -688,15 +688,23 @@ const DriverProfile = ({
           <Form onSubmit={handleCategorySubmit}>
             <div>
               <Label>One-off Payment</Label>
-              <Input type="text" name="one_off" value="social" onChange={(e) => setOneOff(e.target.value)} />
+              <Input
+                type="text"
+                name="one_off"
+                value={oneOff}
+                onChange={(e) => {
+                  setOneOff(e.target.value);
+                  setLoanRepayment(clculateDailyLoanRepayment(e.target.value));
+                }}
+              />
             </div>
             <div>
               <Label>Debt Service Amount</Label>
-              <Input type="text" name="debt_service" value="social" onChange={(e) => setDebtService(e.target.value)} />
+              <Input type="text" name="debt_service" value={debtService} onChange={(e) => setDebtService(e.target.value)} />
             </div>
             <div className="mt-3">
               <Label>Loan Repayment Amount</Label>
-              <Input type="text" name="loan_repayment" value="commercial" onChange={(e) => setLoanRepayment(e.target.value)} />
+              <Input type="text" name="loan_repayment" value={loanRepayment} onChange={(e) => setLoanRepayment(e.target.value)} />
             </div>
             <div className="mt-2 text-right">
               <button className=" btn rounded btn-primary cursor-pointer">Change</button>
