@@ -9,7 +9,15 @@ import TableBody from "@material-ui/core/TableBody";
 import EmptyData from "Components/EmptyData/EmptyData";
 import Pagination from "react-js-pagination";
 import {connect} from "react-redux";
-import {getFinanceHolderLogs, getFinanceHolderLogsCount, getFinanceHolderPayouts, getFinanceHolderPayoutsCount, searchFinanceHolderLogs, searchFinanceHolderPayouts} from "Actions/paymentAction";
+import {
+  getFinanceHolderLogs,
+  getFinanceHolderLogsCount,
+  getFinanceHolderPayouts,
+  getFinanceHolderPayoutsCount,
+  searchFinanceHolderLogs,
+  searchFinanceHolderPayouts,
+  approvePayout,
+} from "Actions/paymentAction";
 import {Link} from "react-router-dom";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {Badge, Form, Input, Modal, ModalBody, ModalHeader} from "reactstrap";
@@ -32,6 +40,7 @@ const DisbursementHolder = (props) => {
     match,
     searchFinanceDriverLogs,
     searchFinanceDriverPayouts,
+    approvePayout,
   } = props;
 
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
@@ -87,6 +96,12 @@ const DisbursementHolder = (props) => {
     // getFinanceService('service', dateType, startDate, endDate)
     // getFinanceWallet('wallet', dateType, startDate, endDate)
   };
+  const makeApproval = () =>
+    approvePayout({
+      user_type: "stakeholder",
+      start_date: startDate,
+      end_date: endDate,
+    });
 
   return (
     <div className="table-wrapper">
@@ -231,6 +246,11 @@ const DisbursementHolder = (props) => {
             </>
           ) : (
             <>
+              <div className="d-flex justify-content-end mr-2 mb-2">
+                <Button onClick={makeApproval} style={{height: "30px"}} className="align-items-center justify-content-center" color="primary">
+                  Approve Payout
+                </Button>
+              </div>
               {financeDriverPayouts?.length > 0 && (
                 <div className="table-responsive" style={{minHeight: "50vh"}}>
                   <Table>
@@ -383,6 +403,7 @@ function mapDispatchToProps(dispatch) {
     getFinanceDriverPayouts: (page_no, loading, date_type, start_date, end_date) => dispatch(getFinanceHolderPayouts(page_no, loading, date_type, start_date, end_date)),
     getFinanceDriverPayoutsCount: (loading, date_type, start_date, end_date) => dispatch(getFinanceHolderPayoutsCount(loading, date_type, start_date, end_date)),
     searchFinanceDriverPayouts: (searchData) => dispatch(searchFinanceHolderPayouts(searchData)),
+    approvePayout: (data) => dispatch(approvePayout(data)),
   };
 }
 

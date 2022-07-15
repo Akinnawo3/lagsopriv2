@@ -26,7 +26,7 @@ import api from "../environments/environment";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "Actions/loadingAction";
 
 export const getPayments =
-  (page_no, status = "", auth_id = "", loading, userType = "rider_id", start_date = '', end_date = '') =>
+  (page_no, status = "", auth_id = "", loading, userType = "rider_id", start_date = "", end_date = "") =>
   async (dispatch) => {
     try {
       loading && dispatch(startLoading());
@@ -50,7 +50,7 @@ export const getPayments =
   };
 
 export const getPaymentsCount =
-  (status = "", auth_id = "", userType = "rider_id", start_date = '', end_date = '') =>
+  (status = "", auth_id = "", userType = "rider_id", start_date = "", end_date = "") =>
   async (dispatch) => {
     try {
       const res = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?component=count&status=${status}&${userType}=${auth_id}&start_date=${start_date}&end_date=${end_date}`);
@@ -90,7 +90,7 @@ export const searchPayment = (searchData, status) => async (dispatch) => {
 };
 
 export const getPaymentsExport =
-  (status = "", auth_id = "", userType = "rider_id", start_date = '', end_date = '') =>
+  (status = "", auth_id = "", userType = "rider_id", start_date = "", end_date = "") =>
   async (dispatch) => {
     dispatch(startStatusLoading());
     try {
@@ -601,8 +601,6 @@ export const searchFinanceHolderPayouts = (searchData) => async (dispatch) => {
   }
 };
 
-
-
 export const getFinanceDriverLogsExport =
   (date_type = "", start_date = "", end_date = "") =>
   async (dispatch) => {
@@ -620,7 +618,7 @@ export const getFinanceDriverLogsExport =
     }
   };
 
-  export const getFinanceDriverPayoutExport =
+export const getFinanceDriverPayoutExport =
   (start_date = "", end_date = "", status = "") =>
   async (dispatch) => {
     dispatch(startStatusLoading());
@@ -636,3 +634,20 @@ export const getFinanceDriverLogsExport =
       dispatch(endStatusLoading());
     }
   };
+
+export const approvePayout = (body) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.post(`${api.revenueSplit}/v1.1/admin/approve-payout`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success("Payout Approved Successfully!");
+    }
+    dispatch(endStatusLoading());
+  } catch (e) {
+    console.log(e);
+    dispatch(endStatusLoading());
+    NotificationManager.error("Network error");
+  }
+};
