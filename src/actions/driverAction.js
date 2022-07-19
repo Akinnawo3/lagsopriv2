@@ -132,9 +132,9 @@ export const changeDriverCategory = (auth_id, category, driverData, message_type
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      if (driverData && message_type) {
-        await dispatch(sendDriverMessage(driverData, message_type, subject));
-      }
+      // if (driverData && message_type) {
+      //   await dispatch(sendDriverMessage(driverData, message_type, subject));
+      // }
       await NotificationManager.success("Driver Category Updated Successfully!");
       await dispatch(getDriver(auth_id, true));
     }

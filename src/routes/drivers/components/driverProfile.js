@@ -41,8 +41,10 @@ const DriverProfile = ({
   const [addVehicleModal, setAddVehicleModal] = useState(false);
   const [idVerificationModalOpen, setIdVerificationModalOpen] = useState(false);
   const [idType, setIdType] = useState("");
+
   const [driverCategory, setDriverCategory] = useState(driver?.driver_data?.driver_category);
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+  const [loanEligibilityModalOpen, setLoanEligibilityModalOpen] = useState(false);
   const [repaymentModalOpen, setRepaymentModalOpen] = useState(false);
   const [suspensionReasonsModalOpen, setSuspensionReasonsModalOpen] = useState(false);
   const [vehicleData, setVehicleData] = useState({});
@@ -53,6 +55,7 @@ const DriverProfile = ({
   const [medicalRecordsModal, setMedicalRecordsModal] = useState();
   const [tuberculosis, setTuberculosis] = useState(driver?.driver_data?.medical_record?.tuberculosis || "");
   const [hepatitis, setHepatitis] = useState(driver?.driver_data?.medical_record?.hepatitis || "");
+  const [loanEligibility, setLoanEligibility] = useState(driver?.driver_data?.loan_data?.is_eligible || "");
 
   const [oneOff, setOneOff] = useState(driver?.driver_data?.asset_payment?.amount || "");
   const [debtService, setDebtService] = useState(driver?.driver_data?.payment_plan?.plan);
@@ -154,6 +157,14 @@ const DriverProfile = ({
     setArgument(6);
     inputEl.current.open();
   };
+  const handleLoanEligibilityChange = (e) => {
+    e.preventDefault();
+    setLoanEligibilityModalOpen(false);
+    setTitle("Are you sure you want to update driver's loan eligibility?");
+    setMessage("The driver's loan eligibility will be updated");
+    setArgument(8);
+    inputEl.current.open();
+  };
 
   const triggerIdVerifcation = (type, value, firstName, lastName) => {
     setIdType(type);
@@ -213,6 +224,13 @@ const DriverProfile = ({
       } else {
         verifyID(driver?.auth_id, "1", idType);
       }
+    }
+    if (argument === 8) {
+      updateDriver({
+        component: "debt_service",
+        loan_request: loanEligibility.toString(),
+        auth_id: driver?.auth_id,
+      });
     }
     inputEl.current.close();
   };
@@ -374,6 +392,17 @@ const DriverProfile = ({
                 {driver?.driver_data?.driver_category === "commercial" ? "Self Sponsored" : "Loan"}
 
                 <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => setCategoryModalOpen(true)}>
+                  Change
+                </span>
+              </li>
+              <li className="list-group-item text-right">
+                <span className="pull-left">
+                  <strong>Loan Eligibility</strong>
+                </span>
+                {driver?.driver_data?.loan_data?.is_eligible == 2 && "Not Eligible"}
+                {driver?.driver_data?.loan_data?.is_eligible == 1 && "Eligible"}
+
+                <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => setLoanEligibilityModalOpen(true)}>
                   Change
                 </span>
               </li>
@@ -685,12 +714,31 @@ const DriverProfile = ({
         <ModalBody>
           <Form onSubmit={handleCategorySubmit}>
             <div className="px-3">
-              <Input type="radio" name="driver_category" value="social" defaultChecked={driverCategory === "social"} onChange={() => setDriverCategory("social")} />
+              <Input type="radio" name="driver_category" value="social" defaultChecked={driver?.driver_data?.driver_category === "social"} onChange={() => setDriverCategory("social")} />
               Loan Driver
             </div>
             <div className="px-3">
-              <Input type="radio" name="driver_category" value="commercial" defaultChecked={driverCategory === "commercial"} onChange={() => setDriverCategory("commercial")} />
+              <Input type="radio" name="driver_category" value="commercial" defaultChecked={driver?.driver_data?.driver_category === "commercial"} onChange={() => setDriverCategory("commercial")} />
               Self Sponsored Driver
+            </div>
+            <div className="mt-2 text-right">
+              <button className=" btn rounded btn-primary cursor-pointer">Change</button>
+            </div>
+          </Form>
+        </ModalBody>
+      </Modal>
+      {/* modal that changes loan Eligibility  */}
+      <Modal size="sm" isOpen={loanEligibilityModalOpen} toggle={() => setLoanEligibilityModalOpen(!loanEligibilityModalOpen)}>
+        <ModalHeader toggle={() => setLoanEligibilityModalOpen(!loanEligibilityModalOpen)}>Update Loan Eligibility</ModalHeader>
+        <ModalBody>
+          <Form onSubmit={handleLoanEligibilityChange}>
+            <div className="px-3">
+              <Input type="radio" id="eligible" name="loan_eligibility" defaultChecked={driver?.driver_data?.loan_data?.is_eligible == "1"} onChange={() => setLoanEligibility(1)} />
+              <Label for="eligible">Eligible</Label>
+            </div>
+            <div className="px-3">
+              <Input type="radio" id="not_eligible" name="loan_eligibility" defaultChecked={driver?.driver_data?.loan_data?.is_eligible == "2"} onChange={() => setLoanEligibility(2)} />
+              <Label for="not_eligible"> Not Eligible</Label>
             </div>
             <div className="mt-2 text-right">
               <button className=" btn rounded btn-primary cursor-pointer">Change</button>
