@@ -399,8 +399,9 @@ const DriverProfile = ({
                 <span className="pull-left">
                   <strong>Loan Eligibility</strong>
                 </span>
-                {driver?.driver_data?.loan_data?.is_eligible == 2 && "Not Eligible"}
                 {driver?.driver_data?.loan_data?.is_eligible == 1 && "Eligible"}
+                {driver?.driver_data?.loan_data?.is_eligible == 0 && "Undecided"}
+                {driver?.driver_data?.loan_data?.is_eligible == 2 && "Not Eligible"}
 
                 <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => setLoanEligibilityModalOpen(true)}>
                   Change
