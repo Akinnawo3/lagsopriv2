@@ -25,6 +25,7 @@ import {Badge, Form, Input, Modal, ModalBody, ModalHeader} from "reactstrap";
 import {calculatePostDate, getTodayDate} from "Helpers/helpers";
 import {Button} from "reactstrap";
 const qs = require("qs");
+export let changeButtonShowed;
 
 const DisbursementHolder = (props) => {
   const {
@@ -62,6 +63,7 @@ const DisbursementHolder = (props) => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [status, setStatus] = useState("");
+  const [showButton, setShowButton] = useState("");
 
   const dateTypeFilter = [
     {value: "daily", label: "Daily"},
@@ -121,6 +123,8 @@ const DisbursementHolder = (props) => {
       start_date: startDate,
       end_date: endDate,
     });
+
+  changeButtonShowed = (button) => setShowButton(button);
 
   return (
     <div className="table-wrapper">
@@ -292,12 +296,12 @@ const DisbursementHolder = (props) => {
           ) : (
             <>
               <div className="d-flex justify-content-end mr-2 mb-2">
-                {status == 0 && (
+                {showButton === "review" && (
                   <Button onClick={makeReview} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
                     Review Payout
                   </Button>
                 )}
-                {status == 4 && (
+                {showButton === "approve" && (
                   <Button onClick={makeApproval} style={{height: "30px"}} className="align-items-center justify-content-center" color="primary">
                     Approve Payout
                   </Button>
