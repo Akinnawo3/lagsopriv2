@@ -314,10 +314,13 @@ const DisbursementHolder = (props) => {
                       <TableRow hover>
                         <TableCell>Date</TableCell>
                         <TableCell>Name</TableCell>
-                        <TableCell>Account No</TableCell>
+                        <TableCell>Phone No</TableCell>
+
                         <TableCell>Bank Name</TableCell>
+                        <TableCell>Bank Acc. Number</TableCell>
+                        <TableCell>Total Amount</TableCell>
+                        <TableCell>Total Cash Collected</TableCell>
                         <TableCell>Actual Amount</TableCell>
-                        <TableCell>Amount</TableCell>
                         <TableCell>Status</TableCell>
                       </TableRow>
                     </TableHead>
@@ -327,14 +330,25 @@ const DisbursementHolder = (props) => {
                           return (
                             <TableRow hover key={key}>
                               <TableCell>{item.group_date}</TableCell>
-                              <TableCell>{item.stack_holder}</TableCell>
-                              <TableCell>{item.account_number}</TableCell>
-                              <TableCell>{item.bank_name}</TableCell>
-                              <TableCell>₦{item?.actual_amount?.toLocaleString()}</TableCell>
-                              <TableCell>₦{item?.amount?.toLocaleString()}</TableCell>
                               <TableCell>
-                                <Badge color={item?.status === 1 ? "success" : "warning"}>{item?.status === 1 ? "Successful" : "Pending"}</Badge>
+                                {item?.user_data?.first_name} {item?.user_data?.last_name}
                               </TableCell>
+                              <TableCell>{item?.user_data?.phone_number}</TableCell>
+                              <TableCell>{item?.account_data?.bank_name}</TableCell>
+                              <TableCell>{item?.account_data?.account_number}</TableCell>
+
+                              <TableCell>₦{item?.payment_summary?.total_net_balance?.toLocaleString()}</TableCell>
+                              <TableCell>₦{item?.payment_summary?.total_cash_collected?.toLocaleString()}</TableCell>
+                              <TableCell>₦{item?.actual_amount?.toLocaleString()}</TableCell>
+                              <TableCell>
+                                <Badge color={item?.status === 0 ? "secondary" : item?.status === 1 ? "success" : item?.status === 2 ? "danger" : item?.status === 3 ? "warning" : "info"}>
+                                  {item?.status === 0 ? "Pending" : item?.status === 1 ? "Completed" : item?.status === 2 ? "Failed" : item?.status === 3 ? "Processing" : "Reviewed"}
+                                </Badge>
+                              </TableCell>
+
+                              {/* <TableCell>
+                                <Badge color={item?.status === 1 ? "success" : "warning"}>{item?.status === 1 ? "Successful" : "Pending"}</Badge>
+                              </TableCell> */}
                             </TableRow>
                           );
                         })}
