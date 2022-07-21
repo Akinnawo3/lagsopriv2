@@ -112,16 +112,16 @@ const DisbursementHolder = (props) => {
   };
   const makeReview = () =>
     reviewPayout({
-      // user_type: "driver",
-      // start_date: startDate,
-      // end_date: endDate,
-      status: 1,
+      user_type: "driver",
+      start_date: startDate,
+      end_date: endDate,
     });
   const makeApproval = () =>
     approvePayout({
-      user_type: "stakeholder",
-      start_date: startDate,
-      end_date: endDate,
+      // user_type: "stakeholder",
+      // start_date: startDate,
+      // end_date: endDate,
+      status: "1",
     });
 
   changeButtonShowed = (button) => setShowButton(button);

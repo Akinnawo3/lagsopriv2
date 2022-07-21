@@ -27,7 +27,7 @@ import {Badge, Button, Input} from "reactstrap";
 import {getTodayDate} from "Helpers/helpers";
 const qs = require("qs");
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
-
+export let changeButtonShowedDriver;
 const Disbursement = (props) => {
   const {
     history,
@@ -63,6 +63,8 @@ const Disbursement = (props) => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [status, setStatus] = useState(null);
+  const [showButton, setShowButton] = useState("");
+
   const dateTypeFilter = [
     {value: "daily", label: "Daily"},
     {value: "monthly", label: "Monthly"},
@@ -125,18 +127,19 @@ const Disbursement = (props) => {
 
   const makeReview = () =>
     reviewPayout({
-      // user_type: "driver",
-      // start_date: startDate,
-      // end_date: endDate,
-      status: 1,
-    });
-
-  const makeApproval = () =>
-    approvePayout({
       user_type: "driver",
       start_date: startDate,
       end_date: endDate,
     });
+
+  const makeApproval = () =>
+    approvePayout({
+      // user_type: "driver",
+      // start_date: startDate,
+      // end_date: endDate,
+      status: "1",
+    });
+  changeButtonShowedDriver = (button) => setShowButton(button);
 
   console.log(status);
   return (
@@ -330,13 +333,13 @@ const Disbursement = (props) => {
           ) : (
             <>
               <div className="d-flex justify-content-end mr-2 mb-2">
-                {status == 0 && (
+                {showButton === "review" && (
                   <Button onClick={makeReview} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
                     Review Payout
                   </Button>
                 )}
 
-                {status == 4 && (
+                {showButton === "approve" && (
                   <Button onClick={makeApproval} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
                     Approve Payout
                   </Button>

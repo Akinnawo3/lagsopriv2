@@ -24,6 +24,8 @@ import {
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "Actions/loadingAction";
+import {changeButtonShowed} from "../routes/reconciliation/disbursementHolder";
+import {changeButtonShowedDriver} from "../routes/reconciliation/disbursement";
 
 export const getPayments =
   (page_no, status = "", auth_id = "", loading, userType = "rider_id", start_date = "", end_date = "") =>
@@ -472,6 +474,9 @@ export const getFinanceDriverPayouts =
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
+        status === "0" && changeButtonShowedDriver("review");
+        status === "4" && changeButtonShowedDriver("approve");
+        status !== "0" && status !== "4" && changeButtonShowedDriver("");
         dispatch({
           type: FINANCE_DRIVER_PAYOUTS,
           payload: res.data.data,
@@ -541,6 +546,10 @@ export const getFinanceHolderPayouts =
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
+        status === "0" && changeButtonShowed("review");
+        status === "4" && changeButtonShowed("approve");
+        status !== "0" && status !== "4" && changeButtonShowed("");
+
         dispatch({
           type: FINANCE_HOLDER_PAYOUTS,
           payload: res.data.data,
