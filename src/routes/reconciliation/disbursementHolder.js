@@ -96,12 +96,12 @@ const DisbursementHolder = (props) => {
   };
 
   const handleSearch = () => {
-    if(type === 'receivable') {
-    getFinanceDriverLogs(currentPage, false, dateType, startDate, endDate);
-    getFinanceDriverLogsCount(false, dateType, startDate, endDate);
+    if (type === "receivable") {
+      getFinanceDriverLogs(currentPage, false, dateType, startDate, endDate);
+      getFinanceDriverLogsCount(false, dateType, startDate, endDate);
     } else {
-    getFinanceDriverPayouts(currentPage2, false, dateType, startDate, endDate, status);
-    getFinanceDriverPayoutsCount(false, dateType, startDate, endDate, status);
+      getFinanceDriverPayouts(currentPage2, false, dateType, startDate, endDate, status);
+      getFinanceDriverPayoutsCount(false, dateType, startDate, endDate, status);
     }
 
     // getFinanceTrip('trip', dateType, startDate, endDate)
@@ -292,12 +292,16 @@ const DisbursementHolder = (props) => {
           ) : (
             <>
               <div className="d-flex justify-content-end mr-2 mb-2">
-                <Button onClick={makeReview} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
-                  Review Payout
-                </Button>
-                <Button onClick={makeApproval} style={{height: "30px"}} className="align-items-center justify-content-center" color="primary">
-                  Approve Payout
-                </Button>
+                {status == 0 && (
+                  <Button onClick={makeReview} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
+                    Review Payout
+                  </Button>
+                )}
+                {status == 4 && (
+                  <Button onClick={makeApproval} style={{height: "30px"}} className="align-items-center justify-content-center" color="primary">
+                    Approve Payout
+                  </Button>
+                )}
               </div>
               {financeDriverPayouts?.length > 0 && (
                 <div className="table-responsive" style={{minHeight: "50vh"}}>

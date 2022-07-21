@@ -62,7 +62,7 @@ const Disbursement = (props) => {
   const [dateType, setDateType] = useState("daily");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState(null);
   const dateTypeFilter = [
     {value: "daily", label: "Daily"},
     {value: "monthly", label: "Monthly"},
@@ -138,6 +138,7 @@ const Disbursement = (props) => {
       end_date: endDate,
     });
 
+  console.log(status);
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Driver Disbursement"} match={match} />
@@ -329,13 +330,13 @@ const Disbursement = (props) => {
           ) : (
             <>
               <div className="d-flex justify-content-end mr-2 mb-2">
-                {status === "Pending" && (
+                {status == 0 && (
                   <Button onClick={makeReview} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
                     Review Payout
                   </Button>
                 )}
 
-                {status === "Reviewed" && (
+                {status == 4 && (
                   <Button onClick={makeApproval} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
                     Approve Payout
                   </Button>
