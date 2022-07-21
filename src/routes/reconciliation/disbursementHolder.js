@@ -17,6 +17,7 @@ import {
   searchFinanceHolderLogs,
   searchFinanceHolderPayouts,
   approvePayout,
+  reviewPayout,
 } from "Actions/paymentAction";
 import {Link} from "react-router-dom";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
@@ -41,6 +42,7 @@ const DisbursementHolder = (props) => {
     searchFinanceDriverLogs,
     searchFinanceDriverPayouts,
     approvePayout,
+    reviewPayout,
   } = props;
 
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
@@ -59,10 +61,20 @@ const DisbursementHolder = (props) => {
   const [dateType, setDateType] = useState("daily");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [status, setStatus] = useState("");
+
   const dateTypeFilter = [
     {value: "daily", label: "Daily"},
     {value: "monthly", label: "Monthly"},
     {value: "yearly", label: "Yearly"},
+  ];
+  const statusFilter = [
+    {value: "", label: "All"},
+    {value: 0, label: "Pending"},
+    {value: 1, label: "Completed"},
+    {value: 2, label: "Failed"},
+    {value: 3, label: "Processing"},
+    {value: 4, label: "Reviewed"},
   ];
 
   useEffect(() => {
@@ -84,18 +96,25 @@ const DisbursementHolder = (props) => {
   };
 
   const handleSearch = () => {
-    // if(type === 'receivable') {
+    if(type === 'receivable') {
     getFinanceDriverLogs(currentPage, false, dateType, startDate, endDate);
     getFinanceDriverLogsCount(false, dateType, startDate, endDate);
-    // } else {
-    getFinanceDriverPayouts(currentPage2, false, dateType, startDate, endDate);
-    getFinanceDriverPayoutsCount(false, dateType, startDate, endDate);
-    // }
+    } else {
+    getFinanceDriverPayouts(currentPage2, false, dateType, startDate, endDate, status);
+    getFinanceDriverPayoutsCount(false, dateType, startDate, endDate, status);
+    }
 
     // getFinanceTrip('trip', dateType, startDate, endDate)
     // getFinanceService('service', dateType, startDate, endDate)
     // getFinanceWallet('wallet', dateType, startDate, endDate)
   };
+  const makeReview = () =>
+    reviewPayout({
+      // user_type: "driver",
+      // start_date: startDate,
+      // end_date: endDate,
+      status: 1,
+    });
   const makeApproval = () =>
     approvePayout({
       user_type: "stakeholder",
@@ -108,7 +127,7 @@ const DisbursementHolder = (props) => {
       <PageTitleBar title={"Holders Disbursement"} match={match} />
       {!loading && (
         <RctCollapsibleCard heading="Payment Overview" fullBlock>
-          <ul className="d-flex">
+          <ul className="d-flex align-items-end">
             <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
               <Input
                 type="select"
@@ -128,6 +147,8 @@ const DisbursementHolder = (props) => {
                     setReceivable(false);
                     getFinanceDriverPayouts(currentPage2, true);
                     getFinanceDriverPayoutsCount(true);
+                    // getFinanceDriverPayouts(currentPage2, false, "", "", "", status);
+                    // getFinanceDriverPayoutsCount(false, "", "", "", status);
                   }
                 }}
               >
@@ -135,18 +156,34 @@ const DisbursementHolder = (props) => {
                 <option value="payouts">Payouts</option>
               </Input>
             </li>
+            {receivable ? (
+              <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+                <div className="mb-2 font-sm">Date Type</div>
+                {/* <small className="fw-bold">Date Type Filter</small> */}
+                <select name="fiter-dropdown" onChange={handleChange} className="p-1 px-4">
+                  {dateTypeFilter.map((item, index) => (
+                    <option value={item.value} key={index}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+              </li>
+            ) : (
+              <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+                <div className="mb-2 font-sm">Status</div>
+                {/* <small className="fw-bold">Date Type Filter</small> */}
+                <select name="fiter-dropdown" onChange={(e) => setStatus(e.target.value)} className="p-1 px-4">
+                  {statusFilter.map((item, index) => (
+                    <option value={item.value} key={index}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+              </li>
+            )}
+
             <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-              {/* <small className="fw-bold">Date Type Filter</small> */}
-              <select name="fiter-dropdown" onChange={handleChange} className="p-1 px-4">
-                {dateTypeFilter.map((item, index) => (
-                  <option value={item.value} key={index}>
-                    {item.label}
-                  </option>
-                ))}
-              </select>
-            </li>
-            <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-              <small className="fw-bold mr-2">From</small>
+              <div className="mb-2 font-sm">Start Date</div>
               <input
                 type="date"
                 id="start"
@@ -160,7 +197,7 @@ const DisbursementHolder = (props) => {
               />
             </li>
             <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-              <small className="fw-bold mr-2">To</small>
+              <div className="mb-2 font-sm">End Date</div>
               <input
                 type="date"
                 id="start"
@@ -173,9 +210,17 @@ const DisbursementHolder = (props) => {
                 }}
               />
             </li>
-            <Button onClick={() => handleSearch()} style={{height: "30px"}} className="align-items-center justify-content-center" color="success">
-              Apply filter
-            </Button>
+            <li className="list-inline-item search-icon d-inline-block ml-2 mb-2 ">
+              <Button onClick={() => handleSearch()} style={{height: "30px"}} className="align-items-center justify-content-center" color="success">
+                Apply filter
+              </Button>
+            </li>
+
+            {/* <li className="list-inline-item search-icon d-inline-block ml-2 ">
+              <Button onClick={() => handleSearch()} color="success">
+                Apply filter
+              </Button>
+            </li> */}
             {/*<li className="list-inline-item search-icon d-inline-block ml-2 mb-2">*/}
             {/*    <SearchComponent getPreviousData={type === 'receivable' ? getFinanceDriverLogs : getFinanceDriverPayouts} getSearchedData={type === 'receivable' ? searchFinanceDriverLogs : searchFinanceDriverPayouts} setCurrentPage={type === 'receivable' ? setCurrentPage : setCurrentPage2} getCount={type === 'receivable' ? getFinanceDriverLogsCount : getFinanceDriverPayoutsCount} placeHolder={'name, email'} />*/}
             {/*</li>*/}
@@ -247,6 +292,9 @@ const DisbursementHolder = (props) => {
           ) : (
             <>
               <div className="d-flex justify-content-end mr-2 mb-2">
+                <Button onClick={makeReview} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
+                  Review Payout
+                </Button>
                 <Button onClick={makeApproval} style={{height: "30px"}} className="align-items-center justify-content-center" color="primary">
                   Approve Payout
                 </Button>
@@ -400,10 +448,11 @@ function mapDispatchToProps(dispatch) {
     getFinanceDriverLogs: (page_no, loading, date_type, start_date, end_date) => dispatch(getFinanceHolderLogs(page_no, loading, date_type, start_date, end_date)),
     getFinanceDriverLogsCount: (loading, date_type, start_date, end_date) => dispatch(getFinanceHolderLogsCount(loading, date_type, start_date, end_date)),
     searchFinanceDriverLogs: (searchData) => dispatch(searchFinanceHolderLogs(searchData)),
-    getFinanceDriverPayouts: (page_no, loading, date_type, start_date, end_date) => dispatch(getFinanceHolderPayouts(page_no, loading, date_type, start_date, end_date)),
-    getFinanceDriverPayoutsCount: (loading, date_type, start_date, end_date) => dispatch(getFinanceHolderPayoutsCount(loading, date_type, start_date, end_date)),
+    getFinanceDriverPayouts: (page_no, loading, date_type, start_date, end_date, status) => dispatch(getFinanceHolderPayouts(page_no, loading, date_type, start_date, end_date, status)),
+    getFinanceDriverPayoutsCount: (loading, date_type, start_date, end_date, status) => dispatch(getFinanceHolderPayoutsCount(loading, date_type, start_date, end_date, status)),
     searchFinanceDriverPayouts: (searchData) => dispatch(searchFinanceHolderPayouts(searchData)),
     approvePayout: (data) => dispatch(approvePayout(data)),
+    reviewPayout: (data) => dispatch(reviewPayout(data)),
   };
 }
 

@@ -19,6 +19,7 @@ import {
   getFinanceDriverPayoutExport,
   getFinanceDriverLogsExport,
   approvePayout,
+  reviewPayout,
 } from "Actions/paymentAction";
 import {Link} from "react-router-dom";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
@@ -45,6 +46,7 @@ const Disbursement = (props) => {
     getFinanceDriverLogsExport,
     getFinanceDriverPayoutExport,
     approvePayout,
+    reviewPayout,
   } = props;
   const exportRef = useRef(null);
 
@@ -72,6 +74,7 @@ const Disbursement = (props) => {
     {value: 1, label: "Completed"},
     {value: 2, label: "Failed"},
     {value: 3, label: "Processing"},
+    {value: 4, label: "Reviewed"},
   ];
 
   useEffect(() => {
@@ -120,6 +123,14 @@ const Disbursement = (props) => {
     receivable ? getFinanceDriverLogsExport(dateType, startDate, endDate) : getFinanceDriverPayoutExport(startDate, endDate, status);
   };
 
+  const makeReview = () =>
+    reviewPayout({
+      // user_type: "driver",
+      // start_date: startDate,
+      // end_date: endDate,
+      status: 1,
+    });
+
   const makeApproval = () =>
     approvePayout({
       user_type: "driver",
@@ -132,7 +143,7 @@ const Disbursement = (props) => {
       <PageTitleBar title={"Driver Disbursement"} match={match} />
       {!loading && (
         <RctCollapsibleCard heading="Payment Overview" fullBlock>
-          <ul className="d-flex align-items-end">
+          <ul className="d-flex align-items-end ">
             <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
               <SearchComponent
                 getPreviousData={type === "receivable" ? getFinanceDriverLogs : getFinanceDriverPayouts}
@@ -227,8 +238,8 @@ const Disbursement = (props) => {
                 }}
               />
             </li>
-            <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-              <Button onClick={() => handleSearch()} color="success">
+            <li className="list-inline-item search-icon d-inline-block ml-2 mb-2 ">
+              <Button onClick={() => handleSearch()} style={{height: "30px"}} className="align-items-center justify-content-center" color="success">
                 Apply filter
               </Button>
             </li>
@@ -318,9 +329,17 @@ const Disbursement = (props) => {
           ) : (
             <>
               <div className="d-flex justify-content-end mr-2 mb-2">
-                <Button onClick={makeApproval} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
-                  Approve Payout
-                </Button>
+                {status === "Pending" && (
+                  <Button onClick={makeReview} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
+                    Review Payout
+                  </Button>
+                )}
+
+                {status === "Reviewed" && (
+                  <Button onClick={makeApproval} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
+                    Approve Payout
+                  </Button>
+                )}
               </div>
               {financeDriverPayouts?.length > 0 && (
                 <div className="table-responsive" style={{minHeight: "50vh"}}>
@@ -354,8 +373,8 @@ const Disbursement = (props) => {
                                 <TableCell>₦{item?.payment_summary?.total_net_balance?.toLocaleString()}</TableCell>
                                 <TableCell>{item?.user_data?.phone_number}</TableCell>
                                 <TableCell>
-                                  <Badge color={item?.status === 0 ? "secondary" : item?.status === 1 ? "success" : item?.status === 2 ? "danger" : "warning"}>
-                                    {item?.status === 0 ? "Pending" : item?.status === 1 ? "Completed" : item?.status === 2 ? "Failed" : "Processing"}
+                                  <Badge color={item?.status === 0 ? "secondary" : item?.status === 1 ? "success" : item?.status === 2 ? "danger" : item?.status === 3 ? "warning" : "info"}>
+                                    {item?.status === 0 ? "Pending" : item?.status === 1 ? "Completed" : item?.status === 2 ? "Failed" : item?.status === 3 ? "Processing" : "Reviewed"}
                                   </Badge>
                                 </TableCell>
                               </TableRow>
@@ -400,6 +419,7 @@ function mapDispatchToProps(dispatch) {
     getFinanceDriverLogsExport: (date_type, start_date, end_date) => dispatch(getFinanceDriverLogsExport(date_type, start_date, end_date)),
     getFinanceDriverPayoutExport: (start_date, end_date, status) => dispatch(getFinanceDriverPayoutExport(start_date, end_date, status)),
     approvePayout: (data) => dispatch(approvePayout(data)),
+    reviewPayout: (data) => dispatch(reviewPayout(data)),
   };
 }
 
