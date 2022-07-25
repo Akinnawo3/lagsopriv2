@@ -15,11 +15,12 @@ import suspensionReasonsList from "../../../assets/data/suspension-reasons/suspe
 import Spinner from "Components/spinner/Spinner";
 import {verifyUserPermssion} from "../../../container/DefaultLayout";
 import AsyncSelectComponent from "./AsyncSelect";
-import {calculatePostDate, clculateDailyLoanRepayment} from "../../../helpers/helpers";
+import {calculatePostDate, clculateDailyLoanRepayment, fullDateTime} from "../../../helpers/helpers";
 export let onAddVehicleModalClose;
 export let closeMedicalRecordModal;
 export let onVerified;
 export let closeRepaymentModal;
+export let activateDriver;
 const DriverProfile = ({
   driver,
   changeDriverStatus,
@@ -93,21 +94,23 @@ const DriverProfile = ({
     setAddVehicleModal(false);
   };
 
+  activateDriver = () =>
+    changeDriverStatus(
+      driver?.auth_id,
+      "4",
+      driver,
+      emailMessages.approveMsg({
+        firstName: driver?.first_name,
+        vehicleDetails: vehicle,
+      }),
+      "Driver Approved"
+    );
+
   const onSubmit = async (e) => {
     onAddVehicleModalClose();
     e.preventDefault();
     if (formData?.vehicle) {
       await assignVehicle(vehicle?.vehicle_id, driver?.auth_id, driver, vehicleData, "5M");
-      await changeDriverStatus(
-        driver?.auth_id,
-        "4",
-        driver,
-        emailMessages.approveMsg({
-          firstName: driver?.first_name,
-          vehicleDetails: vehicle,
-        }),
-        "Driver Approved"
-      );
     } else {
       NotificationManager.error("Select a vehicle");
     }
@@ -365,14 +368,6 @@ const DriverProfile = ({
                 </span>
                 {driver?.driver_data?.disability === 0 ? "No" : "Yes"}
               </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div className="col-sm-10 col-lg-5 offset-lg-1">
-        <div className="tab-content">
-          <div className="tab-pane active" id="home">
-            <ul className="list-group">
               <li className="list-group-item text-right">
                 <span className="pull-left">
                   <strong>Bank Name</strong>
@@ -385,6 +380,20 @@ const DriverProfile = ({
                 </span>
                 {driver?.bank_data ? driver?.bank_data?.account_number : "NA"}
               </li>
+              <li className="list-group-item text-right">
+                <span className="pull-left">
+                  <strong>Date of Approval</strong>
+                </span>
+                {fullDateTime(driver?.driver_data?.approved_date).fullDateTime}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div className="col-sm-10 col-lg-5 offset-lg-1">
+        <div className="tab-content">
+          <div className="tab-pane active" id="home">
+            <ul className="list-group">
               <li className="list-group-item text-right">
                 <span className="pull-left">
                   <strong>Driver Category</strong>
