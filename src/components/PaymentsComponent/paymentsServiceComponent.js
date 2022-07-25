@@ -125,17 +125,17 @@ const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenue
                       driverRevenueSplit.map((item, index) => (
                         <TableRow hover key={index}>
                           <TableCell>{`${formatByDateType(item?.created)}`}</TableCell>
-                          <TableCell>{`₦${item?.asset_co.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.comms.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.daily_tax.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.maintenance.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.refleeting.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.tech_co.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.asset_repayment.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.dashcam_repayment.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.mobile_phone_repayment.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.gross_balance.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.balance.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.asset_co?.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.comms?.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.daily_tax?.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.maintenance?.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.refleeting?.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.tech_co?.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.asset_repayment?.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.dashcam_repayment?.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.mobile_phone_repayment?.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.gross_balance?.toLocaleString() || 0}`}</TableCell>
+                          <TableCell>{`₦${item?.balance?.toLocaleString()}`}</TableCell>
                           {/* <TableCell>{`₦${item?.gross_balance.toLocaleString()}`}</TableCell>
                           <TableCell>{`₦${item?.balance.toLocaleString()}`}</TableCell> */}
                         </TableRow>
