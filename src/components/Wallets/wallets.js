@@ -73,8 +73,8 @@ const Wallets = ({wallets, walletsCount, auth_id, getWallets, loading, wallet}) 
                   {wallets.map((user, key) => (
                     <TableRow hover key={key}>
                       <TableCell>{user?.description}</TableCell>
-                      <TableCell>₦{user.amount?.toLocaleString()}</TableCell>
-                      <TableCell>₦{user.actual_amount?.toLocaleString()}</TableCell>
+                      <TableCell>₦{user.amount?.toLocaleString() || 0}</TableCell>
+                      <TableCell>₦{user.actual_amount?.toLocaleString() || 0}</TableCell>
                       <TableCell className="text-capitalize">{user?.payment_method}</TableCell>
                       <TableCell>{calculatePostDate(user?.createdAt)}</TableCell>
                       {/* <TableCell>{user.recipient}</TableCell> */}
