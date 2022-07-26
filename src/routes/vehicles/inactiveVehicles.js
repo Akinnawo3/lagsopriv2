@@ -3,6 +3,7 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {connect} from "react-redux";
 import {getVehiclesCount, getVehicles} from "Actions/vehicleAction";
 import VehicleTable from "Routes/vehicles/components/vehicleTable";
+import {getOems, getOemCount} from "Actions/oemAction";
 const qs = require("qs");
 
 const InactiveVehicles = ({history, match, getVehicles, getVehiclesCount}) => {
@@ -14,6 +15,7 @@ const InactiveVehicles = ({history, match, getVehicles, getVehiclesCount}) => {
     if (pageFromQuery === undefined || vehicles.length < 1) {
       getVehicles(currentPage, 0, true);
       getVehiclesCount(0);
+      getOems(1, true);
     }
   }, []);
 
