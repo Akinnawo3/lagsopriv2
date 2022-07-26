@@ -16,6 +16,7 @@ const InactiveVehicles = ({history, match, getVehicles, getVehiclesCount}) => {
       getVehicles(currentPage, 0, true);
       getVehiclesCount(0);
       getOems(1, true);
+    
     }
   }, []);
 
