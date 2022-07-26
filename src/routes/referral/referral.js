@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Fragment} from "react";
+import React, {useState, useEffect, Fragment, useMemo} from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -23,7 +23,7 @@ const Referral = ({history, match, referrals, referralCount, getReferral, getRef
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
   const [isOpen, setIsOpen] = useState(false);
-  const [loadingDetails, setLoadingDetails] = useState(false);
+  const [referralDetails, setReferralDetails] = useState({});
 
   useEffect(() => {
     if (pageFromQuery === undefined || referrals.length < 1) {
@@ -39,37 +39,43 @@ const Referral = ({history, match, referrals, referralCount, getReferral, getRef
     window.scrollTo(0, 0);
   };
 
-  const showReferralDetails = async (referalID) => {
-    setLoadingDetails(true);
+  const showReferralDetails = async (item) => {
+    setReferralDetails(item);
     setIsOpen(true);
-    await getReferralPaymentDetails(referalID);
-    setLoadingDetails(false);
+
+    // setLoadingDetails(true);
+    // await getReferralPaymentDetails(referalID);
+    // setLoadingDetails(false);
   };
+
+  useMemo(() => console.log(referrals), [isOpen]);
 
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Referral"} match={match} />
-      {!loading && referrals.length > 0 && (
-        <RctCollapsibleCard heading="Referrals" fullBlock style={{minHeight: "70vh"}}>
-          <div className="d-flex align-items-center justify-content-between">
-            <div className="float-right d-flex align-items-center p-3"></div>
-          </div>
-          <div className="table-responsive" style={{minHeight: "50vh"}}>
-            <Table>
-              <TableHead>
-                <TableRow hover>
-                  <TableCell>Date</TableCell>
-                  <TableCell>Referrer Name</TableCell>
-                  <TableCell>Referrer Number</TableCell>
-                  <TableCell>Referee Name</TableCell>
-                  <TableCell>Referee Number</TableCell>
-                  <TableCell>Status</TableCell>
-                  <TableCell>Action</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <Fragment>
-                  {referrals.map((item, key) => (
+
+      <RctCollapsibleCard heading="Referrals" fullBlock style={{minHeight: "70vh"}}>
+        <div className="d-flex align-items-center justify-content-between">
+          <div className="float-right d-flex align-items-center p-3"></div>
+        </div>
+        <div className="table-responsive" style={{minHeight: "50vh"}}>
+          <Table>
+            <TableHead>
+              <TableRow hover>
+                <TableCell>Date</TableCell>
+                <TableCell>Referrer Name</TableCell>
+                <TableCell>Referrer Number</TableCell>
+                <TableCell>Referee Name</TableCell>
+                <TableCell>Referee Number</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Action</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <Fragment>
+                {!loading &&
+                  referrals.length > 0 &&
+                  referrals.map((item, key) => (
                     <TableRow hover key={item.id}>
                       <TableCell>{calculatePostDate(item?.createdAt)}</TableCell>
                       <TableCell>{item.referrer.first_name + " " + item.referrer.last_name}</TableCell>
@@ -81,73 +87,77 @@ const Referral = ({history, match, referrals, referralCount, getReferral, getRef
                       </TableCell>
                       {/* <TableCell>{item.status === 1 && <i className="ti-eye" onClick={() => showReferralDetails(item.referral_id)} />}</TableCell> */}
                       <TableCell>
-                        <i className="ti-eye" onClick={() => showReferralDetails(item.referral_id)} />
+                        <i className="ti-eye" onClick={() => showReferralDetails(item)} />
                       </TableCell>
                     </TableRow>
                   ))}
-                </Fragment>
-              </TableBody>
-            </Table>
-          </div>
-          <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
-            <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={referralCount} onChange={paginate} />
-          </div>
-        </RctCollapsibleCard>
-      )}
-
+              </Fragment>
+            </TableBody>
+          </Table>
+        </div>
+        {}
+        <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
+          <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={referralCount} onChange={paginate} />
+        </div>
+      </RctCollapsibleCard>
       <Modal isOpen={isOpen} toggle={() => setIsOpen(!isOpen)}>
         <ModalBody className="p-4" style={{minHeight: "250px"}}>
           <div style={{color: "#2E407B"}}>Transaction Details</div>
           <div style={{marginTop: "40px", color: "#898888", fontSize: "12px"}}>
-            {loadingDetails && <Spinner />}
-            {!loadingDetails && referralPaymentDetails && (
-              <div>
-                <ul className="list-group">
+            <div>
+              <ul className="list-group">
+                {referralDetails?.credit_data && (
                   <li className="list-group-item text-right">
                     <span className="pull-left">
                       <strong>Amount</strong>
                     </span>
-                    {referralPaymentDetails?.amount}
+                    ₦{referralDetails?.credit_data?.amount}
                   </li>
-                  <li className="list-group-item text-right">
-                    <span className="pull-left">
-                      <strong>Referee ID</strong>
-                    </span>
-                    {referralPaymentDetails?.referee_id}
-                  </li>
-                  <li className="list-group-item text-right">
-                    <span className="pull-left">
-                      <strong>Referee Number</strong>
-                    </span>
-                    {referralPaymentDetails?.referee_number}
-                  </li>
-                  <li className="list-group-item text-right">
-                    <span className="pull-left">
-                      <strong>Referee Trip Amount</strong>
-                    </span>
-                    {referralPaymentDetails?.referee_trip_data.amount}
-                  </li>
-                  <li className="list-group-item text-right">
-                    <span className="pull-left">
-                      <strong>Referee Trip ID</strong>
-                    </span>
-                    {referralPaymentDetails?.referee_trip_data.trip_id}
-                  </li>
-                  <li className="list-group-item text-right">
-                    <span className="pull-left">
-                      <strong>Referee Trip Reference</strong>
-                    </span>
-                    {referralPaymentDetails?.referee_trip_data.trip_ref}
-                  </li>
-                  <li className="list-group-item text-right">
-                    <span className="pull-left">
-                      <strong>Referrer ID</strong>
-                    </span>
-                    {referralPaymentDetails?.referrer_id}
-                  </li>
-                </ul>
-              </div>
-            )}
+                )}
+
+                {/* <li className="list-group-item text-right">
+                  <span className="pull-left">
+                    <strong>Referee ID</strong>
+                  </span>
+                  {referralPaymentDetails?.referee_id}
+                </li> */}
+                <li className="list-group-item text-right">
+                  <span className="pull-left">
+                    <strong>Referee Number</strong>
+                  </span>
+                  {referralDetails?.referee?.phone_number}
+                </li>
+
+                {referralDetails?.credit_data && (
+                  <>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Referee Trip Amount</strong>
+                      </span>
+                      ₦{referralDetails?.credit_data?.referee_trip_data?.amount?.toLocaleString()}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Referee Trip ID</strong>
+                      </span>
+                      {referralDetails?.credit_data?.referee_trip_data?.trip_id}
+                    </li>
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Referee Trip Reference</strong>
+                      </span>
+                      {referralDetails?.credit_data?.referee_trip_data?.trip_ref}
+                    </li>
+                  </>
+                )}
+                {/* <li className="list-group-item text-right">
+                  <span className="pull-left">
+                    <strong>Referrer ID</strong>
+                  </span>
+                  {referralPaymentDetails?.referrer_id}
+                </li> */}
+              </ul>
+            </div>
           </div>
         </ModalBody>
       </Modal>
