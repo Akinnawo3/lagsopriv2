@@ -36,11 +36,11 @@ const PaymentTripComponent = ({payments, status, paymentsCount, auth_id, getPaym
   };
 
   const applyFilter = () => {
-    getPayments(1, status, auth_id, false, 'driver_id', startDate, endDate);
-    getPaymentsCount(status, auth_id, 'driver_id', startDate, endDate)
+    getPayments(1, status, auth_id, false, "driver_id", startDate, endDate);
+    getPaymentsCount(status, auth_id, "driver_id", startDate, endDate);
   };
 
-
+  console.log(payments);
 
   return (
     <div>
@@ -95,7 +95,9 @@ const PaymentTripComponent = ({payments, status, paymentsCount, auth_id, getPaym
                         <TableCell>{item?.is_promo ? "True" : "False"}</TableCell>
                         <TableCell>{`${item?.first_name ? item?.first_name : ""} ${item?.last_name ? item?.last_name : ""}`}</TableCell>
                         <TableCell>{calculatePostDate(item.createdAt)}</TableCell>
-                        <TableCell>{calculatePostDate(item.updatedAt)}</TableCell>
+
+                        <TableCell>{calculatePostDate(item.charge_at)}</TableCell>
+
                         <TableCell>{item.charge_method}</TableCell>
                         <TableCell>{item.payment_method}</TableCell>
                         <TableCell>
@@ -123,7 +125,6 @@ const PaymentTripComponent = ({payments, status, paymentsCount, auth_id, getPaym
         {!loading && payments?.length < 1 && <EmptyData />}
       </RctCollapsibleCard>
       <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
-
     </div>
   );
 };
@@ -133,7 +134,6 @@ function mapDispatchToProps(dispatch) {
     getPayments: (pageNo, transaction_status, auth_id, loading, userType, start_date, end_date) => dispatch(getPayments(pageNo, transaction_status, auth_id, loading, userType, start_date, end_date)),
     getPaymentsCount: (transaction_status, auth_id, userType, start_date, end_date) => dispatch(getPaymentsCount(transaction_status, auth_id, userType, start_date, end_date)),
     getPaymentsExport: (status, auth_id, userType, start_date, end_date) => dispatch(getPaymentsExport(status, auth_id, userType, start_date, end_date)),
-
   };
 }
 

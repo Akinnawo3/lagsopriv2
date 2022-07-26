@@ -28,7 +28,7 @@ const RevenueSplit = ({getDriverRevenueSPlit, driverRevenueSplit, auth_id}) => {
   const getStatus = (item) => (item < 1 ? "Failed" : "Success");
   const getStatusColor = (item) => (item < 1 ? "danger" : "success");
 
-  const totalDebtService = (driverRevenueSplit?.debt_service?.asset_repayment + driverRevenueSplit?.debt_service?.dashcam + driverRevenueSplit?.debt_service?.mobile_phone).toLocaleString();
+  const totalDebtService = (driverRevenueSplit?.debt_service?.asset_repayment + driverRevenueSplit?.debt_service?.dashcam + driverRevenueSplit?.debt_service?.mobile_phone)?.toLocaleString();
 
   return (
     <div style={{minHeight: "70vh"}}>

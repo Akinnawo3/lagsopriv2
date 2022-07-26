@@ -152,7 +152,7 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
                     </CardBody>
                     <div className="chart-wrapper mx-3 d-flex align-items-center justify-content-between" style={{height: "70px"}}>
                       <span className="pr-2 font-xl" style={{fontSize: "2.5rem"}}>
-                        {`₦${customerCareNumbers?.com_driver_fee?.total.toLocaleString()}`}
+                        {`₦${customerCareNumbers?.com_driver_fee?.total?.toLocaleString()}`}
                       </span>
                     </div>
                   </Card>
@@ -231,7 +231,7 @@ const OneOffPayment = ({match, getCustomerCare, customerCareNumbers, createCusto
                     </CardBody>
                     <div className="chart-wrapper mx-3 d-flex align-items-center  justify-content-between" style={{height: "70px"}}>
                       <span className=" font-xl" style={{fontSize: "2.5rem"}}>
-                        {`₦${customerCareNumbers?.soc_driver_fee?.total.toLocaleString()}`}
+                        {`₦${customerCareNumbers?.soc_driver_fee?.total?.toLocaleString()}`}
                       </span>
                     </div>
                   </Card>

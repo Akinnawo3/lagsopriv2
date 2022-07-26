@@ -270,11 +270,11 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
           <div className="row mt-4">
             <div className="col-6">
               <div className="schedulePickup">Start Time</div>
-              <div className="scheduleHeader mt-1">{new Date(riderDetails?.start_trip_at).toLocaleTimeString()}</div>
+              <div className="scheduleHeader mt-1">{new Date(riderDetails?.start_trip_at)?.toLocaleTimeString()}</div>
             </div>
             <div className="col-6">
               <div className="schedulePickup">End Time</div>
-              <div className="scheduleHeader mt-1">{new Date(riderDetails?.end_trip_at).toLocaleTimeString()}</div>
+              <div className="scheduleHeader mt-1">{new Date(riderDetails?.end_trip_at)?.toLocaleTimeString()}</div>
             </div>
           </div>
           <div className="row mt-4">
@@ -337,7 +337,7 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
             </div>
             <div className="col-6">
               <div className="schedulePickup">Arrive-pickup time</div>
-              <div className="scheduleHeader mt-1">{new Date(riderDetails?.arrive_pickup_at).toLocaleTimeString()}</div>
+              <div className="scheduleHeader mt-1">{new Date(riderDetails?.arrive_pickup_at)?.toLocaleTimeString()}</div>
             </div>
           </div>
           <div className="row mt-4">
@@ -355,7 +355,7 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
               <div className="schedulePickup">Accepted Time</div>
               <div className="scheduleHeader mt-1">
                 {/*{riderDetails?.accepted_at}*/}
-                {new Date(riderDetails?.accepted_at).toLocaleTimeString()}
+                {new Date(riderDetails?.accepted_at)?.toLocaleTimeString()}
               </div>
             </div>
             <div className="col-6">

@@ -64,7 +64,6 @@ const Wallets = ({wallets, walletsCount, auth_id, getWallets, loading, wallet}) 
                   <TableCell>Amount </TableCell>
                   <TableCell>Actual Amount </TableCell>
                   <TableCell>Payment Method </TableCell>
-
                   <TableCell>Date </TableCell>
                   <TableCell>Status</TableCell>
                 </TableRow>
@@ -73,14 +72,14 @@ const Wallets = ({wallets, walletsCount, auth_id, getWallets, loading, wallet}) 
                 <Fragment>
                   {wallets.map((user, key) => (
                     <TableRow hover key={key}>
-                      <TableCell>{user.description}</TableCell>
-                      <TableCell>₦{user.amount.toLocaleString()}</TableCell>
-                      <TableCell>₦{user.actual_amount.toLocaleString()}</TableCell>
-                      <TableCell className="text-capitalize">{user.payment_method}</TableCell>
-                      <TableCell>{calculatePostDate(user.createdAt)}</TableCell>
+                      <TableCell>{user?.description}</TableCell>
+                      <TableCell>₦{user.amount?.toLocaleString()}</TableCell>
+                      <TableCell>₦{user.actual_amount?.toLocaleString()}</TableCell>
+                      <TableCell className="text-capitalize">{user?.payment_method}</TableCell>
+                      <TableCell>{calculatePostDate(user?.createdAt)}</TableCell>
                       {/* <TableCell>{user.recipient}</TableCell> */}
                       <TableCell>
-                        <Badge color={getStatusColor2(user.status)}>{getStatus2(user.status)}</Badge>
+                        <Badge color={getStatusColor2(user?.status)}>{getStatus2(user?.status)}</Badge>
                       </TableCell>
                     </TableRow>
                   ))}

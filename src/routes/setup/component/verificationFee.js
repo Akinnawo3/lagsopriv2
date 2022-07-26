@@ -57,7 +57,7 @@ const VerificationFee = ({getCustomerCare, customerCareNumbers, createVerificati
                   </CardBody>
                   <div className="chart-wrapper mx-3 d-flex align-items-center justify-content-between" style={{height: "60px"}}>
                     <span className="pr-2 font-xl" style={{fontSize: "2.5rem"}}>
-                      {` ₦${customerCareNumbers?.verification_fee?.total.toLocaleString()}`}
+                      {` ₦${customerCareNumbers?.verification_fee?.total?.toLocaleString()}`}
                     </span>
                   </div>
                 </Card>

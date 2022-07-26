@@ -91,8 +91,8 @@ const PaymentsComponent = ({payments, paymentsCount, auth_id, getPayments, getPa
                   {payments.map((user, key) => (
                     <TableRow hover key={key}>
                       <TableCell>{user.payment_id}</TableCell>
-                      <TableCell>₦{user.amount.toLocaleString()}</TableCell>
-                      <TableCell>₦{user.actual_amount.toLocaleString()}</TableCell>
+                      <TableCell>₦{user.amount?.toLocaleString()}</TableCell>
+                      <TableCell>₦{user.actual_amount?.toLocaleString()}</TableCell>
                       <TableCell>{calculatePostDate(user.createdAt)}</TableCell>
                       <TableCell>{user.payment_method}</TableCell>
                       <TableCell>{calculatePostDate(user.updatedAt)}</TableCell>
