@@ -44,8 +44,8 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
 
   const applyFilter = () => {
     history.push(`${history.location.pathname}?page=${1}`);
-    getTrips(1, status, false, startDate, endDate)
-    getTripCount(status, startDate, endDate)
+    getTrips(1, status, false, startDate, endDate);
+    getTripCount(status, startDate, endDate);
   };
 
   const getSearchData = (searchData) => {
@@ -62,7 +62,7 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
 
   const confirmExport = () => {
     exportRef.current.close();
-    getTripExport(status, '', '', startDate, endDate);
+    getTripExport(status, "", "", startDate, endDate);
   };
 
   console.log(status);
@@ -70,9 +70,9 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
     <div>
       <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}}>
         {status !== "driver_not_found" && (
-            <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-              <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={"Trip Reference"} />
-            </li>
+          <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+            <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={"Trip Reference"} />
+          </li>
         )}
         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
           <small className="fw-bold mr-2">From</small>
@@ -106,7 +106,6 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
                 <TableHead>
                   <TableRow hover>
                     {status === "driver_not_found" && <TableCell>Start Address</TableCell>}
-                    {status === "driver_not_found" && <TableCell>End Address</TableCell>}
                     {/* <TableCell>{status === "driver_not_found" ? "Cancellation Id" : "Trip Id"}</TableCell> */}
                     {status !== "driver_not_found" && <TableCell>Trip Reference</TableCell>}
                     <TableCell>Date / Time</TableCell>
@@ -119,8 +118,8 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
                     )}
                     {status === "driver_not_found" && (
                       <>
-                        <TableCell>Total cancelled request (Driver not found)</TableCell>
-                        <TableCell>Total cancelled request (Driver ignored)</TableCell>
+                        <TableCell>Driver not found</TableCell>
+                        <TableCell>Driver ignored</TableCell>
                       </>
                     )}
 
@@ -148,15 +147,7 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
                               </Media>
                             </TableCell>
                           )}
-                          {status === "driver_not_found" && (
-                            <TableCell>
-                              <Media>
-                                <Media body>
-                                  <h5 className="m-0 pt-15">{trip?.end_address}</h5>
-                                </Media>
-                              </Media>
-                            </TableCell>
-                          )}
+
                           {status !== "driver_not_found" && (
                             <TableCell>
                               <Media>

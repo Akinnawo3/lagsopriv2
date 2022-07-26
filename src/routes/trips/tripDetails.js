@@ -256,7 +256,11 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
             <div className="row mt-4">
               <div className="col-6">
                 <div className="schedulePickup">
-                  View actual Drop off Address <i className={`ti-eye text-danger ms-2 ${actualDropoffAddress && "d-none"}`} onClick={() => getAddress(riderDetails?.end_lat, riderDetails?.end_lon)} />
+                  View actual Drop off Address{" "}
+                  <i
+                    className={`ti-eye text-danger ms-2 ${actualDropoffAddress && "d-none"}`}
+                    onClick={() => getAddress(riderDetails?.drop_off_data?.latitude, riderDetails?.drop_off_data?.longitude)}
+                  />
                 </div>
                 <div className="scheduleHeader mt-1">{actualDropoffAddress === "" ? "" : actualDropoffAddress}</div>
               </div>
@@ -278,14 +282,13 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
               <div className="schedulePickup">Estimated Fare</div>
               <div className="scheduleHeader mt-1">₦{riderDetails?.est_fare}</div>
             </div>
-       
+
             <div className="col-6">
               <div className="schedulePickup">Fare</div>
               <div className="scheduleHeader mt-1">₦{riderDetails?.fare}</div>
             </div>
           </div>
           <div className="row mt-4">
-        
             <div className="col-6">
               <div className="schedulePickup">Amount</div>
               <div className="scheduleHeader mt-1">₦{riderDetails?.amount}</div>
@@ -384,6 +387,7 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
               <div className="scheduleHeader mt-1">{riderDetails?.cash_status?.cash_option}</div>
             </div>
           </div>
+
           {riderDetails?.status === "cancel" && (
             <>
               <div className="row mt-4">
@@ -404,6 +408,12 @@ const TripDetails = ({getTrip, match, loading, trip, location}) => {
               </div>
             </>
           )}
+          <div className="row mt-4">
+            <div className="col-6">
+              <div className="schedulePickup">Updated Dest.</div>
+              <div className="scheduleHeader mt-1">{riderDetails?.previous_destination?.length}</div>
+            </div>
+          </div>
         </ModalBody>
         {/*<ModalFooter>*/}
         {/*    <Button type="submit" variant="contained" className="text-white btn-success">Submit</Button>*/}

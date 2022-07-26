@@ -13,7 +13,7 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
   const inputEl = useRef(null);
   useEffect(() => {
     getVehicle(match.params.id, true);
-    getVehicleMileage(match.params.id, true);
+    // getVehicleMileage(match.params.id, true);
   }, [match.params.id]);
 
   const opnRevokeVehicleModal = () => {
@@ -95,7 +95,7 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
                     <span className="pull-left">
                       <strong>Vehicle Mileage</strong>
                     </span>
-                    {vehicleMileage?.total_mileage}
+                    {vehicleDetails?.mileage}
                   </li>
                   {/*purchase_year, chassis_number, engine_number*/}
 

@@ -46,8 +46,6 @@ const Referral = ({history, match, referrals, referralCount, getReferral, getRef
     setLoadingDetails(false);
   };
 
-  console.log(referralPaymentDetails);
-
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Referral"} match={match} />
