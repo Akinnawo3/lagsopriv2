@@ -48,7 +48,7 @@ const Disbursement = (props) => {
     approvePayout,
     reviewPayout,
   } = props;
-  const exportRef = useRef(null);
+  const inputEl = useRef(null);
 
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -64,6 +64,8 @@ const Disbursement = (props) => {
   const [endDate, setEndDate] = useState("");
   const [status, setStatus] = useState(null);
   const [showButton, setShowButton] = useState("");
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
 
   const dateTypeFilter = [
     {value: "daily", label: "Daily"},
@@ -117,9 +119,6 @@ const Disbursement = (props) => {
     window.scrollTo(0, 0);
   };
 
-  const handleExport = () => {
-    exportRef.current.open();
-  };
   const confirmExport = () => {
     exportRef.current.close();
     receivable ? getFinanceDriverLogsExport(dateType, startDate, endDate) : getFinanceDriverPayoutExport(startDate, endDate, status);
@@ -150,6 +149,13 @@ const Disbursement = (props) => {
     setTitle("Are you sure you have to approve all reviewed disbursment?");
     setMessage("All reviewed disbursments will be approved.");
     setArgument(2);
+    inputEl.current.open();
+  };
+
+  const handleExport = () => {
+    setTitle("Are you sure you want to Export File?");
+    setMessage("This will send the excel file to your email.");
+    setArgument(3);
     inputEl.current.open();
   };
 
@@ -440,7 +446,7 @@ const Disbursement = (props) => {
           )}
         </RctCollapsibleCard>
       )}
-      <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
+      <DeleteConfirmationDialog ref={inputEl} title={title} message={message} onConfirm={onConfirm} />
     </div>
   );
 };
