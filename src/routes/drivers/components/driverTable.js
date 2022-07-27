@@ -81,9 +81,10 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
 
   const loanRequestEligibility = [
     {value: "", label: "- - Filter by Loan Request Eligibility - -"},
-    {value: 1, label: "Eligible"},
-    {value: 2, label: "Not Eligible"},
-    {value: 0, label: "Undecided"},
+    {value: 1, label: "Requested for loan"},
+    {value: 2, label: "Eligible for loan"},
+    {value: 3, label: "Not eligible for loan"},
+    {value: 4, label: "Is on loan"},
   ];
 
   const paymentFilterOptions = [
@@ -131,13 +132,17 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
             ))}
           </select>
         </li>
-        <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
-          <select id="filter-dropdown" name="fiter-dropdown" onChange={handleLoanEligibilityChange} className="p-1 px-4">
-            {loanRequestEligibility.map((item) => (
-              <option value={item.value}>{item.label}</option>
-            ))}
-          </select>
-        </li>
+
+        {status !== 0 && (
+          <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
+            <select id="filter-dropdown" name="fiter-dropdown" onChange={handleLoanEligibilityChange} className="p-1 px-4 ">
+              {loanRequestEligibility.map((item) => (
+                <option value={item.value}>{item.label}</option>
+              ))}
+            </select>
+          </li>
+        )}
+
         <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
           <select id="filter-dropdown" name="fiter-dropdown" onChange={handlePartnerhipChange} className="p-1 px-4">
             {partnershipStatus.map((item) => (
