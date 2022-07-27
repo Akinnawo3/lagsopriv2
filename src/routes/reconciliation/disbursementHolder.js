@@ -120,11 +120,6 @@ const DisbursementHolder = (props) => {
     setMessage("All pending disbursments will be marked as reviewed.");
     setArgument(1);
     inputEl.current.open();
-    // reviewPayout({
-    //   user_type: "driver",
-    //   start_date: startDate,
-    //   end_date: endDate,
-    // });
   };
 
   const makeApproval = () => {
@@ -132,12 +127,24 @@ const DisbursementHolder = (props) => {
     setMessage("All reviewed disbursments will be approved.");
     setArgument(2);
     inputEl.current.open();
-    // approvePayout({
-    //   // user_type: "stakeholder",
-    //   // start_date: startDate,
-    //   // end_date: endDate,
-    //   status: "1",
-    // });
+  };
+
+  const onConfirm = () => {
+    if (argument === 1) {
+      reviewPayout({
+        user_type: "driver",
+        start_date: startDate,
+        end_date: endDate,
+      });
+    }
+    if (argument === 2) {
+      approvePayout({
+        // user_type: "stakeholder",
+        // start_date: startDate,
+        // end_date: endDate,
+        status: "1",
+      });
+    }
   };
 
   changeButtonShowed = (button) => setShowButton(button);
