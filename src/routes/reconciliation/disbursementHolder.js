@@ -9,6 +9,8 @@ import TableBody from "@material-ui/core/TableBody";
 import EmptyData from "Components/EmptyData/EmptyData";
 import Pagination from "react-js-pagination";
 import {connect} from "react-redux";
+import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
+
 import {
   getFinanceHolderLogs,
   getFinanceHolderLogsCount,
@@ -46,6 +48,7 @@ const DisbursementHolder = (props) => {
     reviewPayout,
   } = props;
 
+  const inputEl = useRef(null);
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
@@ -64,6 +67,8 @@ const DisbursementHolder = (props) => {
   const [endDate, setEndDate] = useState("");
   const [status, setStatus] = useState("");
   const [showButton, setShowButton] = useState("");
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
 
   const dateTypeFilter = [
     {value: "daily", label: "Daily"},
@@ -110,19 +115,30 @@ const DisbursementHolder = (props) => {
     // getFinanceService('service', dateType, startDate, endDate)
     // getFinanceWallet('wallet', dateType, startDate, endDate)
   };
-  const makeReview = () =>
-    reviewPayout({
-      user_type: "driver",
-      start_date: startDate,
-      end_date: endDate,
-    });
-  const makeApproval = () =>
-    approvePayout({
-      // user_type: "stakeholder",
-      // start_date: startDate,
-      // end_date: endDate,
-      status: "1",
-    });
+  const makeReview = () => {
+    setTitle("Are you sure you have to reviewed all pending disbursment?");
+    setMessage("All pending disbursments will be marked as reviewed.");
+    setArgument(1);
+    inputEl.current.open();
+    // reviewPayout({
+    //   user_type: "driver",
+    //   start_date: startDate,
+    //   end_date: endDate,
+    // });
+  };
+
+  const makeApproval = () => {
+    setTitle("Are you sure you have to approve all reviewed disbursment?");
+    setMessage("All reviewed disbursments will be approved.");
+    setArgument(2);
+    inputEl.current.open();
+    // approvePayout({
+    //   // user_type: "stakeholder",
+    //   // start_date: startDate,
+    //   // end_date: endDate,
+    //   status: "1",
+    // });
+  };
 
   changeButtonShowed = (button) => setShowButton(button);
 
@@ -461,6 +477,7 @@ const DisbursementHolder = (props) => {
           </div>
         </ModalBody>
       </Modal>
+      <DeleteConfirmationDialog ref={inputEl} title={title} message={message} onConfirm={onConfirm} />
     </div>
   );
 };
