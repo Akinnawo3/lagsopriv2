@@ -28,6 +28,7 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
   const [appStatus, setAppStatus] = useState("");
   const [paymentStatus, setPaymentStatus] = useState("");
   const [driverCategory, setDriverCategory] = useState("");
+  const [loanEligibility, setLoanEligibility] = useState("");
   const [partnership, setPartnership] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -57,10 +58,16 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
     setCurrentPage(1);
     setPaymentStatus(e.target.value);
   };
+
   const handleCategoryChange = (e) => {
     setCurrentPage(1);
     setDriverCategory(e.target.value);
   };
+  const handleLoanEligibilityChange = (e) => {
+    setCurrentPage(1);
+    setLoanEligibility(e.target.value);
+  };
+
   const handlePartnerhipChange = (e) => {
     setCurrentPage(1);
     setPartnership(e.target.value);
@@ -70,6 +77,13 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
     {value: "", label: "- - Filter by Driver Category - -"},
     {value: "commercial ", label: "Self Sponsored"},
     {value: "social", label: "Loan"},
+  ];
+
+  const loanRequestEligibility = [
+    {value: "", label: "- - Filter by Loan Request Eligibility - -"},
+    {value: 1, label: "Eligible"},
+    {value: 2, label: "Not Eligible"},
+    {value: 0, label: "Undecided"},
   ];
 
   const paymentFilterOptions = [
@@ -113,6 +127,13 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
         <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
           <select id="filter-dropdown" name="fiter-dropdown" onChange={handleCategoryChange} className="p-1 px-4">
             {driverCategoryOptions.map((item) => (
+              <option value={item.value}>{item.label}</option>
+            ))}
+          </select>
+        </li>
+        <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
+          <select id="filter-dropdown" name="fiter-dropdown" onChange={handleLoanEligibilityChange} className="p-1 px-4">
+            {loanRequestEligibility.map((item) => (
               <option value={item.value}>{item.label}</option>
             ))}
           </select>
@@ -196,9 +217,10 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
                     {status != 4 && <TableCell>Status</TableCell>}
                     {status === 3 && <TableCell>Vehicle Assigned</TableCell>}
                     {status === 2 && <TableCell>One-off Payment Status</TableCell>}
-                    <TableCell> Driver Category</TableCell>
-                    <TableCell> Partnership Status</TableCell>
-                    <TableCell>App Status</TableCell>
+                    {status !== 0 && <TableCell> Driver Category</TableCell>}
+                    {status !== 0 && <TableCell> Partnership Status</TableCell>}
+                    {status !== 0 && <TableCell>App Status</TableCell>}
+
                     <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
@@ -221,35 +243,42 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
                             <Badge color={driver?.driver_data?.asset_payment?.status ? "success" : "danger"}>{driver?.driver_data?.asset_payment?.status ? "Paid" : "Not Paid"} </Badge>
                           </TableCell>
                         )}
-                        <TableCell>
-                          <span className={`fw-bold ${driver.driver_data.driver_category === "commercial" ? "text-primary" : "text-danger"}`}>
-                            {driver.driver_data.driver_category === "commercial" ? "Self Sponsored" : "Loan"}
-                          </span>
-                        </TableCell>
-                        <TableCell>
-                          <span
-                            className={`fw-bold ${
-                              driver.driver_data.partnership_status === 0
-                                ? "text-success"
+                        {status !== 0 && (
+                          <TableCell>
+                            <span className={`fw-bold ${driver.driver_data.driver_category === "commercial" ? "text-primary" : "text-danger"}`}>
+                              {driver.driver_data.driver_category === "commercial" ? "Self Sponsored" : "Loan"}
+                            </span>
+                          </TableCell>
+                        )}
+                        {status !== 0 && (
+                          <TableCell>
+                            <span
+                              className={`fw-bold ${
+                                driver.driver_data.partnership_status === 0
+                                  ? "text-success"
+                                  : driver.driver_data.partnership_status === 1
+                                  ? "text-danger"
+                                  : driver.driver_data.partnership_status === 2
+                                  ? "text-info"
+                                  : "text-secondary"
+                              }`}
+                            >
+                              {driver.driver_data.partnership_status === undefined || driver.driver_data.partnership_status === 0
+                                ? "Not Interested"
                                 : driver.driver_data.partnership_status === 1
-                                ? "text-danger"
+                                ? "Interested"
                                 : driver.driver_data.partnership_status === 2
-                                ? "text-info"
-                                : "text-secondary"
-                            }`}
-                          >
-                            {driver.driver_data.partnership_status === undefined || driver.driver_data.partnership_status === 0
-                              ? "Not Interested"
-                              : driver.driver_data.partnership_status === 1
-                              ? "Interested"
-                              : driver.driver_data.partnership_status === 2
-                              ? "In partnership"
-                              : "N/A"}
-                          </span>
-                        </TableCell>
-                        <TableCell>
-                          <Badge color={driver.driver_data.online ? "success" : "danger"}>{driver.driver_data.online ? "Online" : "Offline"}</Badge>
-                        </TableCell>
+                                ? "In partnership"
+                                : "N/A"}
+                            </span>
+                          </TableCell>
+                        )}
+                        {status !== 0 && (
+                          <TableCell>
+                            <Badge color={driver.driver_data.online ? "success" : "danger"}>{driver.driver_data.online ? "Online" : "Offline"}</Badge>
+                          </TableCell>
+                        )}
+
                         <TableCell>
                           <button type="button" className="rct-link-btn text-primary" title="view details">
                             <Link to={`/admin/drivers/${driver.auth_id}`}>
