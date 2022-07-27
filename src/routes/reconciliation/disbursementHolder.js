@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState, useRef} from "react";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import Table from "@material-ui/core/Table";
@@ -70,7 +70,6 @@ const DisbursementHolder = (props) => {
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
   const [argument, setArgument] = useState(null);
-
 
   const dateTypeFilter = [
     {value: "daily", label: "Daily"},
@@ -322,12 +321,12 @@ const DisbursementHolder = (props) => {
           ) : (
             <>
               <div className="d-flex justify-content-end mr-2 mb-2">
-                {showButton === "review" && (
+                {showButton === "review" && financeDriverPayouts?.length > 0 && (
                   <Button onClick={makeReview} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
                     Review Payout
                   </Button>
                 )}
-                {showButton === "approve" && (
+                {showButton === "approve" && financeDriverPayouts?.length > 0 && (
                   <Button onClick={makeApproval} style={{height: "30px"}} className="align-items-center justify-content-center" color="primary">
                     Approve Payout
                   </Button>

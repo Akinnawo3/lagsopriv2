@@ -373,13 +373,13 @@ const Disbursement = (props) => {
           ) : (
             <>
               <div className="d-flex justify-content-end mr-2 mb-2">
-                {showButton === "review" && (
+                {showButton === "review" && financeDriverPayouts?.length > 0 && (
                   <Button onClick={makeReview} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
                     Review Payout
                   </Button>
                 )}
 
-                {showButton === "approve" && (
+                {showButton === "approve" && financeDriverPayouts?.length > 0 && (
                   <Button onClick={makeApproval} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
                     Approve Payout
                   </Button>
