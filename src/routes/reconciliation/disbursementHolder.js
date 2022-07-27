@@ -132,7 +132,7 @@ const DisbursementHolder = (props) => {
   const onConfirm = () => {
     if (argument === 1) {
       reviewPayout({
-        user_type: "driver",
+        user_type: "stakeholder",
         start_date: startDate,
         end_date: endDate,
       });

@@ -125,20 +125,52 @@ const Disbursement = (props) => {
     receivable ? getFinanceDriverLogsExport(dateType, startDate, endDate) : getFinanceDriverPayoutExport(startDate, endDate, status);
   };
 
-  const makeReview = () =>
-    reviewPayout({
-      user_type: "driver",
-      start_date: startDate,
-      end_date: endDate,
-    });
+  // const makeReview = () =>
+  //   reviewPayout({
+  //     user_type: "driver",
+  //     start_date: startDate,
+  //     end_date: endDate,
+  //   });
 
-  const makeApproval = () =>
-    approvePayout({
-      // user_type: "driver",
-      // start_date: startDate,
-      // end_date: endDate,
-      status: "1",
-    });
+  // const makeApproval = () =>
+  //   approvePayout({
+  //     // user_type: "driver",
+  //     // start_date: startDate,
+  //     // end_date: endDate,
+  //     status: "1",
+  //   });
+  const makeReview = () => {
+    setTitle("Are you sure you have to reviewed all pending disbursment?");
+    setMessage("All pending disbursments will be marked as reviewed.");
+    setArgument(1);
+    inputEl.current.open();
+  };
+
+  const makeApproval = () => {
+    setTitle("Are you sure you have to approve all reviewed disbursment?");
+    setMessage("All reviewed disbursments will be approved.");
+    setArgument(2);
+    inputEl.current.open();
+  };
+
+  const onConfirm = () => {
+    if (argument === 1) {
+      reviewPayout({
+        user_type: "driver",
+        start_date: startDate,
+        end_date: endDate,
+      });
+    }
+    if (argument === 2) {
+      approvePayout({
+        // user_type: "stakeholder",
+        // start_date: startDate,
+        // end_date: endDate,
+        status: "1",
+      });
+    }
+  };
+
   changeButtonShowedDriver = (button) => setShowButton(button);
 
   console.log(status);
