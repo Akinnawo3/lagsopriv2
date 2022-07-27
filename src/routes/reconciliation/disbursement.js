@@ -66,6 +66,7 @@ const Disbursement = (props) => {
   const [showButton, setShowButton] = useState("");
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
+  const [argument, setArgument] = useState(null);
 
   const dateTypeFilter = [
     {value: "daily", label: "Daily"},
@@ -119,10 +120,7 @@ const Disbursement = (props) => {
     window.scrollTo(0, 0);
   };
 
-  const confirmExport = () => {
-    exportRef.current.close();
-    receivable ? getFinanceDriverLogsExport(dateType, startDate, endDate) : getFinanceDriverPayoutExport(startDate, endDate, status);
-  };
+  const confirmExport = () => {};
 
   // const makeReview = () =>
   //   reviewPayout({
@@ -175,6 +173,10 @@ const Disbursement = (props) => {
         status: "1",
       });
     }
+    if (argument === 3) {
+      receivable ? getFinanceDriverLogsExport(dateType, startDate, endDate) : getFinanceDriverPayoutExport(startDate, endDate, status);
+    }
+    inputEl.current.close();
   };
 
   changeButtonShowedDriver = (button) => setShowButton(button);

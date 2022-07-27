@@ -69,6 +69,8 @@ const DisbursementHolder = (props) => {
   const [showButton, setShowButton] = useState("");
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
+  const [argument, setArgument] = useState(null);
+
 
   const dateTypeFilter = [
     {value: "daily", label: "Daily"},
@@ -145,6 +147,7 @@ const DisbursementHolder = (props) => {
         status: "1",
       });
     }
+    inputEl.current.close();
   };
 
   changeButtonShowed = (button) => setShowButton(button);
