@@ -5,7 +5,6 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import {Badge, Button} from "reactstrap";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import {getDrivers, getDriversCount, searchDrivers} from "Actions/driverAction";
 import {CSVLink} from "react-csv";
@@ -17,7 +16,9 @@ import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {useHistory} from "react-router-dom";
 import {getUserExport} from "Actions/userAction";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
+import {Badge, Button, ModalHeader, Modal, ModalBody, Form, FormGroup, Label, Input, ModalFooter} from "reactstrap";
 const qs = require("qs");
+export let closeFliterModal;
 
 const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, searchDrivers, header, getDriversCount, getUserExport}) => {
   const history = useHistory();
@@ -32,6 +33,7 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
   const [partnership, setPartnership] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [filterModal, setFilterModal] = useState(false);
   const exportRef = useRef(null);
 
   const paginate = (pageNumber) => {
@@ -119,86 +121,17 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
     getDriversCount(status, startDate, endDate, appStatus, paymentStatus, driverCategory, partnership, loanEligibility);
   };
 
+  closeFliterModal = () => setFilterModal(false);
+
   return (
     <div>
       <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}}>
         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
           <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} />
         </li>
-        <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
-          <select id="filter-dropdown" name="fiter-dropdown" onChange={handleCategoryChange} className="p-1 px-4">
-            {driverCategoryOptions.map((item) => (
-              <option value={item.value}>{item.label}</option>
-            ))}
-          </select>
-        </li>
 
-        {status !== 0 && (
-          <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
-            <select id="filter-dropdown" name="fiter-dropdown" onChange={handleLoanEligibilityChange} className="p-1 px-4 ">
-              {loanRequestEligibility.map((item) => (
-                <option value={item.value}>{item.label}</option>
-              ))}
-            </select>
-          </li>
-        )}
-
-        <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
-          <select id="filter-dropdown" name="fiter-dropdown" onChange={handlePartnerhipChange} className="p-1 px-4">
-            {partnershipStatus.map((item) => (
-              <option value={item.value}>{item.label}</option>
-            ))}
-          </select>
-        </li>
-        {status === 4 && (
-          <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
-            <select id="filter-dropdown" name="fiter-dropdown" onChange={handleChange} className="p-1 px-4">
-              {appStatusOptions.map((item) => (
-                <option value={item.value}>{item.label}</option>
-              ))}
-            </select>
-          </li>
-        )}
-        {status === 2 && (
-          <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
-            <select id="filter-dropdown" name="fiter-dropdown" onChange={handlePaymentChange} className="p-1 px-4">
-              {paymentFilterOptions.map((item) => (
-                <option value={item.value}>{item.label}</option>
-              ))}
-            </select>
-          </li>
-        )}
-        {/*<div>*/}
-        <li className="list-inline-item search-icon d-inline-block mb-2">
-          <small className="fw-bold mr-2">From</small>
-          <input
-            type="date"
-            id="start"
-            name="trip-start"
-            defaultValue={startDate}
-            min="2018-01-01"
-            max={getTodayDate()}
-            onChange={(e) => {
-              setStartDate(e.target.value);
-            }}
-          />
-        </li>
-        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-          <small className="fw-bold mr-2">To</small>
-          <input
-            type="date"
-            id="start"
-            name="trip-start"
-            defaultValue={endDate}
-            min="2018-01-01"
-            max={getTodayDate()}
-            onChange={(e) => {
-              setEndDate(e.target.value);
-            }}
-          />
-        </li>
-        <Button onClick={() => handleFilter()} style={{height: "30px"}} className="align-items-center justify-content-center" color="success">
-          Apply filter
+        <Button onClick={() => setFilterModal(true)} style={{height: "30px"}} className="align-items-center justify-content-center" color="success">
+          Search Filters
         </Button>
         {/*</div>*/}
         <div className="float-right">
@@ -305,6 +238,91 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
         {drivers.length === 0 && !isLoading && <EmptyData />}
       </RctCollapsibleCard>
       <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
+      <Modal size="md" isOpen={filterModal} toggle={() => setFilterModal(!filterModal)}>
+        <ModalHeader toggle={() => setFilterModal(!filterModal)}>Filters</ModalHeader>
+        <ModalBody>
+          <div className="filter-forms">
+            <div className="">
+              <select id="filter-dropdown" name="fiter-dropdown" onChange={handleCategoryChange} className="p-1 px-4 w-100">
+                {driverCategoryOptions.map((item) => (
+                  <option value={item.value}>{item.label}</option>
+                ))}
+              </select>
+            </div>
+            {status !== 0 && (
+              <div>
+                <select id="filter-dropdown" name="fiter-dropdown" onChange={handleLoanEligibilityChange} className="p-1 px-4 w-100 ">
+                  {loanRequestEligibility.map((item) => (
+                    <option value={item.value}>{item.label}</option>
+                  ))}
+                </select>
+              </div>
+            )}
+            <div>
+              <select id="filter-dropdown" name="fiter-dropdown" onChange={handlePartnerhipChange} className="p-1 px-4 w-100">
+                {partnershipStatus.map((item) => (
+                  <option value={item.value}>{item.label}</option>
+                ))}
+              </select>
+            </div>
+            {status === 4 && (
+              <div>
+                <select id="filter-dropdown" name="fiter-dropdown" onChange={handleChange} className="p-1 px-4 w-100">
+                  {appStatusOptions.map((item) => (
+                    <option value={item.value}>{item.label}</option>
+                  ))}
+                </select>
+              </div>
+            )}
+            {status === 2 && (
+              <div>
+                <select id="filter-dropdown" name="fiter-dropdown" onChange={handlePaymentChange} className="p-1 w-100">
+                  {paymentFilterOptions.map((item) => (
+                    <option value={item.value}>{item.label}</option>
+                  ))}
+                </select>
+              </div>
+            )}
+            {/*<div>*/}
+            <div>
+              {" "}
+              <small className="fw-bold ">From</small>
+              <input
+                className="w-100"
+                type="date"
+                id="start"
+                name="trip-start"
+                defaultValue={startDate}
+                min="2018-01-01"
+                max={getTodayDate()}
+                onChange={(e) => {
+                  setStartDate(e.target.value);
+                }}
+              />
+            </div>
+            <div>
+              <small className="fw-bold ">To</small>
+              <input
+                className="w-100"
+                type="date"
+                id="start"
+                name="trip-start"
+                defaultValue={endDate}
+                min="2018-01-01"
+                max={getTodayDate()}
+                onChange={(e) => {
+                  setEndDate(e.target.value);
+                }}
+              />
+            </div>
+          </div>
+          <div className="mt-3 d-flex justify-content-end">
+            <Button onClick={() => handleFilter()} style={{height: "30px"}} className="align-items-center justify-content-center" color="success">
+              Apply filter
+            </Button>
+          </div>
+        </ModalBody>
+      </Modal>
     </div>
   );
 };

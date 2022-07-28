@@ -5,6 +5,7 @@ import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 import {getVehicle} from "Actions/vehicleAction";
 import {closeMedicalRecordModal, closeRepaymentModal, onVerified} from "../routes/drivers/components/driverProfile";
+import {closeFliterModal} from "../routes/drivers/components/driverTable";
 
 export const getDrivers =
   (status = "", page_no = 1, spinner, driver_online_status = "", asset_payment = "", driver_category = "", start_date = "", end_date = "", partnershipStatus = "", loanEligibility = "") =>
@@ -22,6 +23,7 @@ export const getDrivers =
           type: DRIVERS,
           payload: res.data.data,
         });
+        closeFliterModal();
       }
       dispatch(endLoading());
       dispatch(endStatusLoading());
