@@ -76,13 +76,13 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
   };
 
   const driverCategoryOptions = [
-    {value: "", label: "- - Filter by Driver Category - -"},
+    {value: "", label: "Driver Category"},
     {value: "commercial ", label: "Self Sponsored"},
     {value: "social", label: "Loan"},
   ];
 
   const loanRequestEligibility = [
-    {value: "", label: "- - Filter by Loan Request Eligibility - -"},
+    {value: "", label: "Loan Request Eligibility"},
     {value: 1, label: "Requested for loan"},
     {value: 2, label: "Eligible for loan"},
     {value: 3, label: "Not eligible for loan"},
@@ -90,18 +90,18 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
   ];
 
   const paymentFilterOptions = [
-    {value: "", label: "- - Filter by One-off Payment Status - -"},
+    {value: "", label: "One-off Payment Status"},
     {value: "1", label: "Paid"},
     {value: "0", label: "Not Paid"},
   ];
   const appStatusOptions = [
-    {value: "", label: "- - Filter by App Status - -"},
+    {value: "", label: "App Status"},
     {value: 1, label: "Online"},
     {value: 0, label: "Offline"},
   ];
 
   const partnershipStatus = [
-    {value: "", label: "- - Filter by Partnership Status - -"},
+    {value: "", label: "Partnership Status"},
     {value: 0, label: "Not Interested"},
     {value: 1, label: "Interested"},
     {value: 2, label: "In partnership"},
