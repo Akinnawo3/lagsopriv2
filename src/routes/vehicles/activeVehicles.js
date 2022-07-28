@@ -2,12 +2,11 @@ import React, {useEffect, useState} from "react";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {connect} from "react-redux";
 import {getVehiclesCount, getVehicles} from "Actions/vehicleAction";
-import VehicleTable from "Routes/vehicles/components/vehicleTable";
 import {getOems, getOemCount} from "Actions/oemAction";
-
+import VehicleTable from "Routes/vehicles/components/vehicleTable";
 const qs = require("qs");
 
-const ActiveVehicles = ({history, match, getVehicles, getVehiclesCount, vehicles}) => {
+const ActiveVehicles = ({history, match, getVehicles, getVehiclesCount, vehicles, getOems}) => {
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
@@ -32,6 +31,8 @@ function mapDispatchToProps(dispatch) {
   return {
     getVehicles: (page_no, assign, spinner) => dispatch(getVehicles(page_no, assign, spinner)),
     getVehiclesCount: (assign) => dispatch(getVehiclesCount(assign)),
+    getOems: (page_no, spinner) => dispatch(getOems(page_no, spinner)),
+    getOemCount: () => dispatch(getOemCount()),
   };
 }
 
