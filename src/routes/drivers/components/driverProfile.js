@@ -394,6 +394,22 @@ const DriverProfile = ({
                   {driver?.bvn?.value}
                 </li>
               )}
+              {driver?.polaris_data && (
+                <>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Polaris Account Name</strong>
+                    </span>
+                    {driver?.polaris_data_account_name}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Polaris Account Number</strong>
+                    </span>
+                    {driver?.polaris_data_account_number}
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         </div>
@@ -402,6 +418,14 @@ const DriverProfile = ({
         <div className="tab-content">
           <div className="tab-pane active" id="home">
             <ul className="list-group">
+              {driver?.bvn && (
+                <li className="list-group-item text-right">
+                  <span className="pull-left">
+                    <strong>Resting Day</strong>
+                  </span>
+                  <span className="text-capitalize"> {driver?.driver_data?.rest_day?.day === "" ? "Sunday" : driver?.driver_data?.rest_day?.day}</span>
+                </li>
+              )}
               <li className="list-group-item text-right">
                 <span className="pull-left">
                   <strong>Driver Category</strong>

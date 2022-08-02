@@ -10,12 +10,7 @@ import Pagination from "react-js-pagination";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {calculatePostDate, getStatus4, getStatus5, getStatusColor4, getStatusColor5} from "Helpers/helpers";
 import {Badge, Button, Card, CardBody, Col, Row} from "reactstrap";
-import {
-  getPaymentsService,
-  getPaymentsServiceCount,
-  getPaymentsServiceBalance,
-  getPaymentsServiceExport
-} from "Actions/paymentAction";
+import {getPaymentsService, getPaymentsServiceCount, getPaymentsServiceBalance, getPaymentsServiceExport} from "Actions/paymentAction";
 import {Link} from "react-router-dom";
 import {CSVLink} from "react-csv";
 import moment from "moment";
@@ -24,7 +19,19 @@ const qs = require("qs");
 import {getFirstDayOfMonth, getTodayDate} from "../../../helpers/helpers";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 
-const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayments, header, loading, getPaymentsServiceCount, paymentsServiceBalance, getPaymentsServiceBalance, getPaymentsServiceExport}) => {
+const PaymentServiceTable = ({
+  payments,
+  status,
+  paymentsCount,
+  auth_id,
+  getPayments,
+  header,
+  loading,
+  getPaymentsServiceCount,
+  paymentsServiceBalance,
+  getPaymentsServiceBalance,
+  getPaymentsServiceExport,
+}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -46,7 +53,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
   const paymentTypeOptions = [
     {value: "", label: "- - Filter by Payment Type - -"},
     {label: "Driver Asset", value: "driver-assets"},
-    {label: "Add Card", value: "add-card"},
+    // {label: "Add Card", value: "add-card"},
     {label: "Driver Verification", value: "driver-verification"},
   ];
 
@@ -89,7 +96,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
   const confirmExport = () => {
     exportRef.current.close();
     getPaymentsServiceExport(status, auth_id, paymentOptionType, startDate, endDate);
-  }
+  };
 
   return (
     <div>
@@ -116,7 +123,10 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
         </li>
         <div className="float-right">
           {!loading && payments.length > 0 && (
-              <Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center mr-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>  Export to Excel</Button>
+            <Button onClick={() => handleExport()} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
+              {" "}
+              <i className="zmdi zmdi-download mr-2"></i> Export to Excel
+            </Button>
           )}
         </div>
 
@@ -164,7 +174,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
                     <TableCell>User Name</TableCell>
                     <TableCell>User Phn No.</TableCell>
                     <TableCell> User Email</TableCell>
-                    <TableCell>User Type</TableCell>
+                    {/* <TableCell>User Type</TableCell> */}
                     <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
@@ -184,7 +194,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
                         <TableCell>{user?.user_data.length ? `${user?.user_data[0]?.first_name} ${user?.user_data[0]?.last_name}` : ""}</TableCell>
                         <TableCell>{user?.user_data.length ? `${user?.user_data[0]?.phone_number}` : ""}</TableCell>
                         <TableCell>{user?.user_data.length ? `${user?.user_data[0]?.email}` : ""}</TableCell>
-                        <TableCell>{user?.user_data.length ? `${user?.user_data[0]?.user_type}` : ""}</TableCell>
+                        {/* <TableCell>{user?.user_data.length ? `${user?.user_data[0]?.user_type}` : ""}</TableCell> */}
 
                         <TableCell>
                           <button type="button" className="rct-link-btn text-primary" title="view details">
@@ -206,7 +216,7 @@ const PaymentServiceTable = ({payments, status, paymentsCount, auth_id, getPayme
         )}
         {!loading && payments?.length < 1 && <EmptyData />}
       </RctCollapsibleCard>
-      <DeleteConfirmationDialog ref={exportRef} title={'Are you sure you want to Export File?'} message={'This will send the excel file to your email'} onConfirm={confirmExport} />
+      <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
     </div>
   );
 };
