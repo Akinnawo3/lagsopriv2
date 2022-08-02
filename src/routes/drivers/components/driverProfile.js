@@ -386,6 +386,14 @@ const DriverProfile = ({
                 </span>
                 {fullDateTime(driver?.driver_data?.approved_date).fullDateTime}
               </li>
+              {driver?.bvn && (
+                <li className="list-group-item text-right">
+                  <span className="pull-left">
+                    <strong>BVN</strong>
+                  </span>
+                  {driver?.bvn?.value}
+                </li>
+              )}
             </ul>
           </div>
         </div>

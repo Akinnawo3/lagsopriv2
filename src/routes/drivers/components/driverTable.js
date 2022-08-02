@@ -243,6 +243,7 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
         <ModalBody>
           <div className="filter-forms">
             <div className="">
+              <small className="fw-bold ">Driver Category</small>
               <select id="filter-dropdown" name="fiter-dropdown" onChange={handleCategoryChange} className="p-1 px-4 w-100">
                 {driverCategoryOptions.map((item) => (
                   <option value={item.value}>{item.label}</option>
@@ -251,6 +252,7 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
             </div>
             {status !== 0 && (
               <div>
+                <small className="fw-bold ">Loan Status</small>
                 <select id="filter-dropdown" name="fiter-dropdown" onChange={handleLoanEligibilityChange} className="p-1 px-4 w-100 ">
                   {loanRequestEligibility.map((item) => (
                     <option value={item.value}>{item.label}</option>
@@ -259,6 +261,7 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
               </div>
             )}
             <div>
+              <small className="fw-bold ">Partnership Status</small>
               <select id="filter-dropdown" name="fiter-dropdown" onChange={handlePartnerhipChange} className="p-1 px-4 w-100">
                 {partnershipStatus.map((item) => (
                   <option value={item.value}>{item.label}</option>
@@ -267,6 +270,7 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
             </div>
             {status === 4 && (
               <div>
+                <small className="fw-bold ">App Status</small>
                 <select id="filter-dropdown" name="fiter-dropdown" onChange={handleChange} className="p-1 px-4 w-100">
                   {appStatusOptions.map((item) => (
                     <option value={item.value}>{item.label}</option>
@@ -276,6 +280,7 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
             )}
             {status === 2 && (
               <div>
+                <small className="fw-bold ">One-off Payment</small>
                 <select id="filter-dropdown" name="fiter-dropdown" onChange={handlePaymentChange} className="p-1 w-100">
                   {paymentFilterOptions.map((item) => (
                     <option value={item.value}>{item.label}</option>

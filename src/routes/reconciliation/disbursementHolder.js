@@ -426,9 +426,21 @@ const DisbursementHolder = (props) => {
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
-                      <strong>Debt Service</strong>
+                      <strong>Comms</strong>
                     </span>
-                    ₦{ibileData?.debt_service?.toLocaleString()}
+                    ₦{ibileData?.comms?.toLocaleString()}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Asset Repaymet</strong>
+                    </span>
+                    ₦{ibileData?.asset_repayment?.toLocaleString()}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Mobile Phone</strong>
+                    </span>
+                    ₦{ibileData?.mobile_phone?.toLocaleString()}
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
@@ -470,9 +482,9 @@ const DisbursementHolder = (props) => {
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
-                      <strong>Comms</strong>
+                      <strong>Dashcam</strong>
                     </span>
-                    ₦{zenoData?.comms?.toLocaleString()}
+                    ₦{zenoData?.dashcam?.toLocaleString()}
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
