@@ -24,9 +24,11 @@ import {
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "Actions/loadingAction";
+import {changeButtonShowed} from "../routes/reconciliation/disbursementHolder";
+import {changeButtonShowedDriver} from "../routes/reconciliation/disbursement";
 
 export const getPayments =
-  (page_no, status = "", auth_id = "", loading, userType = "rider_id", start_date = '', end_date = '') =>
+  (page_no, status = "", auth_id = "", loading, userType = "rider_id", start_date = "", end_date = "") =>
   async (dispatch) => {
     try {
       loading && dispatch(startLoading());
@@ -50,7 +52,7 @@ export const getPayments =
   };
 
 export const getPaymentsCount =
-  (status = "", auth_id = "", userType = "rider_id", start_date = '', end_date = '') =>
+  (status = "", auth_id = "", userType = "rider_id", start_date = "", end_date = "") =>
   async (dispatch) => {
     try {
       const res = await axios.get(`${api.wallet}/v1.1/admin/trip-transactions?component=count&status=${status}&${userType}=${auth_id}&start_date=${start_date}&end_date=${end_date}`);
@@ -90,7 +92,7 @@ export const searchPayment = (searchData, status) => async (dispatch) => {
 };
 
 export const getPaymentsExport =
-  (status = "", auth_id = "", userType = "rider_id", start_date = '', end_date = '') =>
+  (status = "", auth_id = "", userType = "rider_id", start_date = "", end_date = "") =>
   async (dispatch) => {
     dispatch(startStatusLoading());
     try {
@@ -397,7 +399,7 @@ export const getFinanceHolderLogs =
       loading && (await dispatch(startLoading()));
       !loading && dispatch(startStatusLoading());
       const res = await axios.get(
-        `${api.revenueSplit}/v1.1/admin//stake-holder-disbursement-preview?item_per_page=20&page=${page_no}&date_type=${date_type}&start_date=${start_date}&end_date=${end_date}`
+        `${api.revenueSplit}/v1.1/admin/stake-holder-disbursement-preview?item_per_page=20&page=${page_no}&date_type=${date_type}&start_date=${start_date}&end_date=${end_date}`
       );
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
@@ -421,7 +423,7 @@ export const getFinanceHolderLogsCount =
     try {
       loading && (await dispatch(startLoading()));
       !loading && dispatch(startStatusLoading());
-      const res = await axios.get(`${api.revenueSplit}/v1.1/admin//stake-holder-disbursement-preview?component=count&date_type=${date_type}&start_date=${start_date}&end_date=${end_date}`);
+      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/stake-holder-disbursement-preview?component=count&date_type=${date_type}&start_date=${start_date}&end_date=${end_date}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -472,6 +474,9 @@ export const getFinanceDriverPayouts =
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
+        status === "0" && changeButtonShowedDriver("review");
+        status === "4" && changeButtonShowedDriver("approve");
+        status !== "0" && status !== "4" && changeButtonShowedDriver("");
         dispatch({
           type: FINANCE_DRIVER_PAYOUTS,
           payload: res.data.data,
@@ -532,15 +537,19 @@ export const searchFinanceDriverPayouts = (searchData) => async (dispatch) => {
   }
 };
 export const getFinanceHolderPayouts =
-  (page_no = 1, loading, date_type = "", start_date = "", end_date = "") =>
+  (page_no = 1, loading, date_type = "", start_date = "", end_date = "", status = "") =>
   async (dispatch) => {
     try {
       loading && (await dispatch(startLoading()));
       !loading && dispatch(startStatusLoading());
-      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/payout?item_per_page=20&page=${page_no}&date_type=${date_type}&start_date=${start_date}&end_date${end_date}`);
+      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/payout?item_per_page=20&page=${page_no}&date_type=${date_type}&start_date=${start_date}&end_date${end_date}&status=${status}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
+        status === "0" && changeButtonShowed("review");
+        status === "4" && changeButtonShowed("approve");
+        status !== "0" && status !== "4" && changeButtonShowed("");
+
         dispatch({
           type: FINANCE_HOLDER_PAYOUTS,
           payload: res.data.data,
@@ -555,12 +564,12 @@ export const getFinanceHolderPayouts =
   };
 
 export const getFinanceHolderPayoutsCount =
-  (loading, date_type = "", start_date = "", end_date = "") =>
+  (loading, date_type = "", start_date = "", end_date = "", status = "") =>
   async (dispatch) => {
     try {
       loading && (await dispatch(startLoading()));
       !loading && dispatch(startStatusLoading());
-      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/payout?component=count&date_type=${date_type}&start_date=${start_date}&end_date${end_date}`);
+      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/payout?component=count&date_type=${date_type}&start_date=${start_date}&end_date${end_date}&status=${status}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -601,8 +610,6 @@ export const searchFinanceHolderPayouts = (searchData) => async (dispatch) => {
   }
 };
 
-
-
 export const getFinanceDriverLogsExport =
   (date_type = "", start_date = "", end_date = "") =>
   async (dispatch) => {
@@ -620,7 +627,7 @@ export const getFinanceDriverLogsExport =
     }
   };
 
-  export const getFinanceDriverPayoutExport =
+export const getFinanceDriverPayoutExport =
   (start_date = "", end_date = "", status = "") =>
   async (dispatch) => {
     dispatch(startStatusLoading());
@@ -636,3 +643,40 @@ export const getFinanceDriverLogsExport =
       dispatch(endStatusLoading());
     }
   };
+
+export const approvePayout = (body) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.post(`${api.revenueSplit}/v1.1/admin/approve-payout`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success("Payout Approved Successfully!");
+      getFinanceDriverPayouts();
+      getFinanceDriverPayoutsCount();
+    }
+    dispatch(endStatusLoading());
+  } catch (e) {
+    console.log(e);
+    dispatch(endStatusLoading());
+    NotificationManager.error("Network error");
+  }
+};
+export const reviewPayout = (body) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.post(`${api.revenueSplit}/v1.1/admin/review-payout`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success("Payout Reviewed Successfully!");
+      getFinanceDriverPayouts();
+      getFinanceDriverPayoutsCount();
+    }
+    dispatch(endStatusLoading());
+  } catch (e) {
+    console.log(e);
+    dispatch(endStatusLoading());
+    NotificationManager.error("Network error");
+  }
+};

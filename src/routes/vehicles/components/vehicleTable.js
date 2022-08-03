@@ -127,7 +127,7 @@ const VehicleTable = ({
           oemVehicle: vehicle.oem_vehicle_id,
           purchase_year: vehicle?.purchase_year,
           chassis_number: vehicle?.chassis_number,
-          engine_number: vehicle.engine_number
+          engine_number: vehicle.engine_number,
         });
         setUpdateId(vehicle.vehicle_id);
       }
@@ -137,9 +137,9 @@ const VehicleTable = ({
     await getVehiclesByOem(1, false, vehic.oem_id);
   };
 
-   onAddUpdateVehicleModalClose = () => {
+  onAddUpdateVehicleModalClose = () => {
     // if (editUser) {
-      setFormData({...formData, plateNo: "", type: "", model: "", desc: "", make: "", color: "", oem: "", purchase_year: "", chassis_number: "", engine_number: ""});
+    setFormData({...formData, plateNo: "", type: "", model: "", desc: "", make: "", color: "", oem: "", purchase_year: "", chassis_number: "", engine_number: ""});
     // }
     setUpdateId(null);
     setAddNewUserModal(false);
@@ -148,17 +148,17 @@ const VehicleTable = ({
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    !editUser ? await createVehicles(plateNo, make, model, desc, color, oem, oemVehicle, purchase_year, chassis_number, engine_number) : await updateVehicle(updateId, plateNo, make, model, desc, color, currentPage, assign, oem, oemVehicle, purchase_year, chassis_number, engine_number);
+    !editUser
+      ? await createVehicles(plateNo, make, model, desc, color, oem, oemVehicle, purchase_year, chassis_number, engine_number)
+      : await updateVehicle(updateId, plateNo, make, model, desc, color, currentPage, assign, oem, oemVehicle, purchase_year, chassis_number, engine_number);
   };
-
 
   const onDelete = (id) => {
     inputEl.current.open();
     setDeleteId(id);
   };
 
-
-  console.log(vehicles, 'aaaaa')
+  console.log(vehicles, "aaaaa");
 
   return (
     <div>
@@ -187,6 +187,7 @@ const VehicleTable = ({
                     <TableCell>Serial No</TableCell>
                     <TableCell>Model</TableCell>
                     <TableCell>Year</TableCell>
+                    <TableCell>Mileage</TableCell>
                     <TableCell>Driver status</TableCell>
                     <TableCell>Partner status</TableCell>
                     <TableCell>Action</TableCell>
@@ -200,6 +201,7 @@ const VehicleTable = ({
                         <TableCell>{vehicle.car_number}</TableCell>
                         <TableCell>{vehicle.car_make}</TableCell>
                         <TableCell>{vehicle.car_model}</TableCell>
+                        <TableCell>{vehicle.mileage}</TableCell>
                         <TableCell>
                           <Badge color={vehicle.assigned ? "success" : "danger"}>{vehicle.assigned ? "Assigned" : "Unassigned"}</Badge>
                         </TableCell>
@@ -290,15 +292,15 @@ const VehicleTable = ({
             )}
             <FormGroup>
               <Label for="purchase_year">Purchase Year</Label>
-              <Input type="number" name="purchase_year" value={purchase_year} onChange={onChange}  />
+              <Input type="number" name="purchase_year" value={purchase_year} onChange={onChange} />
             </FormGroup>
             <FormGroup>
               <Label for="chassis_number">Chassis Number</Label>
-              <Input type="text" name="chassis_number" value={chassis_number} onChange={onChange}  />
+              <Input type="text" name="chassis_number" value={chassis_number} onChange={onChange} />
             </FormGroup>
             <FormGroup>
               <Label for="engine_number">Engine Number</Label>
-              <Input type="text" name="engine_number" value={engine_number} onChange={onChange}  />
+              <Input type="text" name="engine_number" value={engine_number} onChange={onChange} />
             </FormGroup>
           </ModalBody>
           <ModalFooter>

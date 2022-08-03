@@ -118,12 +118,12 @@ const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
                       revenueChartData.map((item, index) => (
                         <TableRow hover key={index}>
                           <TableCell>{`${formatByDateType(item?.rev_date)}`}</TableCell>
-                          <TableCell>{`₦${item?.asset_co.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.comms.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.daily_tax.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.maintenance.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.refleeting.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.tech_co.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.asset_co?.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.comms?.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.daily_tax?.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.maintenance?.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.refleeting?.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.tech_co?.toLocaleString()}`}</TableCell>
 
                           <TableCell>{`₦${item?.debt_service_split?.asset_repayment?.toLocaleString() || 0}`}</TableCell>
                           <TableCell>{`₦${item?.debt_service_split?.dashcam?.toLocaleString() || 0}`}</TableCell>
@@ -133,15 +133,15 @@ const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
                     {revenueChartData.length > 0 && (
                       <TableRow>
                         <TableCell className="fw-bold">Total</TableCell>
-                        <TableCell className="fw-bold">{`₦${getColumnSum("asset_co").toLocaleString()}`}</TableCell>
-                        <TableCell className="fw-bold">{`₦${getColumnSum("comms").toLocaleString()}`}</TableCell>
-                        <TableCell className="fw-bold">{`₦${getColumnSum("daily_tax").toLocaleString()}`}</TableCell>
-                        <TableCell className="fw-bold">{`₦${getColumnSum("maintenance").toLocaleString()}`}</TableCell>
-                        <TableCell className="fw-bold">{`₦${getColumnSum("refleeting").toLocaleString()}`}</TableCell>
-                        <TableCell className="fw-bold">{`₦${getColumnSum("tech_co").toLocaleString()}`}</TableCell>
-                        <TableCell className="fw-bold">{`₦${getColumnSum("debt_service_split.asset_repayment").toLocaleString()}`}</TableCell>
-                        <TableCell className="fw-bold">{`₦${getColumnSum("debt_service_split.dashcam").toLocaleString()}`}</TableCell>
-                        <TableCell className="fw-bold">{`₦${getColumnSum("debt_service_split.mobile_phone").toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("asset_co")?.toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("comms")?.toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("daily_tax")?.toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("maintenance")?.toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("refleeting")?.toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("tech_co")?.toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("debt_service_split.asset_repayment")?.toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("debt_service_split.dashcam")?.toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("debt_service_split.mobile_phone")?.toLocaleString()}`}</TableCell>
                       </TableRow>
                     )}
                   </Fragment>

@@ -4,16 +4,17 @@ import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 import {getVehicle} from "Actions/vehicleAction";
-import {closeMedicalRecordModal, onVerified} from "../routes/drivers/components/driverProfile";
+import {closeMedicalRecordModal, closeRepaymentModal, onVerified} from "../routes/drivers/components/driverProfile";
+import {closeFliterModal} from "../routes/drivers/components/driverTable";
 
 export const getDrivers =
-  (status = "", page_no = 1, spinner, driver_online_status = "", asset_payment = "", driver_category = "", start_date = "", end_date = "", partnershipStatus = "") =>
+  (status = "", page_no = 1, spinner, driver_online_status = "", asset_payment = "", driver_category = "", start_date = "", end_date = "", partnershipStatus = "", loanEligibility = "") =>
   async (dispatch) => {
     try {
       spinner && dispatch(startLoading());
       !spinner && dispatch(startStatusLoading());
       const res = await axios.get(
-        `${api.user}/v1.1/admin/users?user_type=driver&item_per_page=20&page=${page_no}&account_status=${status}&driver_online_status=${driver_online_status}&asset_payment=${asset_payment}&driver_category=${driver_category}&start_date=${start_date}&end_date=${end_date}&driver_partnership_status=${partnershipStatus}`
+        `${api.user}/v1.1/admin/users?user_type=driver&item_per_page=20&page=${page_no}&account_status=${status}&driver_online_status=${driver_online_status}&asset_payment=${asset_payment}&driver_category=${driver_category}&start_date=${start_date}&end_date=${end_date}&driver_partnership_status=${partnershipStatus}&loan_request=${loanEligibility}`
       );
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
@@ -22,6 +23,7 @@ export const getDrivers =
           type: DRIVERS,
           payload: res.data.data,
         });
+        closeFliterModal();
       }
       dispatch(endLoading());
       dispatch(endStatusLoading());
@@ -33,11 +35,11 @@ export const getDrivers =
   };
 
 export const getDriversCount =
-  (status = "", start_date = "", end_date = "", driver_online_status = "", asset_payment = "", driver_category = "", partnershipStatus = "") =>
+  (status = "", start_date = "", end_date = "", driver_online_status = "", asset_payment = "", driver_category = "", partnershipStatus = "", loanEligibility = "") =>
   async (dispatch) => {
     try {
       const res = await axios.get(
-        `${api.user}/v1.1/admin/users?user_type=driver&account_status=${status}&component=count&start_date=${start_date}&end_date=${end_date}&driver_online_status=${driver_online_status}&asset_payment=${asset_payment}&driver_category=${driver_category}&driver_partnership_status=${partnershipStatus}`
+        `${api.user}/v1.1/admin/users?user_type=driver&account_status=${status}&component=count&start_date=${start_date}&end_date=${end_date}&driver_online_status=${driver_online_status}&asset_payment=${asset_payment}&driver_category=${driver_category}&driver_partnership_status=${partnershipStatus}&loan_request=${loanEligibility}`
       );
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
@@ -132,9 +134,9 @@ export const changeDriverCategory = (auth_id, category, driverData, message_type
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      if (driverData && message_type) {
-        await dispatch(sendDriverMessage(driverData, message_type, subject));
-      }
+      // if (driverData && message_type) {
+      //   await dispatch(sendDriverMessage(driverData, message_type, subject));
+      // }
       await NotificationManager.success("Driver Category Updated Successfully!");
       await dispatch(getDriver(auth_id, true));
     }
@@ -239,5 +241,24 @@ export const getDriverLocation = (driverData, vehicleData) => async (dispatch) =
     dispatch(endStatusLoading());
   } catch (err) {
     dispatch(endStatusLoading());
+  }
+};
+
+// pass the parameters from the page.. this can be used in a way that it can update any detail / component
+export const updateDriver = (body) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.put(`${api.user}/v1.1/admin/users`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success("Updated Successfully");
+      closeRepaymentModal();
+      await dispatch(getDriver(body.auth_id, true));
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+    NotificationManager.error(err.response.data.message);
   }
 };

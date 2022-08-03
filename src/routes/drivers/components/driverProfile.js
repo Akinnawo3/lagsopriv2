@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from "react";
 import {Badge, ModalHeader, Modal, ModalBody, Form, FormGroup, Label, Input, ModalFooter} from "reactstrap";
 import Button from "@material-ui/core/Button";
 import {getStatus, getStatusColor, idVerificationType} from "Helpers/helpers";
-import {changeDriverStatus, changeDriverCategory, verifyID, updateMedicalRecord} from "Actions/driverAction";
+import {changeDriverStatus, changeDriverCategory, verifyID, updateMedicalRecord, updateDriver} from "Actions/driverAction";
 import {getCustomerCare} from "Actions/customerCareAction";
 import {sendVerificationRequest} from "Actions/idVerificationAction";
 import {connect} from "react-redux";
@@ -15,10 +15,12 @@ import suspensionReasonsList from "../../../assets/data/suspension-reasons/suspe
 import Spinner from "Components/spinner/Spinner";
 import {verifyUserPermssion} from "../../../container/DefaultLayout";
 import AsyncSelectComponent from "./AsyncSelect";
-import {calculatePostDate} from "../../../helpers/helpers";
+import {calculatePostDate, clculateDailyLoanRepayment, fullDateTime} from "../../../helpers/helpers";
 export let onAddVehicleModalClose;
 export let closeMedicalRecordModal;
 export let onVerified;
+export let closeRepaymentModal;
+export let activateDriver;
 const DriverProfile = ({
   driver,
   changeDriverStatus,
@@ -34,13 +36,17 @@ const DriverProfile = ({
   customerCareNumbers,
   verifyID,
   dataMode,
+  updateDriver,
 }) => {
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const [addVehicleModal, setAddVehicleModal] = useState(false);
   const [idVerificationModalOpen, setIdVerificationModalOpen] = useState(false);
   const [idType, setIdType] = useState("");
+
   const [driverCategory, setDriverCategory] = useState(driver?.driver_data?.driver_category);
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+  const [loanEligibilityModalOpen, setLoanEligibilityModalOpen] = useState(false);
+  const [repaymentModalOpen, setRepaymentModalOpen] = useState(false);
   const [suspensionReasonsModalOpen, setSuspensionReasonsModalOpen] = useState(false);
   const [vehicleData, setVehicleData] = useState({});
   const [argument, setArgument] = useState(null);
@@ -50,6 +56,11 @@ const DriverProfile = ({
   const [medicalRecordsModal, setMedicalRecordsModal] = useState();
   const [tuberculosis, setTuberculosis] = useState(driver?.driver_data?.medical_record?.tuberculosis || "");
   const [hepatitis, setHepatitis] = useState(driver?.driver_data?.medical_record?.hepatitis || "");
+  const [loanEligibility, setLoanEligibility] = useState(driver?.driver_data?.loan_data?.is_eligible || "");
+
+  const [oneOff, setOneOff] = useState(driver?.driver_data?.asset_payment?.amount || "");
+  const [debtService, setDebtService] = useState(driver?.driver_data?.payment_plan?.plan);
+  const [loanRepayment, setLoanRepayment] = useState(driver?.driver_data?.payment_plan?.loan);
 
   const inputEl = useRef(null);
   const [formData, setFormData] = useState({
@@ -83,21 +94,23 @@ const DriverProfile = ({
     setAddVehicleModal(false);
   };
 
+  activateDriver = () =>
+    changeDriverStatus(
+      driver?.auth_id,
+      "4",
+      driver,
+      emailMessages.approveMsg({
+        firstName: driver?.first_name,
+        vehicleDetails: vehicle,
+      }),
+      "Driver Approved"
+    );
+
   const onSubmit = async (e) => {
     onAddVehicleModalClose();
     e.preventDefault();
     if (formData?.vehicle) {
       await assignVehicle(vehicle?.vehicle_id, driver?.auth_id, driver, vehicleData, "5M");
-      await changeDriverStatus(
-        driver?.auth_id,
-        "4",
-        driver,
-        emailMessages.approveMsg({
-          firstName: driver?.first_name,
-          vehicleDetails: vehicle,
-        }),
-        "Driver Approved"
-      );
     } else {
       NotificationManager.error("Select a vehicle");
     }
@@ -147,6 +160,14 @@ const DriverProfile = ({
     setArgument(6);
     inputEl.current.open();
   };
+  const handleLoanEligibilityChange = (e) => {
+    e.preventDefault();
+    setLoanEligibilityModalOpen(false);
+    setTitle("Are you sure you want to update driver's loan eligibility?");
+    setMessage("The driver's loan eligibility will be updated");
+    setArgument(8);
+    inputEl.current.open();
+  };
 
   const triggerIdVerifcation = (type, value, firstName, lastName) => {
     setIdType(type);
@@ -177,6 +198,9 @@ const DriverProfile = ({
   closeMedicalRecordModal = () => {
     setMedicalRecordsModal(false);
   };
+  closeRepaymentModal = () => {
+    setRepaymentModalOpen(false);
+  };
 
   const onConfirm = () => {
     if (argument === 1) {
@@ -204,10 +228,26 @@ const DriverProfile = ({
         verifyID(driver?.auth_id, "1", idType);
       }
     }
+    if (argument === 8) {
+      updateDriver({
+        component: "debt_service",
+        loan_request: loanEligibility.toString(),
+        auth_id: driver?.auth_id,
+      });
+    }
     inputEl.current.close();
   };
 
-  //console.log(driver);
+  const handleRepaymentsUpdate = (e) => {
+    e.preventDefault();
+    updateDriver({
+      component: "debt_service",
+      one_off_amount: oneOff,
+      loan_service_fee: loanRepayment,
+      debt_service_fee: debtService,
+      auth_id: driver?.auth_id,
+    });
+  };
 
   return (
     <div className="row" style={{fontSize: "0.8rem"}}>
@@ -328,14 +368,6 @@ const DriverProfile = ({
                 </span>
                 {driver?.driver_data?.disability === 0 ? "No" : "Yes"}
               </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div className="col-sm-10 col-lg-5 offset-lg-1">
-        <div className="tab-content">
-          <div className="tab-pane active" id="home">
-            <ul className="list-group">
               <li className="list-group-item text-right">
                 <span className="pull-left">
                   <strong>Bank Name</strong>
@@ -350,11 +382,74 @@ const DriverProfile = ({
               </li>
               <li className="list-group-item text-right">
                 <span className="pull-left">
+                  <strong>Date of Approval</strong>
+                </span>
+                {fullDateTime(driver?.driver_data?.approved_date).fullDateTime}
+              </li>
+              {driver?.bvn && (
+                <li className="list-group-item text-right">
+                  <span className="pull-left">
+                    <strong>BVN</strong>
+                  </span>
+                  {driver?.bvn?.value}
+                </li>
+              )}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div className="col-sm-10 col-lg-5 offset-lg-1">
+        <div className="tab-content">
+          <div className="tab-pane active" id="home">
+            <ul className="list-group">
+              <li className="list-group-item text-right">
+                <span className="pull-left">
                   <strong>Driver Category</strong>
                 </span>
-                {driver?.driver_data?.driver_category === "commercial" ? "Non-loan" : "Loan"}
+                {driver?.driver_data?.driver_category === "commercial" ? "Self Sponsored" : "Loan"}
 
                 <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => setCategoryModalOpen(true)}>
+                  Change
+                </span>
+              </li>
+              <li className="list-group-item text-right">
+                <span className="pull-left">
+                  <strong>Loan Eligibility</strong>
+                </span>
+                {driver?.driver_data?.loan_data?.is_eligible == 1 && "Eligible"}
+                {driver?.driver_data?.loan_data?.is_eligible == 0 && "Undecided"}
+                {driver?.driver_data?.loan_data?.is_eligible == 2 && "Not Eligible"}
+
+                <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => setLoanEligibilityModalOpen(true)}>
+                  Change
+                </span>
+              </li>
+
+              {driver?.driver_data?.asset_payment?.status && (
+                <li className="list-group-item text-right">
+                  <span className="pull-left">
+                    <strong>One-off Payment ID</strong>
+                  </span>
+                  {driver?.driver_data?.asset_payment?.payment_id}
+                </li>
+              )}
+              <li className="list-group-item text-right">
+                <span className="pull-left">
+                  <strong>One-off Payment</strong>
+                </span>
+                {driver?.driver_data?.asset_payment?.status ? "Paid" : "Not Paid"}
+              </li>
+              <li className="list-group-item text-right">
+                <span className="pull-left">
+                  <strong>One-off Payment Amount</strong>
+                </span>
+
+                {oneOff
+                  ? ` ₦ ${oneOff.toLocaleString()}`
+                  : driver?.driver_data?.driver_category === "social"
+                  ? ` ₦ ${customerCareNumbers?.soc_driver_fee.total?.toLocaleString()}`
+                  : ` ₦ ${customerCareNumbers?.com_driver_fee?.total?.toLocaleString()}`}
+                <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => setRepaymentModalOpen(true)}>
                   Change
                 </span>
               </li>
@@ -364,6 +459,22 @@ const DriverProfile = ({
                   <strong>Daily debt service Amt</strong>
                 </span>
                 {driver?.driver_data?.payment_plan?.plan ? "₦" + driver?.driver_data?.payment_plan?.plan : "NA"}
+
+                <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => setRepaymentModalOpen(true)}>
+                  Change
+                </span>
+              </li>
+              <li className="list-group-item text-right">
+                <span className="pull-left">
+                  <strong>Loan Repayment Amt</strong>
+                </span>
+                {driver?.driver_data?.payment_plan?.loan ? "₦" + driver?.driver_data?.payment_plan?.loan : "NA"}
+
+                {/* {driver?.driver_data?.payment_plan?.plan ? "₦" + driver?.driver_data?.payment_plan?.plan : "NA"} */}
+
+                <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => setRepaymentModalOpen(true)}>
+                  Change
+                </span>
               </li>
 
               {driver?.driver_data?.driver_status === 4 && (
@@ -499,28 +610,7 @@ const DriverProfile = ({
                   {driver?.driver_data?.verification_payment?.payment_id}
                 </li>
               )}
-              <li className="list-group-item text-right">
-                <span className="pull-left">
-                  <strong>One-off Payment Amount</strong>
-                </span>
-                {driver?.driver_data?.driver_category === "social"
-                  ? ` ₦ ${customerCareNumbers?.soc_driver_fee.total?.toLocaleString()}`
-                  : ` ₦ ${customerCareNumbers?.com_driver_fee?.total?.toLocaleString()}`}
-              </li>
-              <li className="list-group-item text-right">
-                <span className="pull-left">
-                  <strong>One-off Payment</strong>
-                </span>
-                {driver?.driver_data?.asset_payment?.status ? "Paid" : "Not Paid"}
-              </li>
-              {driver?.driver_data?.asset_payment?.status && (
-                <li className="list-group-item text-right">
-                  <span className="pull-left">
-                    <strong>One-off Payment ID</strong>
-                  </span>
-                  {driver?.driver_data?.asset_payment?.payment_id}
-                </li>
-              )}
+
               <li className="list-group-item text-right">
                 <span className="pull-left">
                   <strong> Years of Experience</strong>
@@ -642,12 +732,12 @@ const DriverProfile = ({
         <ModalBody>
           <Form onSubmit={handleCategorySubmit}>
             <div className="px-3">
-              <Input type="radio" name="driver_category" value="social" defaultChecked={driverCategory === "social"} onChange={() => setDriverCategory("social")} />
+              <Input type="radio" name="driver_category" value="social" defaultChecked={driver?.driver_data?.driver_category === "social"} onChange={() => setDriverCategory("social")} />
               Loan Driver
             </div>
             <div className="px-3">
-              <Input type="radio" name="driver_category" value="commercial" defaultChecked={driverCategory === "commercial"} onChange={() => setDriverCategory("commercial")} />
-              Non-loan Driver
+              <Input type="radio" name="driver_category" value="commercial" defaultChecked={driver?.driver_data?.driver_category === "commercial"} onChange={() => setDriverCategory("commercial")} />
+              Self Sponsored Driver
             </div>
             <div className="mt-2 text-right">
               <button className=" btn rounded btn-primary cursor-pointer">Change</button>
@@ -655,6 +745,61 @@ const DriverProfile = ({
           </Form>
         </ModalBody>
       </Modal>
+      {/* modal that changes loan Eligibility  */}
+      <Modal size="sm" isOpen={loanEligibilityModalOpen} toggle={() => setLoanEligibilityModalOpen(!loanEligibilityModalOpen)}>
+        <ModalHeader toggle={() => setLoanEligibilityModalOpen(!loanEligibilityModalOpen)}>Update Loan Eligibility</ModalHeader>
+        <ModalBody>
+          <Form onSubmit={handleLoanEligibilityChange}>
+            <div className="px-3">
+              <Input type="radio" id="eligible" name="loan_eligibility" defaultChecked={driver?.driver_data?.loan_data?.is_eligible == "1"} onChange={() => setLoanEligibility(1)} />
+              <Label for="eligible">Eligible</Label>
+            </div>
+            <div className="px-3">
+              <Input type="radio" id="not_eligible" name="loan_eligibility" defaultChecked={driver?.driver_data?.loan_data?.is_eligible == "2"} onChange={() => setLoanEligibility(2)} />
+              <Label for="not_eligible"> Not Eligible</Label>
+            </div>
+            <div className="mt-2 text-right">
+              <button className=" btn rounded btn-primary cursor-pointer">Change</button>
+            </div>
+          </Form>
+        </ModalBody>
+      </Modal>
+
+      {/* modal that changes the driver repayment stuffs */}
+      <Modal size="md" isOpen={repaymentModalOpen} toggle={() => setRepaymentModalOpen(!repaymentModalOpen)}>
+        <ModalHeader toggle={() => setRepaymentModalOpen(!repaymentModalOpen)}>Repayment Amounts</ModalHeader>
+        <ModalBody>
+          <Form onSubmit={handleRepaymentsUpdate}>
+            <div>
+              <Label>One-off Payment</Label>
+              <Input
+                required
+                type="number"
+                min={140000}
+                max={700000}
+                name="one_off"
+                value={oneOff}
+                onChange={(e) => {
+                  setOneOff(e.target.value);
+                  setLoanRepayment(clculateDailyLoanRepayment(e.target.value));
+                }}
+              />
+            </div>
+            <div>
+              <Label>Debt Service Amount</Label>
+              <Input required type="text" name="debt_service" value={debtService} onChange={(e) => setDebtService(e.target.value)} />
+            </div>
+            <div className="mt-3">
+              <Label>Loan Repayment Amount</Label>
+              <Input required type="number" name="loan_repayment" value={loanRepayment} onChange={(e) => setLoanRepayment(e.target.value)} />
+            </div>
+            <div className="mt-2 text-right">
+              <button className=" btn rounded btn-primary cursor-pointer">Change</button>
+            </div>
+          </Form>
+        </ModalBody>
+      </Modal>
+
       {/* Medical Records Modal */}
       <Modal size="sm" isOpen={medicalRecordsModal} toggle={() => setMedicalRecordsModal(false)}>
         <ModalHeader toggle={() => setMedicalRecordsModal(false)}>Medical Records</ModalHeader>
@@ -997,6 +1142,7 @@ function mapDispatchToProps(dispatch) {
     assignVehicle: (vehicle_id, driver_auth_id, driverData, vehicleData, message_type) => dispatch(assignVehicleOnProfile(vehicle_id, driver_auth_id, driverData, vehicleData, message_type)),
     getVehicle: (vehicle_id, spinner) => dispatch(getVehicle(vehicle_id, spinner)),
     sendVerificationRequest: (id_type, id_value, first_name, last_name) => dispatch(sendVerificationRequest(id_type, id_value, first_name, last_name)),
+    updateDriver: (data) => dispatch(updateDriver(data)),
   };
 }
 const mapStateToProps = (state) => ({

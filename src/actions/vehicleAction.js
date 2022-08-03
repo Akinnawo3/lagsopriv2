@@ -5,7 +5,7 @@ import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 import {getDriver, getDrivers} from "Actions/driverAction";
 import {onAddUpdateVehicleModalClose} from "../routes/vehicles/components/vehicleTable";
-import {onAddVehicleModalClose} from "../routes/drivers/components/driverProfile";
+import {activateDriver, onAddVehicleModalClose} from "../routes/drivers/components/driverProfile";
 
 export const getVehicles =
   (page_no = 1, assign = "", spinner, car_number_plate = "") =>
@@ -277,6 +277,7 @@ export const assignVehicleOnProfile = (vehicle_id, driver_auth_id, driverData, v
     } else {
       await NotificationManager.success("Vehicle assigned Successfully!");
       await dispatch(sendVehicleAssignMessage(driverData, vehicleData, message_type, subject));
+      await activateDriver();
       await dispatch(getDriver(driver_auth_id, true));
       onAddVehicleModalClose();
     }

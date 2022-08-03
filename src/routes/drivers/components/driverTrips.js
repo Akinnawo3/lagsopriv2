@@ -144,7 +144,7 @@ const DriverTrips = ({driverTrips, isLoading, tripCountDriver, getDriverTrips, d
                                   </Media>
                                 </TableCell>
                                 <TableCell>
-                                  {new Date(trip.createdAt).toDateString()} {new Date(trip.createdAt).toLocaleTimeString()}
+                                  {new Date(trip?.createdAt)?.toDateString()} {new Date(trip?.createdAt)?.toLocaleTimeString()}
                                 </TableCell>
                                 <TableCell>{trip.ride_class}</TableCell>
 

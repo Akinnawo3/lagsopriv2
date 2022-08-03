@@ -1,214 +1,3 @@
-// /**
-//  * Disbursement
-//  */
-// import React, {useState, useEffect} from "react";
-// import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-// import {connect} from "react-redux";
-// import {Doughnut, Line} from 'react-chartjs-2';
-// import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-// import ChartConfig from "Constants/chart-config";
-// import {Input} from "reactstrap";
-// const qs = require("qs");
-// let dateArray = new Date().toLocaleString().split(',')[0].split('/')
-// let today = `${dateArray[2]}-${dateArray[1]}-${dateArray[0]}`
-// let lastDayOfMonthArray = new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).toLocaleString().split(',')[0].split('/');
-// let start_month = `${dateArray[2]}-${dateArray[1]}-01`
-// let end_month = `${lastDayOfMonthArray[2]}-${lastDayOfMonthArray[1]}-${lastDayOfMonthArray[0]}`
-// let year = new Date().getFullYear()
-// let start_year = `${year}-01-01`
-// let end_year = `${year}-12-31`
-//
-// const options = {
-//     legend: {
-//         display: false,
-//         labels: {
-//             fontColor: ChartConfig.legendFontColor
-//         }
-//     },
-//     cutoutPercentage: 80
-// };
-//
-//
-//
-// const Earnings = ({amount, title, color = '#BE7009', imgUrl = 'naira-purple.png'}) => (
-//       <div className='col-sm-3'>
-//           <RctCollapsibleCard colClasses='w-100'>
-//               <div className='d-flex align-items-center justify-content-center'>
-//                   <img src={require(`Assets/img/${imgUrl}`)} width="50" height="50" />
-//                   <div style={{color: color}} className="ml-3">
-//                       <div style={{fontSize: '28px'}}>
-//                           {amount}
-//                       </div>
-//                       <div style={{fontSize: '14px'}}>
-//                           {title}
-//                       </div>
-//                   </div>
-//               </div>
-//           </RctCollapsibleCard>
-//       </div>
-// )
-//
-// const DoughnutChart = ({data, handleChange}) => (
-//     <RctCollapsibleCard colClasses='w-100'>
-//         <div className='d-flex justify-content-between align-items-center pb-3'>
-//             <div style={{color: '#202020'}}>
-//                 Payment status
-//             </div>
-//             <Input  type="select"   required style={{width: '120px', marginRight: '-5px'}} onChange={e => handleChange(e.target.value)}>
-//                 <option value="total">Total</option>
-//                 <option value="today">Today</option>
-//                 <option value="month">This Month</option>
-//                 <option value="year">This Year</option>
-//             </Input>
-//         </div>
-//         {/*<div style={{position: 'absolute', width: '150px', height: '150px', left: 0, top: 0, bottom: 0, right: 0, margin: 'auto'}} className='d-flex align-items-center justify-content-center'>*/}
-//         {/*    <div>*/}
-//         {/*        <div style={{color: '#0B132A', fontSize: '32px'}}>*/}
-//         {/*            078*/}
-//         {/*        </div>*/}
-//         {/*        <div style={{color: '#747474', fontSize: '19px'}}>*/}
-//         {/*            Trips*/}
-//         {/*        </div>*/}
-//         {/*    </div>*/}
-//         {/*</div>*/}
-//         <Doughnut data={data} options={options} height={100} width={100} />
-//         <div className='d-flex justify-content-between align-items-center'>
-//             <div className='d-flex align-items-center justify-content-center'>
-//                 <div style={{width: '10px', height: '10px', borderRadius: '5px', backgroundColor: '#DD2418'}} />
-//                 <div style={{color: '#DD2418'}} className='ml-1'>
-//                     Pending
-//                 </div>
-//             </div>
-//
-//             <div className='d-flex align-items-center justify-content-center'>
-//                 <div style={{width: '10px', height: '10px', borderRadius: '5px', backgroundColor: '#24C790'}} />
-//                 <div style={{color: '#24C790'}} className='ml-1'>
-//                     Successful
-//                 </div>
-//             </div>
-//         </div>
-//         <div style={{height: '15px'}} />
-//     </RctCollapsibleCard>
-// )
-//
-// const LineChart = ({data}) => (
-//     <RctCollapsibleCard heading="Earnings">
-//         <div>
-//             <Line data={data} options={options} />
-//         </div>
-//     </RctCollapsibleCard>
-// )
-//
-// const Disbursement = (props) => {
-//     const {
-//         history,
-//         match,
-//         financeToday,
-//         financeTotal,
-//         financeSuccessful,
-//         financeUnsuccessful,
-//         financeSuccessfulChart,
-//         financeUnsuccessfulChart,
-//         getFinanceSuccessChart,
-//         getFinanceUnsuccessChart,
-//     } = props
-//   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
-//   const [currentPage, setCurrentPage] = useState(() => {
-//     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
-//   });
-//
-//
-//
-//   const handleChange = (value) => {
-//       if(value === 'today') {
-//           getFinanceUnsuccessChart(today)
-//           getFinanceSuccessChart(today)
-//       } else if(value === 'month')  {
-//           getFinanceUnsuccessChart(start_month, end_month)
-//           getFinanceSuccessChart(start_month, end_month)
-//       } else if(value === 'year') {
-//           getFinanceUnsuccessChart(start_year, end_year)
-//           getFinanceSuccessChart(start_year, end_year)
-//       }else {
-//           getFinanceUnsuccessChart()
-//           getFinanceSuccessChart()
-//       }
-//   }
-//
-//
-//     const data = {
-//         labels: ['Successful', 'Pending'],
-//         datasets: [
-//             {
-//                 data: [financeSuccessfulChart, financeUnsuccessfulChart],
-//                 backgroundColor: [
-//                     '#24C790',
-//                     '#DD2418',
-//                 ],
-//                 // borderColor: [
-//                 //     '#24C790',
-//                 //     '#DD2418',
-//                 // ],
-//                 borderWidth: 1,
-//             },
-//         ],
-//     };
-//
-//     const data2 = {
-//         labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-//         datasets: [
-//             {
-//                 label: "Earnings",
-//                 data: [1,6,3,4,5,6,7,8,9,6,5,10],
-//                 fill: true,
-//                 backgroundColor: "rgba(32, 150, 217, 0.1)",
-//                 borderColor: "#2096D9"
-//             },
-//         ],
-//     };
-//
-//     return (
-//     <div className="table-wrapper">
-//       <PageTitleBar title={"Disbursement"} match={match} />
-//       <div className='row'>
-//        <Earnings title={'All time Earnings'} amount={'1000'.toLocaleString()} imgUrl = 'naira-purple.png' />
-//       <Earnings title={'Earnings Today'} amount={'1000'.toLocaleString()} imgUrl = 'naira-blue.png' color={'#006AB5'} />
-//       <Earnings title={'Successful'} amount={'1000'.toLocaleString()} color={'#24C790'} imgUrl = 'naira-green.png' />
-//       <Earnings title={'Unsuccessful'} amount={'1000'.toLocaleString()} color={'#DD2418'} imgUrl = 'naira-red.png' />
-//       </div>
-//         <div className='row mt-3'>
-//            <div className='col-sm-8'>
-//                <LineChart data={data2} />
-//            </div>
-//             <div className='col-sm-4'>
-//                 <DoughnutChart data={data} handleChange={handleChange} />
-//             </div>
-//         </div>
-//     </div>
-//   );
-// };
-//
-// function mapDispatchToProps(dispatch) {
-//   return {
-//
-//   };
-// }
-//
-// const mapStateToProps = (state) => ({
-//   finance: state.payments.finance,
-//     financeToday: state.payments.financeToday,
-//     financeTotal: state.payments.financeTotal,
-//     financeSuccessful: state.payments.financeSuccessful,
-//     financeUnsuccessful: state.payments.financeUnsuccessful,
-//     financeSuccessfulChart: state.payments.financeSuccessfulChart,
-//     financeUnsuccessfulChart: state.payments.financeUnsuccessfulChart,
-//   isLoading: state.loading.loading,
-//   sosUserDetails: state.sos.sosUserDetails,
-// });
-//
-// export default connect(mapStateToProps, mapDispatchToProps)(Disbursement);
-//
-
 import React, {Fragment, useEffect, useState, useRef} from "react";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
@@ -229,6 +18,8 @@ import {
   searchFinanceDriverPayouts,
   getFinanceDriverPayoutExport,
   getFinanceDriverLogsExport,
+  approvePayout,
+  reviewPayout,
 } from "Actions/paymentAction";
 import {Link} from "react-router-dom";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
@@ -236,7 +27,7 @@ import {Badge, Button, Input} from "reactstrap";
 import {getTodayDate} from "Helpers/helpers";
 const qs = require("qs");
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
-
+export let changeButtonShowedDriver;
 const Disbursement = (props) => {
   const {
     history,
@@ -254,8 +45,10 @@ const Disbursement = (props) => {
     searchFinanceDriverPayouts,
     getFinanceDriverLogsExport,
     getFinanceDriverPayoutExport,
+    approvePayout,
+    reviewPayout,
   } = props;
-  const exportRef = useRef(null);
+  const inputEl = useRef(null);
 
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -269,7 +62,12 @@ const Disbursement = (props) => {
   const [dateType, setDateType] = useState("daily");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState(null);
+  const [showButton, setShowButton] = useState("");
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
+  const [argument, setArgument] = useState(null);
+
   const dateTypeFilter = [
     {value: "daily", label: "Daily"},
     {value: "monthly", label: "Monthly"},
@@ -281,6 +79,7 @@ const Disbursement = (props) => {
     {value: 1, label: "Completed"},
     {value: 2, label: "Failed"},
     {value: 3, label: "Processing"},
+    {value: 4, label: "Reviewed"},
   ];
 
   useEffect(() => {
@@ -321,19 +120,74 @@ const Disbursement = (props) => {
     window.scrollTo(0, 0);
   };
 
+  const confirmExport = () => {};
+
+  // const makeReview = () =>
+  //   reviewPayout({
+  //     user_type: "driver",
+  //     start_date: startDate,
+  //     end_date: endDate,
+  //   });
+
+  // const makeApproval = () =>
+  //   approvePayout({
+  //     // user_type: "driver",
+  //     // start_date: startDate,
+  //     // end_date: endDate,
+  //     status: "1",
+  //   });
+  const makeReview = () => {
+    setTitle("Are you sure you have to reviewed all pending disbursment?");
+    setMessage("All pending disbursments will be marked as reviewed.");
+    setArgument(1);
+    inputEl.current.open();
+  };
+
+  const makeApproval = () => {
+    setTitle("Are you sure you have to approve all reviewed disbursment?");
+    setMessage("All reviewed disbursments will be approved.");
+    setArgument(2);
+    inputEl.current.open();
+  };
+
   const handleExport = () => {
-    exportRef.current.open();
+    setTitle("Are you sure you want to Export File?");
+    setMessage("This will send the excel file to your email.");
+    setArgument(3);
+    inputEl.current.open();
   };
-  const confirmExport = () => {
-    exportRef.current.close();
-    receivable ? getFinanceDriverLogsExport(dateType, startDate, endDate) : getFinanceDriverPayoutExport(startDate, endDate, status);
+
+  const onConfirm = () => {
+    if (argument === 1) {
+      reviewPayout({
+        user_type: "driver",
+        start_date: startDate,
+        end_date: endDate,
+      });
+    }
+    if (argument === 2) {
+      approvePayout({
+        // user_type: "stakeholder",
+        // start_date: startDate,
+        // end_date: endDate,
+        status: "1",
+      });
+    }
+    if (argument === 3) {
+      receivable ? getFinanceDriverLogsExport(dateType, startDate, endDate) : getFinanceDriverPayoutExport(startDate, endDate, status);
+    }
+    inputEl.current.close();
   };
+
+  changeButtonShowedDriver = (button) => setShowButton(button);
+
+  console.log(status);
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Driver Disbursement"} match={match} />
       {!loading && (
         <RctCollapsibleCard heading="Payment Overview" fullBlock>
-          <ul className="d-flex align-items-end">
+          <ul className="d-flex align-items-end ">
             <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
               <SearchComponent
                 getPreviousData={type === "receivable" ? getFinanceDriverLogs : getFinanceDriverPayouts}
@@ -354,10 +208,18 @@ const Disbursement = (props) => {
                   onChange={(e) => {
                     history.push(history.location.pathname);
                     setType(e.target.value);
+                    setDateType("daily");
+                    setStartDate("");
+                    setEndDate("");
                     if (e.target.value === "receivable") {
                       setReceivable(true);
+
+                      getFinanceDriverLogs(currentPage, true);
+                      getFinanceDriverLogsCount(true);
                     } else {
                       setReceivable(false);
+                      getFinanceDriverPayouts(currentPage, true);
+                      getFinanceDriverPayoutsCount(true);
                     }
                   }}
                 >
@@ -420,8 +282,8 @@ const Disbursement = (props) => {
                 }}
               />
             </li>
-            <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-              <Button onClick={() => handleSearch()} color="success">
+            <li className="list-inline-item search-icon d-inline-block ml-2 mb-2 ">
+              <Button onClick={() => handleSearch()} style={{height: "30px"}} className="align-items-center justify-content-center" color="success">
                 Apply filter
               </Button>
             </li>
@@ -510,6 +372,19 @@ const Disbursement = (props) => {
             </>
           ) : (
             <>
+              <div className="d-flex justify-content-end mr-2 mb-2">
+                {showButton === "review" && financeDriverPayouts?.length > 0 && (
+                  <Button onClick={makeReview} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
+                    Review Payout
+                  </Button>
+                )}
+
+                {showButton === "approve" && financeDriverPayouts?.length > 0 && (
+                  <Button onClick={makeApproval} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
+                    Approve Payout
+                  </Button>
+                )}
+              </div>
               {financeDriverPayouts?.length > 0 && (
                 <div className="table-responsive" style={{minHeight: "50vh"}}>
                   <Table>
@@ -517,12 +392,12 @@ const Disbursement = (props) => {
                       <TableRow hover>
                         <TableCell>Date</TableCell>
                         <TableCell>Name</TableCell>
-                        <TableCell>Account No</TableCell>
-                        <TableCell>Bank Name</TableCell>
-                        <TableCell>Actual Amount</TableCell>
-                        <TableCell>Amount</TableCell>
-                        <TableCell>Email</TableCell>
                         <TableCell>Phone No</TableCell>
+                        <TableCell>Bank Name</TableCell>
+                        <TableCell>Bank Acc. Number</TableCell>
+                        <TableCell>Total Amount</TableCell>
+                        <TableCell>Total Cash Collected</TableCell>
+                        <TableCell>Actual Amount</TableCell>
                         <TableCell>Status</TableCell>
                       </TableRow>
                     </TableHead>
@@ -536,15 +411,15 @@ const Disbursement = (props) => {
                                 <TableCell>
                                   {item?.user_data?.first_name} {item?.user_data?.last_name}
                                 </TableCell>
-                                <TableCell>{item.account_data.account_name}</TableCell>
-                                <TableCell>{item.account_data.bank_name}</TableCell>
-                                <TableCell>₦{item?.actual_amount?.toLocaleString()}</TableCell>
-                                <TableCell>₦{item?.amount?.toLocaleString()}</TableCell>
-                                <TableCell>{item?.user_data?.email}</TableCell>
                                 <TableCell>{item?.user_data?.phone_number}</TableCell>
+                                <TableCell>{item?.account_data?.bank_name}</TableCell>
+                                <TableCell>{item?.account_data?.account_number}</TableCell>
+                                <TableCell>₦{item?.payment_summary?.total_net_balance?.toLocaleString()}</TableCell>
+                                <TableCell>₦{item?.payment_summary?.total_cash_collected?.toLocaleString()}</TableCell>
+                                <TableCell>₦{item?.actual_amount?.toLocaleString()}</TableCell>
                                 <TableCell>
-                                  <Badge color={item?.status === 0 ? "secondary" : item?.status === 1 ? "success" : item?.status === 2 ? "danger" : "warning"}>
-                                    {item?.status === 0 ? "Pending" : item?.status === 1 ? "Completed" : item?.status === 2 ? "Failed" : "Processing"}
+                                  <Badge color={item?.status === 0 ? "secondary" : item?.status === 1 ? "success" : item?.status === 2 ? "danger" : item?.status === 3 ? "warning" : "info"}>
+                                    {item?.status === 0 ? "Pending" : item?.status === 1 ? "Completed" : item?.status === 2 ? "Failed" : item?.status === 3 ? "Processing" : "Reviewed"}
                                   </Badge>
                                 </TableCell>
                               </TableRow>
@@ -573,7 +448,7 @@ const Disbursement = (props) => {
           )}
         </RctCollapsibleCard>
       )}
-      <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
+      <DeleteConfirmationDialog ref={inputEl} title={title} message={message} onConfirm={onConfirm} />
     </div>
   );
 };
@@ -588,6 +463,8 @@ function mapDispatchToProps(dispatch) {
     searchFinanceDriverPayouts: (searchData) => dispatch(searchFinanceDriverPayouts(searchData)),
     getFinanceDriverLogsExport: (date_type, start_date, end_date) => dispatch(getFinanceDriverLogsExport(date_type, start_date, end_date)),
     getFinanceDriverPayoutExport: (start_date, end_date, status) => dispatch(getFinanceDriverPayoutExport(start_date, end_date, status)),
+    approvePayout: (data) => dispatch(approvePayout(data)),
+    reviewPayout: (data) => dispatch(reviewPayout(data)),
   };
 }
 
