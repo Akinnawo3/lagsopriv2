@@ -4,8 +4,7 @@ import {VERIFICATION_RESULT} from "./types";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 
-export const sendVerificationRequest = (id_type, id_value, first_name, last_name) => async (dispatch) => {
-  const body = {id_type, id_value, first_name, last_name};
+export const sendVerificationRequest = (body) => async (dispatch) => {
   try {
     await dispatch(startStatusLoading());
     const res = await axios.post(`${api.idVerification}/v1.1/identities/verify`, body);

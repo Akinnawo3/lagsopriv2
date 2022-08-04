@@ -424,5 +424,3 @@ export const clculateDailyLoanRepayment = (amount) => {
   // let dailyDebtService = 6561;
 };
 
-
-

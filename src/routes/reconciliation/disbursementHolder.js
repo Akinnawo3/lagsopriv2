@@ -62,7 +62,7 @@ const DisbursementHolder = (props) => {
   const [ibileData, setIbileData] = useState({});
   const [isZenoModal, setIsZenoModal] = useState(false);
   const [zenoData, setZenoData] = useState({});
-  const [dateType, setDateType] = useState("daily");
+  const [dateType, setDateType] = useState("monthly");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [status, setStatus] = useState("");
@@ -189,7 +189,7 @@ const DisbursementHolder = (props) => {
               <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
                 <div className="mb-2 font-sm">Date Type</div>
                 {/* <small className="fw-bold">Date Type Filter</small> */}
-                <select name="fiter-dropdown" onChange={handleChange} className="p-1 px-4">
+                <select name="fiter-dropdown" onChange={handleChange} value={dateType} className="p-1 px-4">
                   {dateTypeFilter.map((item, index) => (
                     <option value={item.value} key={index}>
                       {item.label}
