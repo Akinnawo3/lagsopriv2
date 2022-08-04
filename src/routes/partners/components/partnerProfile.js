@@ -199,6 +199,9 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
                 if(partnerDetails?.partner_data?.vehicle_interested?.length === 0) {
                   return NotificationManager.error('Partner must have number of vehicle interested')
                 }
+                if(!partnerDetails?.nin_id?.status) {
+                  return NotificationManager.error('NIN not verified')
+                }
                 inputEl.current.open();
               }
               } className="bg-success mt-3 text-white">
@@ -282,12 +285,6 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
               }
               <li className="list-group-item text-right">
                 <span className="pull-left">
-                  <strong>Asset payment?</strong>
-                </span>
-                {partnerDetails?.partner_data?.asset_payment?.status ? 'Yes' : 'No'}
-              </li>
-              <li className="list-group-item text-right">
-                <span className="pull-left">
                   <strong>Vehicles interested</strong>
                 </span>
                 <button type="button" className="rct-link-btn text-primary" title="view details" onClick={() => setViModal(true)}>
@@ -363,6 +360,7 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
               <TableRow hover>
                 <TableCell>Date</TableCell>
                 <TableCell>Unit</TableCell>
+                <TableCell>Amount</TableCell>
                 <TableCell>Status</TableCell>
               </TableRow>
             </TableHead>
@@ -372,6 +370,7 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
                     <TableRow hover key={key}>
                       <TableCell>{calculatePostDate(data.createdAt)}</TableCell>
                       <TableCell>{data.unit}</TableCell>
+                      <TableCell>₦{data?.amount?.toLocaleString()}</TableCell>
                       <TableCell>
                         <Badge color={data.status === 1 ? "success" : "warning"}>{data.status === 1 ? "Fulfilled" : "Pending"}</Badge>
                       </TableCell>
