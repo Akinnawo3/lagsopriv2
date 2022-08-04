@@ -7,7 +7,7 @@ import api from "../environments/environment";
 export const sendVerificationRequest = (body) => async (dispatch) => {
   try {
     await dispatch(startStatusLoading());
-    const res = await axios.post(`${api.idVerification}/v1.1/identities/verify`, body);
+    const res = body?.id_type !== "lassra" ? await axios.post(`${api.idVerification}/v1.1/identities/verify`, body) : await axios.post(`${api.idVerification}/v1.1/identities/lassra`, body);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
       dispatch({

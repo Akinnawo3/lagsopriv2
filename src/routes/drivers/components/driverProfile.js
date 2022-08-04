@@ -570,7 +570,7 @@ const DriverProfile = ({
                     className={`btn-warning rounded fw-bold p-2 ml-3`}
                     onClick={() =>
                       driver?.driver_data?.lasdri_id?.value
-                        ? triggerIdVerifcation({id_type: "lasdri", id_value: driver?.driver_data?.license_id?.value, first_name: driver?.first_name, last_name: driver?.last_name})
+                        ? triggerIdVerifcation({id_type: "lasdri", id_value: driver?.driver_data?.lasdri_id?.value, first_name: driver?.first_name, last_name: driver?.last_name})
                         : NotificationManager.error("No provided ID number")
                     }
                   >
@@ -591,7 +591,15 @@ const DriverProfile = ({
                     className={`btn-warning rounded fw-bold p-2 ml-3`}
                     onClick={() =>
                       driver?.driver_data?.license_id?.value
-                        ? triggerIdVerifcation("lassra", driver?.driver_data?.lassra_id?.value, driver?.first_name, driver?.last_name)
+                        ? triggerIdVerifcation({
+                            id_type: "lassra",
+                            type: "data",
+                            lassra_id: driver?.driver_data?.lassra_id?.value,
+                            first_name: driver?.first_name,
+                            middle_name: driver?.first_name,
+                            last_name: driver?.last_name,
+                            dob: driver?.dob,
+                          })
                         : NotificationManager.error("No provided ID number")
                     }
                   >
@@ -612,7 +620,7 @@ const DriverProfile = ({
                     className={`btn-warning rounded fw-bold p-2 ml-3`}
                     onClick={() =>
                       driver?.driver_data?.nin_id?.value
-                        ? triggerIdVerifcation({id_type: "nin", id_value: driver?.driver_data?.license_id?.value, first_name: driver?.first_name, last_name: driver?.last_name})
+                        ? triggerIdVerifcation({id_type: "nin", id_value: driver?.driver_data?.nin_id?.value, first_name: driver?.first_name, last_name: driver?.last_name})
                         : NotificationManager.error("No provided ID number")
                     }
                   >
