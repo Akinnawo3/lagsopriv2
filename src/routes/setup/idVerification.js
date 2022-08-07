@@ -12,15 +12,20 @@ const IdVerification = ({match, loadingStatus, sendVerificationRequest, verifica
   const [idType, setIdType] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [dob, setDob] = useState("");
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const res = await sendVerificationRequest(idType, idNo, firstName, lastName);
+    const res =
+      idType !== "lassra"
+        ? await sendVerificationRequest({id_type: idType, id_value: idNo, first_name: firstName, last_name: lastName})
+        : await sendVerificationRequest({id_type: idType, id_value: idNo, first_name: firstName, last_name: lastName, type: "data", dob: driver?.dob});
     if (res) {
       setIdNo("");
       setIdType("");
       setFirstName("");
       setLastName("");
+      setDob("");
     }
   };
 
@@ -69,6 +74,12 @@ const IdVerification = ({match, loadingStatus, sendVerificationRequest, verifica
                     <Label for="lastName">Last Name</Label>
                     <Input type="text" name="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
                   </FormGroup>
+                  {idType === lassra && (
+                    <FormGroup>
+                      <Label for="dob">Date of Birth</Label>
+                      <Input type="date" name="dob" value={dob} onChange={(e) => setDob(e.target.value)} required />
+                    </FormGroup>
+                  )}
 
                   <Button disabled={loadingStatus} type="submit" variant="contained" className="text-white btn-success mb-3">
                     Submit
