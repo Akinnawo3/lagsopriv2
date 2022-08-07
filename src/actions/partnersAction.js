@@ -123,7 +123,7 @@ export const assignVehicleToPartner = (vehicle_id, auth_id, setAddVehicleModal) 
   const body = {vehicle_id, auth_id};
   try {
     dispatch(startStatusLoading());
-    const res = await axios.post(`${api.vehicles}/v1.1/admin/assign-vehicle`, body);
+    const res = await axios.post(`${api.vehicles}/v1.1/admin/assign-vehicle?user_type=partner`, body);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {

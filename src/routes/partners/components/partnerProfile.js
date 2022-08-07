@@ -53,7 +53,8 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
 
   const triggerIdVerifcation = (type, value, firstName, lastName) => {
     setIdType(type);
-    !isTest && sendVerificationRequest(type, value, firstName, lastName);
+    // {id_type: "driver_license", id_value: driver?.driver_data?.license_id?.value, first_name: driver?.first_name, last_name: driver?.last_name}
+    !isTest && sendVerificationRequest({id_type: type, id_value: value, first_name: firstName, last_name: lastName});
     setIdVerificationModalOpen(true);
   };
 
