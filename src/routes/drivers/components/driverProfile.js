@@ -169,9 +169,9 @@ const DriverProfile = ({
     inputEl.current.open();
   };
 
-  const triggerIdVerifcation = (type, value, firstName, lastName) => {
-    setIdType(type);
-    !isTest && sendVerificationRequest(type, value, firstName, lastName);
+  const triggerIdVerifcation = (data) => {
+    setIdType(data?.id_type);
+    !isTest && sendVerificationRequest(data);
     setIdVerificationModalOpen(true);
   };
   const verifyId = (type) => {
