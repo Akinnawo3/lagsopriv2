@@ -418,14 +418,14 @@ const DriverProfile = ({
         <div className="tab-content">
           <div className="tab-pane active" id="home">
             <ul className="list-group">
-              {driver?.bvn && (
+              {/* {driver?.bvn && ( */}
                 <li className="list-group-item text-right">
                   <span className="pull-left">
-                    <strong>Resting Day</strong>
+                    <strong>Rest Day</strong>
                   </span>
                   <span className="text-capitalize"> {driver?.driver_data?.rest_day?.day === "" ? "Sunday" : driver?.driver_data?.rest_day?.day}</span>
                 </li>
-              )}
+              {/* )} */}
               <li className="list-group-item text-right">
                 <span className="pull-left">
                   <strong>Driver Category</strong>
