@@ -12,7 +12,19 @@ import EmptyData from "Components/EmptyData/EmptyData";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import {getTodayDate} from "Helpers/helpers";
 
-const DriverTrips = ({driverTrips, isLoading, tripCountDriver, getDriverTrips, driver_id, getDriverTripsByTripStatus, tripCountDriverAll, tripCountDriverCompleted, tripCountDriverCancelled, getTripExport, getTripCount}) => {
+const DriverTrips = ({
+  driverTrips,
+  isLoading,
+  tripCountDriver,
+  getDriverTrips,
+  driver_id,
+  getDriverTripsByTripStatus,
+  tripCountDriverAll,
+  tripCountDriverCompleted,
+  tripCountDriverCancelled,
+  getTripExport,
+  getTripCount,
+}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [trip_status, setTrip_status] = useState("");
   const exportRef = useRef(null);
@@ -38,12 +50,12 @@ const DriverTrips = ({driverTrips, isLoading, tripCountDriver, getDriverTrips, d
 
   const confirmExport = () => {
     exportRef.current.close();
-    getTripExport(trip_status, driver_id, 'driver_auth_id', startDate, endDate );
+    getTripExport(trip_status, driver_id, "driver_auth_id", startDate, endDate);
   };
 
   const applyFilter = () => {
     getDriverTrips(1, driver_id, false, trip_status, startDate, endDate);
-    getTripCount(driver_id, trip_status, startDate, endDate)
+    getTripCount(driver_id, trip_status, startDate, endDate);
   };
 
   return (
@@ -84,13 +96,14 @@ const DriverTrips = ({driverTrips, isLoading, tripCountDriver, getDriverTrips, d
             </Card>
           </Col>
         </Row>
-        <div className='d-flex justify-content-between' style={{marginTop: "50px"}}>
-          <div className='d-flex'>
+        <div className="d-flex justify-content-between" style={{marginTop: "50px"}}>
+          <div className="d-flex">
             <Input className="shadow mb-5" type="select" required style={{width: "120px"}} name="trip_status" value={trip_status} onChange={onChange}>
               <option value="">All</option>
               <option value="completed">Completed</option>
               <option value="cancel">Cancelled</option>
               <option value="waiting">Waiting</option>
+              <option value="on_ride">Current</option>
             </Input>
             <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
               <small className="fw-bold mr-2">From</small>
@@ -155,7 +168,7 @@ const DriverTrips = ({driverTrips, isLoading, tripCountDriver, getDriverTrips, d
                                 </TableCell>
                                 <TableCell>
                                   <button type="button" className="rct-link-btn text-primary" title="view details">
-                                    <Link to={`/admin/trips/${trip.trip_id}`}>
+                                    <Link to={{pathname: `/admin/trips/${trip.trip_id}`, state: {trip_status: trip.ride_status}}}>
                                       <i className="ti-eye" />
                                     </Link>
                                   </button>
