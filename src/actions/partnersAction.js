@@ -119,6 +119,25 @@ export const getPartner = (auth_id, loading = true) => async dispatch => {
   }
 };
 
+export const updatePartnerDriverPayment = (auth_id, data, closeDriverPaymentModal) => async dispatch => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.put(`${api.user}/v1.1/admin/users/${auth_id}`, data);
+    if(res.data.status === 'error') {
+      NotificationManager.error(res.data.msg);
+    }else {
+      NotificationManager.success('updated successfully')
+      if(typeof closeDriverPaymentModal === "function") {
+        closeDriverPaymentModal()
+      }
+     await dispatch(getPartner(auth_id, false))
+    }
+     dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+  }
+};
+
 export const assignVehicleToPartner = (vehicle_id, auth_id, setAddVehicleModal) => async (dispatch) => {
   const body = {vehicle_id, auth_id};
   try {
