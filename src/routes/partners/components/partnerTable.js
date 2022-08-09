@@ -19,6 +19,7 @@ import MobileSearchForm from "Components/Header/MobileSearchForm";
 import {calculatePostDate, getTodayDate} from "Helpers/helpers";
 import {getUserExport} from "Actions/userAction";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
+import {NotificationManager} from "react-notifications";
 const qs = require("qs");
 
 
@@ -53,9 +54,19 @@ const PartnerTable = ({
     account_type: 'individual',
     user_type: 'partner',
     account_class: 'B',
+    nin: '',
+    vehicle_interested: {
+      unit: '',
+      amount: '140000',
+      has_driver: '0'
+    },
+    partner_driver_payment: {
+      type: '',
+      driver_payment: ''
+    }
   })
 
-  const {last_name, first_name, account_type, email, password, phone_number, user_type, account_class} = formData
+  const {last_name, first_name, account_type, email, password, phone_number, user_type, account_class, nin, vehicle_interested, partner_driver_payment} = formData
 
   const data =
       {
@@ -65,7 +76,10 @@ const PartnerTable = ({
         email,
         phone_number,
         user_type,
-        account_class
+        account_class,
+        nin,
+        vehicle_interested,
+        partner_driver_payment
       }
 
 
@@ -103,7 +117,17 @@ const PartnerTable = ({
       password: '',
       account_type: 'individual',
       user_type: 'partner',
-      account_class: ''
+      account_class: '',
+      nin: '',
+      vehicle_interested: {
+        unit: '',
+        amount: '140000',
+        has_driver: '0'
+      },
+      partner_driver_payment: {
+        type: '',
+        driver_payment: ''
+      }
     });
     setOrg_name('')
   }
@@ -199,6 +223,11 @@ const PartnerTable = ({
         <ModalHeader toggle={() => setIsModalOpen(!isModalOpen)}>Create Partner</ModalHeader>
         <Form onSubmit={(e) => {
           e.preventDefault();
+          if(vehicle_interested?.has_driver === '1') {
+            if(parseInt(vehicle_interested.amount) <  140000) {
+              return NotificationManager.error('Equity payment amount must be 140000 or above')
+            }
+          }
           createPartners(data, handleSuccess)
         }}>
           <ModalBody>
@@ -243,6 +272,38 @@ const PartnerTable = ({
               <Label for="text">Phone Number</Label>
               <Input type="number" value={phone_number}  name='phone_number' onChange={onChange} required />
             </FormGroup>
+            <FormGroup>
+              <Label for="text">NIN</Label>
+              <Input type="number" value={nin}  name='nin' onChange={onChange} required />
+            </FormGroup>
+            <FormGroup>
+              <Label for="text"> No of Vehicles Interested</Label>
+              <Input type="number" value={vehicle_interested?.unit}   onChange={(e) => setFormData({...formData, vehicle_interested: {...vehicle_interested, unit: e.target.value}})} required />
+            </FormGroup>
+            <FormGroup>
+              <Label>Do you have a driver for this vehicle?</Label>
+              <Input type="select" value={vehicle_interested?.has_driver} onChange={(e) => setFormData({...formData, vehicle_interested: {...vehicle_interested, has_driver: e.target.value, amount: e.target.value === '0' ? '140000' : ''}})} required>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </Input>
+            </FormGroup>
+            <FormGroup>
+              <Label for="text">Equity payment amount</Label>
+              <Input readOnly={vehicle_interested?.has_driver === '0'} type="number" value={vehicle_interested?.amount}   onChange={(e) => setFormData({...formData, vehicle_interested: {...vehicle_interested, amount: e.target.value}})} required />
+            </FormGroup>
+            <FormGroup>
+              <Label>Driver's payment type</Label>
+              <Input type="select" value={partner_driver_payment?.type} onChange={(e) => setFormData({...formData, partner_driver_payment: {...partner_driver_payment, type: e.target.value}})} required>
+                <option value="">Select</option>
+                <option value="fixed">Fixed</option>
+                <option value="percent">Percent</option>
+              </Input>
+            </FormGroup>
+            <FormGroup>
+              <Label for="text">Driver's payment amount</Label>
+              <Input  type="number" value={partner_driver_payment?.driver_payment}   onChange={(e) => setFormData({...formData, partner_driver_payment: {...partner_driver_payment, driver_payment: e.target.value}})} required />
+            </FormGroup>
+
           </ModalBody>
           <ModalFooter>
             <Button type="submit" variant="contained" className="text-white btn-success">
