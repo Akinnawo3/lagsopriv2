@@ -20,6 +20,7 @@ import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/Delete
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {verifyUserPermssion} from "../../../container/DefaultLayout";
 import {useHistory} from "react-router-dom";
+import {calculatePostDate} from "../../../helpers/helpers";
 const qs = require("qs");
 export let onAddUpdateVehicleModalClose;
 const VehicleTable = ({
@@ -188,6 +189,7 @@ const VehicleTable = ({
                     <TableCell>Model</TableCell>
                     <TableCell>Year</TableCell>
                     <TableCell>Mileage</TableCell>
+                    <TableCell>Mileage last update</TableCell>
                     <TableCell>Driver status</TableCell>
                     <TableCell>Partner status</TableCell>
                     <TableCell>Action</TableCell>
@@ -202,6 +204,7 @@ const VehicleTable = ({
                         <TableCell>{vehicle.car_make}</TableCell>
                         <TableCell>{vehicle.car_model}</TableCell>
                         <TableCell>{vehicle.mileage}</TableCell>
+                        <TableCell>{calculatePostDate(vehicle?.mileage_updated_at)}</TableCell>
                         <TableCell>
                           <Badge color={vehicle.assigned ? "success" : "danger"}>{vehicle.assigned ? "Assigned" : "Unassigned"}</Badge>
                         </TableCell>

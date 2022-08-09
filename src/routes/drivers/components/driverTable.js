@@ -157,7 +157,7 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
                     {status === 2 && <TableCell>One-off Payment Status</TableCell>}
                     {status !== 0 && <TableCell> Driver Category</TableCell>}
                     {status !== 0 && <TableCell> Partnership Status</TableCell>}
-                    {status !== 0 && <TableCell>App Status</TableCell>}
+                    {status === 4 && <TableCell>App Status</TableCell>}
 
                     <TableCell>Action</TableCell>
                   </TableRow>
@@ -211,7 +211,7 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
                             </span>
                           </TableCell>
                         )}
-                        {status !== 0 && (
+                        {status === 4 && (
                           <TableCell>
                             <Badge color={driver.driver_data.online ? "success" : "danger"}>{driver.driver_data.online ? "Online" : "Offline"}</Badge>
                           </TableCell>
