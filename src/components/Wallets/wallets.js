@@ -55,7 +55,7 @@ const Wallets = ({wallets, walletsCount, auth_id, getWallets, loading, wallet}) 
         </Col>
       </Row>
       {wallets?.length > 0 && (
-        <RctCollapsibleCard heading="Transaction">
+        <RctCollapsibleCard heading="Transaction" item={wallets} currentPage={currentPage} totalCount={walletsCount}>
           <div className="table-responsive" style={{minHeight: "50vh"}}>
             <Table>
               <TableHead>

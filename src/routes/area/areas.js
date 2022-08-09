@@ -155,7 +155,7 @@ const Areas = ({match, getAreas, areas, createArea, updateArea, loading, deleteA
     <div className="table-wrapper">
       <PageTitleBar title={"Areas"} match={match} />
       {!loading && (
-        <RctCollapsibleCard heading="Areas" fullBlock>
+        <RctCollapsibleCard heading="Areas" fullBlock item={areas} currentPage={currentPage} totalCount={areaCount}>
           <>
             <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
               <div className="search-wrapper">

@@ -43,7 +43,7 @@ const ActivityLog = ({history, loading, getAdminLogs, AdminActivityLog, getAdmin
     <div className="table-wrapper">
       <PageTitleBar title={"Activities"} match={match} />
       {!loading && (
-        <RctCollapsibleCard heading="Activity Log" fullBlock>
+        <RctCollapsibleCard heading="Activity Log" fullBlock item={AdminActivityLog} currentPage={currentPage} totalCount={AdminActivityLogCount?.total}>
           {AdminActivityLog?.length > 0 && (
             <div className="table-responsive" style={{minHeight: "50vh"}}>
               <Table>
