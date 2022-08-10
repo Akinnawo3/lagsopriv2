@@ -148,7 +148,7 @@ const  ClassTypes = (props) => {
             }
             {loading && <Spinner />}
             {!loading &&
-            <RctCollapsibleCard heading="ClassTypes" fullBlock>
+            <RctCollapsibleCard heading="ClassTypes" fullBlock item={posts} currentPage={currentPage} totalCount={posts.length}>
                 <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
                     <div className="search-wrapper">
                         <Input type="search" className="search-input-lg" name="searchData" value={searchData} onChange={onChangeSearch} placeholder="Search.." />

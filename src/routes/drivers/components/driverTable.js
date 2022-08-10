@@ -125,7 +125,7 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
 
   return (
     <div>
-      <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}}>
+      <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}} item={drivers} currentPage={currentPage} totalCount={driversCount}>
         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
           <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} />
         </li>
@@ -143,7 +143,7 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
           )}
         </div>
         {!isLoading && drivers.length > 0 && (
-          <>
+          <RctCollapsibleCard item={drivers} currentPage={currentPage} totalCount={ratingCountUser}>
             <div className="table-responsive" style={{minHeight: "50vh"}}>
               <Table>
                 <TableHead>
@@ -233,7 +233,7 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
             <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
               <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={driversCount} onChange={paginate} />
             </div>
-          </>
+          </RctCollapsibleCard>
         )}
         {drivers.length === 0 && !isLoading && <EmptyData />}
       </RctCollapsibleCard>

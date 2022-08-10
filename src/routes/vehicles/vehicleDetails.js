@@ -8,6 +8,7 @@ import {Badge} from "reactstrap";
 import Button from "@material-ui/core/Button";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import download from "downloadjs";
+import { calculatePostDate } from "../../helpers/helpers";
 
 const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetails, loadingStatus, revokeVehicle, getVehicleMileage, vehicleMileage}) => {
   const inputEl = useRef(null);
@@ -96,6 +97,12 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
                       <strong>Vehicle Mileage</strong>
                     </span>
                     {vehicleDetails?.mileage}
+                  </li>
+                  <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong> Mileage last update</strong>
+                    </span>
+                    {calculatePostDate(vehicleDetails?.mileage_updated_at)}
                   </li>
                   {/*purchase_year, chassis_number, engine_number*/}
 
