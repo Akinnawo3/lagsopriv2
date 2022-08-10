@@ -12,7 +12,7 @@ import Table from "@material-ui/core/Table";
 import {
   assignVehicleToPartner,
   changePartnerStatus,
-  revokePartnerVehicle,
+  revokePartnerVehicle, updatePartnerDriverPayment,
   verifyPartnerNIN
 } from "Actions/partnersAction";
 import {connect} from "react-redux";
@@ -23,7 +23,7 @@ import {sendVerificationRequest} from "Actions/idVerificationAction";
 import Spinner from "Components/spinner/Spinner";
 
 
-const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartnerStatus, revokePartnerVehicle, driversCount, dataMode, sendVerificationRequest, verificationResult, loadingStatus, verifyPartnerNIN}) => {
+const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartnerStatus, revokePartnerVehicle, driversCount, dataMode, sendVerificationRequest, verificationResult, loadingStatus, verifyPartnerNIN, updatePartnerDriverPayment}) => {
   const inputEl = useRef(null);
   const inputEl2 = useRef(null);
 
@@ -40,9 +40,11 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
   const [CACModal, setCACModal] = useState(false)
   const [vehiclesModal, setVehiclesModal] = useState(false)
   const [idType, setIdType] = useState("");
+  const [driverPaymentModal, setDriverPaymentModal] = useState(false)
   const [idVerificationModalOpen, setIdVerificationModalOpen] = useState(false);
   const isTest = dataMode === "test";
   const filteredVehicles = partnerDetails?.partner_data?.vehicle_interested?.filter(x => x.status === 1)
+  const [partner_driver_payment, setPartner_driver_payment] = useState({type: '', driver_payment: ''})
 
 
 
@@ -72,6 +74,16 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
     }
     return count
   }
+
+
+  const closeDriverPaymentModal = () => {
+    setDriverPaymentModal(false)
+  }
+
+
+  useEffect(() => {
+      setPartner_driver_payment({type: partnerDetails?.partner_data?.partner_driver_payment?.type, driver_payment: partnerDetails?.partner_data?.partner_driver_payment?.driver_payment})
+  },[partnerDetails?.partner_data?.auth_id])
 
 
   return (
@@ -346,6 +358,14 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
                     </button>
                   </li>
               }
+              <li className="list-group-item text-right">
+                <span className="pull-left">
+                  <strong>Driver's Payment</strong>
+                </span>
+                <button type="button" className="btn btn-success text-white" title="view details" onClick={() => setDriverPaymentModal(true)}>
+                  change
+                </button>
+              </li>
             </ul>
           </div>
         </div>
@@ -607,6 +627,42 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
           }}
       />
 
+      {/*add vehicles  modal*/}
+      <Modal isOpen={driverPaymentModal} toggle={() =>setDriverPaymentModal(!driverPaymentModal)}>
+        <ModalHeader toggle={() =>  setDriverPaymentModal(!driverPaymentModal)}>Driver's Payment</ModalHeader>
+        <ModalBody>
+          <div>
+            <Form onSubmit={(e) => {
+              e.preventDefault();
+              updatePartnerDriverPayment(id, {user_type: 'partner', first_name: partnerDetails?.first_name, last_name: partnerDetails?.last_name, partner_driver_payment}, closeDriverPaymentModal)
+            }}>
+              <FormGroup>
+                <Label>Type</Label>
+                <Input type="select" value={partner_driver_payment?.type} onChange={(e) => setPartner_driver_payment({...partner_driver_payment, type: e.target.value})} required>
+                  <option value="">Select</option>
+                  <option value="fixed">Fixed</option>
+                  <option value="percent">Percent</option>
+                </Input>
+              </FormGroup>
+              <FormGroup>
+                <Label for="text">Amount</Label>
+                <Input  type="number" value={partner_driver_payment?.driver_payment}  onChange={(e) => setPartner_driver_payment({...partner_driver_payment, driver_payment: e.target.value})} required />
+              </FormGroup>
+
+
+              {/* <AsyncSelect cacheOptions defaultOptions loadOptions={() => [{label: "one", value: 1},{label: "two", value: 2}]} onChange={() => null} />; */}
+              <ModalFooter>
+                <Button type="submit" variant="contained" className="text-white btn-success">
+                  Change
+                </Button>
+              </ModalFooter>
+            </Form>
+          </div>
+        </ModalBody>
+      </Modal>
+
+
+
     </div>
   );
 };
@@ -618,6 +674,7 @@ function mapDispatchToProps(dispatch) {
     revokePartnerVehicle: (vehicle_id, vehicleDetails, partnerDetails) => dispatch(revokePartnerVehicle(vehicle_id, vehicleDetails, partnerDetails)),
     sendVerificationRequest: (id_type, id_value, first_name, last_name) => dispatch(sendVerificationRequest(id_type, id_value, first_name, last_name)),
     verifyPartnerNIN: (auth_id, verification_status, verification_name) => dispatch(verifyPartnerNIN(auth_id, verification_status, verification_name)),
+    updatePartnerDriverPayment: (auth_id, data, closeDriverPaymentModal) => dispatch(updatePartnerDriverPayment(auth_id, data, closeDriverPaymentModal)),
 
 
 
