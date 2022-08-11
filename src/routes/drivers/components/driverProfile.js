@@ -448,7 +448,7 @@ const DriverProfile = ({
                   ? "In partnership"
                   : "N/A"}
 
-                <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => setLoanEligibilityModalOpen(true)}>
+                <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => part(true)}>
                   Change
                 </span>
               </li>
