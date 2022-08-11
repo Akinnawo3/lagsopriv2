@@ -143,7 +143,7 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
           )}
         </div>
         {!isLoading && drivers.length > 0 && (
-          <RctCollapsibleCard item={drivers} currentPage={currentPage} totalCount={ratingCountUser}>
+          <RctCollapsibleCard item={drivers} currentPage={currentPage} totalCount={driversCount}>
             <div className="table-responsive" style={{minHeight: "50vh"}}>
               <Table>
                 <TableHead>
