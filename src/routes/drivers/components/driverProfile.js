@@ -171,6 +171,15 @@ const DriverProfile = ({
     inputEl.current.open();
   };
 
+  const handlePartnershipStatusChange = (e) => {
+    e.preventDefault();
+    setPartnershipStatusModal(false);
+    setTitle("Are you sure you want to update driver's partnership status?");
+    setMessage("The driver's partnership status will be updated");
+    setArgument(9);
+    inputEl.current.open();
+  };
+
   const triggerIdVerifcation = (data) => {
     setIdType(data?.id_type);
     !isTest && sendVerificationRequest(data);
@@ -234,6 +243,13 @@ const DriverProfile = ({
       updateDriver({
         component: "debt_service",
         loan_request: loanEligibility.toString(),
+        auth_id: driver?.auth_id,
+      });
+    }
+    if (argument === 9) {
+      updateDriver({
+        component: "debt_service",
+        partnership_status: partnershipStatus.toString(),
         auth_id: driver?.auth_id,
       });
     }
@@ -795,17 +811,17 @@ const DriverProfile = ({
           </Form>
         </ModalBody>
       </Modal>
-      {/* modal that changes partnership status  */}
+      {/* modal that changes partnership status*/}
       <Modal size="sm" isOpen={partnershipStatusModal} toggle={() => setPartnershipStatusModal(!partnershipStatusModal)}>
         <ModalHeader toggle={() => setPartnershipStatusModal(!partnershipStatusModal)}>Update Partnership Status</ModalHeader>
         <ModalBody>
-          <Form onSubmit={handleLoanEligibilityChange}>
+          <Form onSubmit={handlePartnershipStatusChange}>
             <div className="px-3">
               <Input type="radio" id="interested" name="partnership_status" defaultChecked={driver?.driver_data?.partnership_status == "1"} onChange={() => setPartnershipStatus(1)} />
               <Label for="interested">Interested</Label>
             </div>
             <div className="px-3">
-              <Input type="radio" id="not_interested" name="not_interested" defaultChecked={driver?.driver_data?.partnership_status == "0"} onChange={() => setPartnershipStatus(2)} />
+              <Input type="radio" id="not_interested" name="partnership_status" defaultChecked={driver?.driver_data?.partnership_status == "0"} onChange={() => setPartnershipStatus(2)} />
               <Label for="not_interested"> Not Interested</Label>
             </div>
             <div className="mt-2 text-right">
