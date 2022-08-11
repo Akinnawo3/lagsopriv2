@@ -151,14 +151,12 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
                     <TableCell>First Name</TableCell>
                     <TableCell>Last Name</TableCell>
                     <TableCell>Registered</TableCell>
-
                     {status != 4 && <TableCell>Status</TableCell>}
                     {status === 3 && <TableCell>Vehicle Assigned</TableCell>}
                     {status === 2 && <TableCell>One-off Payment Status</TableCell>}
                     {status !== 0 && <TableCell> Driver Category</TableCell>}
                     {status !== 0 && <TableCell> Partnership Status</TableCell>}
                     {status === 4 && <TableCell>App Status</TableCell>}
-
                     <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>

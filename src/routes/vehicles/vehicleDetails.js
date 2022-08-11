@@ -25,6 +25,7 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
     download(vehicleDetails?.qr_code, "QR_code.png", "image/png");
   };
 
+  
   return (
     <div className="mb-5" style={{minHeight: "90vh"}}>
       <Helmet>

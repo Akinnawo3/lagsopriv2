@@ -438,6 +438,22 @@ const DriverProfile = ({
               </li>
               <li className="list-group-item text-right">
                 <span className="pull-left">
+                  <strong>Partnership Status</strong>
+                </span>
+                {driver?.driver_data?.partnership_status === undefined || driver?.driver_data?.partnership_status === 0
+                  ? "Not Interested"
+                  : driver?.driver_data?.partnership_status === 1
+                  ? "Interested"
+                  : driver?.driver_data?.partnership_status === 2
+                  ? "In partnership"
+                  : "N/A"}
+
+                <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => setLoanEligibilityModalOpen(true)}>
+                  Change
+                </span>
+              </li>
+              <li className="list-group-item text-right">
+                <span className="pull-left">
                   <strong>Loan Eligibility</strong>
                 </span>
                 {driver?.driver_data?.loan_data?.is_eligible == 1 && "Eligible"}
