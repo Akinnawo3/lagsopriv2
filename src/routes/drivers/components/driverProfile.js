@@ -61,6 +61,8 @@ const DriverProfile = ({
   const [oneOff, setOneOff] = useState(driver?.driver_data?.asset_payment?.amount || "");
   const [debtService, setDebtService] = useState(driver?.driver_data?.payment_plan?.plan);
   const [loanRepayment, setLoanRepayment] = useState(driver?.driver_data?.payment_plan?.loan);
+  const [partnershipStatusModal, setPartnershipStatusModal] = useState(false);
+  const [partnershipStatus, setPartnershipStatus] = useState(driver?.driver_data?.partnership_status);
 
   const inputEl = useRef(null);
   const [formData, setFormData] = useState({
@@ -448,7 +450,7 @@ const DriverProfile = ({
                   ? "In partnership"
                   : "N/A"}
 
-                <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => part(true)}>
+                <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => setPartnershipStatusModal(true)}>
                   Change
                 </span>
               </li>
@@ -793,17 +795,36 @@ const DriverProfile = ({
           </Form>
         </ModalBody>
       </Modal>
+      {/* modal that changes partnership status  */}
+      <Modal size="sm" isOpen={partnershipStatusModal} toggle={() => setPartnershipStatusModal(!partnershipStatusModal)}>
+        <ModalHeader toggle={() => setPartnershipStatusModal(!partnershipStatusModal)}>Update Partnership Status</ModalHeader>
+        <ModalBody>
+          <Form onSubmit={handleLoanEligibilityChange}>
+            <div className="px-3">
+              <Input type="radio" id="interested" name="partnership_status" defaultChecked={driver?.driver_data?.partnership_status == "1"} onChange={() => setPartnershipStatus(1)} />
+              <Label for="interested">Interested</Label>
+            </div>
+            <div className="px-3">
+              <Input type="radio" id="not_interested" name="not_interested" defaultChecked={driver?.driver_data?.partnership_status == "0"} onChange={() => setPartnershipStatus(2)} />
+              <Label for="not_interested"> Not Interested</Label>
+            </div>
+            <div className="mt-2 text-right">
+              <button className=" btn rounded btn-primary cursor-pointer">Change</button>
+            </div>
+          </Form>
+        </ModalBody>
+      </Modal>
       {/* modal that changes loan Eligibility  */}
       <Modal size="sm" isOpen={loanEligibilityModalOpen} toggle={() => setLoanEligibilityModalOpen(!loanEligibilityModalOpen)}>
         <ModalHeader toggle={() => setLoanEligibilityModalOpen(!loanEligibilityModalOpen)}>Update Loan Eligibility</ModalHeader>
         <ModalBody>
           <Form onSubmit={handleLoanEligibilityChange}>
             <div className="px-3">
-              <Input type="radio" id="eligible" name="loan_eligibility" defaultChecked={driver?.driver_data?.loan_data?.is_eligible == "1"} onChange={() => setLoanEligibility(1)} />
-              <Label for="eligible">Eligible</Label>
+              <Input type="radio" id="Eligible" name="loan_eligibility" defaultChecked={driver?.driver_data?.loan_data?.is_eligible == "1"} onChange={() => setLoanEligibility(1)} />
+              <Label for="Eligible">Eligible</Label>
             </div>
             <div className="px-3">
-              <Input type="radio" id="not_eligible" name="loan_eligibility" defaultChecked={driver?.driver_data?.loan_data?.is_eligible == "2"} onChange={() => setLoanEligibility(2)} />
+              <Input type="radio" id="not_eligible" name="loan_eligibility" defaultChecked={driver?.driver_data?.loan_data?.is_eligible == "0"} onChange={() => setLoanEligibility(2)} />
               <Label for="not_eligible"> Not Eligible</Label>
             </div>
             <div className="mt-2 text-right">
