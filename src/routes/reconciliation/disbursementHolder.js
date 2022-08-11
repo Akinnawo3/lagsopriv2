@@ -108,8 +108,8 @@ const DisbursementHolder = (props) => {
       getFinanceDriverLogs(currentPage, false, dateType, startDate, endDate);
       getFinanceDriverLogsCount(false, dateType, startDate, endDate);
     } else {
-      getFinanceDriverPayouts(currentPage2, false, dateType, startDate, endDate, status);
-      getFinanceDriverPayoutsCount(false, dateType, startDate, endDate, status);
+      getFinanceDriverPayouts(currentPage2, false, dateType, startDate, endDate, status, "stakeholder");
+      getFinanceDriverPayoutsCount(false, dateType, startDate, endDate, status, "stakeholder");
     }
 
     // getFinanceTrip('trip', dateType, startDate, endDate)
@@ -174,8 +174,8 @@ const DisbursementHolder = (props) => {
                     getFinanceDriverLogsCount(true);
                   } else {
                     setReceivable(false);
-                    getFinanceDriverPayouts(currentPage2, true);
-                    getFinanceDriverPayoutsCount(true);
+                    getFinanceDriverPayouts(currentPage2, true, "", "", "", "", "stakeholder");
+                    getFinanceDriverPayoutsCount(true, "", "", "", "", "stakeholder");
                     // getFinanceDriverPayouts(currentPage2, false, "", "", "", status);
                     // getFinanceDriverPayoutsCount(false, "", "", "", status);
                   }
@@ -508,8 +508,9 @@ function mapDispatchToProps(dispatch) {
     getFinanceDriverLogs: (page_no, loading, date_type, start_date, end_date) => dispatch(getFinanceHolderLogs(page_no, loading, date_type, start_date, end_date)),
     getFinanceDriverLogsCount: (loading, date_type, start_date, end_date) => dispatch(getFinanceHolderLogsCount(loading, date_type, start_date, end_date)),
     searchFinanceDriverLogs: (searchData) => dispatch(searchFinanceHolderLogs(searchData)),
-    getFinanceDriverPayouts: (page_no, loading, date_type, start_date, end_date, status) => dispatch(getFinanceHolderPayouts(page_no, loading, date_type, start_date, end_date, status)),
-    getFinanceDriverPayoutsCount: (loading, date_type, start_date, end_date, status) => dispatch(getFinanceHolderPayoutsCount(loading, date_type, start_date, end_date, status)),
+    getFinanceDriverPayouts: (page_no, loading, date_type, start_date, end_date, status, userType) =>
+      dispatch(getFinanceHolderPayouts(page_no, loading, date_type, start_date, end_date, status, userType)),
+    getFinanceDriverPayoutsCount: (loading, date_type, start_date, end_date, status, userType) => dispatch(getFinanceHolderPayoutsCount(loading, date_type, start_date, end_date, status, userType)),
     searchFinanceDriverPayouts: (searchData) => dispatch(searchFinanceHolderPayouts(searchData)),
     approvePayout: (data) => dispatch(approvePayout(data)),
     reviewPayout: (data) => dispatch(reviewPayout(data)),
