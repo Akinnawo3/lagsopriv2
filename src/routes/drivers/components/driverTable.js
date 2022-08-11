@@ -143,7 +143,7 @@ const DriverTable = ({ drivers, isLoading, driversCount, getDrivers, status, sea
                )}
             </div>
             {!isLoading && drivers.length > 0 && (
-               <RctCollapsibleCard item={drivers} currentPage={currentPage} totalCount={0}>
+               <RctCollapsibleCard item={drivers} currentPage={currentPage} totalCount={driversCount}>
                   <div className="table-responsive" style={{ minHeight: "50vh" }}>
                      <Table>
                         <TableHead>
@@ -151,14 +151,12 @@ const DriverTable = ({ drivers, isLoading, driversCount, getDrivers, status, sea
                               <TableCell>First Name</TableCell>
                               <TableCell>Last Name</TableCell>
                               <TableCell>Registered</TableCell>
-
                               {status != 4 && <TableCell>Status</TableCell>}
                               {status === 3 && <TableCell>Vehicle Assigned</TableCell>}
                               {status === 2 && <TableCell>One-off Payment Status</TableCell>}
                               {status !== 0 && <TableCell> Driver Category</TableCell>}
                               {status !== 0 && <TableCell> Partnership Status</TableCell>}
                               {status === 4 && <TableCell>App Status</TableCell>}
-
                               <TableCell>Action</TableCell>
                            </TableRow>
                         </TableHead>
