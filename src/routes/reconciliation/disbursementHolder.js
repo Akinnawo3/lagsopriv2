@@ -264,6 +264,7 @@ const DisbursementHolder = (props) => {
                         <TableCell>Action</TableCell>
                         <TableCell>Zeno Balance</TableCell>
                         <TableCell>Action</TableCell>
+                        {/* <TableCell>Action</TableCell> */}
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -338,6 +339,7 @@ const DisbursementHolder = (props) => {
                         <TableCell>Date</TableCell>
                         <TableCell>Name</TableCell>
 
+                        <TableCell>Total Amount</TableCell>
                         <TableCell>Bank Name</TableCell>
                         <TableCell>Bank Acc. Number</TableCell>
                         {/* <TableCell>Total Amount</TableCell>
@@ -353,6 +355,7 @@ const DisbursementHolder = (props) => {
                             <TableRow hover key={key}>
                               <TableCell>{item.group_date}</TableCell>
                               <TableCell>{item?.stakeholder_name}</TableCell>
+                              <TableCell>₦{item?.amount.toLocaleString()}</TableCell>
                               <TableCell>{item?.bank_name}</TableCell>
                               <TableCell>{item?.account_number}</TableCell>
 
