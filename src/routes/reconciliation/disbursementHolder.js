@@ -264,6 +264,7 @@ const DisbursementHolder = (props) => {
                         <TableCell>Action</TableCell>
                         <TableCell>Zeno Balance</TableCell>
                         <TableCell>Action</TableCell>
+                        {/* <TableCell>Action</TableCell> */}
                       </TableRow>
                     </TableHead>
                     <TableBody>
