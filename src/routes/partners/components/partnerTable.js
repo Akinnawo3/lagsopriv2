@@ -300,7 +300,7 @@ const PartnerTable = ({
               </Input>
             </FormGroup>
             <FormGroup>
-              <Label for="text">Driver's payment amount</Label>
+              <Label for="text">Driver's payment {partner_driver_payment?.type === 'percent' ? 'percentage' : 'amount'}</Label>
               <Input  type="number" value={partner_driver_payment?.driver_payment}   onChange={(e) => setFormData({...formData, partner_driver_payment: {...partner_driver_payment, driver_payment: e.target.value}})} required />
             </FormGroup>
 
