@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 // import TripFare from "Routes/setup/component/tripFare";
 // import OneOffPayment from "Routes/setup/component/oneOffPayment";
@@ -9,7 +9,7 @@ import OneOffPayment from "./component/oneOffPayment";
 import VerificationFee from "./component/verificationFee";
 import ReferralFee from "./component/referralFee";
 
-const Fees = ({ match }) => {
+const Fees = ({match}) => {
   const [activeTab, setActiveTab] = useState(1);
 
   return (
@@ -17,40 +17,16 @@ const Fees = ({ match }) => {
       <PageTitleBar title={"Fees"} match={match} />
 
       <div className="d-flex my-3">
-        <div
-          className={`py-2 px-3 border border-primary ${
-            activeTab === 1 && "text-white"
-          } ${activeTab === 1 && "bg-primary"}`}
-          style={{ borderRadius: "26px" }}
-          onClick={() => setActiveTab(1)}
-        >
+        <div className={`py-2 px-3 border border-primary ${activeTab === 1 && "text-white"} ${activeTab === 1 && "bg-primary"}`} style={{borderRadius: "26px"}} onClick={() => setActiveTab(1)}>
           Trip Fare
         </div>
-        <div
-          className={`py-2 px-3 border border-primary mx-2 ${
-            activeTab === 2 && "text-white"
-          } ${activeTab === 2 && "bg-primary"}`}
-          style={{ borderRadius: "26px" }}
-          onClick={() => setActiveTab(2)}
-        >
+        <div className={`py-2 px-3 border border-primary mx-2 ${activeTab === 2 && "text-white"} ${activeTab === 2 && "bg-primary"}`} style={{borderRadius: "26px"}} onClick={() => setActiveTab(2)}>
           One-off Payment{" "}
         </div>
-        <div
-          className={`py-2 px-3 border border-primary mx-2  ${
-            activeTab === 3 && "text-white"
-          } ${activeTab === 3 && "bg-primary"}`}
-          style={{ borderRadius: "26px" }}
-          onClick={() => setActiveTab(3)}
-        >
+        <div className={`py-2 px-3 border border-primary mx-2  ${activeTab === 3 && "text-white"} ${activeTab === 3 && "bg-primary"}`} style={{borderRadius: "26px"}} onClick={() => setActiveTab(3)}>
           Verification Fee
         </div>
-        <div
-          className={`py-2 px-3 border border-primary ${
-            activeTab === 4 && "text-white"
-          } ${activeTab === 4 && "bg-primary"}`}
-          style={{ borderRadius: "26px" }}
-          onClick={() => setActiveTab(4)}
-        >
+        <div className={`py-2 px-3 border border-primary ${activeTab === 4 && "text-white"} ${activeTab === 4 && "bg-primary"}`} style={{borderRadius: "26px"}} onClick={() => setActiveTab(4)}>
           Referral Fee
         </div>
       </div>
