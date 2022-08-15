@@ -1,17 +1,20 @@
-import React, {useEffect, useRef} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {connect} from "react-redux";
 import {Helmet} from "react-helmet";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {Link} from "react-router-dom";
-import {getVehicle, getVehicleMileage, revokeVehicle} from "Actions/vehicleAction";
-import {Badge} from "reactstrap";
+import {getVehicle, getVehicleMileage, revokeVehicle, updatePartnerDriverPayment} from "Actions/vehicleAction";
+import {Badge, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import Button from "@material-ui/core/Button";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import download from "downloadjs";
 import {calculatePostDate, fullDateTime} from "../../helpers/helpers";
 
-const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetails, loadingStatus, revokeVehicle, getVehicleMileage, vehicleMileage}) => {
-  const inputEl = useRef(null);
+const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetails, loadingStatus, revokeVehicle, getVehicleMileage, vehicleMileage,  updatePartnerDriverPayment}) => {
+    const [driverPaymentModal, setDriverPaymentModal] = useState(false)
+    const [partner_driver_payment, setPartner_driver_payment] = useState({type: '', driver_payment: ''})
+
+    const inputEl = useRef(null);
   useEffect(() => {
     getVehicle(match.params.id, true);
     // getVehicleMileage(match.params.id, true);
@@ -25,7 +28,22 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
     download(vehicleDetails?.qr_code, "QR_code.png", "image/png");
   };
 
-  
+    const closeDriverPaymentModal = () => {
+        setDriverPaymentModal(false)
+    }
+
+
+    useEffect(() => {
+        if(vehicleDetails?.partner_driver_payment?.length > 0) {
+            setPartner_driver_payment({type: vehicleDetails?.partner_driver_payment[0]?.type, driver_payment: vehicleDetails?.partner_driver_payment[0]?.driver_payment})
+        }
+    },[vehicleDetails?.car_number_plate])
+
+
+    // partner_driver_payment
+
+
+
   return (
     <div className="mb-5" style={{minHeight: "90vh"}}>
       <Helmet>
@@ -176,8 +194,78 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
               </div>
             </div>
           </div>
+            {vehicleDetails?.partner_assigned && (
+            <div className="col-sm-6">
+                <div className="tab-content px-4">
+                    <div className="tab-pane active" id="home">
+                        <ul className="list-group">
+                            <li className="list-group-item text-right">
+                    <span className="pull-left" style={{fontSize: '20px'}}>
+                      <strong>Driver's Partner payment</strong>
+                    </span>
+                            </li>
+                            <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>Type</strong>
+                    </span>
+                                {vehicleDetails?.partner_driver_payment[0]?.type ?? 'NA'}
+                            </li>
+                            <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong>{vehicleDetails?.partner_driver_payment[0]?.type === 'percent' ? 'Percentage' : 'Amount'}</strong>
+                    </span>
+                                {vehicleDetails?.partner_driver_payment[0]?.type === 'fixed' && '₦'}{ vehicleDetails?.partner_driver_payment[0]?.type === 'fixed' ?  parseInt(vehicleDetails?.partner_driver_payment[0]?.driver_payment)?.toLocaleString() : vehicleDetails?.partner_driver_payment[0]?.type === 'percent' ?  vehicleDetails?.partner_driver_payment[0]?.driver_payment : 'NA'}{vehicleDetails?.partner_driver_payment[0]?.type === 'percent' && '%'}
+                            </li>
+                            <li className="list-group-item text-right">
+                    <span className="pull-left">
+                      <strong></strong>
+                    </span>
+                                <button type="button" className="btn btn-success text-white" title="view details" onClick={() => setDriverPaymentModal(true)}>
+                                    change
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            )}
         </div>
       )}
+
+        {/*partner driver payment*/}
+        <Modal isOpen={driverPaymentModal} toggle={() =>setDriverPaymentModal(!driverPaymentModal)}>
+            <ModalHeader toggle={() =>  setDriverPaymentModal(!driverPaymentModal)}>Driver's Payment</ModalHeader>
+            <ModalBody>
+                <div>
+                    <Form onSubmit={(e) => {
+                        e.preventDefault();
+                        updatePartnerDriverPayment({...vehicleDetails,  partner_driver_payment: partner_driver_payment}, match?.params?.id, setDriverPaymentModal)
+                        // updatePartnerDriverPayment(id, {user_type: 'partner', first_name: partnerDetails?.first_name, last_name: partnerDetails?.last_name, partner_driver_payment}, closeDriverPaymentModal)
+                    }}>
+                        <FormGroup>
+                            <Label>Type</Label>
+                            <Input type="select" value={partner_driver_payment?.type} onChange={(e) => setPartner_driver_payment({...partner_driver_payment, type: e.target.value})} required>
+                                <option value="">Select</option>
+                                <option value="fixed">Fixed</option>
+                                <option value="percent">Percent</option>
+                            </Input>
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="text">{partner_driver_payment?.type === 'fixed' ? 'Amount' : 'Percentage'}</Label>
+                            <Input  type="number" value={partner_driver_payment?.driver_payment}  onChange={(e) => setPartner_driver_payment({...partner_driver_payment, driver_payment: e.target.value})} required />
+                        </FormGroup>
+
+
+                        {/* <AsyncSelect cacheOptions defaultOptions loadOptions={() => [{label: "one", value: 1},{label: "two", value: 2}]} onChange={() => null} />; */}
+                        <ModalFooter>
+                            <Button type="submit" variant="contained" className="text-white btn-success">
+                                Change
+                            </Button>
+                        </ModalFooter>
+                    </Form>
+                </div>
+            </ModalBody>
+        </Modal>
       <DeleteConfirmationDialog
         ref={inputEl}
         title="Are You Sure you Want To revoke vehicle assignment?"
@@ -196,6 +284,8 @@ function mapDispatchToProps(dispatch) {
     getVehicle: (vehicle_id, spinner) => dispatch(getVehicle(vehicle_id, spinner)),
     getVehicleMileage: (vehicle_id, spinner) => dispatch(getVehicleMileage(vehicle_id, spinner)),
     revokeVehicle: (vehicle_id, vehicleDetails, driverDetails) => dispatch(revokeVehicle(vehicle_id, vehicleDetails, driverDetails)),
+      updatePartnerDriverPayment: (data, vehicle_id, setDriverPaymentModal) => dispatch(updatePartnerDriverPayment(data, vehicle_id, setDriverPaymentModal)),
+
   };
 }
 
