@@ -17,7 +17,7 @@ const CostOfAsset = ({getCustomerCare, customerCareNumbers, createCostOfAsset}) 
     getCustomerCare(true);
   }, []);
 
-  const updateReferralBonus = (e) => {
+  const updateCostOfAsset = (e) => {
     e.preventDefault();
     setModalOpen(false);
     createCostOfAsset(amount);
@@ -38,7 +38,7 @@ const CostOfAsset = ({getCustomerCare, customerCareNumbers, createCostOfAsset}) 
                   </CardBody>
                   <div className="chart-wrapper mx-3 d-flex align-items-center justify-content-between" style={{height: "60px"}}>
                     <span className="pr-2 font-xl" style={{fontSize: "2.5rem"}}>
-                      {` ₦${customerCareNumbers?.asset_amount}`}
+                      {` ₦${parseInt(customerCareNumbers?.asset_amount, 10)?.toLocaleString()}`}
                     </span>
                   </div>
                 </Card>
