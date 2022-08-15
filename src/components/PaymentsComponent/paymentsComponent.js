@@ -71,7 +71,7 @@ const PaymentsComponent = ({payments, paymentsCount, auth_id, getPayments, getPa
         </Button>
       </div>
       {payments?.length > 0 && (
-        <RctCollapsibleCard item={payments} currentPage={currentPage} totalCount={paymentsCount}>
+        <RctCollapsibleCard fullBlock item={payments} currentPage={currentPage} totalCount={paymentsCount}>
           <div className="table-responsive" style={{minHeight: "50vh"}}>
             <Table>
               <TableHead>

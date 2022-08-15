@@ -108,8 +108,8 @@ const DisbursementHolder = (props) => {
       getFinanceDriverLogs(currentPage, false, dateType, startDate, endDate);
       getFinanceDriverLogsCount(false, dateType, startDate, endDate);
     } else {
-      getFinanceDriverPayouts(currentPage2, false, dateType, startDate, endDate, status);
-      getFinanceDriverPayoutsCount(false, dateType, startDate, endDate, status);
+      getFinanceDriverPayouts(currentPage2, false, dateType, startDate, endDate, status, "stakeholder");
+      getFinanceDriverPayoutsCount(false, dateType, startDate, endDate, status, "stakeholder");
     }
 
     // getFinanceTrip('trip', dateType, startDate, endDate)
@@ -174,10 +174,8 @@ const DisbursementHolder = (props) => {
                     getFinanceDriverLogsCount(true);
                   } else {
                     setReceivable(false);
-                    getFinanceDriverPayouts(currentPage2, true);
-                    getFinanceDriverPayoutsCount(true);
-                    // getFinanceDriverPayouts(currentPage2, false, "", "", "", status);
-                    // getFinanceDriverPayoutsCount(false, "", "", "", status);
+                    getFinanceDriverPayouts(currentPage2, true, "", "", "", "", "stakeholder");
+                    getFinanceDriverPayoutsCount(true, "", "", "", "", "stakeholder");
                   }
                 }}
               >
@@ -266,6 +264,7 @@ const DisbursementHolder = (props) => {
                         <TableCell>Action</TableCell>
                         <TableCell>Zeno Balance</TableCell>
                         <TableCell>Action</TableCell>
+                        {/* <TableCell>Action</TableCell> */}
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -339,13 +338,13 @@ const DisbursementHolder = (props) => {
                       <TableRow hover>
                         <TableCell>Date</TableCell>
                         <TableCell>Name</TableCell>
-                        <TableCell>Phone No</TableCell>
 
+                        <TableCell>Total Amount</TableCell>
                         <TableCell>Bank Name</TableCell>
                         <TableCell>Bank Acc. Number</TableCell>
-                        <TableCell>Total Amount</TableCell>
+                        {/* <TableCell>Total Amount</TableCell>
                         <TableCell>Total Cash Collected</TableCell>
-                        <TableCell>Actual Amount</TableCell>
+                        <TableCell>Actual Amount</TableCell> */}
                         <TableCell>Status</TableCell>
                       </TableRow>
                     </TableHead>
@@ -355,16 +354,14 @@ const DisbursementHolder = (props) => {
                           return (
                             <TableRow hover key={key}>
                               <TableCell>{item.group_date}</TableCell>
-                              <TableCell>
-                                {item?.user_data?.first_name} {item?.user_data?.last_name}
-                              </TableCell>
-                              <TableCell>{item?.user_data?.phone_number}</TableCell>
-                              <TableCell>{item?.account_data?.bank_name}</TableCell>
-                              <TableCell>{item?.account_data?.account_number}</TableCell>
+                              <TableCell>{item?.stakeholder_name}</TableCell>
+                              <TableCell>₦{item?.amount.toLocaleString()}</TableCell>
+                              <TableCell>{item?.bank_name}</TableCell>
+                              <TableCell>{item?.account_number}</TableCell>
 
-                              <TableCell>₦{item?.payment_summary?.total_net_balance?.toLocaleString()}</TableCell>
+                              {/* <TableCell>₦{item?.payment_summary?.total_net_balance?.toLocaleString()}</TableCell>
                               <TableCell>₦{item?.payment_summary?.total_cash_collected?.toLocaleString()}</TableCell>
-                              <TableCell>₦{item?.actual_amount?.toLocaleString()}</TableCell>
+                              <TableCell>₦{item?.actual_amount?.toLocaleString()}</TableCell> */}
                               <TableCell>
                                 <Badge color={item?.status === 0 ? "secondary" : item?.status === 1 ? "success" : item?.status === 2 ? "danger" : item?.status === 3 ? "warning" : "info"}>
                                   {item?.status === 0 ? "Pending" : item?.status === 1 ? "Completed" : item?.status === 2 ? "Failed" : item?.status === 3 ? "Processing" : "Reviewed"}
@@ -508,8 +505,9 @@ function mapDispatchToProps(dispatch) {
     getFinanceDriverLogs: (page_no, loading, date_type, start_date, end_date) => dispatch(getFinanceHolderLogs(page_no, loading, date_type, start_date, end_date)),
     getFinanceDriverLogsCount: (loading, date_type, start_date, end_date) => dispatch(getFinanceHolderLogsCount(loading, date_type, start_date, end_date)),
     searchFinanceDriverLogs: (searchData) => dispatch(searchFinanceHolderLogs(searchData)),
-    getFinanceDriverPayouts: (page_no, loading, date_type, start_date, end_date, status) => dispatch(getFinanceHolderPayouts(page_no, loading, date_type, start_date, end_date, status)),
-    getFinanceDriverPayoutsCount: (loading, date_type, start_date, end_date, status) => dispatch(getFinanceHolderPayoutsCount(loading, date_type, start_date, end_date, status)),
+    getFinanceDriverPayouts: (page_no, loading, date_type, start_date, end_date, status, userType) =>
+      dispatch(getFinanceHolderPayouts(page_no, loading, date_type, start_date, end_date, status, userType)),
+    getFinanceDriverPayoutsCount: (loading, date_type, start_date, end_date, status, userType) => dispatch(getFinanceHolderPayoutsCount(loading, date_type, start_date, end_date, status, userType)),
     searchFinanceDriverPayouts: (searchData) => dispatch(searchFinanceHolderPayouts(searchData)),
     approvePayout: (data) => dispatch(approvePayout(data)),
     reviewPayout: (data) => dispatch(reviewPayout(data)),

@@ -54,7 +54,7 @@ const DriverRatings = ({getUserRating, ratingsUser, loading, ratingCountUser, au
         </Col>
       </Row>
       {!loading && ratingsUser?.length > 0 && (
-        <RctCollapsibleCard>
+        <RctCollapsibleCard item={ratingsUser} currentPage={currentPage} totalCount={ratingCountUser}>
           <div className="table-responsive" style={{minHeight: "50vh"}}>
             <Table>
               <TableHead>

@@ -26,8 +26,8 @@ const Passengers = ({history, match, getPassengers, passengers, loading, passeng
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const exportRef = useRef(null);
 
   useEffect(() => {
@@ -36,7 +36,6 @@ const Passengers = ({history, match, getPassengers, passengers, loading, passeng
       getPassengerCount();
     }
   }, []);
-
 
   const paginate = (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
@@ -51,19 +50,18 @@ const Passengers = ({history, match, getPassengers, passengers, loading, passeng
 
   const confirmExport = () => {
     exportRef.current.close();
-    getUserExport('rider', '', '', startDate, endDate)
-  }
+    getUserExport("rider", "", "", startDate, endDate);
+  };
 
   const handleFilter = () => {
-    getPassengers(1, false, startDate, endDate)
-    getPassengerCount(startDate, endDate)
-  }
-
+    getPassengers(1, false, startDate, endDate);
+    getPassengerCount(startDate, endDate);
+  };
 
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Riders"} match={match} />
-      <RctCollapsibleCard heading="All Passengers" fullBlock>
+      <RctCollapsibleCard heading="All Passengers" fullBlock item={passengers} currentPage={currentPage} totalCount={passengerCount}>
         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
           <SearchComponent setCurrentPage={setCurrentPage} getSearchedData={searchPassenger} getPreviousData={getPassengers} getCount={getPassengerCount} />
           <IconButton mini="true" className="search-icon-btn">
@@ -75,23 +73,44 @@ const Passengers = ({history, match, getPassengers, passengers, loading, passeng
           />
         </li>
         {/*<div>*/}
-          <li className="list-inline-item search-icon d-inline-block mb-2 ml-3">
-            <small className="fw-bold mr-2">From</small>
-            <input type="date" id="start" name="trip-start" defaultValue={startDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => {
-              setStartDate(e.target.value)
-            }} />
-          </li>
-          <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-            <small className="fw-bold mr-2">To</small>
-            <input type="date" id="start" name="trip-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => {
-              setEndDate(e.target.value)
-            }} />
-          </li>
-          <Button onClick={() => handleFilter()} style={{height: '30px'}} className='align-items-center justify-content-center' color='success'>Apply filter</Button>
+        <li className="list-inline-item search-icon d-inline-block mb-2 ml-3">
+          <small className="fw-bold mr-2">From</small>
+          <input
+            type="date"
+            id="start"
+            name="trip-start"
+            defaultValue={startDate}
+            min="2018-01-01"
+            max={getTodayDate()}
+            onChange={(e) => {
+              setStartDate(e.target.value);
+            }}
+          />
+        </li>
+        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+          <small className="fw-bold mr-2">To</small>
+          <input
+            type="date"
+            id="start"
+            name="trip-start"
+            defaultValue={endDate}
+            min="2018-01-01"
+            max={getTodayDate()}
+            onChange={(e) => {
+              setEndDate(e.target.value);
+            }}
+          />
+        </li>
+        <Button onClick={() => handleFilter()} style={{height: "30px"}} className="align-items-center justify-content-center" color="success">
+          Apply filter
+        </Button>
         {/*</div>*/}
         <div className="float-right">
           {!loading && passengers.length > 0 && (
-              <Button onClick={() => handleExport()} style={{height: '30px'}} className='align-items-center justify-content-center mr-2' color='primary'> <i className="zmdi zmdi-download mr-2"></i>  Export to Excel</Button>
+            <Button onClick={() => handleExport()} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
+              {" "}
+              <i className="zmdi zmdi-download mr-2"></i> Export to Excel
+            </Button>
           )}
         </div>
         {!loading && passengers.length > 0 && (
@@ -136,8 +155,7 @@ const Passengers = ({history, match, getPassengers, passengers, loading, passeng
         )}
         {!loading && passengers.length < 1 && <EmptyData />}
       </RctCollapsibleCard>
-      <DeleteConfirmationDialog ref={exportRef} title={'Are you sure you want to Export File?'} message={'This will send the excel file to your email'} onConfirm={confirmExport} />
-
+      <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
     </div>
   );
 };

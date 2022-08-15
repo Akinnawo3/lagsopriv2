@@ -61,7 +61,7 @@ const PaymentTable = ({payments, status, paymentsCount, auth_id, getPayments, he
 
   return (
     <div>
-      <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}}>
+      <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}} item={payments} currentPage={currentPage} totalCount={paymentsCount}>
         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
           <SearchComponent
             getPreviousData={handleGetPreviousData}

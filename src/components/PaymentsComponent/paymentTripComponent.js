@@ -41,7 +41,6 @@ const PaymentTripComponent = ({payments, status, paymentsCount, auth_id, getPaym
   };
 
   console.log(payments);
-
   return (
     <div>
       <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}} item={payments} currentPage={currentPage} totalCount={paymentsCount}>
@@ -82,6 +81,7 @@ const PaymentTripComponent = ({payments, status, paymentsCount, auth_id, getPaym
                     <TableCell>Payment Method</TableCell>
                     <TableCell>Status</TableCell>
                     <TableCell>Action</TableCell>
+                    <TableCell>aaaaaaaaaaaaaaaaaaaa</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
