@@ -224,6 +224,26 @@ export const updateVehicle =
     }
   };
 
+
+export const updatePartnerDriverPayment = (data, vehicle_id, setDriverPaymentModal) => async (dispatch) => {
+
+      try {
+        dispatch(startStatusLoading());
+        const res = await axios.put(`${api.vehicles}/v1.1/admin/vehicles/${vehicle_id}`, data);
+        if (res.data.status === "error") {
+          NotificationManager.error(res.data.msg);
+        } else {
+          await NotificationManager.success("Vehicle Updated Successfully");
+          typeof setDriverPaymentModal === "function"  && setDriverPaymentModal(false)
+          await dispatch(getVehicle(vehicle_id, false));
+        }
+        dispatch(endStatusLoading());
+      } catch (err) {
+        dispatch(endStatusLoading());
+        NotificationManager.error(err.response.data.result);
+      }
+    };
+
 export const deleteVehicle = (vehicle_id, vehicles) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());

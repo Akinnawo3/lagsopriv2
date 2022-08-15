@@ -40,11 +40,9 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
   const [CACModal, setCACModal] = useState(false)
   const [vehiclesModal, setVehiclesModal] = useState(false)
   const [idType, setIdType] = useState("");
-  const [driverPaymentModal, setDriverPaymentModal] = useState(false)
   const [idVerificationModalOpen, setIdVerificationModalOpen] = useState(false);
   const isTest = dataMode === "test";
   const filteredVehicles = partnerDetails?.partner_data?.vehicle_interested?.filter(x => x.status === 1)
-  const [partner_driver_payment, setPartner_driver_payment] = useState({type: '', driver_payment: ''})
 
 
 
@@ -75,15 +73,6 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
     return count
   }
 
-
-  const closeDriverPaymentModal = () => {
-    setDriverPaymentModal(false)
-  }
-
-
-  useEffect(() => {
-      setPartner_driver_payment({type: partnerDetails?.partner_data?.partner_driver_payment?.type, driver_payment: partnerDetails?.partner_data?.partner_driver_payment?.driver_payment})
-  },[partnerDetails?.partner_data?.auth_id])
 
 
   return (
@@ -358,14 +347,14 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
                     </button>
                   </li>
               }
-              <li className="list-group-item text-right">
-                <span className="pull-left">
-                  <strong>Driver's Payment</strong>
-                </span>
-                <button type="button" className="btn btn-success text-white" title="view details" onClick={() => setDriverPaymentModal(true)}>
-                  change
-                </button>
-              </li>
+              {/*<li className="list-group-item text-right">*/}
+              {/*  <span className="pull-left">*/}
+              {/*    <strong>Driver's Payment</strong>*/}
+              {/*  </span>*/}
+              {/*  <button type="button" className="btn btn-success text-white" title="view details" onClick={() => setDriverPaymentModal(true)}>*/}
+              {/*    change*/}
+              {/*  </button>*/}
+              {/*</li>*/}
             </ul>
           </div>
         </div>
@@ -424,16 +413,20 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
                 <Fragment>
                   {partnerDetails?.vehicle_data?.length  > 0 && partnerDetails?.vehicle_data.map((vehicle, key) => (
                       <TableRow hover key={key}>
-                        <TableCell>{vehicle.car_number_plate}</TableCell>
+                        <TableCell>
+                          <Link to={`/admin/vehicles/${vehicle.vehicle_id}`}>
+                          {vehicle.car_number_plate}
+                          </Link>
+                          </TableCell>
                         <TableCell>{vehicle.car_number}</TableCell>
                         <TableCell>{vehicle.car_make}</TableCell>
                         <TableCell>{vehicle.car_model}</TableCell>
                         <TableCell>
-                          <button type="button" className="rct-link-btn text-primary ml-3" title="view details">
-                            <Link to={`/admin/vehicles/${vehicle.vehicle_id}`}>
-                              <i className="ti-eye" />
-                            </Link>
-                          </button>
+                          {/*<button type="button" className="rct-link-btn text-primary ml-3" title="view details">*/}
+                          {/*  <Link to={`/admin/vehicles/${vehicle.vehicle_id}`}>*/}
+                          {/*    <i className="ti-eye" />*/}
+                          {/*  </Link>*/}
+                          {/*</button>*/}
                           <Button onClick={() => revokePartnerVehicle(vehicle?._id, vehicle, partnerDetails)} className="bg-danger mt-3 text-white ml-3">
                             Revoke
                           </Button>
@@ -627,39 +620,7 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
           }}
       />
 
-      {/*add vehicles  modal*/}
-      <Modal isOpen={driverPaymentModal} toggle={() =>setDriverPaymentModal(!driverPaymentModal)}>
-        <ModalHeader toggle={() =>  setDriverPaymentModal(!driverPaymentModal)}>Driver's Payment</ModalHeader>
-        <ModalBody>
-          <div>
-            <Form onSubmit={(e) => {
-              e.preventDefault();
-              updatePartnerDriverPayment(id, {user_type: 'partner', first_name: partnerDetails?.first_name, last_name: partnerDetails?.last_name, partner_driver_payment}, closeDriverPaymentModal)
-            }}>
-              <FormGroup>
-                <Label>Type</Label>
-                <Input type="select" value={partner_driver_payment?.type} onChange={(e) => setPartner_driver_payment({...partner_driver_payment, type: e.target.value})} required>
-                  <option value="">Select</option>
-                  <option value="fixed">Fixed</option>
-                  <option value="percent">Percent</option>
-                </Input>
-              </FormGroup>
-              <FormGroup>
-                <Label for="text">Amount</Label>
-                <Input  type="number" value={partner_driver_payment?.driver_payment}  onChange={(e) => setPartner_driver_payment({...partner_driver_payment, driver_payment: e.target.value})} required />
-              </FormGroup>
 
-
-              {/* <AsyncSelect cacheOptions defaultOptions loadOptions={() => [{label: "one", value: 1},{label: "two", value: 2}]} onChange={() => null} />; */}
-              <ModalFooter>
-                <Button type="submit" variant="contained" className="text-white btn-success">
-                  Change
-                </Button>
-              </ModalFooter>
-            </Form>
-          </div>
-        </ModalBody>
-      </Modal>
 
 
 
