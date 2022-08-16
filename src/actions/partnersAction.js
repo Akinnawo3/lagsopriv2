@@ -180,7 +180,7 @@ export const changePartnerStatus = (auth_id, partner_status) => async (dispatch)
 export const revokePartnerVehicle = (vehicle_id, vehicleDetails, partnerDetails) => async (dispatch) => {
    try {
       dispatch(startStatusLoading());
-      const res = await axios.post(`${api.vehicles}/v1.1/admin/revoke-vehicle`, { vehicle_id });
+      const res = await axios.post(`${api.vehicles}/v1.1/admin/revoke-vehicle`, { vehicle_id, user_type: 'partner' });
       if (res.data.status === "error") {
          NotificationManager.error(res.data.msg);
       } else {

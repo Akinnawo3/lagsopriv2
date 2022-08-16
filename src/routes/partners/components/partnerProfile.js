@@ -619,7 +619,7 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
               type: "generic",
               email: partnerDetails.email,
               name: partnerDetails.first_name,
-              message: 'You have been verified and elligible to become a partner on LagosRide, we will advise you on when to make payments. Please do not pay any money into any account, until you have been advised to do so.',
+              message: 'You have been verified and eligible to become a partner on LagosRide, we will advise you on when to make payments. Please do not pay any money into any account, until you have been advised to do so.',
               phone_number: partnerDetails.phone_number,
               subject: "Partner Verified",
             };
