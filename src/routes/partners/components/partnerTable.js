@@ -321,8 +321,6 @@ const PartnerTable = ({
 function mapDispatchToProps(dispatch) {
   return {
     getPartners: (page_no, spinner, start_date,  end_date, status) => dispatch(getPartners(page_no, spinner, start_date,  end_date, status)),
-
-    // getPartners: (page_no, spinner, start_date, end_date) => dispatch(getPartners(page_no, spinner, start_date, end_date)),
     getPartnersCount: (start_date, end_date, status) => dispatch(getPartnersCount(start_date, end_date, status)),
     getUserExport: (user_type, driver_category, driver_account_status, start_date, end_date) => dispatch(getUserExport(user_type, driver_category, driver_account_status, start_date, end_date)),
     searchPartners: (searchData) => dispatch(searchPartners(searchData)),
