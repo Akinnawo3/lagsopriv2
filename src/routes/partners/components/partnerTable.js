@@ -89,7 +89,7 @@ const PartnerTable = ({
   const paginate = (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
-    getPartners(pageNumber, false);
+    getPartners(pageNumber, false, '', '', status);
     window.scrollTo(0, 0);
   };
 
@@ -99,12 +99,12 @@ const PartnerTable = ({
 
   const confirmExport = () => {
     exportRef.current.close();
-    getUserExport('partner', '', '', startDate, endDate)
+    getUserExport('partner', '', '', startDate, endDate, status)
   }
 
   const handleFilter = () => {
     getPartners(1, false, startDate, endDate, status)
-    getPartnersCount(startDate, endDate)
+    getPartnersCount(startDate, endDate, status)
   }
 
   const handleSuccess = () => {
@@ -320,8 +320,10 @@ const PartnerTable = ({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPartners: (page_no, spinner, start_date, end_date) => dispatch(getPartners(page_no, spinner, start_date, end_date)),
-    getPartnersCount: (start_date, end_date) => dispatch(getPartnersCount(start_date, end_date)),
+    getPartners: (page_no, spinner, start_date,  end_date, status) => dispatch(getPartners(page_no, spinner, start_date,  end_date, status)),
+
+    // getPartners: (page_no, spinner, start_date, end_date) => dispatch(getPartners(page_no, spinner, start_date, end_date)),
+    getPartnersCount: (start_date, end_date, status) => dispatch(getPartnersCount(start_date, end_date, status)),
     getUserExport: (user_type, driver_category, driver_account_status, start_date, end_date) => dispatch(getUserExport(user_type, driver_category, driver_account_status, start_date, end_date)),
     searchPartners: (searchData) => dispatch(searchPartners(searchData)),
     createPartners: (data, handleSuccess) => dispatch(createPartners(data, handleSuccess)),
