@@ -81,7 +81,6 @@ const PaymentTripComponent = ({payments, status, paymentsCount, auth_id, getPaym
                     <TableCell>Payment Method</TableCell>
                     <TableCell>Status</TableCell>
                     <TableCell>Action</TableCell>
-                    <TableCell>aaaaaaaaaaaaaaaaaaaa</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
