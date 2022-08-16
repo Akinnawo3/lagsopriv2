@@ -615,10 +615,19 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
           title="Are You Sure You want to change this partner nin status?"
           message="This will verify the partner nin"
           onConfirm={() => {
-            verifyPartnerNIN(partnerDetails?.auth_id, "1", idType);
+            const messageData = {
+              type: "generic",
+              email: partnerDetails.email,
+              name: partnerDetails.first_name,
+              message: 'You have been verified and elligible to become a partner on LagosRide, we will advise you on when to make payments. Please do not pay any money into any account, until you have been advised to do so.',
+              phone_number: partnerDetails.phone_number,
+              subject: "Partner Verified",
+            };
+            verifyPartnerNIN(partnerDetails?.auth_id, "1", idType, messageData);
             inputEl2.current.close();
           }}
       />
+
 
 
 
@@ -634,7 +643,7 @@ function mapDispatchToProps(dispatch) {
     changePartnerStatus: (auth_id, partner_status) => dispatch(changePartnerStatus(auth_id, partner_status)),
     revokePartnerVehicle: (vehicle_id, vehicleDetails, partnerDetails) => dispatch(revokePartnerVehicle(vehicle_id, vehicleDetails, partnerDetails)),
     sendVerificationRequest: (id_type, id_value, first_name, last_name) => dispatch(sendVerificationRequest(id_type, id_value, first_name, last_name)),
-    verifyPartnerNIN: (auth_id, verification_status, verification_name) => dispatch(verifyPartnerNIN(auth_id, verification_status, verification_name)),
+    verifyPartnerNIN: (auth_id, verification_status, verification_name, messageData) => dispatch(verifyPartnerNIN(auth_id, verification_status, verification_name, messageData)),
     updatePartnerDriverPayment: (auth_id, data, closeDriverPaymentModal) => dispatch(updatePartnerDriverPayment(auth_id, data, closeDriverPaymentModal)),
 
 

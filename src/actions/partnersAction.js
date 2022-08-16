@@ -238,7 +238,7 @@ export const getPartnerDriverCount = (partner_id, start_date = "", end_date = ""
 };
 
 
-export const verifyPartnerNIN = (auth_id, verification_status, verification_name) => async (dispatch) => {
+export const verifyPartnerNIN = (auth_id, verification_status, verification_name, messageData) => async (dispatch) => {
    const body = {
       auth_id,
       kyc_status: verification_status,
@@ -251,6 +251,7 @@ export const verifyPartnerNIN = (auth_id, verification_status, verification_name
       } else {
          await NotificationManager.success("NIN verified  Successfully!");
          await dispatch(getPartner(auth_id, false));
+         await axios.post(`${api.messageWorker}/v1.1/messages/send`, messageData);
       }
       dispatch(endStatusLoading());
    } catch (err) {
@@ -258,4 +259,6 @@ export const verifyPartnerNIN = (auth_id, verification_status, verification_name
       NotificationManager.error(err.response.data.message);
    }
 };
+
+
 
