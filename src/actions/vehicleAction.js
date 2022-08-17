@@ -364,7 +364,7 @@ export const sendVehicleUnassignMessage = (driverData, vehicleData, message_type
   } catch (err) {}
 };
 
-export const updateVehicleMileage = (body, vehicle_id) => async (dispatch) => {
+export const updateVehicleMileage = (body) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
     const res = await axios.put(`${api.oem}/v1.1/admin/mileage`, body);
@@ -373,7 +373,7 @@ export const updateVehicleMileage = (body, vehicle_id) => async (dispatch) => {
     } else {
       await NotificationManager.success("Mileage Updated Successfully!");
       onMileageModalClose();
-      await dispatch(getVehicle(vehicle_id));
+      await dispatch(getVehicle(body?.vehicle_id));
     }
     dispatch(endStatusLoading());
   } catch (e) {

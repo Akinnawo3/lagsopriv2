@@ -27,7 +27,7 @@ const VehicleDetails = ({
   const [driverPaymentModal, setDriverPaymentModal] = useState(false);
   const [partner_driver_payment, setPartner_driver_payment] = useState({type: "", driver_payment: ""});
   const [mileageModal, setMileageModal] = useState(false);
-  const [mileageValue, setMileageValue] = useState(vehicleDetails?.mileage);
+  const [mileageValue, setMileageValue] = useState();
 
   const inputEl = useRef(null);
   useEffect(() => {
@@ -193,7 +193,14 @@ const VehicleDetails = ({
 
                   <li className="list-group-item text-right d-flex">
                     <span className="mr-2">
-                      <Button disabled={loadingStatus} onClick={() => setMileageModal(true)} className="bg-info mt-3 text-white">
+                      <Button
+                        disabled={loadingStatus}
+                        onClick={() => {
+                          setMileageValue(vehicleDetails?.mileage);
+                          setMileageModal(true);
+                        }}
+                        className="bg-info mt-3 text-white"
+                      >
                         Update Mileage
                       </Button>
                     </span>
@@ -302,7 +309,7 @@ const VehicleDetails = ({
             <Form
               onSubmit={(e) => {
                 e.preventDefault();
-                updateVehicleMileage({vehicle_id: vehicleDetails?.vehicle_id, oem_vehicle_id: vehicleDetails?.oem_vehicle_id, mileage: mileageValue});
+                updateVehicleMileage({vehicle_id: vehicleDetails?.vehicle_id, oem_vehicle_id: vehicleDetails?.oem_vehicle_id, mileage: mileageValue.toString()});
                 // updatePartnerDriverPayment(id, {user_type: 'partner', first_name: partnerDetails?.first_name, last_name: partnerDetails?.last_name, partner_driver_payment}, closeDriverPaymentModal)
               }}
             >
@@ -339,7 +346,7 @@ function mapDispatchToProps(dispatch) {
     getVehicleMileage: (vehicle_id, spinner) => dispatch(getVehicleMileage(vehicle_id, spinner)),
     revokeVehicle: (vehicle_id, vehicleDetails, driverDetails) => dispatch(revokeVehicle(vehicle_id, vehicleDetails, driverDetails)),
     updatePartnerDriverPayment: (data, vehicle_id, setDriverPaymentModal) => dispatch(updatePartnerDriverPayment(data, vehicle_id, setDriverPaymentModal)),
-    updateVehicleMileage: (data, vehicle_id) => dispatch(updateVehicleMileage(data, vehicle_id)),
+    updateVehicleMileage: (data) => dispatch(updateVehicleMileage(data)),
   };
 }
 

@@ -23,14 +23,14 @@ const HomeDashboard = ({match}) => {
       <PageTitleBar home title={<IntlMessages id="sidebar.dashboard" />} match={match} />
 
       <div className="row">
-        <div className="col-sm-6 col-md-4 w-xs-half-block">
+        <div className="col-sm-12 col-md-6 w-xs-half-block">
           <VisitorAreaChartWidget />
         </div>
 
-        <div className="col-sm-12 col-md-4 w-xs-half-block">
+        <div className="col-sm-12 col-md-6 w-xs-half-block">
           <DriverChart />
         </div>
-        <div className="col-sm-6 col-md-4 w-xs-full">
+        <div className="col-sm-12 col-md-12 w-xs-full">
           <VehicleChart />
         </div>
       </div>
