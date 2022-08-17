@@ -505,7 +505,7 @@ const DriverProfile = ({
                 {oneOff
                   ? ` ₦ ${oneOff.toLocaleString()}`
                   : driver?.driver_data?.driver_category === "social"
-                  ? ` ₦ ${customerCareNumbers?.soc_driver_fee.total?.toLocaleString()}`
+                  ? ` ₦ ${customerCareNumbers?.soc_driver_fee?.total?.toLocaleString()}`
                   : ` ₦ ${customerCareNumbers?.com_driver_fee?.total?.toLocaleString()}`}
                 <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => setRepaymentModalOpen(true)}>
                   Change
