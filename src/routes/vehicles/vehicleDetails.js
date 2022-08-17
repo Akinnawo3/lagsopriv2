@@ -3,16 +3,31 @@ import {connect} from "react-redux";
 import {Helmet} from "react-helmet";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {Link} from "react-router-dom";
-import {getVehicle, getVehicleMileage, revokeVehicle, updatePartnerDriverPayment} from "Actions/vehicleAction";
+import {getVehicle, getVehicleMileage, revokeVehicle, updatePartnerDriverPayment, updateVehicleMileage} from "Actions/vehicleAction";
 import {Badge, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import Button from "@material-ui/core/Button";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import download from "downloadjs";
 import {calculatePostDate, fullDateTime} from "../../helpers/helpers";
+export let onMileageModalClose;
 
-const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetails, loadingStatus, revokeVehicle, getVehicleMileage, vehicleMileage, updatePartnerDriverPayment}) => {
+const VehicleDetails = ({
+  getVehicle,
+  match,
+  loading,
+  vehicleDetails,
+  driverDetails,
+  loadingStatus,
+  revokeVehicle,
+  getVehicleMileage,
+  vehicleMileage,
+  updatePartnerDriverPayment,
+  updateVehicleMileage,
+}) => {
   const [driverPaymentModal, setDriverPaymentModal] = useState(false);
   const [partner_driver_payment, setPartner_driver_payment] = useState({type: "", driver_payment: ""});
+  const [mileageModal, setMileageModal] = useState(false);
+  const [mileageValue, setMileageValue] = useState(vehicleDetails?.mileage);
 
   const inputEl = useRef(null);
   useEffect(() => {
@@ -30,6 +45,10 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
 
   const closeDriverPaymentModal = () => {
     setDriverPaymentModal(false);
+  };
+
+  onMileageModalClose = () => {
+    setMileageModal(false);
   };
 
   useEffect(() => {
@@ -171,21 +190,14 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
                       </div>
                     </div>
                   </li>
-                  <li className="list-group-item text-right">
-                    <span className="pull-left">
-                      <Button
-                        disabled={loadingStatus}
-                        onClick={() => {
-                          opnRevokeVehicleModal();
-                        }}
-                        className="bg-warning mt-3 text-white"
-                      >
+
+                  <li className="list-group-item text-right d-flex">
+                    <span className="mr-2">
+                      <Button disabled={loadingStatus} onClick={() => setMileageModal(true)} className="bg-info mt-3 text-white">
                         Update Mileage
                       </Button>
                     </span>
-                  </li>
-                  {vehicleDetails?.assigned && (
-                    <li className="list-group-item text-right">
+                    {vehicleDetails?.assigned && (
                       <span className="pull-left">
                         <Button
                           disabled={loadingStatus}
@@ -197,8 +209,8 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
                           Revoke
                         </Button>
                       </span>
-                    </li>
-                  )}
+                    )}
+                  </li>
                 </ul>
               </div>
             </div>
@@ -282,6 +294,32 @@ const VehicleDetails = ({getVehicle, match, loading, vehicleDetails, driverDetai
           </div>
         </ModalBody>
       </Modal>
+      {/*Modal to update vehicle Mileage*/}
+      <Modal isOpen={mileageModal} toggle={() => setMileageModal(!mileageModal)}>
+        <ModalHeader toggle={() => setMileageModal(!mileageModal)}>Update Vehicle Mileage</ModalHeader>
+        <ModalBody>
+          <div>
+            <Form
+              onSubmit={(e) => {
+                e.preventDefault();
+                updateVehicleMileage({vehicle_id: vehicleDetails?.vehicle_id, oem_vehicle_id: vehicleDetails?.oem_vehicle_id, mileage: mileageValue});
+                // updatePartnerDriverPayment(id, {user_type: 'partner', first_name: partnerDetails?.first_name, last_name: partnerDetails?.last_name, partner_driver_payment}, closeDriverPaymentModal)
+              }}
+            >
+              <FormGroup>
+                <Label for="text">Enter Mileage value (Miles)</Label>
+                <Input type="number" min={0} value={mileageValue} onChange={(e) => setMileageValue(e.target.value)} required />
+              </FormGroup>
+              {/* <AsyncSelect cacheOptions defaultOptions loadOptions={() => [{label: "one", value: 1},{label: "two", value: 2}]} onChange={() => null} />; */}
+              <ModalFooter>
+                <Button type="submit" variant="contained" className="text-white btn-success">
+                  Submit
+                </Button>
+              </ModalFooter>
+            </Form>
+          </div>
+        </ModalBody>
+      </Modal>
       <DeleteConfirmationDialog
         ref={inputEl}
         title="Are You Sure you Want To revoke vehicle assignment?"
@@ -301,6 +339,7 @@ function mapDispatchToProps(dispatch) {
     getVehicleMileage: (vehicle_id, spinner) => dispatch(getVehicleMileage(vehicle_id, spinner)),
     revokeVehicle: (vehicle_id, vehicleDetails, driverDetails) => dispatch(revokeVehicle(vehicle_id, vehicleDetails, driverDetails)),
     updatePartnerDriverPayment: (data, vehicle_id, setDriverPaymentModal) => dispatch(updatePartnerDriverPayment(data, vehicle_id, setDriverPaymentModal)),
+    updateVehicleMileage: (data, vehicle_id) => dispatch(updateVehicleMileage(data, vehicle_id)),
   };
 }
 

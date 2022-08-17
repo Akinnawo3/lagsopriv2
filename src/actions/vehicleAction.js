@@ -6,6 +6,7 @@ import api from "../environments/environment";
 import {getDriver, getDrivers} from "Actions/driverAction";
 import {onAddUpdateVehicleModalClose} from "../routes/vehicles/components/vehicleTable";
 import {activateDriver, onAddVehicleModalClose} from "../routes/drivers/components/driverProfile";
+import {onMileageModalClose} from "../routes/vehicles/vehicleDetails";
 
 export const getVehicles =
   (page_no = 1, assign = "", spinner, car_number_plate = "") =>
@@ -366,7 +367,7 @@ export const sendVehicleUnassignMessage = (driverData, vehicleData, message_type
 export const updateVehicleMileage = (body, vehicle_id) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
-    const res = await axios.post(`${api.oem}/v1.1/admin/mileage`, body);
+    const res = await axios.put(`${api.oem}/v1.1/admin/mileage`, body);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
