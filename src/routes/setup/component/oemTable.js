@@ -21,7 +21,10 @@ import {useHistory} from "react-router-dom";
 import {getOems, getOemCount, creatOEM, updateOEM, deleteOEM} from "Actions/oemAction";
 const qs = require("qs");
 export let onAddUpdateOemModalClose;
-const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header, creatOEM, updateOEM, deleteOEM}) => {
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
+const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header, creatOEM, updateOEM, deleteOEM, userProfile}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -39,7 +42,6 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header, cre
 
   const d = new Date();
   let year = d.getFullYear();
-
   // useEffect(() => {
   //   if (vehicles) {
   //     let result = vehicles.map((vehicle) => {
@@ -165,7 +167,7 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header, cre
           </div>
           {!loading && oems.length > 0 && (
             <div className="table-responsive" style={{minHeight: "50vh"}}>
-              <Table>
+              <Table className="table-responsive">
                 <TableHead>
                   <TableRow hover>
                     <TableCell>Name</TableCell>
@@ -183,12 +185,17 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header, cre
                         <TableCell>{oem.address}</TableCell>
                         <TableCell>{oem.phone_number}</TableCell>
                         <TableCell>{oem.email}</TableCell>
-                        <TableCell>
+                        <TableCell className="text-nowrap">
                           <button type="button" className="rct-link-btn" onClick={(e) => opnAddNewUserEditModal(oem.auth_id)}>
                             <i className="ti-pencil"></i>
                           </button>
                           <button type="button" className="rct-link-btn ml-lg-3 text-danger ml-2" onClick={() => onDelete(oem.auth_id)}>
                             <i className="ti-trash"></i>
+                          </button>
+                          <button type="button" className="rct-link-btn ml-lg-3 text-danger ml-2">
+                            <a href={`https://lrdash.lagosride.com/admin-token/?token=${cookies.get("user_id")}&user_id=${oem.auth_id}&data_mmode=${userProfile?.data_mode}`} target="_blank">
+                              <i className="ti-eye"></i>
+                            </a>
                           </button>
                           {/* <button type="button" className="rct-link-btn text-primary ml-3" title="view details">
                             <Link to={`/admin/vehicles/${vehicle.vehicle_id}`}>
@@ -273,6 +280,7 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
   oems: state.oem.oems,
   oemsCount: state.oem.oemsCount,
+  userProfile: state.authUser.userProfile,
   // drivers: state.driver.drivers,
   loading: state.loading.loading,
   loadingStatus: state.loading.loadingStatus,
