@@ -37,43 +37,43 @@ const PartnerChart = ({data}) => {
 
   const getTotalPartners = async () => {
     try {
-      const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=driver&component=count`);
+      const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=partner&component=count`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
-        setDriverCount(res.data.data.total ? res.data.data.total : 0);
+        setPartnerTotal(res.data.data.total ? res.data.data.total : 0);
       }
     } catch (err) {}
   };
 
   const getPendingPartners = async () => {
     try {
-      const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=driver&component=count&driver_online_status=0`);
+      const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=partner&component=count&account_status=0`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
-        setDriverOffline(res.data.data.total ? res.data.data.total : 0);
+        setPartnerPending(res.data.data.total ? res.data.data.total : 0);
       }
     } catch (err) {}
   };
 
   const getVerifiedPartners = async () => {
     try {
-      const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=driver&component=count&driver_online_status=1`);
+      const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=partner&component=count&account_status=2`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
-        setDriverOnline(res.data.data.total ? res.data.data.total : 0);
+        setPartnerVerified(res.data.data.total ? res.data.data.total : 0);
       }
     } catch (err) {}
   };
   const getApprovedPartners = async () => {
     try {
-      const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=driver&component=count&driver_online_status=1`);
+      const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=partner&component=count&account_status=4`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
-        setDriverOnline(res.data.data.total ? res.data.data.total : 0);
+        setPartnerApproved(res.data.data.total ? res.data.data.total : 0);
       }
     } catch (err) {}
   };
