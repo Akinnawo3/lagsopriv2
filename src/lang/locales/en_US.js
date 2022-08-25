@@ -248,6 +248,7 @@ module.exports = {
   "widgets.revenue": "Revenue",
   "widgets.this year": "This Year",
   "widgets.drivers": "Drivers",
+  "widgets.partners": "Partners",
   "widgets.online": "Online",
   "widgets.offline": "Offline",
   "widgets.this month": "This Month",

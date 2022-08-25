@@ -9,6 +9,7 @@ import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard
 import {PaymentWidget, RefundsWidget, SchedulesWidget, TripCard, VisitorAreaChartWidget} from "Components/Widgets";
 import VehicleChart from "Components/Widgets/VehicleChart";
 import DriverChart from "Components/Widgets/DriverChart";
+import PartnerChart from "Components/Widgets/PartnerChart";
 import {connect} from "react-redux";
 import RevenueWidget from "../../../components/Widgets/RevenueWidget";
 import {Link} from "react-router-dom";
@@ -30,8 +31,12 @@ const HomeDashboard = ({match}) => {
         <div className="col-sm-12 col-md-6 w-xs-half-block">
           <DriverChart />
         </div>
-        <div className="col-sm-12 col-md-12 w-xs-full">
+        <div className="col-sm-12 col-md-6 w-xs-full">
           <VehicleChart />
+        </div>
+
+        <div className="col-sm-12 col-md-6 w-xs-half-block">
+          <PartnerChart />
         </div>
       </div>
       <div className="row">
