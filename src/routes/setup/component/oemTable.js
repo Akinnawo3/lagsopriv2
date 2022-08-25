@@ -193,7 +193,7 @@ const OemTable = ({getOems, oems, oemsCount, loadingStatus, loading, header, cre
                             <i className="ti-trash"></i>
                           </button>
                           <button type="button" className="rct-link-btn ml-lg-3 text-danger ml-2">
-                            <a href={`https://lrdash.lagosride.com/admin-token/?token=${cookies.get("user_id")}&user_id=${oem.auth_id}&data_mmode=${userProfile?.data_mode}`} target="_blank">
+                            <a href={`https://oemdash.lagosride.com//admin-token/?token=${cookies.get("user_id")}&user_id=${oem.auth_id}&data_mmode=${userProfile?.data_mode}`} target="_blank">
                               <i className="ti-eye"></i>
                             </a>
                           </button>

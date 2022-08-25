@@ -764,7 +764,7 @@ const DriverProfile = ({
                       </Button>
                     </div>
                   )}
-                  {driver?.driver_data?.driver_status === 3 && driver?.vehicle_data?._id && (
+                  {driver?.driver_data?.driver_status === 3 &&   driver?.vehicle_data?._id && (
                     //  driver?.driver_data?.asset_payment?.status &&
                     <div className="text-center">
                       <Button disabled={loadingStatus} onClick={() => verifyUserPermssion("update_driver_status", () => onActivate())} className="bg-success mt-3 text-white">
