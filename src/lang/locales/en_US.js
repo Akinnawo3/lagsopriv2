@@ -249,6 +249,8 @@ module.exports = {
   "widgets.this year": "This Year",
   "widgets.drivers": "Drivers",
   "widgets.partners": "Partners",
+  "widgets.verified": "Verified",
+  "widgets.approved": "Approved",
   "widgets.online": "Online",
   "widgets.offline": "Offline",
   "widgets.this month": "This Month",

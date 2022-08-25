@@ -89,28 +89,34 @@ const PartnerChart = ({data}) => {
               </h3>
               {/*<div className="float-right hidden-md-down">*/}
               {/*    <div className="featured-section-icon">*/}
-              <i className="icon-user" style={{fontSize: "30px"}}></i>
+              <i className="zmdi zmdi-car" style={{fontSize: "40px"}}></i>
               {/*</div>*/}
               {/*</div>*/}
             </div>
             <div className="d-flex">
               <div className="mr-50">
                 <span className="fs-14 d-block">
-                  <IntlMessages id="widgets.online" />
+                  <IntlMessages id="widgets.pending" />
                 </span>
-                {/* <CountUp separator="," className="counter-point" start={0} end={driverOnline} duration={5} useEasing={true} /> */}
+                <CountUp separator="," className="counter-point" start={0} end={partnerPending} duration={5} useEasing={true} />
               </div>
               <div className="mr-50">
                 <span className="fs-14 d-block">
-                  <IntlMessages id="widgets.offline" />
+                  <IntlMessages id="widgets.verified" />
                 </span>
-                {/* <CountUp separator="," className="counter-point" start={0} end={driverOffline} duration={5} useEasing={true} /> */}
+                <CountUp separator="," className="counter-point" start={0} end={partnerVerified} duration={5} useEasing={true} />
+              </div>
+              <div className="mr-50">
+                <span className="fs-14 d-block">
+                  <IntlMessages id="widgets.approved" />
+                </span>
+                <CountUp separator="," className="counter-point" start={0} end={partnerApproved} duration={5} useEasing={true} />
               </div>
               <div className="">
                 <span className="fs-14 d-block">
                   <IntlMessages id="widgets.total" />
                 </span>
-                {/* <CountUp separator="," className="counter-point" start={0} end={driverCount} duration={5} useEasing={true} /> */}
+                <CountUp separator="," className="counter-point" start={0} end={partnerTotal} duration={5} useEasing={true} />
               </div>
             </div>
           </div>

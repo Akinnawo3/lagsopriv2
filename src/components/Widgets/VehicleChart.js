@@ -80,19 +80,19 @@ const VehicleChart = ({data}) => {
               {/*</div>*/}
             </div>
             <div className="d-flex">
-              <div className="mr-50">
+              <div className="mr-3">
                 <span className="fs-14 d-block">
                   <IntlMessages id="widgets.assigned" />
                 </span>
                 <CountUp separator="," className="counter-point" start={0} end={vehicleCountAssigned} duration={5} useEasing={true} />
               </div>
-              <div className="mr-50">
+              <div className="mr-3">
                 <span className="fs-14 d-block">
                   <IntlMessages id="widgets.partnerassigned" />
                 </span>
                 <CountUp separator="," className="counter-point" start={0} end={vehicleCountPartnerAssigned} duration={5} useEasing={true} />
               </div>
-              <div className="mr-50">
+              <div className="mr-3">
                 <span className="fs-14 d-block">
                   <IntlMessages id="widgets.unassigned" />
                 </span>
