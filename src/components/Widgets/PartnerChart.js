@@ -23,47 +23,60 @@ import api from "../../environments/environment";
 import {NotificationManager} from "react-notifications";
 
 const PartnerChart = ({data}) => {
-  const [driverCount, setDriverCount] = useState(0);
-  const [driverOffline, setDriverOffline] = useState(0);
-  const [driverOnline, setDriverOnline] = useState(0);
+  const [partnerTotal, setPartnerTotal] = useState(0);
+  const [partnerPending, setPartnerPending] = useState(0);
+  const [partnerVerified, setPartnerVerified] = useState(0);
+  const [partnerApproved, setPartnerApproved] = useState(0);
 
-//   useEffect(() => {
-//     getDriverCount();
-//     getDriverOffline();
-//     getDriverOnline();
-//   }, []);
-//   const getDriverCount = async () => {
-//     try {
-//       const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=driver&component=count`);
-//       if (res.data.status === "error") {
-//         NotificationManager.error(res.data.msg);
-//       } else {
-//         setDriverCount(res.data.data.total ? res.data.data.total : 0);
-//       }
-//     } catch (err) {}
-//   };
+  useEffect(() => {
+    getTotalPartners();
+    getPendingPartners();
+    getVerifiedPartners();
+    getApprovedPartners();
+  }, []);
 
-//   const getDriverOffline = async () => {
-//     try {
-//       const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=driver&component=count&driver_online_status=0`);
-//       if (res.data.status === "error") {
-//         NotificationManager.error(res.data.msg);
-//       } else {
-//         setDriverOffline(res.data.data.total ? res.data.data.total : 0);
-//       }
-//     } catch (err) {}
-//   };
+  const getTotalPartners = async () => {
+    try {
+      const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=driver&component=count`);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        setDriverCount(res.data.data.total ? res.data.data.total : 0);
+      }
+    } catch (err) {}
+  };
 
-//   const getDriverOnline = async () => {
-//     try {
-//       const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=driver&component=count&driver_online_status=1`);
-//       if (res.data.status === "error") {
-//         NotificationManager.error(res.data.msg);
-//       } else {
-//         setDriverOnline(res.data.data.total ? res.data.data.total : 0);
-//       }
-//     } catch (err) {}
-//   };
+  const getPendingPartners = async () => {
+    try {
+      const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=driver&component=count&driver_online_status=0`);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        setDriverOffline(res.data.data.total ? res.data.data.total : 0);
+      }
+    } catch (err) {}
+  };
+
+  const getVerifiedPartners = async () => {
+    try {
+      const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=driver&component=count&driver_online_status=1`);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        setDriverOnline(res.data.data.total ? res.data.data.total : 0);
+      }
+    } catch (err) {}
+  };
+  const getApprovedPartners = async () => {
+    try {
+      const res = await axios.get(`${api.user}/v1.1/admin/users?user_type=driver&component=count&driver_online_status=1`);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        setDriverOnline(res.data.data.total ? res.data.data.total : 0);
+      }
+    } catch (err) {}
+  };
 
   return (
     <RctCard>
