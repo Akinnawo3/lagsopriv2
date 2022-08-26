@@ -136,6 +136,13 @@ const DriverProfile = ({
     inputEl.current.open();
   };
 
+  const onActivate = () => {
+    setTitle("Are you sure you want to activate this driver");
+    setMessage("This driver's account will be activated.");
+    setArgument(4);
+    inputEl.current.open();
+  };
+
   const onSuspend = (e) => {
     e.preventDefault();
     if (!suspensionReasons.length) {
@@ -505,7 +512,7 @@ const DriverProfile = ({
                 {oneOff
                   ? ` ₦ ${oneOff.toLocaleString()}`
                   : driver?.driver_data?.driver_category === "social"
-                  ? ` ₦ ${customerCareNumbers?.soc_driver_fee.total?.toLocaleString()}`
+                  ? ` ₦ ${customerCareNumbers?.soc_driver_fee?.total?.toLocaleString()}`
                   : ` ₦ ${customerCareNumbers?.com_driver_fee?.total?.toLocaleString()}`}
                 <span className="bg-primary rounded fw-bold p-2 ml-3 text-white" onClick={() => setRepaymentModalOpen(true)}>
                   Change
@@ -754,6 +761,14 @@ const DriverProfile = ({
                     <div className="text-center">
                       <Button disabled={loadingStatus} onClick={() => verifyUserPermssion("update_driver_status", () => onTrained())} className="bg-success mt-3 text-white">
                         Mark as Trained
+                      </Button>
+                    </div>
+                  )}
+                  {driver?.driver_data?.driver_status === 3 &&   driver?.vehicle_data?._id && (
+                    //  driver?.driver_data?.asset_payment?.status &&
+                    <div className="text-center">
+                      <Button disabled={loadingStatus} onClick={() => verifyUserPermssion("update_driver_status", () => onActivate())} className="bg-success mt-3 text-white">
+                        Activate Driver
                       </Button>
                     </div>
                   )}

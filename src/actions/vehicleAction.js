@@ -6,6 +6,7 @@ import api from "../environments/environment";
 import {getDriver, getDrivers} from "Actions/driverAction";
 import {onAddUpdateVehicleModalClose} from "../routes/vehicles/components/vehicleTable";
 import {activateDriver, onAddVehicleModalClose} from "../routes/drivers/components/driverProfile";
+import {onMileageModalClose} from "../routes/vehicles/vehicleDetails";
 
 export const getVehicles =
   (page_no = 1, assign = "", spinner, car_number_plate = "") =>
@@ -224,25 +225,23 @@ export const updateVehicle =
     }
   };
 
-
 export const updatePartnerDriverPayment = (data, vehicle_id, setDriverPaymentModal) => async (dispatch) => {
-
-      try {
-        dispatch(startStatusLoading());
-        const res = await axios.put(`${api.vehicles}/v1.1/admin/vehicles/${vehicle_id}`, data);
-        if (res.data.status === "error") {
-          NotificationManager.error(res.data.msg);
-        } else {
-          await NotificationManager.success("Vehicle Updated Successfully");
-          typeof setDriverPaymentModal === "function"  && setDriverPaymentModal(false)
-          await dispatch(getVehicle(vehicle_id, false));
-        }
-        dispatch(endStatusLoading());
-      } catch (err) {
-        dispatch(endStatusLoading());
-        NotificationManager.error(err.response.data.result);
-      }
-    };
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.put(`${api.vehicles}/v1.1/admin/vehicles/${vehicle_id}`, data);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success("Vehicle Updated Successfully");
+      typeof setDriverPaymentModal === "function" && setDriverPaymentModal(false);
+      await dispatch(getVehicle(vehicle_id, false));
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+    NotificationManager.error(err.response.data.result);
+  }
+};
 
 export const deleteVehicle = (vehicle_id, vehicles) => async (dispatch) => {
   try {
@@ -363,4 +362,23 @@ export const sendVehicleUnassignMessage = (driverData, vehicleData, message_type
   try {
     await axios.post(`${api.messageWorker}/v1.1/messages/send`, body);
   } catch (err) {}
+};
+
+export const updateVehicleMileage = (body) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.put(`${api.oem}/v1.1/admin/mileage`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success("Mileage Updated Successfully!");
+      onMileageModalClose();
+      await dispatch(getVehicle(body?.vehicle_id));
+    }
+    dispatch(endStatusLoading());
+  } catch (e) {
+    console.log(e);
+    dispatch(endStatusLoading());
+    NotificationManager.error("Network error");
+  }
 };

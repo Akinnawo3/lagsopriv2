@@ -3,27 +3,27 @@ import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard
 import {Form, FormGroup, Modal, ModalHeader, ModalBody, ModalFooter, Label, Input, Button} from "reactstrap";
 import {Badge, Card, CardBody, Col, Row} from "reactstrap";
 import {connect} from "react-redux";
-import {createReferralBonus, getCustomerCare} from "Actions/customerCareAction";
+import {createCostOfAsset, getCustomerCare} from "Actions/customerCareAction";
 import {verifyUserPermssion} from "../../../container/DefaultLayout";
 
-const CostOfAsset = ({getCustomerCare, customerCareNumbers, createReferralBonus}) => {
+const CostOfAsset = ({getCustomerCare, customerCareNumbers, createCostOfAsset}) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [amount, setAmount] = useState("");
-  const updateReferral = () => {
-    setAmount(customerCareNumbers?.referral_bonus);
+  const updateAsset = () => {
+    setAmount(customerCareNumbers?.asset_amount);
     setModalOpen(true);
   };
   useEffect(() => {
     getCustomerCare(true);
   }, []);
 
-  const updateReferralBonus = (e) => {
+  const updateCostOfAsset = (e) => {
     e.preventDefault();
     setModalOpen(false);
-    createReferralBonus(amount);
+    createCostOfAsset(amount);
   };
 
-  console.log(customerCareNumbers?.referral_bonus);
+  console.log(customerCareNumbers?.asset_amount);
 
   return (
     <div className="row">
@@ -38,13 +38,13 @@ const CostOfAsset = ({getCustomerCare, customerCareNumbers, createReferralBonus}
                   </CardBody>
                   <div className="chart-wrapper mx-3 d-flex align-items-center justify-content-between" style={{height: "60px"}}>
                     <span className="pr-2 font-xl" style={{fontSize: "2.5rem"}}>
-                      {` ₦${customerCareNumbers?.referral_bonus}`}
+                      {` ₦${parseInt(customerCareNumbers?.asset_amount, 10)?.toLocaleString()}`}
                     </span>
                   </div>
                 </Card>
 
                 <div classsName="d-flex mt-3">
-                  <button className="btn btn-info " onClick={() => verifyUserPermssion("create_setup", updateReferral)}>
+                  <button className="btn btn-info " onClick={() => verifyUserPermssion("create_setup", updateAsset)}>
                     Update Fee
                   </button>
                 </div>
@@ -56,7 +56,7 @@ const CostOfAsset = ({getCustomerCare, customerCareNumbers, createReferralBonus}
 
       <Modal isOpen={modalOpen} toggle={() => setModalOpen(false)} size="sm">
         <ModalHeader toggle={() => setModalOpen(false)}>Update Fee</ModalHeader>
-        <Form onSubmit={updateReferralBonus}>
+        <Form onSubmit={updateCostOfAsset}>
           <ModalBody>
             <FormGroup>
               <Label for="lastName">Amount</Label>
@@ -80,7 +80,7 @@ const CostOfAsset = ({getCustomerCare, customerCareNumbers, createReferralBonus}
 function mapDispatchToProps(dispatch) {
   return {
     getCustomerCare: (spinner) => dispatch(getCustomerCare(spinner)),
-    createReferralBonus: (referral_bonus) => dispatch(createReferralBonus(referral_bonus)),
+    createCostOfAsset: (asset_amount) => dispatch(createCostOfAsset(asset_amount)),
   };
 }
 

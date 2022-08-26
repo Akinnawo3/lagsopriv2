@@ -38,7 +38,7 @@ const ReferralFee = ({getCustomerCare, customerCareNumbers, createReferralBonus}
                   </CardBody>
                   <div className="chart-wrapper mx-3 d-flex align-items-center justify-content-between" style={{height: "60px"}}>
                     <span className="pr-2 font-xl" style={{fontSize: "2.5rem"}}>
-                      {` ₦${customerCareNumbers?.referral_bonus}`}
+                       ₦{customerCareNumbers?.referral_bonus?.toLocaleString()}
                     </span>
                   </div>
                 </Card>

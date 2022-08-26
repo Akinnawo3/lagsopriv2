@@ -268,7 +268,7 @@ const VehicleTable = ({
                   --Select OEM --
                 </option>
                 {oems?.map((item) => (
-                  <option value={item.auth_id} selected={oem === item.auth_id}>
+                  <option key={item.name} value={item.auth_id} selected={oem === item.auth_id}>
                     {item.name}
                   </option>
                 ))}
@@ -286,7 +286,7 @@ const VehicleTable = ({
                   </option>
                   {oemVehicles.length > 0 &&
                     oemVehicles?.map((item) => (
-                      <option value={item.vehicle_id} selected={oemVehicle === item.vehicle_id}>
+                      <option key={item.vehicle_id} value={item.vehicle_id} selected={oemVehicle === item.vehicle_id}>
                         {`${item.brand_name} - ${item.model} ${item.year} `}
                       </option>
                     ))}

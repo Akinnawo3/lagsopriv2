@@ -248,6 +248,9 @@ module.exports = {
   "widgets.revenue": "Revenue",
   "widgets.this year": "This Year",
   "widgets.drivers": "Drivers",
+  "widgets.partners": "Partners",
+  "widgets.verified": "Verified",
+  "widgets.approved": "Approved",
   "widgets.online": "Online",
   "widgets.offline": "Offline",
   "widgets.this month": "This Month",
@@ -269,7 +272,7 @@ module.exports = {
   "widgets.commments": "Comments",
   "widgets.newCustomers": "New Customers",
   "widgets.recentNotifications": "Recent Notifications",
-  
+
   "widgets.appNotifications": "App Notifications",
   "widgets.ratings": "Ratings",
   "widgets.newEmails": "New Emails",
@@ -719,7 +722,8 @@ module.exports = {
   "widgets.description": "Description",
   "widgets.unitPrice": "Unit Price",
   "widgets.total": "Total",
-  "widgets.assigned": "Assigned",
+  "widgets.assigned": "Driver Assigned",
+  "widgets.partnerassigned": "Partner Assigned",
   "widgets.unassigned": "Unassigned",
   "widgets.note": "Note",
   "widgets.chipWithAvatar": "Chip With Avatar",
