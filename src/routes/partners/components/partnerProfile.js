@@ -26,6 +26,7 @@ import Spinner from "Components/spinner/Spinner";
 const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartnerStatus, revokePartnerVehicle, driversCount, dataMode, sendVerificationRequest, verificationResult, loadingStatus, verifyPartnerNIN, updatePartnerDriverPayment}) => {
   const inputEl = useRef(null);
   const inputEl2 = useRef(null);
+  const inputEl4 = useRef(null);
 
   const [formData, setFormData] = useState({
     firstname: '',
@@ -206,8 +207,17 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
                 }
                 inputEl.current.open();
               }
-              } className="bg-success mt-3 text-white">
+              } className="bg-primary mt-3 text-white">
                 Verify
+              </Button>
+          }
+
+          {partnerDetails?.partner_data?.partner_status === 2 &&
+              <Button onClick={() => {
+                inputEl4.current.open();
+              }
+              } className="bg-success mt-3 text-white">
+                Approve
               </Button>
           }
           {/*{partnerDetails?.partner_data?.partner_status === 2 &&*/}
@@ -505,6 +515,15 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
           onConfirm={() => {
             changePartnerStatus(partnerDetails?.auth_id, "2", partnerDetails, {}, "Verified")
             inputEl.current.close();
+          }}
+      />
+      <DeleteConfirmationDialog
+          ref={inputEl4}
+          title="Are You Sure You want to approve this partner"
+          message="This partner will become approved."
+          onConfirm={() => {
+            changePartnerStatus(partnerDetails?.auth_id, "4", partnerDetails, {}, "Approved")
+            inputEl4.current.close();
           }}
       />
 
