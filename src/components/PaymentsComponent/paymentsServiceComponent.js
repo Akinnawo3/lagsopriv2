@@ -13,31 +13,39 @@ import {calculatePostDate, getStatus, getStatusColor} from "Helpers/helpers";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {Link} from "react-router-dom";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
-import {getDriverRevenueSPlit, exportDriverRevenueSplit} from "../../actions/revenueSplitAction";
+import {getDriverRevenueSPlit, getDriverRevenueSPlitCount, exportDriverRevenueSplit} from "../../actions/revenueSplitAction";
 import moment from "moment";
 import {getFirstDayOfMonth, getTodayDate} from "../../helpers/helpers";
 import {Button} from "reactstrap";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
+const qs = require("qs");
+import {useHistory} from "react-router-dom";
 
 //driver debt service
-const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenueSplit, loading, exportDriverRevenueSplit}) => {
-  const [dateType, setDateType] = useState("daily");
-  const [startDate, setStartDate] = useState(getFirstDayOfMonth());
-  const [endDate, setEndDate] = useState(getTodayDate());
+const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenueSplit, loading, exportDriverRevenueSplit, driverRevenueSplitCount}) => {
+  const [dateType, setDateType] = useState("");
+  const history = useHistory();
+  const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
+  const [currentPage, setCurrentPage] = useState(() => {
+    return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
+  });
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const exportRef = useRef(null);
 
   const formatByDateType = (timeStamp) => {
-    if (dateType === "daily") {
-      return moment(timeStamp).format("MMMM Do YYYY");
-    } else if (dateType === "monthly") {
+    if (dateType === "monthly") {
       return moment(timeStamp).format("MMMM YYYY");
-    } else {
+    } else if (dateType === "yearly") {
       return moment(timeStamp).format("YYYY");
+    } else {
+      return moment(timeStamp).format("MMMM Do YYYY");
     }
   };
 
   useEffect(() => {
-    getDriverRevenueSPlit(false, auth_id, startDate, endDate, dateType);
+    getDriverRevenueSPlit(false, auth_id, startDate, endDate, dateType, pageNumber);
+    getDriverRevenueSPlitCount(false, auth_id, startDate, endDate, dateType);
   }, []);
 
   const handleChange = (e) => {
@@ -46,6 +54,7 @@ const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenue
 
   const handleFilter = () => {
     getDriverRevenueSPlit(false, auth_id, startDate, endDate, dateType);
+    getDriverRevenueSPlitCount(false, auth_id, startDate, endDate, dateType);
   };
 
   console.log(driverRevenueSplit);
@@ -59,6 +68,14 @@ const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenue
 
   const handleExport = () => {
     exportRef.current.open();
+  };
+
+  const paginate = (pageNumber) => {
+    history.push(`${history.location.pathname}?page=${pageNumber}`);
+    setCurrentPage(pageNumber);
+    getDriverRevenueSPlit(false, auth_id, startDate, endDate, dateType, pageNumber);
+    // getDrivers(status, pageNumber, 1, appStatus);
+    window.scrollTo(0, 0);
   };
 
   const confirmExport = () => {
@@ -81,7 +98,7 @@ const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenue
         </li>
         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
           <small className="fw-bold mr-2">From</small>
-          <input type="date" id="start" name="trip-start" defaultValue={startDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setStartDate(e.target.value)} />
+          <input type="date" id="start" name="trip-start" defaultValue={startDate} min="2018-01-01" onChange={(e) => setStartDate(e.target.value)} />
         </li>
         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
           <small className="fw-bold mr-2">To</small>
@@ -145,7 +162,7 @@ const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenue
               </Table>
             </div>
             <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
-              {/* <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={driversCount} onChange={paginate} /> */}
+              <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={driversCount} onChange={paginate} />
             </div>
           </>
         )}
@@ -157,14 +174,16 @@ const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenue
 };
 function mapDispatchToProps(dispatch) {
   return {
-    getDriverRevenueSPlit: (spinner, driverID, startDate, endDate, dateType) => dispatch(getDriverRevenueSPlit(spinner, driverID, startDate, endDate, dateType)),
+    getDriverRevenueSPlit: (spinner, driverID, startDate, endDate, dateType, pageNumber) => dispatch(getDriverRevenueSPlit(spinner, driverID, startDate, endDate, dateType, pageNumber)),
     exportDriverRevenueSplit: (driverID, startDate, endDate, dateType) => dispatch(exportDriverRevenueSplit(driverID, startDate, endDate, dateType)),
+    getDriverRevenueSPlitCount: (driverID, startDate, endDate, dateType) => dispatch(getDriverRevenueSPlitCount(driverID, startDate, endDate, dateType)),
   };
 }
 const mapStateToProps = (state) => ({
   loading: state.loading.loading,
   loadingStatus: state.loading.loadingStatus,
   driverRevenueSplit: state.revenueSplit.driverRevenueSplit,
+  driverRevenueSplitCount: state.revenueSplit.driverRevenueSplitCount,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentsServiceComponent);

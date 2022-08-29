@@ -1,5 +1,5 @@
 import axios from "axios";
-import {REVENUE_SPLIT_DATA, DRIVER_REVENUE_SPLIT, CHART_REVENUE_DATA} from "./types";
+import {REVENUE_SPLIT_DATA, DRIVER_REVENUE_SPLIT, DRIVER_REVENUE_SPLIT_COUNT, CHART_REVENUE_DATA} from "./types";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
@@ -45,12 +45,14 @@ export const updateRevenueSplitData = (data) => async (dispatch) => {
 
 //driver debt service
 export const getDriverRevenueSPlit =
-  (spinner, driverID, startDate, endDate, dateType = "daily") =>
+  (spinner, driverID, startDate, endDate, dateType = "", pageNumber = 1) =>
   async (dispatch) => {
     try {
       spinner && dispatch(startLoading());
       !spinner && dispatch(startStatusLoading());
-      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/revenue-splits/?driver_id=${driverID}&start_date=${startDate}&end_date=${endDate}&date_type=${dateType}`);
+      const res = await axios.get(
+        `${api.revenueSplit}/v1.1/admin/revenue-splits/?driver_id=${driverID}&start_date=${startDate}&end_date=${endDate}&date_type=${dateType}&page=${pageNumber}&item_per_page=20`
+      );
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -66,6 +68,22 @@ export const getDriverRevenueSPlit =
       dispatch(endStatusLoading());
       NotificationManager.error(err.response.data.result);
     }
+  };
+
+export const getDriverRevenueSPlitCount =
+  (spinner, driverID, startDate, endDate, dateType = "") =>
+  async (dispatch) => {
+    try {
+      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/revenue-splits/?driver_id=${driverID}&start_date=${startDate}&end_date=${endDate}&date_type=${dateType}&component=count`);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        dispatch({
+          type: DRIVER_REVENUE_SPLIT_COUNT,
+          payload: res.data.data.total ? res.data.data.total : 0,
+        });
+      }
+    } catch (err) {}
   };
 
 //driver debt service
