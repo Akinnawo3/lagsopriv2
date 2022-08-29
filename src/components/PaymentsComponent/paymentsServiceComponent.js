@@ -22,7 +22,7 @@ const qs = require("qs");
 import {useHistory} from "react-router-dom";
 
 //driver debt service
-const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenueSplit, loading, exportDriverRevenueSplit, driverRevenueSplitCount}) => {
+const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenueSplit, loading, exportDriverRevenueSplit, getDriverRevenueSPlitCount, driverRevenueSplitCount}) => {
   const [dateType, setDateType] = useState("");
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
@@ -44,7 +44,7 @@ const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenue
   };
 
   useEffect(() => {
-    getDriverRevenueSPlit(false, auth_id, startDate, endDate, dateType, pageNumber);
+    getDriverRevenueSPlit(false, auth_id, startDate, endDate, dateType, currentPage);
     getDriverRevenueSPlitCount(false, auth_id, startDate, endDate, dateType);
   }, []);
 
@@ -162,7 +162,7 @@ const PaymentsServiceComponent = ({auth_id, getDriverRevenueSPlit, driverRevenue
               </Table>
             </div>
             <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
-              <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={driversCount} onChange={paginate} />
+              <Pagination activePage={currentPage} itemClass="page-item undo-folding" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={driverRevenueSplitCount} onChange={paginate} />
             </div>
           </>
         )}
