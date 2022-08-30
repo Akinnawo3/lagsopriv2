@@ -7,10 +7,10 @@ import {calculatePostDate} from "Helpers/helpers";
 import {Link} from "react-router-dom";
 import {Badge, ModalHeader, Modal, ModalBody, Form, FormGroup, Label, Input, ModalFooter, Button, Card, CardTitle, CardBody} from "reactstrap";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
-import {getServiceRequest} from "../../actions/serviceRequestAction";
+import {getServiceRequest, updateServiceRequest} from "../../actions/serviceRequestAction";
 import {fullDateTime} from "../../helpers/helpers";
 
-const MaintenanceDetails = ({match, location, loading, serviceRequest, getServiceRequest}) => {
+const MaintenanceDetails = ({match, location, loading, serviceRequest, getServiceRequest, updateServiceRequest}) => {
   const inputEl = useRef(null);
   const [imageModal, setImageModal] = useState(null);
   const [imageSrc, setImageSrc] = useState("");
@@ -45,7 +45,7 @@ const MaintenanceDetails = ({match, location, loading, serviceRequest, getServic
               <div className="d-flex justify-content-between mb-4">
                 <div className="fw-bold"> Service Request Details</div>
                 <small className="px-3 py-1 rounded capitlize" style={{backgroundColor: "#FCF4E8", color: "#E5870D"}}>
-                  {viewedDetail?.status}
+                  {viewedDetail?.status === "awaiting-approval" ? "Awaiting Approval" : viewedDetail?.status}
                 </small>
               </div>
               <div className="modals-grid col col-md-7">
@@ -127,91 +127,119 @@ const MaintenanceDetails = ({match, location, loading, serviceRequest, getServic
                   </div>
                 )}
               </div>
-              {viewedDetail?.status === "completed" && (
+              {viewedDetail?.status !== "pending" && viewedDetail?.status !== "accepted" && viewedDetail?.status !== "rejected" && (
                 <>
                   <div className="mt-4">
                     <small className="text-primary">DIAGNOSTIC INFORMATION</small>{" "}
                   </div>
-                  <small className="mt-4 text-muted">Diagnostic activity carried out </small>
-                  <div className="mt-0">{viewedDetail?.diagnostics_data?.diagnostics_act}</div>
-                  <small className="mt-4">Specific activity carried out </small>
-                  <div className="mt-0">{viewedDetail?.diagnostics_data?.specific_act}</div>
-                  <small className="mt-4">Recommendation </small>
-                  <div className="mt-0">{viewedDetail?.diagnostics_data?.recommendation}</div>
+                  <div className="mt-3">Diagnostic activity carried out </div>
+                  <div className="mt-2">{viewedDetail?.diagnostics_data?.diagnostics_act}</div>
+
+                  {viewedDetail?.status === "completed" && (
+                    <>
+                      <div className="mt-3">Specific activity carried out </div>
+                      <div className="mt-2">{viewedDetail?.diagnostics_data?.specific_act}</div>
+
+                      <div className="mt-3">Recommendation </div>
+                      <div className="mt-2">{viewedDetail?.diagnostics_data?.recommendation}</div>
+                    </>
+                  )}
+
                   <div className="mt-4">
                     <div className="modals-grid col col-md-7">
-                      <div className="">
-                        <small>Start time</small>
-                        <div className="capitlize">{fullDateTime(viewedDetail?.start_time).fullDateTime}</div>
-                      </div>
-                      <div className="">
-                        <small>Discharge time</small>
-                        <div className="capitlize">{fullDateTime(viewedDetail?.completion_time).fullDateTime}</div>
-                      </div>
+                      {viewedDetail?.status !== "completed" && (
+                        <>
+                          {viewedDetail?.start_time && (
+                            <div className="">
+                              <small>Start time</small>
+                              <div className="capitlize">{fullDateTime(viewedDetail?.start_time).fullDateTime}</div>
+                            </div>
+                          )}
+
+                          {viewedDetail?.completion_time && (
+                            <div className="">
+                              <small>Discharge time</small>
+                              <div className="capitlize">{fullDateTime(viewedDetail?.completion_time).fullDateTime}</div>
+                            </div>
+                          )}
+                        </>
+                      )}
+
                       {viewedDetail?.diagnostics_data?.before_images.length > 0 && (
                         <div className="">
                           <small>Before images</small>
                           <div className="py-2 px-3 rounded d-flex justify-content-between" style={{backgroundColor: "#F5F5F5"}}>
                             <small>Image file</small>
                             <div className="text-teal">
-                              <u className="cursor-pointer" onClick={() => showImages(viewedDetail?.diagnostics_data?.before_images)} style={{color: "#5D92F4"}}>
+                              <u className="cursor-pointer" onClick={() => showImages(viewedDetail?.diagnostics_data?.before_images)}>
                                 View
-                              </u>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                      {viewedDetail?.diagnostics_data?.after_images.length > 0 && (
-                        <div className="">
-                          <small>After images</small>
-                          <div className="py-2 px-3 rounded d-flex justify-content-between" style={{backgroundColor: "#F5F5F5"}}>
-                            <small>image file</small>
-                            <div className="text-teal">
-                              <u className="cursor-pointer" onClick={() => showImages(viewedDetail?.diagnostics_data?.after_images)} style={{color: "#5D92F4"}}>
-                                View
-                              </u>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                      <div className="">
-                        <small>Rep name</small>
-                        <div className="capitlize">{viewedDetail?.diagnostics_data?.name}</div>
-                      </div>
-
-                      {viewedDetail?.invoice && (
-                        <div className="">
-                          <small>Invoice</small>
-                          <div className="py-2 px-3 rounded d-flex justify-content-between" style={{backgroundColor: "#F5F5F5"}}>
-                            <small>image file</small>
-                            <div className="text-teal">
-                              <u>
-                                <a href={viewedDetail?.invoice} download>
-                                  Download Invoice
-                                </a>
                               </u>
                             </div>
                           </div>
                         </div>
                       )}
 
-                      
-                      {viewedDetail?.diagnostics_data?.signature && (
-                        <div className="">
-                          <small>Rep signature</small>
-                          <div className="py-2 px-3 rounded d-flex justify-content-between" style={{backgroundColor: "#F5F5F5"}}>
-                            <small>image file</small>
-                            <div className="text-teal">
-                              <u onClick={() => showImages(viewedDetail?.diagnostics_data?.signature)} style={{color: "#5D92F4"}}>
-                                View
-                              </u>
+                      {viewedDetail?.status !== "completed" && (
+                        <>
+                          {viewedDetail?.diagnostics_data?.after_images.length > 0 && (
+                            <div className="">
+                              <small>After images</small>
+                              <div className="py-2 px-3 rounded d-flex justify-content-between" style={{backgroundColor: "#F5F5F5"}}>
+                                <small>image file</small>
+                                <div className="text-teal">
+                                  <u className="cursor-pointer" onClick={() => showImages(viewedDetail?.diagnostics_data?.after_images)}>
+                                    View
+                                  </u>
+                                </div>
+                              </div>
                             </div>
+                          )}
+                          <div className="">
+                            <small>Rep name</small>
+                            <div className="capitlize">{viewedDetail?.diagnostics_data?.name}</div>
                           </div>
-                        </div>
+                          {viewedDetail?.diagnostics_data?.signature && (
+                            <div className="">
+                              <small>Rep signature</small>
+                              <div className="py-2 px-3 rounded d-flex justify-content-between" style={{backgroundColor: "#F5F5F5"}}>
+                                <small>image file</small>
+                                <div className="text-teal">
+                                  <u onClick={() => showImages(viewedDetail?.diagnostics_data?.signature)}>View</u>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                          {viewedDetail?.invoice && (
+                            <div className="">
+                              <small>Invoice</small>
+                              <div className="py-2 px-3 rounded d-flex justify-content-between" style={{backgroundColor: "#F5F5F5"}}>
+                                <small>image file</small>
+                                <div className="text-teal">
+                                  <u>
+                                    <a href={viewedDetail?.invoice} download>
+                                      Download Invoice
+                                    </a>
+                                  </u>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </>
                       )}
                     </div>
                   </div>
                 </>
+              )}
+              {viewedDetail?.status === "awaiting-approval" && (
+                <div className="d-flex mt-5">
+                  <Button className="cursor-pointer btn-success" onClick={() => setServiceCenterModal(true)}>
+                    Approve
+                  </Button>
+                  {/* <Button className="cursor-pointer btn-danger ml-2" onClick={() => setServiceCenterModal(true)}>
+                    Decline
+                  </Button> */}
+                </div>
               )}
             </div>
           </CardBody>
@@ -226,6 +254,7 @@ const MaintenanceDetails = ({match, location, loading, serviceRequest, getServic
         </ModalHeader> */}
         <ModalBody className="text-center">{imageSrc !== "" && <img src={imageSrc} style={{maxWidth: "100%"}} />}</ModalBody>
       </Modal>
+      <DeleteConfirmationDialog ref={inputEl} title={"Title"} message={"Message"} onConfirm={() => null} />
     </div>
   );
 };
@@ -233,6 +262,7 @@ const MaintenanceDetails = ({match, location, loading, serviceRequest, getServic
 function mapDispatchToProps(dispatch) {
   return {
     getServiceRequest: (sos_id, spinner) => dispatch(getServiceRequest(sos_id, spinner)),
+    updateServiceRequest: (body) => dispatch(updateServiceRequest(body)),
   };
 }
 

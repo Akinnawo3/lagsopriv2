@@ -62,3 +62,22 @@ export const getServiceRequest = (request_id, spinner) => async (dispatch) => {
     dispatch(endStatusLoading());
   }
 };
+
+export const updateServiceRequest = (body) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.put(`${api.oem}/v1.1/service-requests/${requestId}`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      NotificationManager.success("Service request updated successfully");
+
+      await dispatch(getServiceRequest(body.request_id, true));
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+    console.log(err);
+    // NotificationManager.error(err.response.data.error);
+  }
+};
