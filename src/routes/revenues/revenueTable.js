@@ -13,12 +13,12 @@ import {calculatePostDate, getStatus, getStatusColor} from "Helpers/helpers";
 import EmptyData from "Components/EmptyData/EmptyData";
 import {Link} from "react-router-dom";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
-import {getChartRevenueData} from "../../actions/revenueSplitAction";
+import {getChartRevenueData, getRevenueExport} from "../../actions/revenueSplitAction";
 import moment from "moment";
 import {getFirstDayOfMonth, getTodayDate} from "../../helpers/helpers";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 
-const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
+const RevenueTable = ({getChartRevenueData, revenueChartData, loading, getRevenueExport}) => {
   const typeHolder = useRef();
   const [dateType, setDateType] = useState("daily");
   const [startDate, setStartDate] = useState(getFirstDayOfMonth());
@@ -73,7 +73,7 @@ const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
 
   const confirmExport = () => {
     exportRef.current.close();
-    getRevenueExport(true, startDate, endDate, dateType);
+    getRevenueExport(startDate, endDate, dateType);
   };
 
   const getColumnSum = (path) => {
@@ -181,6 +181,7 @@ const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
 function mapDispatchToProps(dispatch) {
   return {
     getChartRevenueData: (spinner, startDate, endDate, dateType) => dispatch(getChartRevenueData(spinner, startDate, endDate, dateType)),
+    getRevenueExport: (startDate, endDate, dateType) => dispatch(getRevenueExport(startDate, endDate, dateType)),
   };
 }
 const mapStateToProps = (state) => ({
