@@ -136,7 +136,7 @@ export const getRevenueExport =
   (startDate, endDate, dateType = "daily") =>
   async (dispatch) => {
     try {
-      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/revenue-shares?start_date=${startDate}&end_date=${endDate}&date_type=${dateType}&component=count`);
+      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/revenue-shares?start_date=${startDate}&end_date=${endDate}&date_type=${dateType}&component=export`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
