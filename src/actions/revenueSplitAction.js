@@ -114,7 +114,7 @@ export const getChartRevenueData =
     try {
       spinner && dispatch(startLoading());
       !spinner && dispatch(startStatusLoading());
-      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/revenue-shares?start_date=${startDate}&end_date=${endDate}&date_type=${dateType}&component=export`);
+      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/revenue-shares?start_date=${startDate}&end_date=${endDate}&date_type=${dateType}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -136,19 +136,13 @@ export const getRevenueExport =
   (startDate, endDate, dateType = "daily") =>
   async (dispatch) => {
     try {
-      // spinner && dispatch(startLoading());
-      // !spinner && dispatch(startStatusLoading());
-      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/revenue-shares?start_date=${startDate}&end_date=${endDate}&date_type=${dateType}`);
+      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/revenue-shares?start_date=${startDate}&end_date=${endDate}&date_type=${dateType}&component=count`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
         await NotificationManager.success("Data Exported Successfully");
       }
-      // dispatch(endLoading());
-      // dispatch(endStatusLoading());
     } catch (err) {
-      // dispatch(endLoading());
-      // dispatch(endStatusLoading());
       NotificationManager.error(err.response.data.result);
     }
   };
