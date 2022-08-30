@@ -63,7 +63,7 @@ export const getServiceRequest = (request_id, spinner) => async (dispatch) => {
   }
 };
 
-export const updateServiceRequest = (body) => async (dispatch) => {
+export const updateServiceRequest = (requestId, body) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
     const res = await axios.put(`${api.oem}/v1.1/service-requests/${requestId}`, body);

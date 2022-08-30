@@ -14,10 +14,27 @@ const MaintenanceDetails = ({match, location, loading, serviceRequest, getServic
   const inputEl = useRef(null);
   const [imageModal, setImageModal] = useState(null);
   const [imageSrc, setImageSrc] = useState("");
+  const [approvalStatus, setApprovalStatus] = useState("");
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
 
   const showImages = (images) => {
     setImageSrc(images);
     setImageModal(true);
+  };
+
+  const approveRequest = () => {
+    setTitle("Approve service request");
+    setMessage("Service request will be approved");
+    setApprovalStatus("approve");
+    inputEl.current.open();
+  };
+
+  const onConfirm = () => {
+    if (approvalStatus === "approve") {
+      updateServiceRequest(match.params.id, {status: "approved"});
+    }
+    inputEl.current.close();
   };
 
   useEffect(() => {
@@ -233,7 +250,7 @@ const MaintenanceDetails = ({match, location, loading, serviceRequest, getServic
               )}
               {viewedDetail?.status === "awaiting-approval" && (
                 <div className="d-flex mt-5">
-                  <Button className="cursor-pointer btn-success" onClick={() => setServiceCenterModal(true)}>
+                  <Button className="cursor-pointer btn-success" onClick={approveRequest}>
                     Approve
                   </Button>
                   {/* <Button className="cursor-pointer btn-danger ml-2" onClick={() => setServiceCenterModal(true)}>
@@ -254,7 +271,7 @@ const MaintenanceDetails = ({match, location, loading, serviceRequest, getServic
         </ModalHeader> */}
         <ModalBody className="text-center">{imageSrc !== "" && <img src={imageSrc} style={{maxWidth: "100%"}} />}</ModalBody>
       </Modal>
-      <DeleteConfirmationDialog ref={inputEl} title={"Title"} message={"Message"} onConfirm={() => null} />
+      <DeleteConfirmationDialog ref={inputEl} title={title} message={message} onConfirm={onConfirm} />
     </div>
   );
 };
