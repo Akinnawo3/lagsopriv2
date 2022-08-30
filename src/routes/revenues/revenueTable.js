@@ -16,6 +16,7 @@ import SearchComponent from "Components/SearchComponent/SearchComponent";
 import {getChartRevenueData} from "../../actions/revenueSplitAction";
 import moment from "moment";
 import {getFirstDayOfMonth, getTodayDate} from "../../helpers/helpers";
+import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 
 const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
   const typeHolder = useRef();
@@ -36,6 +37,8 @@ const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
   useEffect(() => {
     getChartRevenueData(true, startDate, endDate, dateType);
   }, []);
+
+  const exportRef = useRef(null);
 
   const handleChange = (e) => {
     // setDateType(e.target.value);
@@ -62,6 +65,15 @@ const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
       obj = obj[args[i]];
     }
     return obj;
+  };
+
+  const handleExport = () => {
+    exportRef.current.open();
+  };
+
+  const confirmExport = () => {
+    exportRef.current.close();
+    getRevenueExport(true, startDate, endDate, dateType);
   };
 
   const getColumnSum = (path) => {
@@ -94,6 +106,13 @@ const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
         <Button onClick={() => handleFilter()} style={{height: "30px"}} className="align-items-center text-light justify-content-center" color="success">
           Apply filter
         </Button>
+        <div className="float-right">
+          {!loading && revenueChartData.length > 0 && (
+            <Button onClick={() => handleExport()} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
+              <i className="zmdi zmdi-download mr-2"></i> Export to Excel
+            </Button>
+          )}
+        </div>
         {!loading && revenueChartData.length > 0 && (
           <>
             <div className="table-responsive" style={{minHeight: "50vh"}}>
@@ -155,6 +174,7 @@ const RevenueTable = ({getChartRevenueData, revenueChartData, loading}) => {
         )}
         {revenueChartData.length === 0 && !loading && <EmptyData />}
       </RctCollapsibleCard>
+      <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
     </div>
   );
 };
