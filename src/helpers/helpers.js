@@ -424,3 +424,35 @@ export const clculateDailyLoanRepayment = (amount) => {
   // let dailyDebtService = 6561;
 };
 
+
+export const getCashoutStatus = (status) => {
+  if (status == 0) {
+    return "Pending";
+  } else if (status == 1) {
+    return "Paid";
+  } else if (status == 2) {
+    return "Failed";
+  } else if (status == 3) {
+    return "Processing";
+  } else {
+    return "";
+  }
+
+};
+
+
+export const getCashoutStatusColor = (status) => {
+  if (status == 0) {
+    return "secondary";
+  } else if (status == 1) {
+    return "success";
+  } else if (status == 2) {
+    return "danger";
+  } else if (status == 3) {
+    return "primary";
+  } else {
+    return "";
+  }
+
+};
+

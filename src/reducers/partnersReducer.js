@@ -1,4 +1,12 @@
-import {PARTNER, PARTNER_DRIVERS, PARTNER_DRIVERS_COUNT, PARTNERS, PARTNERS_COUNT} from "Actions/types";
+import {
+  PARTNER,
+  PARTNER_DRIVERS,
+  PARTNER_DRIVERS_COUNT,
+  PARTNER_PAYOUT,
+  PARTNER_PAYOUT_COUNT,
+  PARTNERS,
+  PARTNERS_COUNT
+} from "Actions/types";
 
 const initialState = {
   partners: [],
@@ -6,6 +14,9 @@ const initialState = {
   partner: {},
   partnerDrivers: [],
   partnerDriversCount: 0,
+  partnerPayout: [],
+  partnerPayoutCount: 0,
+
 };
 
 function partnersReducer(state = initialState, action) {
@@ -39,6 +50,18 @@ function partnersReducer(state = initialState, action) {
       return {
         ...state,
         partnerDriversCount: payload,
+      };
+    }
+    case PARTNER_PAYOUT: {
+      return {
+        ...state,
+        partnerPayout: payload,
+      };
+    }
+    case PARTNER_PAYOUT_COUNT: {
+      return {
+        ...state,
+        partnerPayoutCount: payload,
       };
     }
     default:
