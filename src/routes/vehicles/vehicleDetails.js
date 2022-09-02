@@ -342,7 +342,7 @@ const VehicleDetails = ({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getVehicle: (vehicle_id, spinner) => dispatch(getVehicle(vehicle_id, spinner)),
+    getVehicle: (vehicle_id, spinner, driver_id, partner_id) => dispatch(getVehicle(vehicle_id, spinner, driver_id, partner_id)),
     getVehicleMileage: (vehicle_id, spinner) => dispatch(getVehicleMileage(vehicle_id, spinner)),
     revokeVehicle: (vehicle_id, vehicleDetails, driverDetails) => dispatch(revokeVehicle(vehicle_id, vehicleDetails, driverDetails)),
     updatePartnerDriverPayment: (data, vehicle_id, setDriverPaymentModal) => dispatch(updatePartnerDriverPayment(data, vehicle_id, setDriverPaymentModal)),
