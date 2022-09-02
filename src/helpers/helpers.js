@@ -425,8 +425,6 @@ export const clculateDailyLoanRepayment = (amount) => {
 
   // let dailyDebtService = 6561;
 };
-<<<<<<< HEAD
-=======
 
 
 export const getCashoutStatus = (status) => {
@@ -460,4 +458,3 @@ export const getCashoutStatusColor = (status) => {
 
 };
 
->>>>>>> d7d3867662278c466bfd6eb1b3bf75ee6f4f7314
