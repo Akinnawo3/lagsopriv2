@@ -11,6 +11,9 @@ import PartnerProfile from "Routes/partners/components/partnerProfile";
 import {getPartner, getPartnerDriverCount} from "Actions/partnersAction";
 import {getFees} from "Actions/feesAction";
 import {getCustomerCare} from "Actions/customerCareAction";
+import PartnerDriverTable from "Routes/partners/components/partnerDriverTable";
+import PartnerVehicleTable from "Routes/partners/components/partnerVehicleTable";
+import PartnerPayoutTable from "Routes/partners/components/partnerPayoutTable";
 
 // For Tab Content
 function TabContainer(props) {
@@ -30,7 +33,8 @@ function TabContainer(props) {
        loading,
        getPartner,
        getPartnerDriverCount,
-       getCustomerCare
+       getCustomerCare,
+       loadingStatus
    } = props
 
     const [activeTab, setActiveTab] = useState(location.state ? location.state.activeTab : 0);
@@ -89,6 +93,18 @@ function TabContainer(props) {
                                     icon={<i className="ti-user"></i>}
                                     label={"Profile"}
                                 />
+                                <Tab
+                                    icon={<i className="ti-user"></i>}
+                                    label={"Drivers"}
+                                />
+                                <Tab
+                                    icon={<i className="ti-car"></i>}
+                                    label={"Vehicles"}
+                                />
+                                <Tab
+                                    icon={<i className="ti-credit-card"></i>}
+                                    label={"Payouts"}
+                                />
                                 {/*<Tab*/}
                                 {/*    icon={<i className="icon-graph"></i>}*/}
                                 {/*    label={"Trip History"}*/}
@@ -111,6 +127,20 @@ function TabContainer(props) {
                         <TabContainer>
                             <PartnerProfile partnerDetails={partnerDetails} id={match?.params?.id}/>
                         </TabContainer>}
+                        {activeTab === 1 &&
+                            <TabContainer>
+                                <PartnerDriverTable partner_id={match?.params?.id} isLoading={loading} />
+                            </TabContainer>}
+                        {activeTab === 2 &&
+                            <TabContainer>
+                                <PartnerVehicleTable partnerDetails={partnerDetails} />
+                            </TabContainer>}
+
+                        {activeTab === 3 &&
+                            <TabContainer>
+                                <PartnerPayoutTable partner_id={match?.params?.id} isLoading={loadingStatus} />
+                            </TabContainer>}
+
                         {/*{activeTab === 1 &&*/}
                         {/*<TabContainer>*/}
                         {/*    <PassengerTripHistory passenger_id={match.params.id} />*/}
@@ -146,6 +176,7 @@ function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = state => ({
     loading: state.loading.loading,
+    loadingStatus: state.loading.loadingStatus,
     partnerDetails: state.partners.partner,
 });
 

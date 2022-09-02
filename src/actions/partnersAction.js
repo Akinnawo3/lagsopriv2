@@ -3,7 +3,7 @@ import { endLoading, endStatusLoading, startLoading, startStatusLoading } from "
 import {
    PARTNERS,
    PARTNERS_COUNT,
-   PARTNER, PARTNER_DRIVERS, PARTNER_DRIVERS_COUNT
+   PARTNER, PARTNER_DRIVERS, PARTNER_DRIVERS_COUNT, PARTNER_PAYOUT_COUNT, PARTNER_PAYOUT
 } from "./types";
 import { NotificationManager } from "react-notifications";
 import api from "../environments/environment";
@@ -258,6 +258,39 @@ export const verifyPartnerNIN = (auth_id, verification_status, verification_name
       dispatch(endStatusLoading());
       NotificationManager.error(err.response.data.message);
    }
+};
+
+
+export const getPartnerPayout = (auth_id, page = 1, date_type = 'daily') => async (dispatch) => {
+   dispatch(startStatusLoading());
+   try {
+      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/payout?user_type=partner&date_type=${date_type}&payment_type=payout&item_per_page=20&page=${page}&auth_id=${auth_id}`);
+      if (res.data.status === "error") {
+         NotificationManager.error(res.data.msg);
+      } else {
+         dispatch({
+            type: PARTNER_PAYOUT,
+            payload: res.data.data,
+         });
+      }
+      dispatch(endStatusLoading());
+   } catch (err) {
+      dispatch(endStatusLoading());
+   }
+};
+
+export const getPartnerPayoutCount = (auth_id, page = 1, date_type = 'daily') => async (dispatch) => {
+   try {
+      const res = await axios.get(`${api.revenueSplit}/v1.1/admin/payout?user_type=partner&date_type=${date_type}&payment_type=payout&component=count&auth_id=${auth_id}`);
+      if (res.data.status === "error") {
+         NotificationManager.error(res.data.msg);
+      } else {
+         dispatch({
+            type: PARTNER_PAYOUT_COUNT,
+            payload: res.data.data.total ? res.data.data.total : 0,
+         });
+      }
+   } catch (err) { }
 };
 
 

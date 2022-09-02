@@ -76,6 +76,7 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
 
 
 
+
   return (
     <div className="row" style={{fontSize: "0.8rem"}}>
       <div className="col-sm-6">
@@ -285,14 +286,14 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
                 </span>
                       {driversCount}
                     </li>
-                    <li className="list-group-item text-right">
-                <span className="pull-left">
-                  <strong>Driver(s)</strong>
-                </span>
-                      <Link to={`/admin/partners/partner-drivers`}>
-                        <i className="ti-eye" />
-                      </Link>
-                    </li>
+                {/*    <li className="list-group-item text-right">*/}
+                {/*<span className="pull-left">*/}
+                {/*  <strong>Driver(s)</strong>*/}
+                {/*</span>*/}
+                {/*      <Link to={`/admin/partners/partner-drivers`}>*/}
+                {/*        <i className="ti-eye" />*/}
+                {/*      </Link>*/}
+                {/*    </li>*/}
                   </>
               }
               <li className="list-group-item text-right">
@@ -309,14 +310,14 @@ const PartnerProfile = ({partnerDetails, assignVehicleToPartner, id, changePartn
                 </span>
                 {partnerDetails?.vehicle_data?.length}
               </li>
-              <li className="list-group-item text-right">
-                <span className="pull-left">
-                  <strong>Vehicles</strong>
-                </span>
-                <button type="button" className="rct-link-btn text-primary" title="view details" onClick={() => setVehiclesModal(true)}>
-                  <i className="ti-eye" />
-                </button>
-              </li>
+              {/*<li className="list-group-item text-right">*/}
+              {/*  <span className="pull-left">*/}
+              {/*    <strong>Vehicles</strong>*/}
+              {/*  </span>*/}
+              {/*  <button type="button" className="rct-link-btn text-primary" title="view details" onClick={() => setVehiclesModal(true)}>*/}
+              {/*    <i className="ti-eye" />*/}
+              {/*  </button>*/}
+              {/*</li>*/}
               <li className="list-group-item text-right">
                         <span className="pull-left">
                            <strong>NIN ID</strong>

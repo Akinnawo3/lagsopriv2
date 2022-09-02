@@ -134,7 +134,7 @@ const PartnerTable = ({
 
   return (
     <div>
-          <RctCollapsibleCard heading={header} fullBlock>
+          <RctCollapsibleCard heading={header} fullBlock item={partners} currentPage={currentPage} totalCount={partnersCount}>
             <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
               <SearchComponent setCurrentPage={setCurrentPage} getSearchedData={searchPartners} getPreviousData={getPartners} getCount={getPartnersCount} />
               <IconButton mini="true" className="search-icon-btn">
