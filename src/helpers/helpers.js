@@ -410,8 +410,10 @@ export const serviceRequestStatuses = [
   {name: "Ongoing", value: "ongoing"},
   {name: "Completed", value: "completed"},
   {name: "Rejected", value: "rejected"},
+  {name: "Awaiting Approval", value: "awaiting-approval"},
+  {name: "Approved", value: "approved"},
+  {name: "Repair Time Set", value: "repair_time_set"},
 ];
-
 export const clculateDailyLoanRepayment = (amount) => {
   let bankLoan = 700000 - amount;
   let interestRate = 0.19; //19% interest
@@ -423,4 +425,3 @@ export const clculateDailyLoanRepayment = (amount) => {
 
   // let dailyDebtService = 6561;
 };
-
