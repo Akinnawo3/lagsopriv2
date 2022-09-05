@@ -33,7 +33,7 @@ const VehicleDetails = ({
   const {driver_id, partner_id} = location?.state;
 
   useEffect(() => {
-    getVehicle(match.params.id, true, driver_id, partner_id);
+    getVehicle(match.params.id, true, driver_id || "", partner_id || "");
     // getVehicleMileage(match.params.id, true);
   }, [match.params.id]);
 
