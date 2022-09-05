@@ -52,7 +52,7 @@ const DriverProfile = ({
   const [argument, setArgument] = useState(null);
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
-  const [suspensionReasons, setSuspensionReasons] = useState([]);
+  const [suspensionReasons, setSuspensionReasons] = useState();
   const [medicalRecordsModal, setMedicalRecordsModal] = useState();
   const [tuberculosis, setTuberculosis] = useState(driver?.driver_data?.medical_record?.tuberculosis || "");
   const [hepatitis, setHepatitis] = useState(driver?.driver_data?.medical_record?.hepatitis || "");
@@ -145,7 +145,7 @@ const DriverProfile = ({
 
   const onSuspend = (e) => {
     e.preventDefault();
-    if (!suspensionReasons.length) {
+    if (!suspensionReasons) {
       NotificationManager.error("State reasons for suspension");
     } else {
       setSuspensionReasonsModalOpen(false);
@@ -200,12 +200,13 @@ const DriverProfile = ({
     inputEl.current.open();
   };
   const handleReasonClick = (e) => {
-    if (e.target.checked) {
-      setSuspensionReasons([...suspensionReasons, e.target.value]);
-    } else {
-      const removeReason = suspensionReasons.filter((item) => item === e.target.value);
-      setSuspensionReasons(removeReason);
-    }
+    setSuspensionReasons(e.target.value);
+    //  if (e.target.checked) {
+    //    setSuspensionReasons([...suspensionReasons, e.target.value]);
+    //  } else {
+    //    const removeReason = suspensionReasons.filter((item) => item === e.target.value);
+    //    setSuspensionReasons(removeReason);
+    //  }
   };
 
   const medicalRecordUpdate = (e) => {
@@ -1210,16 +1211,17 @@ const DriverProfile = ({
 
       {/* modal to select reason for suspension */}
       <Modal isOpen={suspensionReasonsModalOpen} toggle={() => setSuspensionReasonsModalOpen(false)}>
-        <ModalHeader toggle={() => setSuspensionReasonsModalOpen(false)}>Select Reasons for Suspension</ModalHeader>
+        <ModalHeader toggle={() => setSuspensionReasonsModalOpen(false)}>Reasons for Suspension</ModalHeader>
         <ModalBody>
-          <div className="ml-4">
+          <div className="">
             <Form onSubmit={onSuspend}>
-              {suspensionReasonsList.map((item) => (
+              {/* {suspensionReasonsList.map((item) => (
                 <FormGroup>
                   <Input onChange={handleReasonClick} readOnly={true} type="checkbox" value={item} />
                   {item}
                 </FormGroup>
-              ))}
+              ))} */}
+              <Input onChange={handleReasonClick} type="textarea" value={suspensionReasons} />
               <ModalFooter>
                 <Button type="submit" variant="contained" className="text-white btn-danger">
                   Proceed

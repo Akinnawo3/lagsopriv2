@@ -8,10 +8,13 @@ export default {
   trainedMessage: "Congratulations, your training on LagosRide has been confirmed.",
   reactivateMsg:
     "Congratulations, your account has been reactivated as a driver on LagosRide. A vehicle will be reassigned to you as soon as possible. \n" + "\n" + "Sincerely,\n" + "\n" + "LagosRide.",
+  // suspendMsg: (reasons) => {
+  //   return `You have been suspended from LagosRide for the following reasons;${reasons.map((item, index) => {
+  //     return `\n${index + 1}. ${item}`;
+  //   })} \nYou will be required to report to the office for further actions, a date will be communicated with you shortly. \n Sincerely, \n \n LagosRide .`;
+  // },
   suspendMsg: (reasons) => {
-    return `You have been suspended from LagosRide for the following reasons;${reasons.map((item, index) => {
-      return `\n${index + 1}. ${item}`;
-    })} \nYou will be required to report to the office for further actions, a date will be communicated with you shortly. \n Sincerely, \n \n LagosRide .`;
+    return `You have been suspended from LagosRide for the following reasons; ${reasons} \nYou will be required to report to the office for further actions, a date will be communicated with you shortly. \n Sincerely, \n \n LagosRide .`;
   },
   newAdminMsg: (name, phoneNumber, Password) => {
     // ${role}
