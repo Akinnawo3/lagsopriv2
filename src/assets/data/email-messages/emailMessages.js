@@ -14,7 +14,7 @@ export default {
   //   })} \nYou will be required to report to the office for further actions, a date will be communicated with you shortly. \n Sincerely, \n \n LagosRide .`;
   // },
   suspendMsg: (reasons) => {
-    return `You have been suspended from LagosRide for the following reasons;\n ${reasons} \nYou will be required to report to the office for further actions, a date will be communicated with you shortly. \n Sincerely, \n \n LagosRide .`;
+    return `You have been suspended from LagosRide for the following reasons; \n${reasons}\n. You will be required to report to the office for further actions, a date will be communicated with you shortly. \n Sincerely, \n \n LagosRide .`;
   },
   newAdminMsg: (name, phoneNumber, Password) => {
     // ${role}
