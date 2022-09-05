@@ -279,7 +279,7 @@ const MaintenanceDetails = ({match, location, loading, serviceRequest, getServic
 function mapDispatchToProps(dispatch) {
   return {
     getServiceRequest: (sos_id, spinner) => dispatch(getServiceRequest(sos_id, spinner)),
-    updateServiceRequest: (body) => dispatch(updateServiceRequest(body)),
+    updateServiceRequest: (id, body) => dispatch(updateServiceRequest(id, body)),
   };
 }
 

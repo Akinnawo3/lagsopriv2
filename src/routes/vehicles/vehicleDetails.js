@@ -30,7 +30,7 @@ const VehicleDetails = ({
   const [mileageValue, setMileageValue] = useState();
   const location = useLocation();
   const inputEl = useRef(null);
-  const {driver_id, partner_id} = location?.state;
+  const {driver_id, partner_id} = location?.state || {};
 
   useEffect(() => {
     getVehicle(match.params.id, true, driver_id || "", partner_id || "");
