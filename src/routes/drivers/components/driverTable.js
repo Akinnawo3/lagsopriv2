@@ -338,15 +338,27 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
 
       {/* Modal to add a driver */}
       <Modal size="md" isOpen={driverModal} toggle={() => setDriverModal(!driverModal)}>
-        <ModalHeader toggle={() => setDriverModal(!driverModal)}>Filters</ModalHeader>
+        <ModalHeader toggle={() => setDriverModal(!driverModal)}>Add a driver</ModalHeader>
         <ModalBody>
           <div className="">
-            <small className="fw-bold ">Driver Name</small>
-            <Input id="filter-dropdown" name="fiter-dropdown" type="text" value={driverName} onChange={setDriverName} className="p-1 px-4 w-100" />
+            <small className="fw-bold ">Driver First Name</small>
+            <Input id="filter-dropdown" name="fiter-dropdown" type="text" value={driverFirstName} onChange={(e) => setDriverFirstName(e.target.value)} className="p-1 px-4 w-100" />
+          </div>
+          <div className="">
+            <small className="fw-bold ">Driver Last Name</small>
+            <Input id="filter-dropdown" name="fiter-dropdown" type="text" value={driverLastName} onChange={(e) => setDriverLastName(e.target.value)} className="p-1 px-4 w-100" />
+          </div>
+          <div className="">
+            <small className="fw-bold ">Driver Email</small>
+            <Input id="filter-dropdown" name="fiter-dropdown" type="email" value={driverEmail} onChange={(e) => setDriverEmail(e.target.value)} className="p-1 px-4 w-100" />
+          </div>
+          <div className="">
+            <small className="fw-bold ">Driver Phone Number</small>
+            <Input id="filter-dropdown" name="fiter-dropdown" type="email" value={driverPhoneNumber} onChange={(e) => setDriverPhoneNumber(e.target.value)} className="p-1 px-4 w-100" />
           </div>
           <div className="mt-3 d-flex justify-content-end">
             <Button onClick={() => handleFilter()} style={{height: "30px"}} className="align-items-center justify-content-center" color="success">
-              Apply filter
+              Submit
             </Button>
           </div>
         </ModalBody>
