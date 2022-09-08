@@ -17,10 +17,12 @@ import {useHistory} from "react-router-dom";
 import {getUserExport} from "Actions/userAction";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import {Badge, Button, ModalHeader, Modal, ModalBody, Form, FormGroup, Label, Input, ModalFooter} from "reactstrap";
+import { addDriver } from "../../../actions/driverAction";
 const qs = require("qs");
 export let closeFliterModal;
+export let closeDriverModal;
 
-const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, searchDrivers, header, getDriversCount, getUserExport}) => {
+const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, searchDrivers, header, getDriversCount, getUserExport, addDriver}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -117,6 +119,8 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
     exportRef.current.open();
   };
 
+  closeDriverModal = () => setDriverModal(false);
+
   const confirmExport = () => {
     exportRef.current.close();
     getUserExport("driver", driverCategory, status, startDate, endDate);
@@ -125,6 +129,11 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
   const handleFilter = () => {
     getDrivers(status, 1, false, appStatus, paymentStatus, driverCategory, startDate, endDate, partnership, loanEligibility);
     getDriversCount(status, startDate, endDate, appStatus, paymentStatus, driverCategory, partnership, loanEligibility);
+  };
+  const handleAddDriver = (e) => {
+    e.preventDefault();
+    const body = {user_type: "driver", first_name: driverFirstName, last_name: driverLastName, email: driverEmail, phone_number: driverPhoneNumber};
+    addDriver(body);
   };
 
   closeFliterModal = () => setFilterModal(false);
@@ -141,7 +150,7 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
         </Button>
         {/*</div>*/}
         <div className="float-right">
-          <Button onClick={() => handleExport()} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
+          <Button onClick={() => setDriverModal(true)} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
             Add a driver
           </Button>
           {!isLoading && drivers.length > 0 && (
@@ -340,27 +349,29 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
       <Modal size="md" isOpen={driverModal} toggle={() => setDriverModal(!driverModal)}>
         <ModalHeader toggle={() => setDriverModal(!driverModal)}>Add a driver</ModalHeader>
         <ModalBody>
-          <div className="">
-            <small className="fw-bold ">Driver First Name</small>
-            <Input id="filter-dropdown" name="fiter-dropdown" type="text" value={driverFirstName} onChange={(e) => setDriverFirstName(e.target.value)} className="p-1 px-4 w-100" />
-          </div>
-          <div className="">
-            <small className="fw-bold ">Driver Last Name</small>
-            <Input id="filter-dropdown" name="fiter-dropdown" type="text" value={driverLastName} onChange={(e) => setDriverLastName(e.target.value)} className="p-1 px-4 w-100" />
-          </div>
-          <div className="">
-            <small className="fw-bold ">Driver Email</small>
-            <Input id="filter-dropdown" name="fiter-dropdown" type="email" value={driverEmail} onChange={(e) => setDriverEmail(e.target.value)} className="p-1 px-4 w-100" />
-          </div>
-          <div className="">
-            <small className="fw-bold ">Driver Phone Number</small>
-            <Input id="filter-dropdown" name="fiter-dropdown" type="email" value={driverPhoneNumber} onChange={(e) => setDriverPhoneNumber(e.target.value)} className="p-1 px-4 w-100" />
-          </div>
-          <div className="mt-3 d-flex justify-content-end">
-            <Button onClick={() => handleFilter()} style={{height: "30px"}} className="align-items-center justify-content-center" color="success">
-              Submit
-            </Button>
-          </div>
+          <Form onSubmit={handleAddDriver}>
+            <div className="">
+              <small className="fw-bold ">Driver First Name</small>
+              <Input id="filter-dropdown" name="fiter-dropdown" type="text" value={driverFirstName} onChange={(e) => setDriverFirstName(e.target.value)} className="p-1 px-4 w-100" />
+            </div>
+            <div className="mt-3">
+              <small className="fw-bold ">Driver Last Name</small>
+              <Input id="filter-dropdown" name="fiter-dropdown" type="text" value={driverLastName} onChange={(e) => setDriverLastName(e.target.value)} className="p-1 px-4 w-100" />
+            </div>
+            <div className="mt-3">
+              <small className="fw-bold ">Driver Email</small>
+              <Input id="filter-dropdown" name="fiter-dropdown" type="email" value={driverEmail} onChange={(e) => setDriverEmail(e.target.value)} className="p-1 px-4 w-100" />
+            </div>
+            <div className="mt-3">
+              <small className="fw-bold ">Driver Phone Number</small>
+              <Input id="filter-dropdown" name="fiter-dropdown" type="tel" value={driverPhoneNumber} onChange={(e) => setDriverPhoneNumber(e.target.value)} className="p-1 px-4 w-100" />
+            </div>
+            <div className="mt-3 d-flex justify-content-end">
+              <Button style={{height: "30px"}} className="align-items-center justify-content-center" color="success">
+                Submit
+              </Button>
+            </div>
+          </Form>
         </ModalBody>
       </Modal>
     </div>
@@ -375,6 +386,7 @@ function mapDispatchToProps(dispatch) {
     getDriversCount: (status, start_date, end_date, driver_online_status, asset_payment, driver_category, partnershipStatus, loanEligibility) =>
       dispatch(getDriversCount(status, start_date, end_date, driver_online_status, asset_payment, driver_category, partnershipStatus, loanEligibility)),
     getUserExport: (user_type, driver_category, driver_account_status, start_date, end_date) => dispatch(getUserExport(user_type, driver_category, driver_account_status, start_date, end_date)),
+    addDriver: (body) => dispatch(addDriver(body)),
   };
 }
 
