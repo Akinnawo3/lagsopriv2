@@ -71,8 +71,8 @@ export const updateServiceRequest = (requestId, body) => async (dispatch) => {
       NotificationManager.error(res.data.msg);
     } else {
       NotificationManager.success("Service request updated successfully");
-
-      await dispatch(getServiceRequest(body.request_id, true));
+      // console.log(requestId)
+      await dispatch(getServiceRequest(requestId, true));
     }
     dispatch(endStatusLoading());
   } catch (err) {
