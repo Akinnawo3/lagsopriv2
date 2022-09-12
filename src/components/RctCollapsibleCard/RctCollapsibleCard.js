@@ -37,7 +37,6 @@ class RctCollapsibleCard extends Component {
   render() {
     const {close, reload, collapse} = this.state;
     const {children, collapsible, closeable, reloadable, heading, fullBlock, colClasses, customClasses, headingCustomClasses, contentCustomClasses, badge, item, currentPage, totalCount} = this.props;
-    console.log(item);
     return (
       <div className={classnames(colClasses ? colClasses : "", {"d-block": !collapse})}>
         <div className={classnames(`rct-block ${customClasses ? customClasses : ""}`, {"d-none": close})}>
