@@ -17,7 +17,7 @@ import {useHistory} from "react-router-dom";
 import {getUserExport} from "Actions/userAction";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import {Badge, Button, ModalHeader, Modal, ModalBody, Form, FormGroup, Label, Input, ModalFooter} from "reactstrap";
-import { addDriver } from "../../../actions/driverAction";
+import {addDriver} from "../../../actions/driverAction";
 const qs = require("qs");
 export let closeFliterModal;
 export let closeDriverModal;
@@ -124,6 +124,10 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
   const confirmExport = () => {
     exportRef.current.close();
     getUserExport("driver", driverCategory, status, startDate, endDate);
+  };
+
+  const onDelete = (id) => {
+    console.log("F");
   };
 
   const handleFilter = () => {
@@ -234,8 +238,11 @@ const DriverTable = ({drivers, isLoading, driversCount, getDrivers, status, sear
                         )}
 
                         <TableCell>
-                          <button type="button" className="rct-link-btn text-primary" title="view details">
-                            <Link to={`/admin/drivers/${driver.auth_id}`}>
+                          <button type="button" className="rct-link-btn text-danger " onClick={() => onDelete(driver?.auth_id)}>
+                            <i className="ti-trash"></i>
+                          </button>
+                          <button type="button" className="rct-link-btn text-primary ml-2" title="view details">
+                            <Link to={`/admin/drivers/${driver?.auth_id}`}>
                               <i className="ti-eye" />
                             </Link>
                           </button>
