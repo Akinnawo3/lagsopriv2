@@ -32,7 +32,7 @@ const PartnerTable = ({loading, header, partners, partnersCount, getPartners, ge
   });
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [setDeleteId, setDeleteId] = useState("");
+  const [deleteId, setDeleteId] = useState("");
   const exportRef = useRef(null);
   const deleteRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -93,11 +93,6 @@ const PartnerTable = ({loading, header, partners, partnersCount, getPartners, ge
   const handleFilter = () => {
     getPartners(1, false, startDate, endDate, status);
     getPartnersCount(startDate, endDate, status);
-  };
-
-  const onDelete = (id) => {
-    setDeleteId(id);
-    deleteRef.current.open();
   };
 
   const handleSuccess = () => {
@@ -213,9 +208,7 @@ const PartnerTable = ({loading, header, partners, partnersCount, getPartners, ge
                           </Badge>
                         </TableCell>
                         <TableCell>
-                          <button type="button" className="rct-link-btn text-danger" onClick={() => onDelete(partner.auth_id)}>
-                            <i className="ti-trash"></i>
-                          </button>
+                        
                           <button type="button" className="rct-link-btn text-primary ml-2" title="view details">
                             <Link to={`/admin/partners/${partner.auth_id}`}>
                               <i className="ti-eye" />
@@ -354,7 +347,6 @@ const PartnerTable = ({loading, header, partners, partnersCount, getPartners, ge
         </Form>
       </Modal>
       <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
-      <DeleteConfirmationDialog ref={deleteRef} title={"Are you sure you want to Delete Partner?"} message={"This will delete the partner"} onConfirm={confirmDelete} />
     </div>
   );
 };

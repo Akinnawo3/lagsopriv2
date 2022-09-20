@@ -292,6 +292,3 @@ export const getPartnerPayoutCount = (auth_id, page = 1, date_type = 'daily') =>
       }
    } catch (err) { }
 };
-
-
-

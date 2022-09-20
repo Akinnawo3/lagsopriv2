@@ -16,6 +16,8 @@ import Spinner from "Components/spinner/Spinner";
 import {verifyUserPermssion} from "../../../container/DefaultLayout";
 import AsyncSelectComponent from "./AsyncSelect";
 import {calculatePostDate, clculateDailyLoanRepayment, fullDateTime} from "../../../helpers/helpers";
+import {confirmationDialogue} from "../../../helpers/confirmationDialogue";
+import {deleteUser} from "../../../actions/userAction";
 export let onAddVehicleModalClose;
 export let closeMedicalRecordModal;
 export let onVerified;
@@ -37,6 +39,7 @@ const DriverProfile = ({
   verifyID,
   dataMode,
   updateDriver,
+  deleteUser,
 }) => {
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const [addVehicleModal, setAddVehicleModal] = useState(false);
@@ -235,7 +238,7 @@ const DriverProfile = ({
       changeDriverStatus(driver?.auth_id, "4", driver, emailMessages.approveMsg, "Driver Activated");
     }
     if (argument === 5) {
-      changeDriverStatus(driver?.auth_id, "5", driver, emailMessages.suspendMsg(suspensionReasons), "Driver Suspended");
+      changeDriverStatus(driver?.auth_id, "5", driver, suspensionReasons, "Driver Suspended");
     }
     if (argument === 6) {
       changeDriverCategory(driver?.auth_id, driverCategory, driver, "Category Changed");
@@ -262,6 +265,11 @@ const DriverProfile = ({
       });
     }
     inputEl.current.close();
+  };
+
+  const onDelete = (id) => {
+    const asyncFunction = () => deleteUser(id, null, "partner");
+    confirmationDialogue({message: "This partner will be deleted parmanently", asyncFunction});
   };
 
   const handleRepaymentsUpdate = (e) => {
@@ -775,6 +783,11 @@ const DriverProfile = ({
                       </Button>
                     </div>
                   )}
+                  <div className="text-center mx-2">
+                    <Button disabled={loadingStatus} onClick={() => onDelete(driver?.auth_id)} className="bg-danger mt-3 text-white">
+                      Delete Driver
+                    </Button>
+                  </div>
 
                   {driver?.driver_data?.driver_status === 4 && (
                     <div className="text-center">
@@ -1211,7 +1224,7 @@ const DriverProfile = ({
 
       {/* modal to select reason for suspension */}
       <Modal isOpen={suspensionReasonsModalOpen} toggle={() => setSuspensionReasonsModalOpen(false)}>
-        <ModalHeader toggle={() => setSuspensionReasonsModalOpen(false)}>Reasons for Suspension</ModalHeader>
+        <ModalHeader toggle={() => setSuspensionReasonsModalOpen(false)}>Suspension Mail.</ModalHeader>
         <ModalBody>
           <div className="">
             <Form onSubmit={onSuspend}>
@@ -1247,6 +1260,7 @@ function mapDispatchToProps(dispatch) {
     getVehicle: (vehicle_id, spinner) => dispatch(getVehicle(vehicle_id, spinner)),
     sendVerificationRequest: (id_type, id_value, first_name, last_name) => dispatch(sendVerificationRequest(id_type, id_value, first_name, last_name)),
     updateDriver: (data) => dispatch(updateDriver(data)),
+    deleteUser: (auth_id, users, userType) => dispatch(deleteUser(auth_id, users, userType)),
   };
 }
 const mapStateToProps = (state) => ({

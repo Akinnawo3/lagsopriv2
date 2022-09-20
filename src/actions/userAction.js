@@ -104,17 +104,20 @@ export const changeKycStatus = (auth_id, kyc_status) => async (dispatch) => {
 export const deleteUser = (auth_id, users, userType) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
-    const res = await axios.delete(`${api.user}/v1.1/admin/users/${auth_id}/?user_type=userType`);
+    const res = await axios.delete(`${api.user}/v1.1/admin/users/${auth_id}/?user_type=${userType}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
       await NotificationManager.success("User deleted Successfully!");
-      const userData = users.filter((user) => user.auth_id !== auth_id);
-      users &&
+      if (users) {
+        const userData = users.filter((user) => user.auth_id !== auth_id);
         dispatch({
           type: USERS,
           payload: userData,
         });
+      }else{
+        window.history.back()
+      }
     }
     dispatch(endStatusLoading());
   } catch (err) {
