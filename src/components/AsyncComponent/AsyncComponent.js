@@ -539,6 +539,11 @@ const AsyncPartner = Loadable({
   loading: () => <RctPageLoader />,
 });
 
+const AsyncCompliance = Loadable({
+  loader: () => import("Routes/compliance/compliance"),
+  loading: () => <RctPageLoader />,
+});
+
 export {
   AsyncPaymentsSuccessful,
   AsyncPaymentsUnsuccessful,
@@ -650,4 +655,5 @@ export {
   AsyncPartnersPending,
   AsyncPartnersVerified,
   AsyncPartnersApproved,
+  AsyncCompliance
 };

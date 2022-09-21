@@ -36,6 +36,7 @@ import MaintenanceRoutes from "../routes/maintenance-log/maintenanceRoutes";
 import promoRoutes from "../routes/promo-discounts/promoRoutes";
 import RevenueRoute from "../routes/revenues/revenueRoutes";
 import PartnersRoutes from "Routes/partners/partnersRoutes";
+import ComplianceRoutes from "../routes/compliance/complianceRoutes";
 
 export default [
   {
@@ -235,6 +236,11 @@ export default [
   {
     path: "partners",
     component: PartnersRoutes,
+    permission: "view_partners",
+  },
+  {
+    path: "compliance",
+    component: ComplianceRoutes,
     permission: "view_partners",
   },
 ];
