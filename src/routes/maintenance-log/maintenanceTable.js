@@ -38,7 +38,7 @@ const MaintenanceTable = ({match, getServiceRequests, getServiceRequestsCount, s
   const paginate = (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
-    // getOems(pageNumber);
+    getServiceRequests(pageNumber, false, "", status, serviceType);
     window.scrollTo(0, 0);
   };
   const handleFilter = () => {

@@ -113,6 +113,7 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
                       <>
                         <TableCell>Class</TableCell>
                         <TableCell>Type</TableCell>
+                        {status === "on_ride" && <TableCell>Vehicle Plate Number</TableCell>}
                         <TableCell>Status</TableCell>
                       </>
                     )}
@@ -165,6 +166,8 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
                             <>
                               <TableCell>{trip.ride_class}</TableCell>
                               <TableCell>{trip.ride_type}</TableCell>
+                              {status === "on_ride" && <TableCell>{trip?.driver_data?.car_number_plate}</TableCell>}
+
                               <TableCell>
                                 <Badge color={trip.ride_status === "completed" ? "success" : trip.ride_status === "cancel" ? "danger" : trip.ride_status === "waiting" ? "warning" : "secondary"}>
                                   {trip.ride_status === "on_trip" ? "current" : trip.ride_status === "on_pickup" ? "enroute" : trip?.ride_status === "cancel" ? "cancelled" : trip.ride_status}

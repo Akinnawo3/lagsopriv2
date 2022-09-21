@@ -67,6 +67,8 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
     getWalletsExport(status, "", true, transactionOptionType, startDate, endDate);
   };
 
+  console.log(wallets);
+
   return (
     <div>
       <RctCollapsibleCard heading={heading} fullBlock>
@@ -132,7 +134,7 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
               <Table>
                 <TableHead>
                   <TableRow hover>
-                    <TableCell> Id</TableCell>
+                    <TableCell>Transaction Description</TableCell>
                     <TableCell>User Name</TableCell>
                     <TableCell>Date/Time</TableCell>
                     <TableCell>Transaction Type</TableCell>
@@ -149,7 +151,7 @@ const WalletTable = ({status, wallets, getWallets, getWalletsCount, getFundingBa
                           <TableCell>
                             <Media>
                               <Media body>
-                                <h5 className="m-0 pt-15">{wallet._id}</h5>
+                                <h5 className="m-0 pt-15">{wallet?.description}</h5>
                               </Media>
                             </Media>
                           </TableCell>

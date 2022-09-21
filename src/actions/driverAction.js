@@ -5,7 +5,7 @@ import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
 import {getVehicle} from "Actions/vehicleAction";
 import {closeMedicalRecordModal, closeRepaymentModal, onVerified} from "../routes/drivers/components/driverProfile";
-import {closeFliterModal} from "../routes/drivers/components/driverTable";
+import {closeDriverModal, closeFliterModal} from "../routes/drivers/components/driverTable";
 
 export const getDrivers =
   (status = "", page_no = 1, spinner, driver_online_status = "", asset_payment = "", driver_category = "", start_date = "", end_date = "", partnershipStatus = "", loanEligibility = "") =>
@@ -255,6 +255,24 @@ export const updateDriver = (body) => async (dispatch) => {
       await NotificationManager.success("Updated Successfully");
       closeRepaymentModal();
       await dispatch(getDriver(body.auth_id, true));
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+    NotificationManager.error(err.response.data.message);
+  }
+};
+
+export const addDriver = (body) => async (dispatch) => {
+  try {
+    dispatch(startStatusLoading());
+    const res = await axios.post(`${api.user}/v1.1/admin/users`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success("Driver Added Successfully");
+      closeDriverModal();
+      await dispatch(getDrivers());
     }
     dispatch(endStatusLoading());
   } catch (err) {

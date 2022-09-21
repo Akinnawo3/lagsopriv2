@@ -6,7 +6,7 @@ import api from "../environments/environment";
 import {sendMessage} from "./messagesAction";
 import {onUserDetailsResetModalClose} from "../routes/users/users";
 export const getUsers =
-  (page_no = 1, loading, start_date = '', end_date = '') =>
+  (page_no = 1, loading, start_date = "", end_date = "") =>
   async (dispatch) => {
     try {
       loading && (await dispatch(startLoading()));
@@ -28,34 +28,40 @@ export const getUsers =
     }
   };
 
-export const getUserCount = (start_date = '', end_date = '') => async (dispatch) => {
-  try {
-    const res = await axios.get(`${api.user}/v1.1/admin/users?component=count&start_date=${start_date}&end_date=${end_date}`);
-    if (res.data.status === "error") {
-      NotificationManager.error(res.data.msg);
-    } else {
-      dispatch({
-        type: USER_COUNT,
-        payload: res.data.data.total ? res.data.data.total : 0,
-      });
-    }
-  } catch (err) {}
-};
+export const getUserCount =
+  (start_date = "", end_date = "") =>
+  async (dispatch) => {
+    try {
+      const res = await axios.get(`${api.user}/v1.1/admin/users?component=count&start_date=${start_date}&end_date=${end_date}`);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        dispatch({
+          type: USER_COUNT,
+          payload: res.data.data.total ? res.data.data.total : 0,
+        });
+      }
+    } catch (err) {}
+  };
 
-export const getUserExport = (user_type = '', driver_category = '', driver_account_status = '', start_date = '', end_date = '') => async (dispatch) => {
-  dispatch(startStatusLoading());
-  try {
-    const res = await axios.get(`${api.user}/v1.1/admin/users?component=export&user_type=${user_type}&driver_category=${driver_category}&account_status=${driver_account_status}&start_date=${start_date}&end_date=${end_date}`);
-    if (res.data.status === "error") {
-      NotificationManager.error(res.data.msg);
-    } else {
-      NotificationManager.success('Excel file sent to your email successfully');
+export const getUserExport =
+  (user_type = "", driver_category = "", driver_account_status = "", start_date = "", end_date = "") =>
+  async (dispatch) => {
+    dispatch(startStatusLoading());
+    try {
+      const res = await axios.get(
+        `${api.user}/v1.1/admin/users?component=export&user_type=${user_type}&driver_category=${driver_category}&account_status=${driver_account_status}&start_date=${start_date}&end_date=${end_date}`
+      );
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        NotificationManager.success("Excel file sent to your email successfully");
+      }
+      dispatch(endStatusLoading());
+    } catch (err) {
+      dispatch(endStatusLoading());
     }
-    dispatch(endStatusLoading())
-  } catch (err) {
-    dispatch(endStatusLoading())
-  }
-};
+  };
 
 export const ResetUserDetails = (body, emailData) => async (dispatch) => {
   try {
@@ -95,19 +101,23 @@ export const changeKycStatus = (auth_id, kyc_status) => async (dispatch) => {
   }
 };
 
-export const deleteUser = (auth_id, users) => async (dispatch) => {
+export const deleteUser = (auth_id, users, userType) => async (dispatch) => {
   try {
     dispatch(startStatusLoading());
-    const res = await axios.delete(`${api.user}/v1.1/admin/users/${auth_id}`);
+    const res = await axios.delete(`${api.user}/v1.1/admin/users/${auth_id}/?user_type=${userType}`);
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
       await NotificationManager.success("User deleted Successfully!");
-      const userData = users.filter((user) => user.auth_id !== auth_id);
-      dispatch({
-        type: USERS,
-        payload: userData,
-      });
+      if (users) {
+        const userData = users.filter((user) => user.auth_id !== auth_id);
+        dispatch({
+          type: USERS,
+          payload: userData,
+        });
+      }else{
+        window.history.back()
+      }
     }
     dispatch(endStatusLoading());
   } catch (err) {

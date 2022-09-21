@@ -56,29 +56,31 @@ export const getVehiclesFeedback =
     }
   };
 
-export const getVehicle = (vehicle_id, spinner) => async (dispatch) => {
-  try {
-    spinner && dispatch(startLoading());
-    !spinner && dispatch(startStatusLoading());
-    const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicles/${vehicle_id}`);
-    if (res.data.status === "error") {
-      NotificationManager.error(res.data.msg);
-    } else {
-      if (res.data.data.driver_auth_id) {
-        await dispatch(getDriver(res.data.data.driver_auth_id, true));
+export const getVehicle =
+  (vehicle_id, spinner, driver_id = "", partner_id = "") =>
+  async (dispatch) => {
+    try {
+      spinner && dispatch(startLoading());
+      !spinner && dispatch(startStatusLoading());
+      const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicles/${vehicle_id}/?driver_id=${driver_id}&partner_id=${partner_id}`);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        if (res.data.data.driver_auth_id) {
+          await dispatch(getDriver(res.data.data.driver_auth_id, true));
+        }
+        dispatch({
+          type: VEHICLE,
+          payload: res.data.data,
+        });
       }
-      dispatch({
-        type: VEHICLE,
-        payload: res.data.data,
-      });
+      spinner && dispatch(endLoading());
+      !spinner && dispatch(endStatusLoading());
+    } catch (err) {
+      dispatch(endLoading());
+      dispatch(endStatusLoading());
     }
-    spinner && dispatch(endLoading());
-    !spinner && dispatch(endStatusLoading());
-  } catch (err) {
-    dispatch(endLoading());
-    dispatch(endStatusLoading());
-  }
-};
+  };
 
 export const getVehicleMileage = (vehicle_id, spinner) => async (dispatch) => {
   try {

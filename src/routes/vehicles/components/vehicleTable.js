@@ -219,7 +219,8 @@ const VehicleTable = ({
                             <i className="ti-trash"></i>
                           </button>
                           <button type="button" className="rct-link-btn text-primary ml-3" title="view details">
-                            <Link to={`/admin/vehicles/${vehicle.vehicle_id}`}>
+                            {/* <Link to={`/admin/vehicles/${vehicle.vehicle_id}`} state={{driver_id: vehicle?.driver_auth_id || "", partner_id: vehicle?.partner_id || ""}}> */}
+                            <Link to={{pathname: `/admin/vehicles/${vehicle.vehicle_id}`, state: {driver_id: vehicle?.driver_auth_id || "", partner_id: vehicle?.partner_id || ""}}}>
                               <i className="ti-eye" />
                             </Link>
                           </button>

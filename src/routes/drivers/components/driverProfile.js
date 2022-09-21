@@ -16,6 +16,8 @@ import Spinner from "Components/spinner/Spinner";
 import {verifyUserPermssion} from "../../../container/DefaultLayout";
 import AsyncSelectComponent from "./AsyncSelect";
 import {calculatePostDate, clculateDailyLoanRepayment, fullDateTime} from "../../../helpers/helpers";
+import {confirmationDialogue} from "../../../helpers/confirmationDialogue";
+import {deleteUser} from "../../../actions/userAction";
 export let onAddVehicleModalClose;
 export let closeMedicalRecordModal;
 export let onVerified;
@@ -37,6 +39,7 @@ const DriverProfile = ({
   verifyID,
   dataMode,
   updateDriver,
+  deleteUser,
 }) => {
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const [addVehicleModal, setAddVehicleModal] = useState(false);
@@ -52,7 +55,7 @@ const DriverProfile = ({
   const [argument, setArgument] = useState(null);
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
-  const [suspensionReasons, setSuspensionReasons] = useState([]);
+  const [suspensionReasons, setSuspensionReasons] = useState();
   const [medicalRecordsModal, setMedicalRecordsModal] = useState();
   const [tuberculosis, setTuberculosis] = useState(driver?.driver_data?.medical_record?.tuberculosis || "");
   const [hepatitis, setHepatitis] = useState(driver?.driver_data?.medical_record?.hepatitis || "");
@@ -145,7 +148,7 @@ const DriverProfile = ({
 
   const onSuspend = (e) => {
     e.preventDefault();
-    if (!suspensionReasons.length) {
+    if (!suspensionReasons) {
       NotificationManager.error("State reasons for suspension");
     } else {
       setSuspensionReasonsModalOpen(false);
@@ -200,12 +203,13 @@ const DriverProfile = ({
     inputEl.current.open();
   };
   const handleReasonClick = (e) => {
-    if (e.target.checked) {
-      setSuspensionReasons([...suspensionReasons, e.target.value]);
-    } else {
-      const removeReason = suspensionReasons.filter((item) => item === e.target.value);
-      setSuspensionReasons(removeReason);
-    }
+    setSuspensionReasons(e.target.value);
+    //  if (e.target.checked) {
+    //    setSuspensionReasons([...suspensionReasons, e.target.value]);
+    //  } else {
+    //    const removeReason = suspensionReasons.filter((item) => item === e.target.value);
+    //    setSuspensionReasons(removeReason);
+    //  }
   };
 
   const medicalRecordUpdate = (e) => {
@@ -234,7 +238,7 @@ const DriverProfile = ({
       changeDriverStatus(driver?.auth_id, "4", driver, emailMessages.approveMsg, "Driver Activated");
     }
     if (argument === 5) {
-      changeDriverStatus(driver?.auth_id, "5", driver, emailMessages.suspendMsg(suspensionReasons), "Driver Suspended");
+      changeDriverStatus(driver?.auth_id, "5", driver, suspensionReasons, "Driver Suspended");
     }
     if (argument === 6) {
       changeDriverCategory(driver?.auth_id, driverCategory, driver, "Category Changed");
@@ -263,6 +267,11 @@ const DriverProfile = ({
     inputEl.current.close();
   };
 
+  const onDelete = (id) => {
+    const asyncFunction = () => deleteUser(id, null, "partner");
+    confirmationDialogue({message: "This partner will be deleted parmanently", asyncFunction});
+  };
+
   const handleRepaymentsUpdate = (e) => {
     e.preventDefault();
     updateDriver({
@@ -273,7 +282,7 @@ const DriverProfile = ({
       auth_id: driver?.auth_id,
     });
   };
-
+  console.log(driver);
   return (
     <div className="row" style={{fontSize: "0.8rem"}}>
       <div className="col-sm-10 col-lg-5">
@@ -696,7 +705,9 @@ const DriverProfile = ({
                     <span className="pull-left">
                       <strong>Vehicle Plate No </strong>
                     </span>
-                    <Link to={`/admin/vehicles/${driver?.vehicle_data?._id}`}>{driver?.vehicle_data?.car_number_plate}</Link>
+                    <Link to={{pathname: `/admin/vehicles/${driver?.vehicle_data?._id}`, state: {driver_id: driver?.auth_id || "", partner_id: driver?.driver_data?.partner_id || ""}}}>
+                      {driver?.vehicle_data?.car_number_plate}
+                    </Link>
                   </li>
                   <li className="list-group-item text-right">
                     <span className="pull-left">
@@ -764,7 +775,7 @@ const DriverProfile = ({
                       </Button>
                     </div>
                   )}
-                  {driver?.driver_data?.driver_status === 3 &&   driver?.vehicle_data?._id && (
+                  {driver?.driver_data?.driver_status === 3 && driver?.vehicle_data?._id && (
                     //  driver?.driver_data?.asset_payment?.status &&
                     <div className="text-center">
                       <Button disabled={loadingStatus} onClick={() => verifyUserPermssion("update_driver_status", () => onActivate())} className="bg-success mt-3 text-white">
@@ -772,6 +783,11 @@ const DriverProfile = ({
                       </Button>
                     </div>
                   )}
+                  <div className="text-center mx-2">
+                    <Button disabled={loadingStatus} onClick={() => onDelete(driver?.auth_id)} className="bg-danger mt-3 text-white">
+                      Delete Driver
+                    </Button>
+                  </div>
 
                   {driver?.driver_data?.driver_status === 4 && (
                     <div className="text-center">
@@ -875,8 +891,8 @@ const DriverProfile = ({
               <Input
                 required
                 type="number"
-                min={140000}
-                max={700000}
+                //  min={140000}
+                //  max={700000}
                 name="one_off"
                 value={oneOff}
                 onChange={(e) => {
@@ -1208,16 +1224,17 @@ const DriverProfile = ({
 
       {/* modal to select reason for suspension */}
       <Modal isOpen={suspensionReasonsModalOpen} toggle={() => setSuspensionReasonsModalOpen(false)}>
-        <ModalHeader toggle={() => setSuspensionReasonsModalOpen(false)}>Select Reasons for Suspension</ModalHeader>
+        <ModalHeader toggle={() => setSuspensionReasonsModalOpen(false)}>Suspension Mail.</ModalHeader>
         <ModalBody>
-          <div className="ml-4">
+          <div className="">
             <Form onSubmit={onSuspend}>
-              {suspensionReasonsList.map((item) => (
+              {/* {suspensionReasonsList.map((item) => (
                 <FormGroup>
                   <Input onChange={handleReasonClick} readOnly={true} type="checkbox" value={item} />
                   {item}
                 </FormGroup>
-              ))}
+              ))} */}
+              <Input onChange={handleReasonClick} type="textarea" value={suspensionReasons} />
               <ModalFooter>
                 <Button type="submit" variant="contained" className="text-white btn-danger">
                   Proceed
@@ -1243,6 +1260,7 @@ function mapDispatchToProps(dispatch) {
     getVehicle: (vehicle_id, spinner) => dispatch(getVehicle(vehicle_id, spinner)),
     sendVerificationRequest: (id_type, id_value, first_name, last_name) => dispatch(sendVerificationRequest(id_type, id_value, first_name, last_name)),
     updateDriver: (data) => dispatch(updateDriver(data)),
+    deleteUser: (auth_id, users, userType) => dispatch(deleteUser(auth_id, users, userType)),
   };
 }
 const mapStateToProps = (state) => ({

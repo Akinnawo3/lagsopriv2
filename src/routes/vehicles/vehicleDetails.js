@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {connect} from "react-redux";
 import {Helmet} from "react-helmet";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {getVehicle, getVehicleMileage, revokeVehicle, updatePartnerDriverPayment, updateVehicleMileage} from "Actions/vehicleAction";
 import {Badge, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import Button from "@material-ui/core/Button";
@@ -30,9 +30,12 @@ const VehicleDetails = ({
   const [mileageValue, setMileageValue] = useState();
   const partnerVehicles = vehicleDetails?.partner_driver_payment?.length > 0 ? vehicleDetails?.partner_driver_payment[vehicleDetails?.partner_driver_payment?.length - 1] : {}
 
+  const location = useLocation();
   const inputEl = useRef(null);
+  const {driver_id, partner_id} = location?.state || {};
+
   useEffect(() => {
-    getVehicle(match.params.id, true);
+    getVehicle(match.params.id, true, driver_id || "", partner_id || "");
     // getVehicleMileage(match.params.id, true);
   }, [match.params.id]);
 
@@ -59,7 +62,6 @@ const VehicleDetails = ({
   }, [vehicleDetails?.car_number_plate]);
 
   // partner_driver_payment
-
   return (
     <div className="mb-5" style={{minHeight: "90vh"}}>
       <Helmet>
@@ -180,6 +182,16 @@ const VehicleDetails = ({
                     </span>
                     <Badge color={vehicleDetails?.partner_assigned ? "success" : "danger"}>{vehicleDetails?.partner_assigned ? "Assigned" : "Unassigned"}</Badge>
                   </li>
+                  {vehicleDetails?.partner_data && (
+                    <li className="list-group-item text-right">
+                      <span className="pull-left">
+                        <strong>Partner Name</strong>
+                      </span>
+                      <Link to={`/admin/partners/${vehicleDetails?.partner_data[0]?._id}`}>
+                        {vehicleDetails?.partner_data[0]?.first_name} {vehicleDetails?.partner_data[0]?.last_name}
+                      </Link>
+                    </li>
+                  )}
                   <li className="list-group-item text-right">
                     <div className="d-flex justify-content-between align-items-start ">
                       <strong>QR Code</strong>
@@ -343,7 +355,7 @@ const VehicleDetails = ({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getVehicle: (vehicle_id, spinner) => dispatch(getVehicle(vehicle_id, spinner)),
+    getVehicle: (vehicle_id, spinner, driver_id, partner_id) => dispatch(getVehicle(vehicle_id, spinner, driver_id, partner_id)),
     getVehicleMileage: (vehicle_id, spinner) => dispatch(getVehicleMileage(vehicle_id, spinner)),
     revokeVehicle: (vehicle_id, vehicleDetails, driverDetails) => dispatch(revokeVehicle(vehicle_id, vehicleDetails, driverDetails)),
     updatePartnerDriverPayment: (data, vehicle_id, setDriverPaymentModal) => dispatch(updatePartnerDriverPayment(data, vehicle_id, setDriverPaymentModal)),

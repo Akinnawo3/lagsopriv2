@@ -62,7 +62,7 @@ const Disbursement = (props) => {
   const [dateType, setDateType] = useState("daily");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [status, setStatus] = useState(null);
+  const [status, setStatus] = useState("");
   const [showButton, setShowButton] = useState("");
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");

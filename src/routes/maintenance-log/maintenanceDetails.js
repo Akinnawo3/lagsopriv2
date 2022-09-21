@@ -9,6 +9,7 @@ import {Badge, ModalHeader, Modal, ModalBody, Form, FormGroup, Label, Input, Mod
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import {getServiceRequest, updateServiceRequest} from "../../actions/serviceRequestAction";
 import {fullDateTime} from "../../helpers/helpers";
+import Quotation from "./quotation";
 
 const MaintenanceDetails = ({match, location, loading, serviceRequest, getServiceRequest, updateServiceRequest}) => {
   const inputEl = useRef(null);
@@ -196,7 +197,7 @@ const MaintenanceDetails = ({match, location, loading, serviceRequest, getServic
                         </div>
                       )}
 
-                      {viewedDetail?.status !== "completed" && (
+                      {viewedDetail?.status === "completed" && (
                         <>
                           {viewedDetail?.diagnostics_data?.after_images.length > 0 && (
                             <div className="">
@@ -248,6 +249,10 @@ const MaintenanceDetails = ({match, location, loading, serviceRequest, getServic
                   </div>
                 </>
               )}
+              {
+                viewedDetail?.status !== "completed" &&
+                viewedDetail?.diagnostics_data?.quotations?.length > 0 && <Quotation items={viewedDetail?.diagnostics_data?.quotations} />
+              }
               {viewedDetail?.status === "awaiting-approval" && (
                 <div className="d-flex mt-5">
                   <Button className="cursor-pointer btn-success" onClick={approveRequest}>
@@ -279,7 +284,7 @@ const MaintenanceDetails = ({match, location, loading, serviceRequest, getServic
 function mapDispatchToProps(dispatch) {
   return {
     getServiceRequest: (sos_id, spinner) => dispatch(getServiceRequest(sos_id, spinner)),
-    updateServiceRequest: (body) => dispatch(updateServiceRequest(body)),
+    updateServiceRequest: (id, body) => dispatch(updateServiceRequest(id, body)),
   };
 }
 
