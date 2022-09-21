@@ -481,6 +481,21 @@ export default {
         },
       ],
     },
+    {
+      menu_title: "sidebar.compliance",
+      menu_icon: "zmdi zmdi-map",
+      type_multi: null,
+      new_item: false,
+      child_routes: [
+        {
+          menu_title: "sidebar.compliance",
+          menu_icon: "mdi zmdi-hospital",
+          type_multi: null,
+          new_item: false,
+          path: "/admin/compliance",
+        },
+      ],
+    },
 
     {
       menu_title: "sidebar.support",

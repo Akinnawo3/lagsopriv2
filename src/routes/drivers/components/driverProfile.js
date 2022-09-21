@@ -16,7 +16,6 @@ import Spinner from "Components/spinner/Spinner";
 import {verifyUserPermssion} from "../../../container/DefaultLayout";
 import AsyncSelectComponent from "./AsyncSelect";
 import {calculatePostDate, clculateDailyLoanRepayment, fullDateTime} from "../../../helpers/helpers";
-import {confirmationDialogue} from "../../../helpers/confirmationDialogue";
 import {deleteUser} from "../../../actions/userAction";
 export let onAddVehicleModalClose;
 export let closeMedicalRecordModal;
@@ -55,6 +54,7 @@ const DriverProfile = ({
   const [argument, setArgument] = useState(null);
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
+  const [deletedId, setDeletedId] = useState("");
   const [suspensionReasons, setSuspensionReasons] = useState();
   const [medicalRecordsModal, setMedicalRecordsModal] = useState();
   const [tuberculosis, setTuberculosis] = useState(driver?.driver_data?.medical_record?.tuberculosis || "");
@@ -164,6 +164,15 @@ const DriverProfile = ({
     setArgument(4);
     inputEl.current.open();
   };
+
+  const onDelete = (id) => {
+    setTitle("Are you sure you want to delete driver");
+    setMessage("This driver will be deleted onDele.");
+    setArgument(10);
+    setDeletedId(id);
+    inputEl.current.open();
+  };
+
   const handleCategorySubmit = (e) => {
     e.preventDefault();
     setCategoryModalOpen(false);
@@ -264,12 +273,10 @@ const DriverProfile = ({
         auth_id: driver?.auth_id,
       });
     }
+    if (argument === 10) {
+      deleteUser(deletedId, null, "driver");
+    }
     inputEl.current.close();
-  };
-
-  const onDelete = (id) => {
-    const asyncFunction = () => deleteUser(id, null, "partner");
-    confirmationDialogue({message: "This partner will be deleted parmanently", asyncFunction});
   };
 
   const handleRepaymentsUpdate = (e) => {
@@ -784,7 +791,7 @@ const DriverProfile = ({
                     </div>
                   )}
                   <div className="text-center mx-2">
-                    <Button disabled={loadingStatus} onClick={() => onDelete(driver?.auth_id)} className="bg-danger mt-3 text-white">
+                    <Button disabled={loadingStatus} onClick={() => verifyUserPermssion("update_driver_status", () => onDelete(driver?.auth_id))} className="bg-danger mt-3 text-white">
                       Delete Driver
                     </Button>
                   </div>

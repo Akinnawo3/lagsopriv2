@@ -32,6 +32,7 @@ module.exports = {
   "sidebar.disbursementDriver": "Driver disbursement",
   "sidebar.vehicles": "Vehicles",
   "sidebar.fdt and schedule": "Fdt and Schedule",
+  "sidebar.compliance": "Compliance",
   "sidebar.Fdt": "Fdt",
   "sidebar.fdt": "Fdt",
   "sidebar.active": "Active",

@@ -1,11 +1,25 @@
 import React, {useState, useEffect, Fragment, useRef} from "react";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import {connect} from "react-redux";
+import {Col, Row} from "reactstrap";
+import DougnutProjection from "./components/doughnut";
 
 const Compliance = ({match}) => {
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Compliance"} match={match} />
+      <Row>
+        <Col md={8}>
+          <Row>
+            <Col md={4}>
+              <DougnutProjection />
+            </Col>
+            <Col md={8}>Line Graph</Col>
+            <Col>Table</Col>
+          </Row>
+        </Col>
+        <Col md={4}>Lines</Col>
+      </Row>
     </div>
   );
 };

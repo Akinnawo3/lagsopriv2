@@ -17,7 +17,7 @@ import {Link} from "react-router-dom";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import {sendVerificationRequest} from "Actions/idVerificationAction";
 import Spinner from "Components/spinner/Spinner";
-import {confirmationDialogue} from "../../../helpers/confirmationDialogue";
+// import {confirmationDialogue} from "../../../helpers/confirmationDialogue";
 
 const PartnerProfile = ({
   partnerDetails,
@@ -37,6 +37,7 @@ const PartnerProfile = ({
   const inputEl = useRef(null);
   const inputEl2 = useRef(null);
   const inputEl4 = useRef(null);
+  const deleteRef = useRef(null);
 
   const [formData, setFormData] = useState({
     firstname: "",
@@ -51,6 +52,7 @@ const PartnerProfile = ({
   const [CACModal, setCACModal] = useState(false);
   const [vehiclesModal, setVehiclesModal] = useState(false);
   const [idType, setIdType] = useState("");
+  const [deletedId, setDeleteId] = useState("");
   const [idVerificationModalOpen, setIdVerificationModalOpen] = useState(false);
   const isTest = dataMode === "test";
   const filteredVehicles = partnerDetails?.partner_data?.vehicle_interested?.filter((x) => x.status === 1);
@@ -82,8 +84,10 @@ const PartnerProfile = ({
     return count;
   };
   const onDelete = (id) => {
-    const asyncFunction = () => deleteUser(id, null, "partner");
-    confirmationDialogue({message: "This partner will be deleted parmanently", asyncFunction});
+    setDeleteId(id);
+    deleteRef.current.open();
+    // const asyncFunction = () => ;
+    // confirmationDialogue({message: "This partner will be deleted parmanently", asyncFunction});
   };
 
   return (
@@ -537,6 +541,15 @@ const PartnerProfile = ({
         onConfirm={() => {
           changePartnerStatus(partnerDetails?.auth_id, "4", partnerDetails, {}, "Approved");
           inputEl4.current.close();
+        }}
+      />
+      <DeleteConfirmationDialog
+        ref={deleteRef}
+        title="Are You Sure You want to delete this partner"
+        message="This partner will be deleted permanently."
+        onConfirm={() => {
+          deleteUser(deletedId, null, "partner");
+          deleteRef.current.close();
         }}
       />
 
