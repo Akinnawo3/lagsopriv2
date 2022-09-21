@@ -28,6 +28,7 @@ const VehicleDetails = ({
   const [partner_driver_payment, setPartner_driver_payment] = useState({type: "", driver_payment: ""});
   const [mileageModal, setMileageModal] = useState(false);
   const [mileageValue, setMileageValue] = useState();
+  const partnerVehicles = vehicleDetails?.partner_driver_payment?.length > 0 ? vehicleDetails?.partner_driver_payment[vehicleDetails?.partner_driver_payment?.length - 1] : {}
 
   const inputEl = useRef(null);
   useEffect(() => {
@@ -53,7 +54,7 @@ const VehicleDetails = ({
 
   useEffect(() => {
     if (vehicleDetails?.partner_driver_payment?.length > 0) {
-      setPartner_driver_payment({type: vehicleDetails?.partner_driver_payment[0]?.type, driver_payment: vehicleDetails?.partner_driver_payment[0]?.driver_payment});
+      setPartner_driver_payment({type: partnerVehicles?.type, driver_payment: partnerVehicles?.driver_payment});
     }
   }, [vehicleDetails?.car_number_plate]);
 
@@ -236,19 +237,19 @@ const VehicleDetails = ({
                       <span className="pull-left">
                         <strong>Type</strong>
                       </span>
-                      {vehicleDetails?.partner_driver_payment[0]?.type ?? "NA"}
+                      { partnerVehicles?.type ?? "NA"}
                     </li>
                     <li className="list-group-item text-right">
                       <span className="pull-left">
-                        <strong>{vehicleDetails?.partner_driver_payment[0]?.type === "percent" ? "Percentage" : "Amount"}</strong>
+                        <strong>{partnerVehicles?.type === "percent" ? "Percentage" : "Amount"}</strong>
                       </span>
-                      {vehicleDetails?.partner_driver_payment[0]?.type === "fixed" && "₦"}
-                      {vehicleDetails?.partner_driver_payment[0]?.type === "fixed"
-                        ? parseInt(vehicleDetails?.partner_driver_payment[0]?.driver_payment)?.toLocaleString()
-                        : vehicleDetails?.partner_driver_payment[0]?.type === "percent"
-                        ? vehicleDetails?.partner_driver_payment[0]?.driver_payment
+                      {partnerVehicles?.type === "fixed" && "₦"}
+                      {partnerVehicles?.type === "fixed"
+                        ? parseInt(partnerVehicles?.driver_payment)?.toLocaleString()
+                        : partnerVehicles?.type === "percent"
+                        ? partnerVehicles?.driver_payment
                         : "NA"}
-                      {vehicleDetails?.partner_driver_payment[0]?.type === "percent" && "%"}
+                      {partnerVehicles?.type === "percent" && "%"}
                     </li>
                     <li className="list-group-item text-right">
                       <span className="pull-left">
