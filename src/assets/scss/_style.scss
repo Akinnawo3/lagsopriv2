@@ -1,5 +1,4 @@
 /*======= All App Files Include Here ======*/
-
 //Default Bootstrap File
 @import "./bootstrap";
 
@@ -32,9 +31,7 @@ button {
   grid-gap: 20px;
 }
 
-// .page-item{
-//    margin: 0 -18px !important;
-// }
+
 
 .cursor-pointer {
   cursor: pointer;
@@ -45,4 +42,34 @@ button {
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 30px;
   max-width: 100% !important;
+}
+
+
+progress {
+  border: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50% !important;
+  // background: green;
+}
+
+// progress {
+//   color: black;
+// }
+
+progress::-moz-progress-bar {
+  background: whitesmoke;
+  border-radius: 50% !important;
+}
+
+progress::-webkit-progress-bar {
+  background: whitesmoke;
+}
+
+#female-progress::-webkit-progress-value {
+  background: #a33db3;
+}
+
+#male-progress::-webkit-progress-value {
+  background: #0065e1;
 }
