@@ -6,6 +6,7 @@ serverPush.sh
 
 # testing
 /coverage
+package-lock.json
 
 # production
 /dist
