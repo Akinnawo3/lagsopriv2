@@ -153,7 +153,7 @@ const PaymentsServiceComponent = ({ auth_id, getDriverRevenueSPlit, driverRevenu
                                        <TableCell>{`₦${item?.debt_service?.dashcam?.toLocaleString()}`}</TableCell>
                                        <TableCell>{`₦${item?.debt_service?.mobile_phone?.toLocaleString()}`}</TableCell>
                                        <TableCell>{`₦${item?.split_stage?.total_amount_made?.toLocaleString() || 0}`}</TableCell>
-                                       <TableCell>{`₦${item?.split_stage?.partner_balance?.toLocaleString() || 0}`}</TableCell>
+                                       <TableCell>{`₦${item?.partner_balance?.toLocaleString() || 0}`}</TableCell>
                                        <TableCell>{`₦${item?.balance?.toLocaleString()}`}</TableCell>
                                        {/* <TableCell>{`₦${item?.gross_balance.toLocaleString()}`}</TableCell>
                           <TableCell>{`₦${item?.balance.toLocaleString()}`}</TableCell> */}
