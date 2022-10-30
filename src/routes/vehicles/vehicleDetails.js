@@ -61,7 +61,8 @@ const VehicleDetails = ({
       }
    }, [vehicleDetails?.car_number_plate]);
 
-   // partner_driver_payment
+   driverDetails = vehicleDetails?.driver_data?.length ? vehicleDetails.driver_data[0] : {}
+
    return (
       <div className="mb-5" style={{ minHeight: "90vh" }}>
          <Helmet>
@@ -146,17 +147,17 @@ const VehicleDetails = ({
                            {/*<li className="list-group-item text-right"><span*/}
                            {/*    className="pull-left"><strong>Vehicle Description</strong></span>{vehicleDetails?.car_desc}*/}
                            {/*</li>*/}
-                           {driverDetails?.driver_data?.vehicle_id === vehicleDetails?.vehicle_id && (
+                           {driverDetails?._id && (
                               <>
                                  <li className="list-group-item text-right">
                                     <span className="pull-left">
                                        <strong>Driver Name</strong>
                                     </span>
-                                    <Link to={`/admin/drivers/${driverDetails?.auth_id}`}>
+                                    <Link to={`/admin/drivers/${driverDetails?._id}`}>
                                        {driverDetails?.first_name} {driverDetails.last_name}
                                     </Link>
                                  </li>
-                                 <li className="list-group-item text-right">
+                                 {/* <li className="list-group-item text-right">
                                     <span className="pull-left">
                                        <strong>Driver Email</strong>
                                     </span>
@@ -167,7 +168,7 @@ const VehicleDetails = ({
                                        <strong>Driver Phone Number</strong>
                                     </span>
                                     {driverDetails?.phone_number}
-                                 </li>
+                                 </li> */}
                                  {vehicleDetails?.proxy_data?.length > 0 &&
                                     <li className="list-group-item text-right">
                                        <span className="pull-left">
@@ -378,7 +379,8 @@ const mapStateToProps = (state) => ({
    vehicleMileage: state.vehicle.vehicleMileage,
    loading: state.loading.loading,
    loadingStatus: state.loading.loadingStatus,
-   driverDetails: state.driver.driver,
+   // driverDetails: state.vehicle?.vehicleDetails?.driver_data,
+   // driverDetails: state.driver.driver,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(VehicleDetails);
