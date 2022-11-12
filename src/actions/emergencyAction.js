@@ -104,7 +104,7 @@ export const getSOSCount = () => async (dispatch) => {
     } else {
       dispatch({
         type: SOS_COUNT,
-        payload: res.data.data,
+        payload: res.data.data.total,
       });
     }
   } catch (err) {}
