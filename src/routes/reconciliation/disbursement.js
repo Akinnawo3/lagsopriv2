@@ -333,7 +333,7 @@ const Disbursement = (props) => {
                                                    <Link to={`/admin/drivers/${item.auth_id}`}>{item.first_name + "  " + item.last_name}</Link>
                                                 </TableCell>
                                                 <TableCell style={{ textTransform: 'capitalize' }}>{item?.user_type}</TableCell>
-                                                <TableCell>₦{item?.earning?.toLocaleString()}</TableCell>
+                                                <TableCell>₦{item?.user_type === "partner" ? item?.partner_earning?.toLocaleString() : item?.earning?.toLocaleString()}</TableCell>
                                                 <TableCell>{item.phone_number}</TableCell>
                                                 <TableCell>
                                                    {success && (
