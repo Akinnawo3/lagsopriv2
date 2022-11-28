@@ -3,8 +3,8 @@
  * Used To Display Page Title & Breadcrumbs
  */
 import React from "react";
-import {Breadcrumb, BreadcrumbItem} from "reactstrap";
-import {Link} from "react-router-dom";
+import { Breadcrumb, BreadcrumbItem } from "reactstrap";
+import { Link } from "react-router-dom";
 
 // intl messages
 import IntlMessages from "Util/IntlMessages";
@@ -29,7 +29,7 @@ const getUrlString = (path, sub, index) => {
   }
 };
 
-const PageTitleBar = ({title, match, enableBreadCrumb, home}) => {
+const PageTitleBar = ({ title, match, enableBreadCrumb, home }) => {
   const path = match.path.substr(1);
   const subPath = path.split("/");
   console.log(match);
@@ -38,7 +38,7 @@ const PageTitleBar = ({title, match, enableBreadCrumb, home}) => {
     <div className="page-title d-flex justify-content-between align-items-center">
       {title && (
         <div className="page-title-wrap">
-          {!home && <i disabled={true} onClick={() => window.history.back()} className="ti-angle-left" style={{cursor: "pointer"}}></i>}
+          {!home && <i disabled={true} onClick={() => window.history.back()} className="ti-angle-left" style={{ cursor: "pointer" }}></i>}
           <h2 className="">{title}</h2>
         </div>
       )}

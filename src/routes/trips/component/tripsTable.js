@@ -175,6 +175,7 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
                               </TableCell>
                             </>
                           )}
+                          {/*  */}
                           {status === "driver_not_found" && (
                             <>
                               <TableCell>{trip?.total_request?.driver_not_found}</TableCell>
