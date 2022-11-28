@@ -95,36 +95,39 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
             <option value={"payout"}>Payout</option>
           </select>
         </li>
-
-        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-          {/* <small className="fw-bold">Date Type Filter</small> */}
-          <select name="fiter-dropdown" onChange={handleChange} className="p-1 px-4">
-            {dateTypeFilter.map((item, index) => (
-              <option value={item.value} key={index}>
-                {item.label}
-              </option>
-            ))}
-          </select>
-        </li>
-        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-          <small className="fw-bold mr-2">From</small>
-          <input type="date" id="start" name="trip-start" defaultValue={startDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setStartDate(e.target.value)} />
-        </li>
-        <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-          <small className="fw-bold mr-2">To</small>
-          <input type="date" id="start" name="trip-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setEndDate(e.target.value)} />
-        </li>
-        <Button onClick={() => handleFilter()} style={{ height: "30px" }} className="align-items-center text-light justify-content-center" color="success">
-          Apply filter
-        </Button>
-        <div className="float-right">
-          {!loading && revenueChartData.length > 0 && (
-            <Button onClick={() => handleExport()} style={{ height: "30px" }} className="align-items-center justify-content-center mr-2" color="primary">
-              <i className="zmdi zmdi-download mr-2"></i> Export to Excel
+        {type === "revenue" && (
+          <>
+            <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+              {/* <small className="fw-bold">Date Type Filter</small> */}
+              <select name="fiter-dropdown" onChange={handleChange} className="p-1 px-4">
+                {dateTypeFilter.map((item, index) => (
+                  <option value={item.value} key={index}>
+                    {item.label}
+                  </option>
+                ))}
+              </select>
+            </li>
+            <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+              <small className="fw-bold mr-2">From</small>
+              <input type="date" id="start" name="trip-start" defaultValue={startDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setStartDate(e.target.value)} />
+            </li>
+            <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+              <small className="fw-bold mr-2">To</small>
+              <input type="date" id="start" name="trip-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setEndDate(e.target.value)} />
+            </li>
+            <Button onClick={() => handleFilter()} style={{ height: "30px" }} className="align-items-center text-light justify-content-center" color="success">
+              Apply filter
             </Button>
-          )}
-        </div>
-        {!loading && revenueChartData.length > 0 && (
+            <div className="float-right">
+              {!loading && revenueChartData.length > 0 && (
+                <Button onClick={() => handleExport()} style={{ height: "30px" }} className="align-items-center justify-content-center mr-2" color="primary">
+                  <i className="zmdi zmdi-download mr-2"></i> Export to Excel
+                </Button>
+              )}
+            </div>
+          </>
+        )}
+        {!loading && revenueChartData.length > 0 && type === "revenue" && (
           <>
             <div className="table-responsive" style={{ minHeight: "50vh" }}>
               <Table>
@@ -183,7 +186,20 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
             </div>
           </>
         )}
-        {revenueChartData.length === 0 && !loading && <EmptyData />}
+        {revenueChartData.length === 0 && type === "revenue" && !loading && <EmptyData />}
+
+        {/* For Payouts */}
+        {!loading && revenueChartData.length > 0 && type === "payout" && (
+          <>
+            <div className="float-right">
+              {!loading && revenueChartData.length > 0 && (
+                <Button onClick={() => handleExport()} style={{ height: "30px" }} className="align-items-center justify-content-center mr-2" color="primary">
+                  Create New
+                </Button>
+              )}
+            </div>
+          </>
+        )}
       </RctCollapsibleCard>
       <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
     </div>
