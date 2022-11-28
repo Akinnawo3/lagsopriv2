@@ -24,8 +24,22 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
   const [startDate, setStartDate] = useState(getFirstDayOfMonth());
   const [endDate, setEndDate] = useState(getTodayDate());
   const [type, setType] = useState("revenue");
+  const [isOpen, setIsOpen] = useState(false);
+  const [payoutFormData, setPayoutFormData] = useState({});
+
+  useEffect(() => {
+    getChartRevenueData(true, startDate, endDate, dateType);
+  }, []);
 
   const changeType = (e) => setType(e.target.value);
+
+
+  const updatePayoutFormData = (e) => {
+    setPayoutFormData({ ...payoutFormData, [e.target.name]: e.target.value });
+  };
+  const handleMakePayout = (e) => {
+   e.preventDefault();
+ };
 
   const formatByDateType = (timeStamp) => {
     if (dateType === "daily") {
@@ -36,10 +50,6 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
       return moment(timeStamp).format("YYYY");
     }
   };
-
-  useEffect(() => {
-    getChartRevenueData(true, startDate, endDate, dateType);
-  }, []);
 
   const exportRef = useRef(null);
 
@@ -233,6 +243,31 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
         )}
       </RctCollapsibleCard>
       <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
+
+      <Modal size="md" isOpen={isOpen} toggle={() => setIsOpen((prevState) => !prevState)}>
+        <ModalHeader toggle={() => setIsOpen((prevState) => !prevState)}>Make Payout</ModalHeader>
+        <ModalBody>
+          <Form onSubmit={handleMakePayout}>
+            <div className="">
+              <small className="fw-bold ">Driver First Name</small>
+              <Input id="filter-dropdown" name="fiter-dropdown" type="text" value={driverFirstName} onChange={(e) => setDriverFirstName(e.target.value)} className="p-1 px-4 w-100" />
+            </div>
+            <div className="mt-3">
+              <small className="fw-bold ">Driver Last Name</small>
+              <Input id="filter-dropdown" name="fiter-dropdown" type="text" value={driverLastName} onChange={(e) => setDriverLastName(e.target.value)} className="p-1 px-4 w-100" />
+            </div>
+            <div className="mt-3">
+              <small className="fw-bold ">Driver Email</small>
+              <Input id="filter-dropdown" name="fiter-dropdown" type="email" value={driverEmail} onChange={(e) => setDriverEmail(e.target.value)} className="p-1 px-4 w-100" />
+            </div>
+            <div className="mt-3 d-flex justify-content-end">
+              <Button style={{ height: "30px" }} className="align-items-center justify-content-center" color="success">
+                Submit
+              </Button>
+            </div>
+          </Form>
+        </ModalBody>
+      </Modal>
     </div>
   );
 };
