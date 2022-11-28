@@ -33,13 +33,12 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
 
   const changeType = (e) => setType(e.target.value);
 
-
   const updatePayoutFormData = (e) => {
     setPayoutFormData({ ...payoutFormData, [e.target.name]: e.target.value });
   };
   const handleMakePayout = (e) => {
-   e.preventDefault();
- };
+    e.preventDefault();
+  };
 
   const formatByDateType = (timeStamp) => {
     if (dateType === "daily") {
@@ -249,12 +248,15 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
         <ModalBody>
           <Form onSubmit={handleMakePayout}>
             <div className="">
-              <small className="fw-bold ">Driver First Name</small>
-              <Input id="filter-dropdown" name="fiter-dropdown" type="text" value={driverFirstName} onChange={(e) => setDriverFirstName(e.target.value)} className="p-1 px-4 w-100" />
+              <small className="fw-bold ">Amount</small>
+              <Input id="amount" name="amount" type="number" min={0} value={amount} onChange={updatePayoutFormData} className="p-1 px-4 w-100" />
             </div>
             <div className="mt-3">
-              <small className="fw-bold ">Driver Last Name</small>
-              <Input id="filter-dropdown" name="fiter-dropdown" type="text" value={driverLastName} onChange={(e) => setDriverLastName(e.target.value)} className="p-1 px-4 w-100" />
+              <small className="fw-bold ">Payout Item</small>
+              <select name="payout_item" onChange={updatePayoutFormData}>
+                <option value={"comms"}>Comms</option>
+                <option value={"tech_co"}>Tech Co.</option>
+              </select>
             </div>
             <div className="mt-3">
               <small className="fw-bold ">Driver Email</small>
