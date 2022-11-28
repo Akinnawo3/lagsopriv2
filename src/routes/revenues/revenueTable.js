@@ -198,6 +198,51 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
                 </Button>
               )}
             </div>
+            <div className="table-responsive" style={{ minHeight: "50vh" }}>
+              <Table>
+                <TableHead>
+                  <TableRow hover>
+                    <TableCell>Date</TableCell>
+                    <TableCell>Status</TableCell>
+                    <TableCell>Action</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <Fragment>
+                    {revenueChartData.length > 0 &&
+                      revenueChartData.map((item, index) => (
+                        <TableRow hover key={index}>
+                          <TableCell>{`${formatByDateType(item?.rev_date)}`}</TableCell>
+                          <TableCell>{`₦${item?.asset_co?.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.comms?.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.daily_tax?.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.maintenance?.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.refleeting?.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.tech_co?.toLocaleString()}`}</TableCell>
+
+                          <TableCell>{`₦${item?.asset_repayment?.toLocaleString() || 0}`}</TableCell>
+                          <TableCell>{`₦${item?.dashcam_repayment?.toLocaleString() || 0}`}</TableCell>
+                          <TableCell>{`₦${item?.mobile_phone_repayment?.toLocaleString() || 0}`}</TableCell>
+                        </TableRow>
+                      ))}
+                    {revenueChartData.length > 0 && (
+                      <TableRow>
+                        <TableCell className="fw-bold">Total</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("asset_co")?.toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("comms")?.toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("daily_tax")?.toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("maintenance")?.toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("refleeting")?.toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("tech_co")?.toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("asset_repayment")?.toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("dashcam_repayment")?.toLocaleString()}`}</TableCell>
+                        <TableCell className="fw-bold">{`₦${getColumnSum("mobile_phone_repayment")?.toLocaleString()}`}</TableCell>
+                      </TableRow>
+                    )}
+                  </Fragment>
+                </TableBody>
+              </Table>
+            </div>
           </>
         )}
       </RctCollapsibleCard>
