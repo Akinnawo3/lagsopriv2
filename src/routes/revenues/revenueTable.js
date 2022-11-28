@@ -13,12 +13,12 @@ import { calculatePostDate, getStatus, getStatusColor } from "Helpers/helpers";
 import EmptyData from "Components/EmptyData/EmptyData";
 import { Link } from "react-router-dom";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
-import { getChartRevenueData, getRevenueExport } from "../../actions/revenueSplitAction";
+import { getChartRevenueData, getRevenueExport, makeRevenuePayout } from "../../actions/revenueSplitAction";
 import moment from "moment";
 import { getFirstDayOfMonth, getTodayDate } from "../../helpers/helpers";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 
-const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getRevenueExport }) => {
+const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getRevenueExport, makeRevenuePayout }) => {
   const typeHolder = useRef();
   const [dateType, setDateType] = useState("daily");
   const [startDate, setStartDate] = useState(getFirstDayOfMonth());
@@ -194,7 +194,7 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
             <div className="float-right">
               {!loading && revenueChartData.length > 0 && (
                 <Button onClick={() => handleExport()} style={{ height: "30px" }} className="align-items-center justify-content-center mr-2" color="primary">
-               Make Payout
+                  Make Payout
                 </Button>
               )}
             </div>
@@ -239,8 +239,8 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
 function mapDispatchToProps(dispatch) {
   return {
     getChartRevenueData: (spinner, startDate, endDate, dateType) => dispatch(getChartRevenueData(spinner, startDate, endDate, dateType)),
-    getRevenueExport: (startDate, endDate, dateType) => dispatch(makeRevenuePayout(startDate, endDate, dateType)),
-    makeRevenuePayout: (data) => dispatch(getRevenueExport(data)),
+    getRevenueExport: (startDate, endDate, dateType) => dispatch(getRevenueExport(startDate, endDate, dateType)),
+    makeRevenuePayout: (data) => dispatch(makeRevenuePayout(data)),
   };
 }
 const mapStateToProps = (state) => ({
