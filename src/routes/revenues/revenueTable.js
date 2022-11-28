@@ -194,7 +194,7 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
             <div className="float-right">
               {!loading && revenueChartData.length > 0 && (
                 <Button onClick={() => handleExport()} style={{ height: "30px" }} className="align-items-center justify-content-center mr-2" color="primary">
-                  Create New
+               Make Payout
                 </Button>
               )}
             </div>
@@ -209,7 +209,7 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
                 </TableHead>
                 <TableBody>
                   <Fragment>
-                    {revenueChartData.length > 0 &&
+                    {/* {revenueChartData.length > 0 &&
                       revenueChartData.map((item, index) => (
                         <TableRow hover key={index}>
                           <TableCell>{`${formatByDateType(item?.rev_date)}`}</TableCell>
@@ -224,21 +224,7 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
                           <TableCell>{`₦${item?.dashcam_repayment?.toLocaleString() || 0}`}</TableCell>
                           <TableCell>{`₦${item?.mobile_phone_repayment?.toLocaleString() || 0}`}</TableCell>
                         </TableRow>
-                      ))}
-                    {revenueChartData.length > 0 && (
-                      <TableRow>
-                        <TableCell className="fw-bold">Total</TableCell>
-                        <TableCell className="fw-bold">{`₦${getColumnSum("asset_co")?.toLocaleString()}`}</TableCell>
-                        <TableCell className="fw-bold">{`₦${getColumnSum("comms")?.toLocaleString()}`}</TableCell>
-                        <TableCell className="fw-bold">{`₦${getColumnSum("daily_tax")?.toLocaleString()}`}</TableCell>
-                        <TableCell className="fw-bold">{`₦${getColumnSum("maintenance")?.toLocaleString()}`}</TableCell>
-                        <TableCell className="fw-bold">{`₦${getColumnSum("refleeting")?.toLocaleString()}`}</TableCell>
-                        <TableCell className="fw-bold">{`₦${getColumnSum("tech_co")?.toLocaleString()}`}</TableCell>
-                        <TableCell className="fw-bold">{`₦${getColumnSum("asset_repayment")?.toLocaleString()}`}</TableCell>
-                        <TableCell className="fw-bold">{`₦${getColumnSum("dashcam_repayment")?.toLocaleString()}`}</TableCell>
-                        <TableCell className="fw-bold">{`₦${getColumnSum("mobile_phone_repayment")?.toLocaleString()}`}</TableCell>
-                      </TableRow>
-                    )}
+                      ))} */}
                   </Fragment>
                 </TableBody>
               </Table>
@@ -253,7 +239,8 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
 function mapDispatchToProps(dispatch) {
   return {
     getChartRevenueData: (spinner, startDate, endDate, dateType) => dispatch(getChartRevenueData(spinner, startDate, endDate, dateType)),
-    getRevenueExport: (startDate, endDate, dateType) => dispatch(getRevenueExport(startDate, endDate, dateType)),
+    getRevenueExport: (startDate, endDate, dateType) => dispatch(makeRevenuePayout(startDate, endDate, dateType)),
+    makeRevenuePayout: (data) => dispatch(getRevenueExport(data)),
   };
 }
 const mapStateToProps = (state) => ({

@@ -132,6 +132,50 @@ export const getChartRevenueData =
     }
   };
 
+
+  export const makeRevenuePayout = (data) => async (dispatch) => {
+    try {
+      await dispatch(startStatusLoading());
+      const res = await axios.post(`${api.revenueSplit}/v1.1/admin/stakeholder-payment`, data);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        await NotificationManager.success("Request Sent Successfully");
+        await dispatch(getChartRevenuePayouts());
+      }
+      dispatch(endStatusLoading());
+    } catch (err) {
+      dispatch(endStatusLoading());
+      NotificationManager.error(err.response.data.error);
+    }
+  };
+
+
+
+// export const getChartRevenuePayouts =
+//   (spinner, startDate, endDate, dateType = "daily") =>
+//   async (dispatch) => {
+//     try {
+//       spinner && dispatch(startLoading());
+//       !spinner && dispatch(startStatusLoading());
+//       const res = await axios.get(`${api.revenueSplit}/v1.1/admin/revenue-shares?start_date=${startDate}&end_date=${endDate}&date_type=${dateType}`);
+//       if (res.data.status === "error") {
+//         NotificationManager.error(res.data.msg);
+//       } else {
+//         dispatch({
+//           type: CHART_REVENUE_DATA,
+//           payload: res.data.data,
+//         });
+//       }
+//       dispatch(endLoading());
+//       dispatch(endStatusLoading());
+//     } catch (err) {
+//       dispatch(endLoading());
+//       dispatch(endStatusLoading());
+//       NotificationManager.error(err.response.data.result);
+//     }
+//   };
+
 export const getRevenueExport =
   (startDate, endDate, dateType = "daily") =>
   async (dispatch) => {
