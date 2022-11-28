@@ -5,7 +5,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import { Badge, Button } from "reactstrap";
+import { Badge, Button, Form, Input, Modal, ModalBody, ModalHeader } from "reactstrap";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import { CSVLink } from "react-csv";
 import Pagination from "react-js-pagination";
@@ -17,7 +17,7 @@ import { getChartRevenueData, getRevenueExport, makeRevenuePayout } from "../../
 import moment from "moment";
 import { getFirstDayOfMonth, getTodayDate } from "../../helpers/helpers";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
-
+export let closeRevenuePayoutModal;
 const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getRevenueExport, makeRevenuePayout }) => {
   const typeHolder = useRef();
   const [dateType, setDateType] = useState("daily");
@@ -38,7 +38,9 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
   };
   const handleMakePayout = (e) => {
     e.preventDefault();
+    makeRevenuePayout(payoutFormData);
   };
+  closeRevenuePayoutModal = () => setIsOpen(false);
 
   const formatByDateType = (timeStamp) => {
     if (dateType === "daily") {
@@ -202,7 +204,7 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
           <>
             <div className="float-right">
               {!loading && revenueChartData.length > 0 && (
-                <Button onClick={() => handleExport()} style={{ height: "30px" }} className="align-items-center justify-content-center mr-2" color="primary">
+                <Button onClick={() => setIsOpen(true)} style={{ height: "30px" }} className="align-items-center justify-content-center mr-2" color="primary">
                   Make Payout
                 </Button>
               )}
@@ -248,20 +250,24 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
         <ModalBody>
           <Form onSubmit={handleMakePayout}>
             <div className="">
-              <small className="fw-bold ">Amount</small>
-              <Input id="amount" name="amount" type="number" min={0} value={amount} onChange={updatePayoutFormData} className="p-1 px-4 w-100" />
+              <small className="fw-bold ">Amount (₦)</small>
+              <Input id="amount" name="amount" type="number" min={0} value={payoutFormData.amount || ""} onChange={updatePayoutFormData} className="p-1 w-100" />
             </div>
             <div className="mt-3">
               <small className="fw-bold ">Payout Item</small>
-              <select name="payout_item" onChange={updatePayoutFormData}>
+              <Input name="payout_item" type="select" value={payoutFormData.payout_item || ""} onChange={updatePayoutFormData}>
+                <option value={""} selected hidden>
+                  -- Select Stakeholder --
+                </option>
                 <option value={"comms"}>Comms</option>
                 <option value={"tech_co"}>Tech Co.</option>
-              </select>
+              </Input>
             </div>
             <div className="mt-3">
-              <small className="fw-bold ">Driver Email</small>
-              <Input id="filter-dropdown" name="fiter-dropdown" type="email" value={driverEmail} onChange={(e) => setDriverEmail(e.target.value)} className="p-1 px-4 w-100" />
+              <small className="fw-bold ">Date Month</small>
+              <Input id="filter-dropdown" name="date_month" type="month" value={payoutFormData?.date_month || ""} onChange={updatePayoutFormData} className="p-1  w-100" />
             </div>
+
             <div className="mt-3 d-flex justify-content-end">
               <Button style={{ height: "30px" }} className="align-items-center justify-content-center" color="success">
                 Submit
