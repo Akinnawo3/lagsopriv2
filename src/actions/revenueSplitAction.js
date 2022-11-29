@@ -1,8 +1,9 @@
 import axios from "axios";
-import {REVENUE_SPLIT_DATA, DRIVER_REVENUE_SPLIT, DRIVER_REVENUE_SPLIT_COUNT, CHART_REVENUE_DATA} from "./types";
-import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
-import {NotificationManager} from "react-notifications";
+import { REVENUE_SPLIT_DATA, DRIVER_REVENUE_SPLIT, DRIVER_REVENUE_SPLIT_COUNT, CHART_REVENUE_DATA } from "./types";
+import { endLoading, endStatusLoading, startLoading, startStatusLoading } from "./loadingAction";
+import { NotificationManager } from "react-notifications";
 import api from "../environments/environment";
+import { closeRevenuePayoutModal } from "../routes/revenues/revenueTable";
 
 export const getRevenueSplitData = (spinner) => async (dispatch) => {
   try {
@@ -132,33 +133,33 @@ export const getChartRevenueData =
     }
   };
 
-
-  export const makeRevenuePayout = (data) => async (dispatch) => {
-    try {
-      await dispatch(startStatusLoading());
-      const res = await axios.post(`${api.revenueSplit}/v1.1/admin/stakeholder-payment`, data);
-      if (res.data.status === "error") {
-        NotificationManager.error(res.data.msg);
-      } else {
-        await NotificationManager.success("Request Sent Successfully");
-        await dispatch(getChartRevenuePayouts());
-      }
-      dispatch(endStatusLoading());
-    } catch (err) {
-      dispatch(endStatusLoading());
-      NotificationManager.error(err.response.data.error);
+export const makeRevenuePayout = (data) => async (dispatch) => {
+  try {
+    await dispatch(startStatusLoading());
+    const res = await axios.post(`${api.revenueSplit}/v1.1/admin/stakeholder-payment`, data);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      closeRevenuePayoutModal();
+      await NotificationManager.success("Request Sent Successfully");
+      await dispatch(getChartRevenuePayouts());
     }
-  };
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+    NotificationManager.error(err.response.data.error);
+  }
+};
 
-
-
-// export const getChartRevenuePayouts =
+// export const getRevenuePayouts =
 //   (spinner, startDate, endDate, dateType = "daily") =>
 //   async (dispatch) => {
 //     try {
 //       spinner && dispatch(startLoading());
 //       !spinner && dispatch(startStatusLoading());
-//       const res = await axios.get(`${api.revenueSplit}/v1.1/admin/revenue-shares?start_date=${startDate}&end_date=${endDate}&date_type=${dateType}`);
+//       const res = await axios.get(
+//         `${api.revenueSplit}/v1.1/admin/payout?item_per_page=&page=${""}&date_type=${""}&start_date=${""}&end_date${""}&status=${status}&user_type=${userType}`
+//       );
 //       if (res.data.status === "error") {
 //         NotificationManager.error(res.data.msg);
 //       } else {

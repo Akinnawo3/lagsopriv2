@@ -17,8 +17,9 @@ import { getChartRevenueData, getRevenueExport, makeRevenuePayout } from "../../
 import moment from "moment";
 import { getFirstDayOfMonth, getTodayDate } from "../../helpers/helpers";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
+import { approvePayout, getFinanceHolderPayouts } from "../../actions/paymentAction";
 export let closeRevenuePayoutModal;
-const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getRevenueExport, makeRevenuePayout }) => {
+const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getRevenueExport, makeRevenuePayout, getFinanceHolderPayouts, financeHolderPayouts, approvePayout }) => {
   const typeHolder = useRef();
   const [dateType, setDateType] = useState("daily");
   const [startDate, setStartDate] = useState(getFirstDayOfMonth());
@@ -26,13 +27,14 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
   const [type, setType] = useState("revenue");
   const [isOpen, setIsOpen] = useState(false);
   const [payoutFormData, setPayoutFormData] = useState({});
+  const [approveId, setApproveId] = useState("");
 
   useEffect(() => {
+    getFinanceHolderPayouts(1, true, "", "", "", "", "stakeholder");
     getChartRevenueData(true, startDate, endDate, dateType);
   }, []);
 
   const changeType = (e) => setType(e.target.value);
-
   const updatePayoutFormData = (e) => {
     setPayoutFormData({ ...payoutFormData, [e.target.name]: e.target.value });
   };
@@ -40,7 +42,10 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
     e.preventDefault();
     makeRevenuePayout(payoutFormData);
   };
-  closeRevenuePayoutModal = () => setIsOpen(false);
+  closeRevenuePayoutModal = () => {
+    setIsOpen(false);
+    getFinanceHolderPayouts("", false, "", "", "", "", "stakeholder");
+  };
 
   const formatByDateType = (timeStamp) => {
     if (dateType === "daily") {
@@ -53,6 +58,7 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
   };
 
   const exportRef = useRef(null);
+  const inputEl = useRef(null);
 
   const handleChange = (e) => {
     // setDateType(e.target.value);
@@ -94,6 +100,15 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
     let sum = 0;
     revenueChartData.map((item) => (sum += findprop(item, path) || 0));
     return sum;
+  };
+
+  const makeApproval = () => {
+    approvePayout({
+      status: "1",
+      payout_id: approveId,
+    });
+
+    inputEl.current.close();
   };
 
   return (
@@ -162,12 +177,12 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
                       revenueChartData.map((item, index) => (
                         <TableRow hover key={index}>
                           <TableCell>{`${formatByDateType(item?.rev_date)}`}</TableCell>
-                          <TableCell>{`₦${item?.asset_co?.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.comms?.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.daily_tax?.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.maintenance?.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.refleeting?.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.tech_co?.toLocaleString()}`}</TableCell>
+                          <TableCell>{`₦${item?.asset_co?.toLocaleString() || 0}`}</TableCell>
+                          <TableCell>{`₦${item?.comms?.toLocaleString() || 0}`}</TableCell>
+                          <TableCell>{`₦${item?.daily_tax?.toLocaleString() || 0}`}</TableCell>
+                          <TableCell>{`₦${item?.maintenance?.toLocaleString() || 0}`}</TableCell>
+                          <TableCell>{`₦${item?.refleeting?.toLocaleString() || 0}`}</TableCell>
+                          <TableCell>{`₦${item?.tech_co?.toLocaleString() || 0}`}</TableCell>
 
                           <TableCell>{`₦${item?.asset_repayment?.toLocaleString() || 0}`}</TableCell>
                           <TableCell>{`₦${item?.dashcam_repayment?.toLocaleString() || 0}`}</TableCell>
@@ -200,10 +215,10 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
         {revenueChartData.length === 0 && type === "revenue" && !loading && <EmptyData />}
 
         {/* For Payouts */}
-        {!loading && revenueChartData.length > 0 && type === "payout" && (
+        {!loading && financeHolderPayouts.length > 0 && type === "payout" && (
           <>
             <div className="float-right">
-              {!loading && revenueChartData.length > 0 && (
+              {!loading && (
                 <Button onClick={() => setIsOpen(true)} style={{ height: "30px" }} className="align-items-center justify-content-center mr-2" color="primary">
                   Make Payout
                 </Button>
@@ -214,28 +229,46 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
                 <TableHead>
                   <TableRow hover>
                     <TableCell>Date</TableCell>
+                    <TableCell>Stackholder Name</TableCell>
+                    <TableCell>Total Amount</TableCell>
+                    {/* <TableCell>Bank Name</TableCell>
+                    <TableCell>Bank Acc. Number</TableCell> */}
                     <TableCell>Status</TableCell>
                     <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   <Fragment>
-                    {/* {revenueChartData.length > 0 &&
-                      revenueChartData.map((item, index) => (
+                    {financeHolderPayouts.length > 0 &&
+                      financeHolderPayouts.map((item, index) => (
                         <TableRow hover key={index}>
-                          <TableCell>{`${formatByDateType(item?.rev_date)}`}</TableCell>
-                          <TableCell>{`₦${item?.asset_co?.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.comms?.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.daily_tax?.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.maintenance?.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.refleeting?.toLocaleString()}`}</TableCell>
-                          <TableCell>{`₦${item?.tech_co?.toLocaleString()}`}</TableCell>
-
-                          <TableCell>{`₦${item?.asset_repayment?.toLocaleString() || 0}`}</TableCell>
-                          <TableCell>{`₦${item?.dashcam_repayment?.toLocaleString() || 0}`}</TableCell>
-                          <TableCell>{`₦${item?.mobile_phone_repayment?.toLocaleString() || 0}`}</TableCell>
+                          <TableCell>{item?.group_date}</TableCell>
+                          <TableCell>{item?.stakeholder_name === "tech_co" ? "Tech Co." : item?.stakeholder_name}</TableCell>
+                          <TableCell>₦{item?.amount.toLocaleString()}</TableCell>
+                          {/* <TableCell>{item?.bank_name}</TableCell>
+                          <TableCell>{item?.account_number}</TableCell> */}
+                          <TableCell>
+                            <Badge color={item?.status === 0 ? "secondary" : item?.status === 1 ? "success" : item?.status === 2 ? "danger" : item?.status === 3 ? "warning" : "info"}>
+                              {item?.status === 0 ? "Pending" : item?.status === 1 ? "Completed" : item?.status === 2 ? "Failed" : item?.status === 3 ? "Processing" : "Reviewed"}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            {item?.approve_status === 0 && (
+                              <Button
+                                onClick={() => {
+                                  setApproveId(item?.payout_id);
+                                  inputEl.current.open();
+                                }}
+                                style={{ height: "30px" }}
+                                className="align-items-center justify-content-center mr-2"
+                                color="primary"
+                              >
+                                Approve
+                              </Button>
+                            )}
+                          </TableCell>
                         </TableRow>
-                      ))} */}
+                      ))}
                   </Fragment>
                 </TableBody>
               </Table>
@@ -244,6 +277,7 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
         )}
       </RctCollapsibleCard>
       <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
+      <DeleteConfirmationDialog ref={inputEl} title={"Are you sure you have to approve this payment?"} message={"This payment will be approved."} onConfirm={makeApproval} />
 
       <Modal size="md" isOpen={isOpen} toggle={() => setIsOpen((prevState) => !prevState)}>
         <ModalHeader toggle={() => setIsOpen((prevState) => !prevState)}>Make Payout</ModalHeader>
@@ -284,12 +318,16 @@ function mapDispatchToProps(dispatch) {
     getChartRevenueData: (spinner, startDate, endDate, dateType) => dispatch(getChartRevenueData(spinner, startDate, endDate, dateType)),
     getRevenueExport: (startDate, endDate, dateType) => dispatch(getRevenueExport(startDate, endDate, dateType)),
     makeRevenuePayout: (data) => dispatch(makeRevenuePayout(data)),
+    getFinanceHolderPayouts: (page_no, loading, date_type, start_date, end_date, status, userType) =>
+      dispatch(getFinanceHolderPayouts(page_no, loading, date_type, start_date, end_date, status, userType)),
+    approvePayout: (data) => dispatch(approvePayout(data)),
   };
 }
 const mapStateToProps = (state) => ({
   loading: state.loading.loading,
   loadingStatus: state.loading.loadingStatus,
   revenueChartData: state.revenueSplit.chartRevenueData,
+  financeHolderPayouts: state.payments.financeHolderPayouts,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RevenueTable);

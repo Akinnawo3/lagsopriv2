@@ -389,11 +389,11 @@ export default {
           new_item: false,
           menu_title: "sidebar.disbursement-driver",
         },
-        {
-          path: "/admin/disbursement-holder",
-          new_item: false,
-          menu_title: "sidebar.disbursement-holder",
-        },
+        // {
+        //   path: "/admin/disbursement-holder",
+        //   new_item: false,
+        //   menu_title: "sidebar.disbursement-holder",
+        // },
       ],
     },
 
