@@ -17,6 +17,8 @@ import {
   TRIP_COUNT_WAITING_USERS,
   TRIPS,
   ACTUAL_LOCATION,
+  DRIVERS_PERFORMANCE,
+  DRIVERS_PERFORMANCE_COUNT,
 } from "Actions/types";
 
 const initialState = {
@@ -37,6 +39,8 @@ const initialState = {
   tripCountWaitingUsers: 0,
   tripCountMovingDrivers: 0,
   tripCountWaitingDrivers: 0,
+  driversPerformance: [],
+  driversPerformanceCount: 0,
 };
 
 function tripReducer(state = initialState, action) {
@@ -150,6 +154,21 @@ function tripReducer(state = initialState, action) {
         actualAddress: payload,
       };
     }
+
+    case DRIVERS_PERFORMANCE: {
+      return {
+        ...state,
+        driversPerformance: payload,
+      };
+    }
+
+    case DRIVERS_PERFORMANCE_COUNT: {
+      return {
+        ...state,
+        driversPerformanceCount: payload,
+      };
+    }
+
     default:
       return state;
   }
