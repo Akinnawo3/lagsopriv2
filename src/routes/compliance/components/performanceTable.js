@@ -1,9 +1,10 @@
-import {TableCell, TableRow,TableBody,TableHead} from "@material-ui/core";
-import React, {Fragment, useEffect, useState} from "react";
+import { TableCell, TableRow, TableBody, TableHead } from "@material-ui/core";
+import React, { Fragment, useEffect, useState } from "react";
 
-import {Card, CardTitle, Table} from "reactstrap";
+import { Card, CardTitle, Table } from "reactstrap";
+import { getDriversPerformance, getDriversPerformanceCount } from "../../../actions/tripAction";
 
-const PerformanceTable = ({loading, getDownloadsByDate, downloadsByDate}) => {
+const PerformanceTable = ({ loading, getDownloadsByDate, downloadsByDate }) => {
   return (
     <Card body>
       <CardTitle className=" justify-content-between">
@@ -28,7 +29,7 @@ const PerformanceTable = ({loading, getDownloadsByDate, downloadsByDate}) => {
           </TableHead>
           <TableBody>
             <Fragment>
-              {Array.from({length: 6}).map((item, index) => (
+              {Array.from({ length: 6 }).map((item, index) => (
                 <TableRow key={index}>
                   <TableCell>Joanna</TableCell>
                   <TableCell>Lane</TableCell>
@@ -44,4 +45,27 @@ const PerformanceTable = ({loading, getDownloadsByDate, downloadsByDate}) => {
   );
 };
 
-export default PerformanceTable;
+function mapDispatchToProps(dispatch) {
+  return {
+    getDriversPerformance: (driver_id, page, spinner, start_date, end_date) => dispatch(getDriversPerformance(driver_id, page, spinner, start_date, end_date)),
+    getDriversPerformanceCount: (driver_id, page, spinner, start_date, end_date) => dispatch(getDriversPerformanceCount(driver_id, page, spinner, start_date, end_date)),
+    // deleteUser: (auth_id, users) => dispatch(deleteUser(auth_id, users)),
+    // getUserCount: (start_date, end_date) => dispatch(getUserCount(start_date, end_date)),
+    // getUserExport: (user_type, driver_category, driver_account_status, start_date, end_date) => dispatch(getUserExport(user_type, driver_category, driver_account_status, start_date, end_date)),
+    // searchUsers: (searchData) => dispatch(searchUsers(searchData)),
+    // ResetUserDetails: (body, emailData) => dispatch(ResetUserDetails(body, emailData)),
+    // changeKycStatus: (auth_id, kyc_status) => dispatch(changeKycStatus(auth_id, kyc_status)),
+    // sendVerificationRequest: (id_type, id_value, first_name, last_name) => dispatch(sendVerificationRequest(id_type, id_value, first_name, last_name)),
+  };
+}
+
+const mapStateToProps = (state) => ({
+  //   users: state.users.users,
+  //   userCount: state.users.userCount,
+  //   loading: state.loading.loading,
+  //   loadingStatus: state.loading.loadingStatus,
+  //   dataMode: state.authUser.userProfile.data_mode,
+  //   verificationResult: state.idVerification.verificationResult,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PerformanceTable);

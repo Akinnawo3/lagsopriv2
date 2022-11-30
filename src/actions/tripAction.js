@@ -18,13 +18,15 @@ import {
   TRIP_COUNT_WAITING_DRIVERS,
   TRIP_COUNT_MOVING_DRIVERS,
   ACTUAL_LOCATION,
+  DRIVERS_PERFORMANCE,
+  DRIVERS_PERFORMANCE_COUNT,
 } from "./types";
-import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
+import { endLoading, endStatusLoading, startLoading, startStatusLoading } from "./loadingAction";
 import api from "../environments/environment";
-import {NotificationManager} from "react-notifications";
+import { NotificationManager } from "react-notifications";
 
 export const getTrips =
-  (pageNo, status = "", spinner, start_date = '', end_date = '') =>
+  (pageNo, status = "", spinner, start_date = "", end_date = "") =>
   async (dispatch) => {
     try {
       spinner && dispatch(startLoading());
@@ -130,7 +132,7 @@ export const searchTrip =
   };
 
 export const getTripCount =
-  (status = "", start_date = '', end_date = '') =>
+  (status = "", start_date = "", end_date = "") =>
   async (dispatch) => {
     try {
       const res = await axios.get(`${api.trip}/v1.1/trips/?component=count&trip_status=${status}&start_date=${start_date}&end_date=${end_date}`);
@@ -146,7 +148,7 @@ export const getTripCount =
   };
 
 export const getTripExport =
-  (status = "", auth_id= '', userType, start_date= '', end_date = '') =>
+  (status = "", auth_id = "", userType, start_date = "", end_date = "") =>
   async (dispatch) => {
     dispatch(startStatusLoading());
     try {
@@ -162,26 +164,28 @@ export const getTripExport =
     }
   };
 
-export const getDriverTrips = (pageNo, authId, spinner, trip_status, start_end = '', end_date = '') => async (dispatch) => {
-  try {
-    spinner && dispatch(startLoading());
-    !spinner && dispatch(startStatusLoading());
-    const res = await axios.get(`${api.trip}/v1.1/trips/?item_per_page=20&page=${pageNo}&driver_auth_id=${authId}&trip_status=${trip_status}&start_date=${start_end}&end_date=${end_date}`);
-    if (res.data.status === "error") {
-      NotificationManager.error(res.data.msg);
-    } else {
-      dispatch({
-        type: DRIVER_TRIPS,
-        payload: res.data.data,
-      });
+export const getDriverTrips =
+  (pageNo, authId, spinner, trip_status, start_end = "", end_date = "") =>
+  async (dispatch) => {
+    try {
+      spinner && dispatch(startLoading());
+      !spinner && dispatch(startStatusLoading());
+      const res = await axios.get(`${api.trip}/v1.1/trips/?item_per_page=20&page=${pageNo}&driver_auth_id=${authId}&trip_status=${trip_status}&start_date=${start_end}&end_date=${end_date}`);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        dispatch({
+          type: DRIVER_TRIPS,
+          payload: res.data.data,
+        });
+      }
+      dispatch(endLoading());
+      dispatch(endStatusLoading());
+    } catch (err) {
+      dispatch(endLoading());
+      dispatch(endStatusLoading());
     }
-    dispatch(endLoading());
-    dispatch(endStatusLoading());
-  } catch (err) {
-    dispatch(endLoading());
-    dispatch(endStatusLoading());
-  }
-};
+  };
 
 export const getDriverTripsByTripStatus = (pageNo, authId, trip_status) => async (dispatch) => {
   try {
@@ -202,19 +206,21 @@ export const getDriverTripsByTripStatus = (pageNo, authId, trip_status) => async
   }
 };
 
-export const getDriverTripCount = (authId, trip_status, start_end = '', end_date = '') => async (dispatch) => {
-  try {
-    const res = await axios.get(`${api.trip}/v1.1/trips/?driver_auth_id=${authId}&component=count&trip_status=${trip_status}&start_date=${start_end}&end_date=${end_date}`);
-    if (res.data.status === "error") {
-      NotificationManager.error(res.data.msg);
-    } else {
-      dispatch({
-        type: TRIP_COUNT_DRIVER,
-        payload: res.data.data.total,
-      });
-    }
-  } catch (err) {}
-};
+export const getDriverTripCount =
+  (authId, trip_status, start_end = "", end_date = "") =>
+  async (dispatch) => {
+    try {
+      const res = await axios.get(`${api.trip}/v1.1/trips/?driver_auth_id=${authId}&component=count&trip_status=${trip_status}&start_date=${start_end}&end_date=${end_date}`);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        dispatch({
+          type: TRIP_COUNT_DRIVER,
+          payload: res.data.data.total,
+        });
+      }
+    } catch (err) {}
+  };
 
 export const getDriverTripCountDisplayAll = (authId) => async (dispatch) => {
   try {
@@ -256,26 +262,28 @@ export const getDriverTripCountDisplayCancelled = (authId) => async (dispatch) =
   } catch (err) {}
 };
 
-export const getPassengerTrips = (pageNo, authId, spinner, trip_status, start_date = '', end_date = '') => async (dispatch) => {
-  try {
-    spinner && dispatch(startLoading());
-    !spinner && dispatch(startStatusLoading());
-    const res = await axios.get(`${api.trip}/v1.1/trips/?item_per_page=20&page=${pageNo}&rider_auth_id=${authId}&trip_status=${trip_status}&start_date=${start_date}&end_date=${end_date}`);
-    if (res.data.status === "error") {
-      NotificationManager.error(res.data.msg);
-    } else {
-      dispatch({
-        type: PASSENGER_TRIPS,
-        payload: res.data.data,
-      });
+export const getPassengerTrips =
+  (pageNo, authId, spinner, trip_status, start_date = "", end_date = "") =>
+  async (dispatch) => {
+    try {
+      spinner && dispatch(startLoading());
+      !spinner && dispatch(startStatusLoading());
+      const res = await axios.get(`${api.trip}/v1.1/trips/?item_per_page=20&page=${pageNo}&rider_auth_id=${authId}&trip_status=${trip_status}&start_date=${start_date}&end_date=${end_date}`);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        dispatch({
+          type: PASSENGER_TRIPS,
+          payload: res.data.data,
+        });
+      }
+      dispatch(endLoading());
+      dispatch(endStatusLoading());
+    } catch (err) {
+      dispatch(endLoading());
+      dispatch(endStatusLoading());
     }
-    dispatch(endLoading());
-    dispatch(endStatusLoading());
-  } catch (err) {
-    dispatch(endLoading());
-    dispatch(endStatusLoading());
-  }
-};
+  };
 
 export const getPassengerTripsByTripStatus = (pageNo, authId, trip_status) => async (dispatch) => {
   try {
@@ -296,23 +304,25 @@ export const getPassengerTripsByTripStatus = (pageNo, authId, trip_status) => as
   }
 };
 
-export const getPassengerTripCount = (authId, trip_status, start_date = '', end_date = '') => async (dispatch) => {
-  try {
-    // dispatch(startLoading());
-    const res = await axios.get(`${api.trip}/v1.1/trips/?rider_auth_id=${authId}&component=count&trip_status=${trip_status}&start_date=${start_date}&end_date=${end_date}`);
-    if (res.data.status === "error") {
-      NotificationManager.error(res.data.msg);
-    } else {
-      dispatch({
-        type: TRIP_COUNT_PASSENGER,
-        payload: res.data.data.total,
-      });
+export const getPassengerTripCount =
+  (authId, trip_status, start_date = "", end_date = "") =>
+  async (dispatch) => {
+    try {
+      // dispatch(startLoading());
+      const res = await axios.get(`${api.trip}/v1.1/trips/?rider_auth_id=${authId}&component=count&trip_status=${trip_status}&start_date=${start_date}&end_date=${end_date}`);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        dispatch({
+          type: TRIP_COUNT_PASSENGER,
+          payload: res.data.data.total,
+        });
+      }
+      // dispatch(endLoading());
+    } catch (err) {
+      // dispatch(endLoading());
     }
-    // dispatch(endLoading());
-  } catch (err) {
-    // dispatch(endLoading());
-  }
-};
+  };
 
 export const getPassengerTripCountDisplayAll = (authId) => async (dispatch) => {
   try {
@@ -454,3 +464,46 @@ export const getActualAddress = (lat, lng, spinner) => async (dispatch) => {
     dispatch(endStatusLoading());
   }
 };
+
+export const getDriversPerformance =
+  (driver_id = "", page = 1, spinner, start_date = "", end_date = "") =>
+  async (dispatch) => {
+    try {
+      spinner && dispatch(startLoading());
+      !spinner && dispatch(startStatusLoading());
+      const res = await axios.get(`${api.trip}/v1.1/analytics/compliance?driver_id=${driver_id}&item_per_page=20&page=${page}&start_date=${start_date}&end_date=${end_date}`);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        dispatch({
+          type: DRIVERS_PERFORMANCE,
+          payload: res.data.data,
+        });
+      }
+      dispatch(endLoading());
+      dispatch(endStatusLoading());
+    } catch (err) {
+      dispatch(endStatusLoading());
+      dispatch(endLoading());
+      // NotificationManager.error(err.response.data.result)
+    }
+  };
+
+export const getDriversPerformanceCount =
+  (driver_id = "", page = 1, spinner = false , start_date = "", end_date = "") =>
+  async (dispatch) => {
+    try {
+      const res = await axios.get(`${api.trip}/v1.1/analytics/compliance?driver_id=${driver_id}&item_per_page=20&page=${page}&start_date=${start_date}&end_date=${end_date}&component=count`);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        dispatch({
+          type: DRIVERS_PERFORMANCE_COUNT,
+          payload: res.data?.data?.total,
+        });
+      }
+    } catch (err) {}
+  };
+
+
+
