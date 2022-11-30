@@ -215,15 +215,15 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
         {revenueChartData.length === 0 && type === "revenue" && !loading && <EmptyData />}
 
         {/* For Payouts */}
-        {!loading && financeHolderPayouts.length > 0 && type === "payout" && (
-          <>
-            <div className="float-right">
-              {!loading && (
-                <Button onClick={() => setIsOpen(true)} style={{ height: "30px" }} className="align-items-center justify-content-center mr-2" color="primary">
-                  Make Payout
-                </Button>
-              )}
-            </div>
+        <>
+          <div className="float-right">
+            {!loading && (
+              <Button onClick={() => setIsOpen(true)} style={{ height: "30px" }} className="align-items-center justify-content-center mr-2" color="primary">
+                Make Payout
+              </Button>
+            )}
+          </div>
+          {!loading && financeHolderPayouts.length > 0 && type === "payout" && (
             <div className="table-responsive" style={{ minHeight: "50vh" }}>
               <Table>
                 <TableHead>
@@ -275,8 +275,8 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
                 </TableBody>
               </Table>
             </div>
-          </>
-        )}
+          )}
+        </>
       </RctCollapsibleCard>
       <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
       <DeleteConfirmationDialog ref={inputEl} title={"Are you sure you have to approve this payment?"} message={"This payment will be approved."} onConfirm={makeApproval} />
