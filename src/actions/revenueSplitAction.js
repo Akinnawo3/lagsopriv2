@@ -141,13 +141,12 @@ export const makeRevenuePayout = (data) => async (dispatch) => {
       NotificationManager.error(res.data.msg);
     } else {
       closeRevenuePayoutModal();
-      await NotificationManager.success("Request Sent Successfully");
-      await dispatch(getChartRevenuePayouts());
+      await NotificationManager.success("Request Sent Successfully"); 
     }
     dispatch(endStatusLoading());
   } catch (err) {
     dispatch(endStatusLoading());
-    NotificationManager.error(err.response.data.error);
+    console.log(err)
   }
 };
 
