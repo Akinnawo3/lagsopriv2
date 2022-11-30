@@ -107,7 +107,6 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
       status: "1",
       payout_id: approveId,
     });
-
     inputEl.current.close();
   };
 

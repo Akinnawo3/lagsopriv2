@@ -562,7 +562,7 @@ export const getFinanceHolderPayouts =
       dispatch(endLoading());
       dispatch(endStatusLoading());
     } catch (err) {
-      console.log(err)
+      console.log(err);
       dispatch(endLoading());
       dispatch(endStatusLoading());
     }
@@ -656,11 +656,11 @@ export const approvePayout = (body) => async (dispatch) => {
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      NotificationManager.success("Payout Approved Successfully!");
-      getFinanceHolderPayouts(1, true, "", "", "", "", "stakeholder");
-      getFinanceDriverPayouts();
-      getFinanceDriverPayoutsCount();
+      await NotificationManager.success("Payout Approved Successfully!");
+      dispatch(getFinanceHolderPayouts(1, false, "", "", "", "", "stakeholder"));
+      // dispatch(getFinanceHolderPayouts(1, false, "", "", "", "", "stakeholder"));
     }
+
     dispatch(endStatusLoading());
   } catch (e) {
     console.log(e);
