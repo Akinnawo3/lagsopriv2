@@ -658,6 +658,7 @@ export const approvePayout = (body) => async (dispatch) => {
     } else {
       await NotificationManager.success("Payout Approved Successfully!");
       dispatch(getFinanceHolderPayouts(1, false, "", "", "", "", "stakeholder"));
+      // dispatch(getFinanceHolderPayouts(1, false, "", "", "", "", "stakeholder"));
     }
 
     dispatch(endStatusLoading());
