@@ -215,16 +215,13 @@ const RevenueTable = ({ getChartRevenueData, revenueChartData, loading, getReven
 
         {/* For Payouts */}
         <>
-          {type === "payout" && (
-            <div className="float-right">
-              {!loading && (
-                <Button onClick={() => setIsOpen(true)} style={{ height: "30px" }} className="align-items-center justify-content-center mr-2" color="primary">
-                  Make Payout
-                </Button>
-              )}
-            </div>
-          )}
-
+          <div className="float-right">
+            {!loading && (
+              <Button onClick={() => setIsOpen(true)} style={{ height: "30px" }} className="align-items-center justify-content-center mr-2" color="primary">
+                Make Payout
+              </Button>
+            )}
+          </div>
           {!loading && financeHolderPayouts.length > 0 && type === "payout" && (
             <div className="table-responsive" style={{ minHeight: "50vh" }}>
               <Table>
