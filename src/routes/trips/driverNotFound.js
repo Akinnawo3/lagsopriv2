@@ -13,6 +13,7 @@ const TripsDriverNotFound = ({match, getCancelledTrips, getCancelledTripCount}) 
   useEffect(() => {
     getCancelledTrips(1, true);
     getCancelledTripCount();
+    
   }, []);
 
   return (

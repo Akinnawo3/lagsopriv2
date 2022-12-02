@@ -1,10 +1,15 @@
 import { TableCell, TableRow, TableBody, TableHead } from "@material-ui/core";
 import React, { Fragment, useEffect, useState } from "react";
+import { connect } from "react-redux";
 
 import { Card, CardTitle, Table } from "reactstrap";
 import { getDriversPerformance, getDriversPerformanceCount } from "../../../actions/tripAction";
 
-const PerformanceTable = ({ loading, getDownloadsByDate, downloadsByDate }) => {
+const PerformanceTable = ({ loading, getDownloadsByDate, downloadsByDate, getDriversPerformance }) => {
+  useEffect(() => {
+    getDriversPerformance("", 1, false, "", "");
+  }, []);
+
   return (
     <Card body>
       <CardTitle className=" justify-content-between">
@@ -50,12 +55,6 @@ function mapDispatchToProps(dispatch) {
     getDriversPerformance: (driver_id, page, spinner, start_date, end_date) => dispatch(getDriversPerformance(driver_id, page, spinner, start_date, end_date)),
     getDriversPerformanceCount: (driver_id, page, spinner, start_date, end_date) => dispatch(getDriversPerformanceCount(driver_id, page, spinner, start_date, end_date)),
     // deleteUser: (auth_id, users) => dispatch(deleteUser(auth_id, users)),
-    // getUserCount: (start_date, end_date) => dispatch(getUserCount(start_date, end_date)),
-    // getUserExport: (user_type, driver_category, driver_account_status, start_date, end_date) => dispatch(getUserExport(user_type, driver_category, driver_account_status, start_date, end_date)),
-    // searchUsers: (searchData) => dispatch(searchUsers(searchData)),
-    // ResetUserDetails: (body, emailData) => dispatch(ResetUserDetails(body, emailData)),
-    // changeKycStatus: (auth_id, kyc_status) => dispatch(changeKycStatus(auth_id, kyc_status)),
-    // sendVerificationRequest: (id_type, id_value, first_name, last_name) => dispatch(sendVerificationRequest(id_type, id_value, first_name, last_name)),
   };
 }
 
@@ -69,3 +68,4 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PerformanceTable);
+

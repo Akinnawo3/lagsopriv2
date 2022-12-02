@@ -1,29 +1,29 @@
 /**
  * TripsTable
  */
-import React, {useState, useEffect, Fragment, useRef} from "react";
+import React, { useState, useEffect, Fragment, useRef } from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import {Media, Badge, Button} from "reactstrap";
+import { Media, Badge, Button } from "reactstrap";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import {connect} from "react-redux";
-import {getTripCount, getTripExport, getTrips, searchTrip} from "Actions/tripAction";
-import {Link} from "react-router-dom";
+import { connect } from "react-redux";
+import { getTripCount, getTripExport, getTrips, searchTrip } from "Actions/tripAction";
+import { Link } from "react-router-dom";
 import Pagination from "react-js-pagination";
 import EmptyData from "Components/EmptyData/EmptyData";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
-import {getCancelledTripCount, getCancelledTrips} from "../../../actions/tripAction";
-import {useHistory} from "react-router-dom";
+import { getCancelledTripCount, getCancelledTrips } from "../../../actions/tripAction";
+import { useHistory } from "react-router-dom";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
-import {calculatePostDate, getTodayDate} from "../../../helpers/helpers";
+import { calculatePostDate, getTodayDate } from "../../../helpers/helpers";
 const qs = require("qs");
 
-const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, searchTrips, getTripCount, getCancelledTrips, getCancelledTripCount, getTripExport}) => {
+const TripsTable = ({ trips, getTrips, isLoading, tripCount, status, header, searchTrips, getTripCount, getCancelledTrips, getCancelledTripCount, getTripExport }) => {
   const history = useHistory();
-  const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
+  const pageFromQuery = qs.parse(history.location.search, { ignoreQueryPrefix: true }).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
@@ -65,10 +65,10 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
     getTripExport(status, "", "", startDate, endDate);
   };
 
-  console.log(status);
+  console.log(trips);
   return (
     <div>
-      <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}}>
+      <RctCollapsibleCard heading={header} fullBlock style={{ minHeight: "70vh" }}>
         {status !== "driver_not_found" && (
           <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
             <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={"Trip Reference"} />
@@ -91,7 +91,7 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
         {status !== "driver_not_found" && (
           <div className="float-right">
             {!isLoading && trips.length > 0 && (
-              <Button onClick={() => handleExport()} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
+              <Button onClick={() => handleExport()} style={{ height: "30px" }} className="align-items-center justify-content-center mr-2" color="primary">
                 {" "}
                 <i className="zmdi zmdi-download mr-2"></i> Export to Excel
               </Button>
@@ -101,7 +101,7 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
 
         {!isLoading && trips.length > 0 && (
           <div>
-            <div className="table-responsive" style={{minHeight: "50vh"}}>
+            <div className="table-responsive" style={{ minHeight: "50vh" }}>
               <Table>
                 <TableHead>
                   <TableRow hover>
@@ -160,7 +160,7 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
                           )}
                           <TableCell>
                             {/* {new Date(trip.createdAt).toDateString()} {new Date(trip.createdAt).toLocaleTimeString()} */}
-                            {calculatePostDate(trip.createdAt)}
+                            {status === "driver_not_found" ? calculatePostDate(trip?.updatedAt) : calculatePostDate(trip?.createdAt)}
                           </TableCell>
                           {status !== "driver_not_found" && (
                             <>
@@ -185,7 +185,7 @@ const TripsTable = ({trips, getTrips, isLoading, tripCount, status, header, sear
                           {status !== "driver_not_found" && (
                             <TableCell>
                               <button type="button" className="rct-link-btn text-primary" title="view details">
-                                <Link to={{pathname: `/admin/trips/${trip.trip_id}`, state: {trip_status: status}}}>
+                                <Link to={{ pathname: `/admin/trips/${trip.trip_id}`, state: { trip_status: status } }}>
                                   <i className="ti-eye" />
                                 </Link>
                               </button>
