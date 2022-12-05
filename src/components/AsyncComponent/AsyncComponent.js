@@ -564,6 +564,7 @@ export {
   AsyncActiveVehicles,
   AsyncInactiveVehicles,
   AsyncVehicles,
+  VehiclesPerformance,
   AsyncVerifiedDrivers,
   AsyncPendingDrivers,
   AsyncAcceptedDrivers,

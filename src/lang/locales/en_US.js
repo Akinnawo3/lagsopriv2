@@ -100,6 +100,7 @@ module.exports = {
   "sidebar.trip manifest": "Trip Manifest",
   "sidebar.route intelligence": "Route Intelligence",
   "sidebar.news": "News",
+  "sidebar.performance": "Performance",
   "sidebar.horizontal": "Horizontal",
   "sidebar.horizontalMenu": "Horizontal Menu",
   "sidebar.general": "Taxi",

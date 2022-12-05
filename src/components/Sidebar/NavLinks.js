@@ -193,6 +193,11 @@ export default {
           menu_title: "sidebar.inactive",
         },
         {
+          path: "/admin/vehicles/performance",
+          new_item: false,
+          menu_title: "sidebar.performance",
+        },
+        {
           path: "/admin/vehicles/feedback",
           new_item: false,
           menu_title: "sidebar.feedback",
