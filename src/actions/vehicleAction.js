@@ -437,3 +437,21 @@ export const getVehiclesPerformanceCount =
       NotificationManager.error(err.response.data.message);
     }
   };
+
+export const setVehicleRepayment = (body) => async (dispatch) => {
+  dispatch(startStatusLoading());
+  try {
+    const res = await axios.post(`${api.vehicles}/v1.1/admin/vehicle-payment`, body);
+    if (res.data.status === "error") {
+      NotificationManager.error(res.data.msg);
+    } else {
+      await NotificationManager.success("Vehicle Created Successfully!");
+      onAddUpdateVehicleModalClose();
+      await dispatch(getVehicles());
+    }
+    dispatch(endStatusLoading());
+  } catch (err) {
+    dispatch(endStatusLoading());
+    NotificationManager.error("network error, try again");
+  }
+};
