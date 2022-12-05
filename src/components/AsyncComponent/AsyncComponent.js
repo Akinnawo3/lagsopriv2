@@ -201,6 +201,10 @@ const AsyncVehicles = Loadable({
   loader: () => import("Routes/vehicles/vehicles"),
   loading: () => <RctPageLoader />,
 });
+const VehiclesPerformance = Loadable({
+  loader: () => import("Routes/vehicles/vehiclesPerformance"),
+  loading: () => <RctPageLoader />,
+});
 const AsyncActiveVehicles = Loadable({
   loader: () => import("Routes/vehicles/activeVehicles"),
   loading: () => <RctPageLoader />,
