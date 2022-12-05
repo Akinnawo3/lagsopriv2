@@ -35,6 +35,10 @@ const AsyncDriverRatings = Loadable({
   loader: () => import("Routes/ratings/driver-ratings"),
   loading: () => <RctPageLoader />,
 });
+const AsyncRouteIntelligence = Loadable({
+  loader: () => import("Routes/route-intelligence/RouteIntelligence.js"),
+  loading: () => <RctPageLoader />,
+});
 const AsyncUserRatings = Loadable({
   loader: () => import("Routes/ratings/user-ratings"),
   loading: () => <RctPageLoader />,
@@ -655,5 +659,6 @@ export {
   AsyncPartnersPending,
   AsyncPartnersVerified,
   AsyncPartnersApproved,
-  AsyncCompliance
+  AsyncCompliance,
+  AsyncRouteIntelligence,
 };

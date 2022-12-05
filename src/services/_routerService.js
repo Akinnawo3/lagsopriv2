@@ -37,6 +37,7 @@ import promoRoutes from "../routes/promo-discounts/promoRoutes";
 import RevenueRoute from "../routes/revenues/revenueRoutes";
 import PartnersRoutes from "Routes/partners/partnersRoutes";
 import ComplianceRoutes from "../routes/compliance/complianceRoutes";
+import { AsyncRouteIntelligence } from "../components/AsyncComponent/AsyncComponent";
 
 export default [
   {
@@ -241,6 +242,11 @@ export default [
   {
     path: "compliance",
     component: ComplianceRoutes,
+    permission: "view_partners",
+  },
+  {
+    path: "route-intelligence",
+    component: AsyncRouteIntelligence,
     permission: "view_partners",
   },
 ];

@@ -98,6 +98,7 @@ module.exports = {
   "sidebar.summary": "Summary",
   "sidebar.promo and discounts": "Promo and Discounts",
   "sidebar.trip manifest": "Trip Manifest",
+  "sidebar.route intelligence": "Route Intelligence",
   "sidebar.news": "News",
   "sidebar.horizontal": "Horizontal",
   "sidebar.horizontalMenu": "Horizontal Menu",

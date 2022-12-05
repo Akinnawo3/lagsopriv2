@@ -360,6 +360,46 @@ export default {
       ],
     },
 
+    {
+      menu_title: "sidebar.route intelligence",
+      menu_icon: "icon-graph",
+      path: "/admin/route-intelligence",
+      type_multi: null,
+      new_item: false,
+      // child_routes: [
+      //   {
+      //     path: "/admin/trips",
+      //     new_item: false,
+      //     menu_title: "sidebar.all",
+      //   },
+      //   {
+      //     path: "/admin/trips/waiting",
+      //     new_item: false,
+      //     menu_title: "sidebar.waiting",
+      //   },
+      //   {
+      //     path: "/admin/trips/completed",
+      //     new_item: false,
+      //     menu_title: "sidebar.completed",
+      //   },
+      //   {
+      //     path: "/admin/trips/current",
+      //     new_item: false,
+      //     menu_title: "sidebar.current",
+      //   },
+      //   {
+      //     path: "/admin/trips/cancelled",
+      //     new_item: false,
+      //     menu_title: "sidebar.cancelled",
+      //   },
+      //   {
+      //     path: "/admin/trips/driver-not-found",
+      //     new_item: false,
+      //     menu_title: "sidebar.notFound",
+      //   },
+      // ],
+    },
+
     // {
     //   menu_title: "sidebar.serviceRequests",
     //   menu_icon: "icon-credit-card",
