@@ -445,9 +445,9 @@ export const setVehicleRepayment = (body) => async (dispatch) => {
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      await NotificationManager.success("Vehicle Created Successfully!");
-      onAddUpdateVehicleModalClose();
-      await dispatch(getVehicles());
+      await NotificationManager.success("Vehicle Updated Successfully!");
+      // onAddUpdateVehicleModalClose();
+      await dispatch(getVehicle(body?.vehicle_id));
     }
     dispatch(endStatusLoading());
   } catch (err) {
