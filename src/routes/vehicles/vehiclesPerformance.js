@@ -1,15 +1,12 @@
 import React from "react";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
+import VehiclesPerformanceTable from "./components/vehiclesPerformanceTable";
 
-const VehiclesPerformance = ({match}) => {
+const VehiclesPerformance = ({ match }) => {
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Performance"} match={match} />
-      <h1>Vehicles Performance</h1>
-      <h1>Vehicles Performance</h1>
-      <h1>Vehicles Performance</h1>
-      <h1>Vehicles Performance</h1>
-      <h1>Vehicles Performance</h1>
+      <VehiclesPerformanceTable />
     </div>
   );
 };
