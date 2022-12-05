@@ -1,7 +1,7 @@
 import React from "react";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
-const VehiclesPerformance = () => {
+const VehiclesPerformance = ({match}) => {
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Performance"} match={match} />

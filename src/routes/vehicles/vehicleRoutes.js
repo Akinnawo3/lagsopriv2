@@ -23,9 +23,9 @@ const VehicleRoutes = ({ match }) => (
       <Route path={`/admin/vehicles/active`} component={AsyncActiveVehicles} />
       <Route path={`/admin/vehicles/inactive`} component={AsyncInactiveVehicles} />
       <Route path={`/admin/vehicles/feedback`} component={AsyncVehiclesFeedback} />
+      <Route path={`/admin/vehicles/performance`} component={AsyncVehiclesPerformance} />
       <Route path={`/admin/vehicles/:id`} component={AsyncVehicleDetails} />
       <Route path={`/admin/vehicles`} component={AsyncVehicles} />
-      <Route path={`/admin/vehicles/performance`} component={AsyncVehiclesPerformance} />
     </Switch>
   </div>
 );
