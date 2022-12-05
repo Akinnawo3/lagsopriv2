@@ -3,14 +3,14 @@ import { connect } from "react-redux";
 import { Helmet } from "react-helmet";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import { Link, useLocation } from "react-router-dom";
-import { getVehicle, getVehicleMileage, revokeVehicle, updatePartnerDriverPayment, updateVehicleMileage } from "Actions/vehicleAction";
+import { getVehicle, getVehicleMileage, revokeVehicle, updatePartnerDriverPayment, updateVehicleMileage, setVehicleRepayment } from "Actions/vehicleAction";
 import { Badge, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import Button from "@material-ui/core/Button";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import download from "downloadjs";
 import { calculatePostDate, fullDateTime } from "../../helpers/helpers";
-import { setVehicleRepayment } from "../../actions/vehicleAction";
 export let onMileageModalClose;
+export let closeRepaymentModal;
 
 const VehicleDetails = ({
   getVehicle,
@@ -24,11 +24,14 @@ const VehicleDetails = ({
   vehicleMileage,
   updatePartnerDriverPayment,
   updateVehicleMileage,
+  setVehicleRepayment,
 }) => {
   const [driverPaymentModal, setDriverPaymentModal] = useState(false);
   const [partner_driver_payment, setPartner_driver_payment] = useState({ type: "", driver_payment: "" });
   const [mileageModal, setMileageModal] = useState(false);
   const [mileageValue, setMileageValue] = useState();
+  const [repaymentOpen, setRepaymentOpen] = useState(false);
+  const [repaymentData, setRepaymentData] = useState({});
   const partnerVehicles = vehicleDetails?.partner_driver_payment?.length > 0 ? vehicleDetails?.partner_driver_payment[vehicleDetails?.partner_driver_payment?.length - 1] : {};
 
   const location = useLocation();
@@ -40,6 +43,10 @@ const VehicleDetails = ({
     // getVehicleMileage(match.params.id, true);
   }, [match.params.id]);
 
+  closeRepaymentModal = () => {
+    setRepaymentOpen(false);
+    setRepaymentData({});
+  };
   const opnRevokeVehicleModal = () => {
     inputEl.current.open();
   };
@@ -54,6 +61,10 @@ const VehicleDetails = ({
 
   onMileageModalClose = () => {
     setMileageModal(false);
+  };
+
+  const handleRepaymentDataChange = (e) => {
+    setRepaymentData({ ...repaymentData, [e.target.name]: e.target.value });
   };
 
   useEffect(() => {
@@ -228,6 +239,19 @@ const VehicleDetails = ({
                       </Button>
                     </span>
                     {vehicleDetails?.assigned && (
+                      <span className="mr-2">
+                        <Button
+                          disabled={loadingStatus}
+                          onClick={() => {
+                            setRepaymentOpen(true);
+                          }}
+                          className="bg-primary mt-3 text-white"
+                        >
+                          Set Vehicle Repayment Plan
+                        </Button>
+                      </span>
+                    )}
+                    {vehicleDetails?.assigned && (
                       <span className="pull-left">
                         <Button
                           disabled={loadingStatus}
@@ -325,6 +349,7 @@ const VehicleDetails = ({
           </div>
         </ModalBody>
       </Modal>
+
       {/*Modal to update vehicle Mileage*/}
       <Modal isOpen={mileageModal} toggle={() => setMileageModal(!mileageModal)}>
         <ModalHeader toggle={() => setMileageModal(!mileageModal)}>Update Vehicle Mileage</ModalHeader>
@@ -351,6 +376,103 @@ const VehicleDetails = ({
           </div>
         </ModalBody>
       </Modal>
+
+      {/* Vehicle repayment form */}
+      <Modal isOpen={repaymentOpen} toggle={() => setRepaymentOpen(!repaymentOpen)}>
+        <ModalHeader toggle={() => setRepaymentOpen(!repaymentOpen)}>Vehicle Repayment</ModalHeader>
+        <ModalBody>
+          <div>
+            <Form
+              onSubmit={(e) => {
+                e.preventDefault();
+                setVehicleRepayment({ ...repaymentData, vehicle_id: vehicleDetails?.vehicle_id });
+              }}
+            >
+              <div className="modals-grid ">
+                <FormGroup>
+                  <Label for="asset_deposit">Asset Deposit</Label>
+                  <Input id="asset_deposit" type="number" name="asset_deposit" value={repaymentData?.asset_deposit || ""} min={0} onChange={handleRepaymentDataChange} required />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="dashcam_repayment">Dashcam Repayment</Label>
+                  <Input id="dashcam_repayment" type="number" name="dashcam_repayment" value={repaymentData?.dashcam_repayment || ""} min={0} onChange={handleRepaymentDataChange} required />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="asset_repayment">Asset Repayment</Label>
+                  <Input id="asset_repayment" type="number" name="asset_repayment" value={repaymentData?.asset_repayment || ""} min={0} onChange={handleRepaymentDataChange} required />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="asset_repayment">Asset Repayment Limit</Label>
+                  <Input
+                    id="asset_repayment_limit"
+                    type="number"
+                    name="asset_repayment_limit"
+                    value={repaymentData?.asset_repayment_limit || ""}
+                    min={0}
+                    onChange={handleRepaymentDataChange}
+                    required
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="phone_repayment">Phome Repayment </Label>
+                  <Input id="phone_repayment" type="number" name="phone_repayment" value={repaymentData?.phone_repayment || ""} min={0} onChange={handleRepaymentDataChange} required />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="phone_repayment_limit">Phome Repayment Limit </Label>
+                  <Input
+                    id="phone_repayment_limit"
+                    type="number"
+                    name="phone_repayment_limit"
+                    value={repaymentData?.phone_repayment_limit || ""}
+                    min={0}
+                    onChange={handleRepaymentDataChange}
+                    required
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="loan_repayment">Loan Repayment </Label>
+                  <Input id="loan_repayment" type="number" name="loan_repayment" value={repaymentData?.loan_repayment || ""} min={0} onChange={handleRepaymentDataChange} required />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="loan_repayment">Loan Repayment Limit </Label>
+                  <Input id="loan_repayment_limit" type="number" name="loan_repayment_limit" value={repaymentData?.loan_repayment_limit || ""} min={0} onChange={handleRepaymentDataChange} required />
+                </FormGroup>
+                {/* <AsyncSelect cacheOptions defaultOptions loadOptions={() => [{label: "one", value: 1},{label: "two", value: 2}]} onChange={() => null} />; */}
+              </div>
+              <Button type="submit" variant="contained" className="text-white btn-success float-right">
+                Submit
+              </Button>
+            </Form>
+          </div>
+        </ModalBody>
+      </Modal>
+      {/*Modal to update vehicle Mileage*/}
+      <Modal isOpen={mileageModal} toggle={() => setMileageModal(!mileageModal)}>
+        <ModalHeader toggle={() => setMileageModal(!mileageModal)}>Update Vehicle Mileage</ModalHeader>
+        <ModalBody>
+          <div>
+            <Form
+              onSubmit={(e) => {
+                e.preventDefault();
+                updateVehicleMileage({ vehicle_id: vehicleDetails?.vehicle_id, oem_vehicle_id: vehicleDetails?.oem_vehicle_id, mileage: mileageValue.toString() });
+                // updatePartnerDriverPayment(id, {user_type: 'partner', first_name: partnerDetails?.first_name, last_name: partnerDetails?.last_name, partner_driver_payment}, closeDriverPaymentModal)
+              }}
+            >
+              <FormGroup>
+                <Label for="text">Enter Mileage value (Miles)</Label>
+                <Input type="number" min={0} value={mileageValue} onChange={(e) => setMileageValue(e.target.value)} required />
+              </FormGroup>
+              {/* <AsyncSelect cacheOptions defaultOptions loadOptions={() => [{label: "one", value: 1},{label: "two", value: 2}]} onChange={() => null} />; */}
+              <ModalFooter>
+                <Button type="submit" variant="contained" className="text-white btn-success">
+                  Submit
+                </Button>
+              </ModalFooter>
+            </Form>
+          </div>
+        </ModalBody>
+      </Modal>
+
       <DeleteConfirmationDialog
         ref={inputEl}
         title="Are You Sure you Want To revoke vehicle assignment?"

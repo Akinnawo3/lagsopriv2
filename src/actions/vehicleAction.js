@@ -17,7 +17,7 @@ import api from "../environments/environment";
 import { getDriver, getDrivers } from "Actions/driverAction";
 import { onAddUpdateVehicleModalClose } from "../routes/vehicles/components/vehicleTable";
 import { activateDriver, onAddVehicleModalClose } from "../routes/drivers/components/driverProfile";
-import { onMileageModalClose } from "../routes/vehicles/vehicleDetails";
+import { closeRepaymentModal, onMileageModalClose } from "../routes/vehicles/vehicleDetails";
 
 export const getVehicles =
   (page_no = 1, assign = "", spinner, car_number_plate = "") =>
@@ -445,8 +445,8 @@ export const setVehicleRepayment = (body) => async (dispatch) => {
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
-      await NotificationManager.success("Vehicle Updated Successfully!");
-      // onAddUpdateVehicleModalClose();
+      await NotificationManager.success("Vehicle Repayment Plan Updated Successfully!");
+      closeRepaymentModal();
       await dispatch(getVehicle(body?.vehicle_id));
     }
     dispatch(endStatusLoading());
