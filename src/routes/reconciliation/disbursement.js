@@ -181,7 +181,6 @@ const Disbursement = (props) => {
 
    changeButtonShowedDriver = (button) => setShowButton(button);
 
-   console.log(status);
    return (
       <div className="table-wrapper">
          <PageTitleBar title={"Driver Disbursement"} match={match} />
@@ -315,10 +314,11 @@ const Disbursement = (props) => {
                                  <TableRow hover>
                                     <TableCell>Name</TableCell>
                                     <TableCell>User Type</TableCell>
-                                    <TableCell>Earning</TableCell>
-                                    <TableCell>Phone No</TableCell>
                                     <TableCell>Successful Payments</TableCell>
-                                    <TableCell>Failed Payments</TableCell>
+                                    <TableCell>Earnings</TableCell>
+                                    <TableCell>Wallet Balance</TableCell>
+                                    <TableCell>Phone No</TableCell>
+                                    {/* <TableCell>Failed Payments</TableCell> */}
                                  </TableRow>
                               </TableHead>
                               <TableBody>
@@ -333,8 +333,6 @@ const Disbursement = (props) => {
                                                    <Link to={`/admin/drivers/${item.auth_id}`}>{item.first_name + "  " + item.last_name}</Link>
                                                 </TableCell>
                                                 <TableCell style={{ textTransform: 'capitalize' }}>{item?.user_type}</TableCell>
-                                                <TableCell>₦{item?.user_type === "partner" ? item?.partner_earning?.toLocaleString() : item?.earning?.toLocaleString()}</TableCell>
-                                                <TableCell>{item.phone_number}</TableCell>
                                                 <TableCell>
                                                    {success && (
                                                       <div>
@@ -343,13 +341,16 @@ const Disbursement = (props) => {
                                                       </div>
                                                    )}
                                                 </TableCell>
-                                                <TableCell>
+                                                <TableCell>₦{item?.user_type === "partner" ? item?.partner_earning?.toLocaleString() : item?.earning?.toLocaleString()}</TableCell>
+                                                <TableCell>₦{item?.balance?.toLocaleString()}</TableCell>
+                                                <TableCell>{item.phone_number}</TableCell>
+                                                {/* <TableCell>
                                                    {failure && (
                                                       <div>
                                                          ₦{failure?.amount?.toLocaleString()} ({failure.total})
                                                       </div>
                                                    )}
-                                                </TableCell>
+                                                </TableCell> */}
                                              </TableRow>
                                           );
                                        })}
