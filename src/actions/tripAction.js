@@ -471,7 +471,8 @@ export const getDriversPerformance =
     try {
       spinner && dispatch(startLoading());
       !spinner && dispatch(startStatusLoading());
-      const res = await axios.get(`${api.trip}/v2/reports/services?driver_id=${driver_id}&item_per_page=20&page=${page}&start_date=${start_date}&end_date=${end_date}`);
+      // const res = await axios.get(`${api.trip}/v2/reports/services?driver_id=${driver_id}&item_per_page=20&page=${page}&start_date=${start_date}&end_date=${end_date}`);
+      const res = await axios.get(`${api.trip}/v1.1/analytics/compliance?driver_id=${driver_id}&item_per_page=20&page=${page}&start_date=${start_date}&end_date=${end_date}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -493,7 +494,8 @@ export const getDriversPerformanceCount =
   (driver_id = "", page = 1, spinner = false , start_date = "", end_date = "") =>
   async (dispatch) => {
     try {
-      const res = await axios.get(`${api.trip}/v2/reports/services?driver_id=${driver_id}&item_per_page=20&page=${page}&start_date=${start_date}&end_date=${end_date}&component=count`);
+      // const res = await axios.get(`${api.trip}/v2/reports/services?driver_id=${driver_id}&item_per_page=20&page=${page}&start_date=${start_date}&end_date=${end_date}&component=count`);
+      const res = await axios.get(`${api.trip}/v1.1/analytics/compliance?driver_id=${driver_id}&item_per_page=20&page=${page}&start_date=${start_date}&end_date=${end_date}&component=count`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
