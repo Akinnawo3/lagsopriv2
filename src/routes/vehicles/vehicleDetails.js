@@ -391,51 +391,35 @@ const VehicleDetails = ({
               <div className="modals-grid ">
                 <FormGroup>
                   <Label for="asset_deposit">Asset Deposit</Label>
-                  <Input id="asset_deposit" type="number" name="asset_deposit" value={repaymentData?.asset_deposit || ""} min={0} onChange={handleRepaymentDataChange} required />
+                  <Input id="asset_deposit" type="number" name="asset_deposit" value={repaymentData?.asset_deposit || ""} min={0} onChange={handleRepaymentDataChange} />
                 </FormGroup>
                 <FormGroup>
                   <Label for="dashcam_repayment">Dashcam Repayment</Label>
-                  <Input id="dashcam_repayment" type="number" name="dashcam_repayment" value={repaymentData?.dashcam_repayment || ""} min={0} onChange={handleRepaymentDataChange} required />
+                  <Input id="dashcam_repayment" type="number" name="dashcam_repayment" value={repaymentData?.dashcam_repayment || ""} min={0} onChange={handleRepaymentDataChange} />
                 </FormGroup>
                 <FormGroup>
                   <Label for="asset_repayment">Asset Repayment</Label>
-                  <Input id="asset_repayment" type="number" name="asset_repayment" value={repaymentData?.asset_repayment || ""} min={0} onChange={handleRepaymentDataChange} required />
+                  <Input id="asset_repayment" type="number" name="asset_repayment" value={repaymentData?.asset_repayment || ""} min={0} onChange={handleRepaymentDataChange} />
                 </FormGroup>
                 <FormGroup>
                   <Label for="asset_repayment">Asset Repayment Limit</Label>
-                  <Input
-                    id="asset_repayment_limit"
-                    type="number"
-                    name="asset_repayment_limit"
-                    value={repaymentData?.asset_repayment_limit || ""}
-                    min={0}
-                    onChange={handleRepaymentDataChange}
-                    required
-                  />
+                  <Input id="asset_repayment_limit" type="number" name="asset_repayment_limit" value={repaymentData?.asset_repayment_limit || ""} min={0} onChange={handleRepaymentDataChange} />
                 </FormGroup>
                 <FormGroup>
                   <Label for="phone_repayment">Phome Repayment </Label>
-                  <Input id="phone_repayment" type="number" name="phone_repayment" value={repaymentData?.phone_repayment || ""} min={0} onChange={handleRepaymentDataChange} required />
+                  <Input id="phone_repayment" type="number" name="phone_repayment" value={repaymentData?.phone_repayment || ""} min={0} onChange={handleRepaymentDataChange} />
                 </FormGroup>
                 <FormGroup>
                   <Label for="phone_repayment_limit">Phome Repayment Limit </Label>
-                  <Input
-                    id="phone_repayment_limit"
-                    type="number"
-                    name="phone_repayment_limit"
-                    value={repaymentData?.phone_repayment_limit || ""}
-                    min={0}
-                    onChange={handleRepaymentDataChange}
-                    required
-                  />
+                  <Input id="phone_repayment_limit" type="number" name="phone_repayment_limit" value={repaymentData?.phone_repayment_limit || ""} min={0} onChange={handleRepaymentDataChange} />
                 </FormGroup>
                 <FormGroup>
                   <Label for="loan_repayment">Loan Repayment </Label>
-                  <Input id="loan_repayment" type="number" name="loan_repayment" value={repaymentData?.loan_repayment || ""} min={0} onChange={handleRepaymentDataChange} required />
+                  <Input id="loan_repayment" type="number" name="loan_repayment" value={repaymentData?.loan_repayment || ""} min={0} onChange={handleRepaymentDataChange} />
                 </FormGroup>
                 <FormGroup>
                   <Label for="loan_repayment">Loan Repayment Limit </Label>
-                  <Input id="loan_repayment_limit" type="number" name="loan_repayment_limit" value={repaymentData?.loan_repayment_limit || ""} min={0} onChange={handleRepaymentDataChange} required />
+                  <Input id="loan_repayment_limit" type="number" name="loan_repayment_limit" value={repaymentData?.loan_repayment_limit || ""} min={0} onChange={handleRepaymentDataChange} />
                 </FormGroup>
                 {/* <AsyncSelect cacheOptions defaultOptions loadOptions={() => [{label: "one", value: 1},{label: "two", value: 2}]} onChange={() => null} />; */}
               </div>

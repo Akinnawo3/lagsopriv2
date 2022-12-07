@@ -10,7 +10,7 @@ const SummaryCards = () => {
     { title: "Total driver not found", value: "3123456789" },
   ];
   return (
-    <div className="p-3">
+    <div className="">
       <Row>
         {items.map((item) => (
           <Col key={item?.title} md="6" lg="3">
