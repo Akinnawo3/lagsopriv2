@@ -103,6 +103,7 @@ const PassengerTripHistory = ({
               <option value="completed">Completed</option>
               <option value="cancel">Cancelled</option>
               <option value="waiting">Waiting</option>
+              <option value="on_ride">Current</option>
             </Input>
             <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
               <small className="fw-bold mr-2">From</small>

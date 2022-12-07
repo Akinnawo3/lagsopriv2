@@ -15,26 +15,25 @@ const SchedulesChart = ({ loading, getDownloadsByDate, downloadsByDate }) => {
     getDownloadsByDate(true, startDate, endDate, dateType);
   }, []);
 
-
   const options = {
-
-
     scales: {
-      xAxes: [{
+      xAxes: [
+        {
           gridLines: {
-              // color: "rgba(0, 0, 0, 0)",
-              display: false,
-
-          }
-      }],
-      yAxes: [{
+            // color: "rgba(0, 0, 0, 0)",
+            display: false,
+          },
+        },
+      ],
+      yAxes: [
+        {
           gridLines: {
-              // color: "rgba(0, 0, 0, 0)",
-              display: false,
-
-          }   
-      }]
-  },
+            // color: "rgba(0, 0, 0, 0)",
+            display: false,
+          },
+        },
+      ],
+    },
     // scales: {
     //   x: {
     //     grid: {
@@ -54,9 +53,9 @@ const SchedulesChart = ({ loading, getDownloadsByDate, downloadsByDate }) => {
     // },
 
     // plugins: {
-      legend: {
-        display: false,
-      },
+    legend: {
+      display: false,
+    },
     // },
     // elements: {
     //   line: {
@@ -64,7 +63,6 @@ const SchedulesChart = ({ loading, getDownloadsByDate, downloadsByDate }) => {
     //   },
     // },
   };
-
 
   const data = {
     labels: [
@@ -98,8 +96,8 @@ const SchedulesChart = ({ loading, getDownloadsByDate, downloadsByDate }) => {
       //   borderColor: "rgba(75,192,192,1)",
       // },
       {
-        label: "Monthly Downloads",
-        data: [4,1,3,5,6,7,5,3,5,7,8,5,4,8,9,6,4,3,2,2],
+        label: "Schedules",
+        data: [4, 1, 3, 5, 6, 7, 5, 3, 5, 7, 8, 5, 4, 8, 9, 6, 4, 3, 2, 2],
         fill: false,
         tension: 0.55,
         borderColor: "#00997A",
@@ -111,8 +109,8 @@ const SchedulesChart = ({ loading, getDownloadsByDate, downloadsByDate }) => {
   return (
     <div className="border p-2">
       <div className="ml-2 mb-3">Schedules</div>
-      <div >
-        <Line data={data} height="160" options={options}/>
+      <div>
+        <Line data={data} height="160" options={options} />
       </div>
     </div>
   );
