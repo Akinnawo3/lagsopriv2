@@ -228,17 +228,18 @@ const Disbursement = (props) => {
                      </div>
                   </li>
                   {receivable ? (
-                     <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-                        <div className="mb-2 font-sm">Date Type</div>
-                        {/* <small className="fw-bold">Date Type Filter</small> */}
-                        <select name="fiter-dropdown" onChange={handleChange} className="p-1 px-4">
-                           {dateTypeFilter.map((item, index) => (
-                              <option value={item.value} key={index}>
-                                 {item.label}
-                              </option>
-                           ))}
-                        </select>
-                     </li>
+                     <React.Fragment></React.Fragment>
+                     // <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+                     //    <div className="mb-2 font-sm">Date Type</div>
+                     //    {/* <small className="fw-bold">Date Type Filter</small> */}
+                     //    <select name="fiter-dropdown" onChange={handleChange} className="p-1 px-4">
+                     //       {dateTypeFilter.map((item, index) => (
+                     //          <option value={item.value} key={index}>
+                     //             {item.label}
+                     //          </option>
+                     //       ))}
+                     //    </select>
+                     // </li>
                   ) : (
                      <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
                         <div className="mb-2 font-sm">Status</div>
@@ -336,8 +337,8 @@ const Disbursement = (props) => {
                                                 <TableCell>
                                                    {success && (
                                                       <div>
-                                                         ₦{item?.earning?.toLocaleString()} ({success.total})
-                                                         {/* ₦{success?.amount?.toLocaleString()} ({success.total}) */}
+                                                         {/* ₦{item?.earning?.toLocaleString()} ({success.total}) */}
+                                                         ₦{success?.amount?.toLocaleString()} ({success.total})
                                                       </div>
                                                    )}
                                                 </TableCell>
