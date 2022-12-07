@@ -6,9 +6,9 @@ import SummaryCards from "./component/summaryCards";
 
 const RouteIntelligence = ({ match }) => {
   return (
-    <div className="table-wrapper">
+    <div className="table-wrapper ">
       <PageTitleBar title={"Route Intelligence"} match={match} />
-      <Card>
+      <Card className="my-3">
         <SummaryCards />
       </Card>
     </div>
