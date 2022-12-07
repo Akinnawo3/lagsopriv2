@@ -17,34 +17,52 @@ const SchedulesChart = ({ loading, getDownloadsByDate, downloadsByDate }) => {
 
 
   const options = {
-    scales: {
-      x: {
-        grid: {
-          display: false,
-          borderColor: "white",
-        },
-        beginAtZero: true,
-      },
-      y: {
-        grid: {
-          display: false,
-          borderColor: "white",
-        },
-        beginAtZero: true,
-        // steps: 4
-      },
-    },
 
-    plugins: {
+
+    scales: {
+      xAxes: [{
+          gridLines: {
+              // color: "rgba(0, 0, 0, 0)",
+              display: false,
+
+          }
+      }],
+      yAxes: [{
+          gridLines: {
+              // color: "rgba(0, 0, 0, 0)",
+              display: false,
+
+          }   
+      }]
+  },
+    // scales: {
+    //   x: {
+    //     grid: {
+    //       display: false,
+    //       borderColor: "red",
+    //     },
+    //     beginAtZero: true,
+    //   },
+    //   y: {
+    //     grid: {
+    //       display: false,
+    //       borderColor: "purple",
+    //     },
+    //     beginAtZero: true,
+    //     // steps: 4
+    //   },
+    // },
+
+    // plugins: {
       legend: {
         display: false,
       },
-    },
-    elements: {
-      line: {
-        tension: 0.5,
-      },
-    },
+    // },
+    // elements: {
+    //   line: {
+    //     tension: 0.5,
+    //   },
+    // },
   };
 
 
@@ -83,7 +101,7 @@ const SchedulesChart = ({ loading, getDownloadsByDate, downloadsByDate }) => {
         label: "Monthly Downloads",
         data: [4,1,3,5,6,7,5,3,5,7,8,5,4,8,9,6,4,3,2,2],
         fill: false,
-        tension: 0.565,
+        tension: 0.55,
         borderColor: "#00997A",
         pointRadius: 0,
         borderWidth: 0.7,
@@ -92,9 +110,9 @@ const SchedulesChart = ({ loading, getDownloadsByDate, downloadsByDate }) => {
   };
   return (
     <div className="border p-2">
-      <div className="ml-2">Schedules</div>
-      <div>
-        <Line data={data} height="170" options={options}/>
+      <div className="ml-2 mb-3">Schedules</div>
+      <div >
+        <Line data={data} height="160" options={options}/>
       </div>
     </div>
   );
