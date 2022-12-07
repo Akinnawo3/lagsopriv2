@@ -115,9 +115,9 @@ const VehiclesPerformanceTable = ({ getVehiclesPerformance, getVehiclesPerforman
                     <TableCell>Vehicle Plate No.</TableCell>
                     <TableCell>Driver First Name</TableCell>
                     <TableCell>Driver Last Name</TableCell>
-                    <TableCell>Gross Balance (₦)</TableCell>
+                    <TableCell>Gross Value (₦)</TableCell>
                     <TableCell>Position Balance (₦)</TableCell>
-                    <TableCell>Performance (%)</TableCell>
+                    <TableCell>Gross Earning (%)</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
