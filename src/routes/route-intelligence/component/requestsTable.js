@@ -122,7 +122,15 @@ const RequestsTable = ({
               <Table>
                 <TableHead>
                   <TableRow hover>
-                    <TableCell>Start Address</TableCell>
+                    <TableCell>LGAs</TableCell>
+                    <TableCell>No. of Areas</TableCell>
+                    <TableCell>No. of Areas</TableCell>
+                    <TableCell>Downloads</TableCell>
+                    <TableCell>Schedules</TableCell>
+                    <TableCell>Total req.</TableCell>
+                    <TableCell style={{color:"#0693B8"}}>Fulfilled req.</TableCell>
+                    <TableCell style={{color:"#FF3739"}}>Cancelled req.</TableCell>
+                    <TableCell style={{color:"#003DC4"}} >Driver not found req.</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
