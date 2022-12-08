@@ -26,6 +26,7 @@ const PerformanceTable = ({
   loading,
   loadingStatus,
   getDriversPerformance,
+  getDriversPerformanceCount,
   driversPerformance,
   driversPerformanceCount,
 }) => {
@@ -35,30 +36,31 @@ const PerformanceTable = ({
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
   const [postsPerPage] = useState(20);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [vehicleId, setVehicleId] = useState("");
+  const [startDate, setStartDate] = useState(getTodayDate());
+  const [endDate, setEndDate] = useState(getTodayDate());
+  const [driverId, setDriverId] = useState("");
   const exportRef = useRef(null);
 
   const paginate = async (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
-    await setCurrentPage(pageNumber);
-    status === "driver_not_found" ? await getCancelledTrips(pageNumber, true) : await getTrips(pageNumber, status);
+    setCurrentPage(pageNumber);
+    getDriversPerformance(driverId, pageNumber, false, startDate, endDate);
     window.scrollTo(0, 0);
   };
 
-  const getPreviousData = () => {
-    status === "driver_not_found" ? getCancelledTrips(pageNumber, true) : getTrips(1, status);
-  };
+  // const getPreviousData = () => {
+  //   status === "driver_not_found" ? getCancelledTrips(pageNumber, true) : getTrips(1, status);
+  // };
 
   const applyFilter = () => {
     history.push(`${history.location.pathname}?page=${1}`);
-    getTrips(1, status, false, startDate, endDate);
-    getTripCount(status, startDate, endDate);
+    getDriversPerformance(driverId, 1, false, startDate, endDate);
+    getDriversPerformanceCount(driverId, 1, false, startDate, endDate);
   };
 
   useEffect(() => {
-    getDriversPerformance("", 1, false, "", "");
+    getDriversPerformance(driverId, 1, false, startDate, endDate);
+    getDriversPerformanceCount(driverId, 1, false, startDate, endDate);
   }, []);
 
   // const getSearchData = (searchData) => {
@@ -73,8 +75,6 @@ const PerformanceTable = ({
   //   exportRef.current.close();
   //   getTripExport(status, "", "", startDate, endDate);
   // };
-
-  console.log(driversPerformance);
 
   return (
     <div>
@@ -95,8 +95,8 @@ const PerformanceTable = ({
           </li>
 
           <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-            <small className="fw-bold mr-2">Vehicle Id</small>
-            <input type="text" id="vehicleId" name="vehicle id" value={vehicleId} onChange={(e) => setVehicleId(e.target.value)} />
+            <small className="fw-bold mr-2">Driver Id</small>
+            <input type="text" id="vehicleId" name="vehicle id" value={driverId} onChange={(e) => setDriverId(e.target.value)} />
           </li>
           <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
             <button className="btn btn-primary" onClick={applyFilter}>
@@ -116,27 +116,31 @@ const PerformanceTable = ({
            </div>
          )} */}
 
-        {!loading && vehiclesPerformance?.length > 0 && (
+        {!loading && driversPerformance?.length > 0 && (
           <div>
             <div className="table-responsive" style={{ minHeight: "50vh" }}>
               <Table>
                 <TableHead>
                   <TableRow hover>
-                    <TableCell>Start Address</TableCell>
+                    <TableCell>First Name</TableCell>
+                    <TableCell>Last Name</TableCell>
+                    <TableCell>Number of Trips</TableCell>
+                    <TableCell>Value (₦)</TableCell>
+                    <TableCell>Performance (%)</TableCell>
+                    {/* <TableCell>Driver Id</TableCell> */}
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   <Fragment>
-                    {vehiclesPerformance?.length > 0 &&
-                      vehiclesPerformance?.map((trip) => (
-                        <TableRow hover key={trip?.trip_id}>
-                          <TableCell>
-                            <Media>
-                              <Media body>
-                                <h5 className="m-0 pt-15"> blank blank</h5>
-                              </Media>
-                            </Media>
-                          </TableCell>
+                    {driversPerformance?.length > 0 &&
+                      driversPerformance?.map((item) => (
+                        <TableRow hover key={item?.trip_id}>
+                          <TableCell>{item?.first_name}</TableCell>
+                          <TableCell>{item?.last_name}</TableCell>
+                          <TableCell>{item?.trips}</TableCell>
+                          <TableCell>{item?.total.toLocaleString()}</TableCell>
+                          <TableCell>{parseFloat(item?.compliance).toFixed(2)}</TableCell>
+                          {/* <TableCell>{item?._id}</TableCell> */}
                         </TableRow>
                       ))}
                   </Fragment>
@@ -144,11 +148,16 @@ const PerformanceTable = ({
               </Table>
             </div>
             <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
-              <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={postsPerPage} totalItemsCount={vehiclesPerformanceCount} onChange={paginate} />
+              <Pagination activePage={currentPage} itemClass="page-item" linkClass="page-link" itemsCountPerPage={postsPerPage} totalItemsCount={driversPerformanceCount} onChange={paginate} />
             </div>
           </div>
         )}
-        {vehiclesPerformance?.length === 0 && !loading && <EmptyData />}
+
+        {driversPerformance?.length === 0 && !loading && (
+          <div className="mt-3">
+            <EmptyData />
+          </div>
+        )}
       </RctCollapsibleCard>
       {/* <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} /> */}
     </div>
