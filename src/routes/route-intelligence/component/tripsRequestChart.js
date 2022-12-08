@@ -15,26 +15,25 @@ const TripsRequestChart = ({ loading, getDownloadsByDate, downloadsByDate }) => 
     getDownloadsByDate(true, startDate, endDate, dateType);
   }, []);
 
-
   const options = {
-
-
     scales: {
-      xAxes: [{
+      xAxes: [
+        {
           gridLines: {
-              // color: "rgba(0, 0, 0, 0)",
-              display: false,
-
-          }
-      }],
-      yAxes: [{
+            // color: "rgba(0, 0, 0, 0)",
+            display: false,
+          },
+        },
+      ],
+      yAxes: [
+        {
           gridLines: {
-              // color: "rgba(0, 0, 0, 0)",
-              display: false,
-
-          }   
-      }]
-  },
+            // color: "rgba(0, 0, 0, 0)",
+            display: false,
+          },
+        },
+      ],
+    },
     // scales: {
     //   x: {
     //     grid: {
@@ -54,9 +53,9 @@ const TripsRequestChart = ({ loading, getDownloadsByDate, downloadsByDate }) => 
     // },
 
     // plugins: {
-      legend: {
-        display: false,
-      },
+    legend: {
+      // display: false,
+    },
     // },
     // elements: {
     //   line: {
@@ -64,7 +63,6 @@ const TripsRequestChart = ({ loading, getDownloadsByDate, downloadsByDate }) => 
     //   },
     // },
   };
-
 
   const data = {
     labels: [
@@ -98,11 +96,29 @@ const TripsRequestChart = ({ loading, getDownloadsByDate, downloadsByDate }) => 
       //   borderColor: "rgba(75,192,192,1)",
       // },
       {
-        label: "Monthly Downloads",
-        data: [4,1,3,5,6,7,5,3,5,7,8,5,4,8,9,6,4,3,2,2],
+        label: "Fulfilled req.",
+        data: [4, 1, 3, 5, 6, 7, 5, 3, 5, 7, 8, 5, 4, 8, 9, 6, 4, 3, 2, 2],
         fill: false,
         tension: 0.55,
-        borderColor: "#00997A",
+        borderColor: "#00D2A8",
+        pointRadius: 0,
+        borderWidth: 0.7,
+      },
+      {
+        label: "Cancelled req.",
+        data: [7, 4, 4, 1, 6, 7, 1, 4, 4, 5, 1, 7, 8, 1, 4, 4,3, 3, 3, 2],
+        fill: false,
+        tension: 0.55,
+        borderColor: "#FF3739",
+        pointRadius: 0,
+        borderWidth: 0.7,
+      },
+      {
+        label: "Driver not found .",
+        data: [2, 2, 1, 5, 6, 1, 7, 4, 2, 5, 1, 7,5, 1, 7, 4,6, 5, 8, 2],
+        fill: false,
+        tension: 0.55,
+        borderColor: "#1F2CA7",
         pointRadius: 0,
         borderWidth: 0.7,
       },
@@ -110,9 +126,9 @@ const TripsRequestChart = ({ loading, getDownloadsByDate, downloadsByDate }) => 
   };
   return (
     <div className="border p-2">
-      <div className="ml-2 mb-3">Schedules</div>
-      <div >
-        <Line data={data} height="160" options={options}/>
+      <div className="ml-2 mb-3">Trip requests</div>
+      <div>
+        <Line data={data} height="160" options={options} />
       </div>
     </div>
   );
@@ -127,4 +143,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TripsRequestChart);
-
