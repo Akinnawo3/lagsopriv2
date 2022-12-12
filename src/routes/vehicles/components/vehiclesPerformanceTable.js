@@ -21,7 +21,7 @@ import { getVehiclePerformanceExport, getVehiclesPerformance, getVehiclesPerform
 import moment from "moment";
 const qs = require("qs");
 
-const VehiclesPerformanceTable = ({ getVehiclesPerformance, getVehiclesPerformanceCount, vehiclesPerformance, vehiclesPerformanceCount, loading, loadingStatus }) => {
+const VehiclesPerformanceTable = ({ getVehiclesPerformance, getVehiclesPerformanceCount, vehiclesPerformance, vehiclesPerformanceCount, loading, loadingStatus, getVehiclePerformanceExport }) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, { ignoreQueryPrefix: true }).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -31,20 +31,26 @@ const VehiclesPerformanceTable = ({ getVehiclesPerformance, getVehiclesPerforman
   const [startDate, setStartDate] = useState(getTodayDate());
   const [endDate, setEndDate] = useState(getTodayDate());
   const [vehicleId, setVehicleId] = useState("");
+  const [order, setOrder] = useState("");
+
   const exportRef = useRef(null);
 
   useEffect(() => {
-    getVehiclesPerformance(currentPage, true, startDate, endDate, vehicleId);
-    getVehiclesPerformanceCount(startDate, endDate, vehicleId);
+    getVehiclesPerformance(currentPage, true, startDate, endDate, vehicleId, order);
+    getVehiclesPerformanceCount(startDate, endDate, vehicleId, order);
   }, []);
 
   const paginate = async (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
-    getVehiclesPerformance(pageNumber, false, startDate, endDate, vehicleId);
-    getVehiclesPerformanceCount(startDate, endDate, vehicleId);
-
+    getVehiclesPerformance(pageNumber, false, startDate, endDate, vehicleId, order);
+    getVehiclesPerformanceCount(startDate, endDate, vehicleId, order);
     window.scrollTo(0, 0);
+  };
+
+  const confirmExport = () => {
+    exportRef.current.close();
+    getVehiclePerformanceExport(startDate, endDate, order);
   };
 
   // const getPreviousData = () => {
@@ -53,8 +59,8 @@ const VehiclesPerformanceTable = ({ getVehiclesPerformance, getVehiclesPerforman
 
   const applyFilter = () => {
     history.push(`${history.location.pathname}?page=${1}`);
-    getVehiclesPerformance(currentPage, false, startDate, endDate, vehicleId);
-    getVehiclesPerformanceCount(startDate, endDate, vehicleId);
+    getVehiclesPerformance(currentPage, false, startDate, endDate, vehicleId, order);
+    getVehiclesPerformanceCount(startDate, endDate, vehicleId, order);
   };
 
   var start = moment(endDate);
@@ -66,6 +72,9 @@ const VehiclesPerformanceTable = ({ getVehiclesPerformance, getVehiclesPerforman
 
   console.log(vehiclesPerformanceCount);
 
+  const handleExport = () => {
+    exportRef.current.open();
+  };
   return (
     <div>
       <RctCollapsibleCard heading={"Vehicles Performance"} fullBlock style={{ minHeight: "70vh" }}>
@@ -88,6 +97,14 @@ const VehiclesPerformanceTable = ({ getVehiclesPerformance, getVehiclesPerforman
             <small className="fw-bold mr-2">Vehicle Plate No.</small>
             <input type="text" id="vehicleId" name="vehicle id" placeholder="Plate No." value={vehicleId} onChange={(e) => setVehicleId(e.target.value)} />
           </li>
+          <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
+            <small className="fw-bold mr-2">Order</small>
+            <select type="select" id="vehicleId" name="vehicle id" className="p-1" placeholder="Plate No." value={order} onChange={(e) => setOrder(e.target.value)} style={{ width: 120 }}>
+              {/* <option hidden>--order--</option> */}
+              <option value="1">Ascending</option>
+              <option value="-1">Descending</option>
+            </select>
+          </li>
           <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
             <button className="btn btn-primary" onClick={applyFilter}>
               Apply Filter
@@ -95,16 +112,14 @@ const VehiclesPerformanceTable = ({ getVehiclesPerformance, getVehiclesPerforman
           </li>
         </div>
 
-        {/* {status !== "driver_not_found" && (
-          <div className="float-right">
-            {!isLoading && trips.length > 0 && (
-              <Button onClick={() => handleExport()} style={{ height: "30px" }} className="align-items-center justify-content-center mr-2" color="primary">
-                {" "}
-                <i className="zmdi zmdi-download mr-2"></i> Export to Excel
-              </Button>
-            )}
-          </div>
-        )} */}
+        <div className="float-right">
+          {!loading && vehiclesPerformance.length > 0 && (
+            <Button onClick={() => handleExport()} style={{ height: "30px" }} className="align-items-center justify-content-center mr-2" color="primary">
+              {" "}
+              <i className="zmdi zmdi-download mr-2"></i> Export to Excel
+            </Button>
+          )}
+        </div>
 
         {!loading && vehiclesPerformance.length > 0 && (
           <div>
@@ -147,7 +162,7 @@ const VehiclesPerformanceTable = ({ getVehiclesPerformance, getVehiclesPerforman
         )}
         {vehiclesPerformance.length === 0 && !loading && <EmptyData />}
       </RctCollapsibleCard>
-      {/* <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} /> */}
+      <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
     </div>
   );
 };
