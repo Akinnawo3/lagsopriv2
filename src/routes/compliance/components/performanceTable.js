@@ -125,7 +125,7 @@ const PerformanceTable = ({
                     <TableCell>First Name</TableCell>
                     <TableCell>Last Name</TableCell>
                     <TableCell>Number of Trips</TableCell>
-                    <TableCell>Value (₦)</TableCell>
+                    {/* <TableCell>Value (₦)</TableCell> */}
                     <TableCell>Performance (%)</TableCell>
                     {/* <TableCell>Driver Id</TableCell> */}
                   </TableRow>
@@ -138,7 +138,7 @@ const PerformanceTable = ({
                           <TableCell>{item?.first_name}</TableCell>
                           <TableCell>{item?.last_name}</TableCell>
                           <TableCell>{item?.trips}</TableCell>
-                          <TableCell>{item?.total.toLocaleString()}</TableCell>
+                          {/* <TableCell>{item?.total.toLocaleString()}</TableCell> */}
                           <TableCell>{parseFloat(item?.compliance).toFixed(2)}</TableCell>
                           {/* <TableCell>{item?._id}</TableCell> */}
                         </TableRow>

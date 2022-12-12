@@ -17,7 +17,7 @@ import SearchComponent from "Components/SearchComponent/SearchComponent";
 import { useHistory } from "react-router-dom";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import { calculatePostDate, getTodayDate } from "../../../helpers/helpers";
-import { getVehiclesPerformance, getVehiclesPerformanceCount } from "../../../actions/vehicleAction";
+import { getVehiclePerformanceExport, getVehiclesPerformance, getVehiclesPerformanceCount } from "../../../actions/vehicleAction";
 import moment from "moment";
 const qs = require("qs");
 
@@ -27,7 +27,7 @@ const VehiclesPerformanceTable = ({ getVehiclesPerformance, getVehiclesPerforman
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
-  const [postsPerPage] = useState(20);
+  const [postsPerPage] = useState(100);
   const [startDate, setStartDate] = useState(getTodayDate());
   const [endDate, setEndDate] = useState(getTodayDate());
   const [vehicleId, setVehicleId] = useState("");
@@ -64,7 +64,7 @@ const VehiclesPerformanceTable = ({ getVehiclesPerformance, getVehiclesPerforman
   //Difference in number of weeks
   const daysGap = moment.duration(start.diff(end)).asDays() + 1;
 
-  console.log(daysGap);
+  console.log(vehiclesPerformanceCount);
 
   return (
     <div>
@@ -85,8 +85,8 @@ const VehiclesPerformanceTable = ({ getVehiclesPerformance, getVehiclesPerforman
           </li>
 
           <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
-            <small className="fw-bold mr-2">Vehicle Id</small>
-            <input type="text" id="vehicleId" name="vehicle id" value={vehicleId} onChange={(e) => setVehicleId(e.target.value)} />
+            <small className="fw-bold mr-2">Vehicle Plate No.</small>
+            <input type="text" id="vehicleId" name="vehicle id" placeholder="Plate No." value={vehicleId} onChange={(e) => setVehicleId(e.target.value)} />
           </li>
           <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
             <button className="btn btn-primary" onClick={applyFilter}>
@@ -112,6 +112,7 @@ const VehiclesPerformanceTable = ({ getVehiclesPerformance, getVehiclesPerforman
               <Table>
                 <TableHead>
                   <TableRow hover>
+                    <TableCell>S/N</TableCell>
                     <TableCell>Vehicle Plate No.</TableCell>
                     <TableCell>Driver First Name</TableCell>
                     <TableCell>Driver Last Name</TableCell>
@@ -123,8 +124,9 @@ const VehiclesPerformanceTable = ({ getVehiclesPerformance, getVehiclesPerforman
                 <TableBody>
                   <Fragment>
                     {vehiclesPerformance.length > 0 &&
-                      vehiclesPerformance.map((item) => (
+                      vehiclesPerformance.map((item, index) => (
                         <TableRow hover key={item.vehicle_id}>
+                          <TableCell>{index + 1}</TableCell>
                           <TableCell>{item?.car_number_plate}</TableCell>
                           <TableCell>{item?.first_name}</TableCell>
                           <TableCell>{item?.last_name}</TableCell>
@@ -152,8 +154,9 @@ const VehiclesPerformanceTable = ({ getVehiclesPerformance, getVehiclesPerforman
 
 function mapDispatchToProps(dispatch) {
   return {
-    getVehiclesPerformance: (page_no, spinner, start_date, end_date, vehicle_id) => dispatch(getVehiclesPerformance(page_no, spinner, start_date, end_date, vehicle_id)),
-    getVehiclesPerformanceCount: (start_date, end_date, vehicle_id) => dispatch(getVehiclesPerformanceCount(start_date, end_date, vehicle_id)),
+    getVehiclesPerformance: (page_no, spinner, start_date, end_date, vehicle_id, order) => dispatch(getVehiclesPerformance(page_no, spinner, start_date, end_date, vehicle_id, order)),
+    getVehiclesPerformanceCount: (start_date, end_date, vehicle_id, order) => dispatch(getVehiclesPerformanceCount(start_date, end_date, vehicle_id, order)),
+    getVehiclePerformanceExport: (start_date, end_date, order) => dispatch(getVehiclePerformanceExport(start_date, end_date, order)),
   };
 }
 

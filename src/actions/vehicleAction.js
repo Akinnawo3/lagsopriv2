@@ -397,12 +397,12 @@ export const updateVehicleMileage = (body) => async (dispatch) => {
 };
 
 export const getVehiclesPerformance =
-  (page_no, spinner, start_date = "", end_date = "", vehicle_id) =>
+  (page_no, spinner, start_date = "", end_date = "", vehicle_id, order = "") =>
   async (dispatch) => {
     try {
       spinner && dispatch(startLoading());
       !spinner && dispatch(startStatusLoading());
-      const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicle-performance?item_per_page=20&page=${page_no}&vehicle_id=${vehicle_id}&start_date=${start_date}&end_date=${end_date}`);
+      const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicle-performance?item_per_page=100&sort=${order}&page=${page_no}&q=${vehicle_id}&start_date=${start_date}&end_date=${end_date}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
@@ -420,11 +420,28 @@ export const getVehiclesPerformance =
     }
   };
 
+export const getVehiclePerformanceExport =
+  (start_date = "", end_date = "", order = "") =>
+  async (dispatch) => {
+    dispatch(startStatusLoading());
+    try {
+      const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicle-performance?component=export&sort=${order}&start_date=${start_date}&end_date=${end_date}`);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        NotificationManager.success("Excel file sent to your email successfully");
+      }
+      dispatch(endStatusLoading());
+    } catch (err) {
+      dispatch(endStatusLoading());
+    }
+  };
+
 export const getVehiclesPerformanceCount =
-  (start_date = "", end_date = "", vehicle_id) =>
+  (start_date = "", end_date = "", vehicle_id = "", order = "") =>
   async (dispatch) => {
     try {
-      const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicle-performance?vehicle_id=${vehicle_id}&start_date=${start_date}&end_date=${end_date}&component=count`);
+      const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicle-performance?vehicle_id=${vehicle_id}&sort=${order}&start_date=${start_date}&end_date=${end_date}&component=count`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {

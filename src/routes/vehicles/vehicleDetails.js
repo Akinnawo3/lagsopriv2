@@ -269,43 +269,119 @@ const VehicleDetails = ({
               </div>
             </div>
           </div>
-          {vehicleDetails?.partner_assigned && (
-            <div className="col-sm-6">
-              <div className="tab-content px-4">
-                <div className="tab-pane active" id="home">
-                  <ul className="list-group">
-                    <li className="list-group-item text-right">
-                      <span className="pull-left" style={{ fontSize: "20px" }}>
-                        <strong>Driver's Partner payment</strong>
-                      </span>
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>Type</strong>
-                      </span>
-                      {partnerVehicles?.type ?? "NA"}
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong>{partnerVehicles?.type === "percent" ? "Percentage" : "Amount"}</strong>
-                      </span>
-                      {partnerVehicles?.type === "fixed" && "₦"}
-                      {partnerVehicles?.type === "fixed" ? parseInt(partnerVehicles?.driver_payment)?.toLocaleString() : partnerVehicles?.type === "percent" ? partnerVehicles?.driver_payment : "NA"}
-                      {partnerVehicles?.type === "percent" && "%"}
-                    </li>
-                    <li className="list-group-item text-right">
-                      <span className="pull-left">
-                        <strong></strong>
-                      </span>
-                      <button type="button" className="btn btn-success text-white" title="view details" onClick={() => setDriverPaymentModal(true)}>
-                        change
-                      </button>
-                    </li>
-                  </ul>
+          <div className="col-6">
+            <div>
+              {vehicleDetails?.partner_assigned && (
+                <div className="tab-content mt-3 px-3 mt-3">
+                  <div className="tab-pane active" id="home">
+                    <ul className="list-group">
+                      <li className="list-group-item text-right">
+                        <span className="pull-left" style={{ fontSize: "20px" }}>
+                          <strong>Driver's Partner payment</strong>
+                        </span>
+                      </li>
+                      <li className="list-group-item text-right">
+                        <span className="pull-left">
+                          <strong>Type</strong>
+                        </span>
+                        {partnerVehicles?.type ?? "NA"}
+                      </li>
+                      <li className="list-group-item text-right">
+                        <span className="pull-left">
+                          <strong>{partnerVehicles?.type === "percent" ? "Percentage" : "Amount"}</strong>
+                        </span>
+                        {partnerVehicles?.type === "fixed" && "₦"}
+                        {partnerVehicles?.type === "fixed" ? parseInt(partnerVehicles?.driver_payment)?.toLocaleString() : partnerVehicles?.type === "percent" ? partnerVehicles?.driver_payment : "NA"}
+                        {partnerVehicles?.type === "percent" && "%"}
+                      </li>
+                      <li className="list-group-item text-right">
+                        <span className="pull-left">
+                          <strong></strong>
+                        </span>
+                        <button type="button" className="btn btn-success text-white" title="view details" onClick={() => setDriverPaymentModal(true)}>
+                          change
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-              </div>
+              )}
+              {vehicleDetails?.payment_plan && (
+                <div className="tab-content px-3 mt-3">
+                  <div className="tab-pane active" id="home">
+                    <ul className="list-group">
+                      <li className="list-group-item text-right">
+                        <span className="pull-left" style={{ fontSize: "20px" }}>
+                          <strong>Payment Plan</strong>
+                        </span>
+                      </li>
+                      <li className="list-group-item text-right">
+                        <span className="pull-left">
+                          <strong>Asset</strong>
+                        </span>
+                        {`₦${vehicleDetails?.payment_plan?.asset?.toLocaleString()}`}
+                      </li>
+                      <li className="list-group-item text-right">
+                        <span className="pull-left">
+                          <strong>Dashcam</strong>
+                        </span>
+                        {`₦${vehicleDetails?.payment_plan?.dashcam?.toLocaleString()}`}
+                      </li>
+                      <li className="list-group-item text-right">
+                        <span className="pull-left">
+                          <strong>Mobile Phone</strong>
+                        </span>
+                        {`₦${vehicleDetails?.payment_plan?.mobile_phone?.toLocaleString()}`}
+                      </li>
+                      <li className="list-group-item text-right">
+                        <span className="pull-left">
+                          <strong>Bank Loan</strong>
+                        </span>
+                        {`₦${vehicleDetails?.payment_plan?.bank_loan?.toLocaleString() || ""}`}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              )}
+              {vehicleDetails?.repayment_progress && (
+                <div className="tab-content px-3 mt-3">
+                  <div className="tab-pane active" id="home">
+                    <ul className="list-group">
+                      <li className="list-group-item text-right">
+                        <span className="pull-left" style={{ fontSize: "20px" }}>
+                          <strong>Repayment Progress</strong>
+                        </span>
+                      </li>
+                      <li className="list-group-item text-right">
+                        <span className="pull-left">
+                          <strong>Asset</strong>
+                        </span>
+                        {`₦${vehicleDetails?.repayment_progress?.asset?.toLocaleString()}`}
+                      </li>
+                      <li className="list-group-item text-right">
+                        <span className="pull-left">
+                          <strong>Dashcam</strong>
+                        </span>
+                        {`₦${vehicleDetails?.repayment_progress?.dashcam?.toLocaleString()}`}
+                      </li>
+                      <li className="list-group-item text-right">
+                        <span className="pull-left">
+                          <strong>Mobile Phone</strong>
+                        </span>
+                        {`₦${vehicleDetails?.repayment_progress?.mobile_phone?.toLocaleString()}`}
+                      </li>
+                      <li className="list-group-item text-right">
+                        <span className="pull-left">
+                          <strong>Bank Loan</strong>
+                        </span>
+                        {`₦${vehicleDetails?.repayment_progress?.bank_loan?.toLocaleString() || ""}`}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
       )}
 
