@@ -401,7 +401,7 @@ const Disbursement = (props) => {
                                     <TableCell>Bank Name</TableCell>
                                     <TableCell>Bank Acc. Number</TableCell>
                                     <TableCell>Total Amount</TableCell>
-                                    <TableCell>Total Cash Collected</TableCell>
+                                    <TableCell>Cash Collected</TableCell>
                                     <TableCell>Actual Amount</TableCell>
                                     <TableCell>Status</TableCell>
                                  </TableRow>
@@ -419,7 +419,7 @@ const Disbursement = (props) => {
                                                 <TableCell>{item?.user_data?.phone_number}</TableCell>
                                                 <TableCell>{item?.account_data?.bank_name}</TableCell>
                                                 <TableCell>{item?.account_data?.account_number}</TableCell>
-                                                <TableCell>₦{item?.payment_summary?.total_net_balance?.toLocaleString()}</TableCell>
+                                                <TableCell>₦{(item?.payment_summary?.total_net_balance || item?.amount)?.toLocaleString()}</TableCell>
                                                 <TableCell>₦{item?.payment_summary?.total_cash_collected?.toLocaleString()}</TableCell>
                                                 <TableCell>₦{item?.actual_amount?.toLocaleString()}</TableCell>
                                                 <TableCell>
