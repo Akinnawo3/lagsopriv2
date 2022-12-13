@@ -100,7 +100,7 @@ const VehiclesPerformanceTable = ({ getVehiclesPerformance, getVehiclesPerforman
           <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
             <small className="fw-bold mr-2">Order</small>
             <select type="select" id="vehicleId" name="vehicle id" className="p-1" placeholder="Plate No." value={order} onChange={(e) => setOrder(e.target.value)} style={{ width: 120 }}>
-              {/* <option hidden>--order--</option> */}
+              <option hidden>--order--</option>
               <option value="1">Ascending</option>
               <option value="-1">Descending</option>
             </select>
