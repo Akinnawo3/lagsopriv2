@@ -1,26 +1,27 @@
-import React, {useState, useEffect, Fragment, useRef} from "react";
+import React, { useState, useEffect, Fragment, useRef } from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import {connect} from "react-redux";
-import {CSVLink} from "react-csv";
+import { connect } from "react-redux";
+import { CSVLink } from "react-csv";
 import Pagination from "react-js-pagination";
-import {createVehicles, deleteVehicle, getVehicles, searchVehicles, updateVehicle} from "Actions/vehicleAction";
+import { createVehicles, deleteVehicle, getVehicles, searchVehicles, updateVehicle } from "Actions/vehicleAction";
 import Button from "@material-ui/core/Button";
 import Upload from "./upload";
-import {Form, FormGroup, Label, Input, Badge, Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
+import { Form, FormGroup, Label, Input, Badge, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import EmptyData from "Components/EmptyData/EmptyData";
-import {getVehiclesCount} from "Actions/vehicleAction";
-import {getVehiclesByOem} from "Actions/oemAction";
-import {Link} from "react-router-dom";
+import { getVehiclesCount } from "Actions/vehicleAction";
+import { getVehiclesByOem } from "Actions/oemAction";
+import { Link } from "react-router-dom";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
-import {verifyUserPermssion} from "../../../container/DefaultLayout";
-import {useHistory} from "react-router-dom";
-import {calculatePostDate, fullDateTime} from "../../../helpers/helpers";
+import { verifyUserPermssion } from "../../../container/DefaultLayout";
+import { useHistory } from "react-router-dom";
+import { calculatePostDate, fullDateTime } from "../../../helpers/helpers";
+import { getVehiclesExport } from "../../../actions/vehicleAction";
 const qs = require("qs");
 export let onAddUpdateVehicleModalClose;
 const VehicleTable = ({
@@ -39,19 +40,21 @@ const VehicleTable = ({
   getVehiclesByOem,
   oemVehicles,
   loadingStatus,
+  getVehiclesExport,
 }) => {
   const history = useHistory();
-  const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
+  const pageFromQuery = qs.parse(history.location.search, { ignoreQueryPrefix: true }).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
   const [addNewUserModal, setAddNewUserModal] = useState(false);
   const [editUser, setEditUser] = useState(false);
   const [updateId, setUpdateId] = useState(null);
-  const [formData, setFormData] = useState({plateNo: "", make: "", model: "", desc: "", color: "", oem: "", oemVehicle: "", purchase_year: "", chassis_number: "", engine_number: ""});
+  const [formData, setFormData] = useState({ plateNo: "", make: "", model: "", desc: "", color: "", oem: "", oemVehicle: "", purchase_year: "", chassis_number: "", engine_number: "" });
   const [addNewUserModal1, setAddNewUserModal1] = useState(false);
   const [searchData, setSearchData] = useState("");
   const inputEl = useRef(null);
+  const exportRef = useRef(null);
   const [excelExport, setExcelExport] = useState([]);
   const [deleteId, setDeleteId] = useState(null);
 
@@ -76,6 +79,8 @@ const VehicleTable = ({
     }
   }, [vehicles]);
 
+  const { plateNo, model, make, desc, color, oem, oemVehicle, purchase_year, chassis_number, engine_number } = formData;
+
   const paginate = (pageNumber) => {
     history.push(`${history.location.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
@@ -95,13 +100,17 @@ const VehicleTable = ({
     getVehiclesCount(assign);
   };
 
-  const onChange = (e) => setFormData({...formData, [e.target.name]: e.target.value});
+  const confirmExport = () => {
+    exportRef.current.close();
+    getVehiclesExport(assign);
+  };
+
+  const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onOemSelect = async (e) => {
-    setFormData({...formData, oem: e.target.value});
+    setFormData({ ...formData, oem: e.target.value });
     await getVehiclesByOem(1, false, e.target.value);
   };
-  const {plateNo, model, make, desc, color, oem, oemVehicle, purchase_year, chassis_number, engine_number} = formData;
 
   const opnAddNewUserModal = (e) => {
     e.preventDefault();
@@ -140,7 +149,7 @@ const VehicleTable = ({
 
   onAddUpdateVehicleModalClose = () => {
     // if (editUser) {
-    setFormData({...formData, plateNo: "", type: "", model: "", desc: "", make: "", color: "", oem: "", purchase_year: "", chassis_number: "", engine_number: ""});
+    setFormData({ ...formData, plateNo: "", type: "", model: "", desc: "", make: "", color: "", oem: "", purchase_year: "", chassis_number: "", engine_number: "" });
     // }
     setUpdateId(null);
     setAddNewUserModal(false);
@@ -159,8 +168,6 @@ const VehicleTable = ({
     setDeleteId(id);
   };
 
-  console.log(vehicles, "aaaaa");
-
   return (
     <div>
       {!loading && (
@@ -168,19 +175,19 @@ const VehicleTable = ({
           <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
             <SearchComponent getPreviousData={getPreviousData} getSearchedData={getSearchData} setCurrentPage={setCurrentPage} getCount={handleCount} placeHolder={"Plate No"} />
           </li>
-          <div className="float-right">
+          <div className="float-right d-flex">
             {vehicles.length > 0 && (
-              <CSVLink data={excelExport} filename={"vehicles.csv"} className="btn-sm btn-outline-default mr-10 bg-primary text-white" target="_blank">
+              <div className="btn-sm btn-outline-default mr-10 bg-primary text-white" target="_blank" onClick={() => exportRef.current.open()}>
                 <i className="zmdi zmdi-download mr-2"></i>
                 Export to Excel
-              </CSVLink>
+              </div>
             )}
             <a href="#" onClick={(e) => verifyUserPermssion("create_vehicle", () => opnAddNewUserModal(e))} color="primary" className="caret btn-sm mr-10">
               Add New Vehicle <i className="zmdi zmdi-plus"></i>
             </a>
           </div>
           {!loading && vehicles.length > 0 && (
-            <div className="table-responsive" style={{minHeight: "50vh"}}>
+            <div className="table-responsive" style={{ minHeight: "50vh" }}>
               <Table>
                 <TableHead>
                   <TableRow hover>
@@ -220,7 +227,7 @@ const VehicleTable = ({
                           </button>
                           <button type="button" className="rct-link-btn text-primary ml-3" title="view details">
                             {/* <Link to={`/admin/vehicles/${vehicle.vehicle_id}`} state={{driver_id: vehicle?.driver_auth_id || "", partner_id: vehicle?.partner_id || ""}}> */}
-                            <Link to={{pathname: `/admin/vehicles/${vehicle.vehicle_id}`, state: {driver_id: vehicle?.driver_auth_id || "", partner_id: vehicle?.partner_id || ""}}}>
+                            <Link to={{ pathname: `/admin/vehicles/${vehicle.vehicle_id}`, state: { driver_id: vehicle?.driver_auth_id || "", partner_id: vehicle?.partner_id || "" } }}>
                               <i className="ti-eye" />
                             </Link>
                           </button>
@@ -329,6 +336,7 @@ const VehicleTable = ({
           inputEl.current.close();
         }}
       />
+      <DeleteConfirmationDialog ref={exportRef} title={"Are you sure you want to Export File?"} message={"This will send the excel file to your email"} onConfirm={confirmExport} />
     </div>
   );
 };
@@ -336,6 +344,7 @@ const VehicleTable = ({
 function mapDispatchToProps(dispatch) {
   return {
     getVehicles: (page_no, assign, spinner, car_number_plate) => dispatch(getVehicles(page_no, assign, spinner, car_number_plate)),
+    getVehiclesExport: (assign, car_number_plate) => dispatch(getVehiclesExport(assign, car_number_plate)),
     getVehiclesCount: (assign, car_number_plate) => dispatch(getVehiclesCount(assign, car_number_plate)),
     searchVehicles: (data, assign) => dispatch(searchVehicles(data, assign)),
     deleteVehicle: (vehicle_id, vehicles) => dispatch(deleteVehicle(vehicle_id, vehicles)),

@@ -43,6 +43,23 @@ export const getVehicles =
     }
   };
 
+export const getVehiclesExport =
+  (assign = "", car_number_plate = "") =>
+  async (dispatch) => {
+    dispatch(startStatusLoading());
+    try {
+      const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicles?component="export&assign=${assign}&car_number_plate=${car_number_plate}`);
+      if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+      } else {
+        NotificationManager.success("Excel file sent to your email successfully");
+      }
+      dispatch(endStatusLoading());
+    } catch (err) {
+      dispatch(endStatusLoading());
+    }
+  };
+
 export const getVehiclesFeedback =
   (page_no = 1, spinner) =>
   async (dispatch) => {
@@ -438,10 +455,10 @@ export const getVehiclePerformanceExport =
   };
 
 export const getVehiclesPerformanceCount =
-  (start_date = "", end_date = "", vehicle_id = "", order = "") =>
+  (start_date = "", end_date = "", vehicle_id = "") =>
   async (dispatch) => {
     try {
-      const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicle-performance?vehicle_id=${vehicle_id}&sort=${order}&start_date=${start_date}&end_date=${end_date}&component=count`);
+      const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicle-performance?q=${vehicle_id}&start_date=${start_date}&end_date=${end_date}&component=count`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
