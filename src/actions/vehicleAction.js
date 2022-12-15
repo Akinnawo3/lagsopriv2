@@ -48,7 +48,7 @@ export const getVehiclesExport =
   async (dispatch) => {
     dispatch(startStatusLoading());
     try {
-      const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicles?component="export&assign=${assign}&car_number_plate=${car_number_plate}`);
+      const res = await axios.get(`${api.vehicles}/v1.1/admin/vehicles?component=export&assign=${assign}&car_number_plate=${car_number_plate}`);
       if (res.data.status === "error") {
         NotificationManager.error(res.data.msg);
       } else {
