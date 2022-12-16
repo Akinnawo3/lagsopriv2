@@ -69,3 +69,7 @@ CMD ["nginx", "-g", "daemon off;"]
 #
 ## Tell Docker about the port we'll run on.
 #EXPOSE 5000
+
+
+
+

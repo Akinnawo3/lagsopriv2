@@ -1,28 +1,29 @@
-import React, {useEffect, useState} from "react";
-import {connect} from "react-redux";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
-import {Helmet} from "react-helmet";
-import {RctCard} from "Components/RctCard";
+import { Helmet } from "react-helmet";
+import { RctCard } from "Components/RctCard";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
-import {getDriver} from "Actions/driverAction";
+import { getDriver } from "Actions/driverAction";
 import DriverProfile from "Routes/drivers/components/driverProfile";
 import DriverRatings from "Routes/drivers/components/driverRatings";
-import {getRating, getUserRating, getUserRatingAverage, getUserRatingsCount} from "Actions/ratingAction";
+import { getRating, getUserRating, getUserRatingAverage, getUserRatingsCount } from "Actions/ratingAction";
 import DriverTrips from "Routes/drivers/components/driverTrips";
-import {getDriverTripCount, getDriverTripCountDisplayAll, getDriverTripCountDisplayCancelled, getDriverTripCountDisplayCompleted, getDriverTrips} from "Actions/tripAction";
-import {getWalletBalance, getWallets, getWalletsCount} from "Actions/walletAction";
+import { getDriverTripCount, getDriverTripCountDisplayAll, getDriverTripCountDisplayCancelled, getDriverTripCountDisplayCompleted, getDriverTrips } from "Actions/tripAction";
+import { getWalletBalance, getWallets, getWalletsCount } from "Actions/walletAction";
 import Wallets from "Components/Wallets/wallets";
-import {getPayments, getPaymentsCount, getPaymentsService, getPaymentsServiceBalanceForIndividual, getPaymentsServiceCount} from "Actions/paymentAction";
+import { getPayments, getPaymentsCount, getPaymentsService, getPaymentsServiceBalanceForIndividual, getPaymentsServiceCount } from "Actions/paymentAction";
 import PaymentsServiceComponent from "Components/PaymentsComponent/paymentsServiceComponent";
 import PaymentTripComponent from "Components/PaymentsComponent/paymentTripComponent";
+import DriverPayoutsTable from "Routes/drivers/components/driverPayouts";
 
 // For Tab Content
 function TabContainer(props) {
   return (
-    <Typography component="div" style={{padding: 8 * 3}}>
+    <Typography component="div" style={{ padding: 8 * 3 }}>
       {props.children}
     </Typography>
   );
@@ -54,6 +55,7 @@ const Driver = (props) => {
     getPaymentsServiceBalanceForIndividual,
     getPayments,
     getPaymentsCount,
+    loadingStatus
   } = props;
 
   const [activeTab, setActiveTab] = useState(location.state ? location.state.activeTab : 0);
@@ -116,10 +118,6 @@ const Driver = (props) => {
 
   console.log(driverDetails);
 
-
-
-  
-
   return (
     <div className="userProfile-wrapper">
       <Helmet>
@@ -134,8 +132,8 @@ const Driver = (props) => {
               {!loading && driverDetails.avatar ? (
                 <img src={driverDetails.avatar} alt="user profile" className="rounded-circle" width="200" height="200" />
               ) : (
-                <div className="d-flex align-items-center justify-content-center" style={{width: "200px", height: "200px", borderRadius: "100px", backgroundColor: "lightblue"}}>
-                  <div style={{fontSize: "50px", color: "white"}}>{driverDetails?.first_name?.charAt(0)}</div>
+                <div className="d-flex align-items-center justify-content-center" style={{ width: "200px", height: "200px", borderRadius: "100px", backgroundColor: "lightblue" }}>
+                  <div style={{ fontSize: "50px", color: "white" }}>{driverDetails?.first_name?.charAt(0)}</div>
                 </div>
               )}
             </div>
@@ -150,6 +148,7 @@ const Driver = (props) => {
                 {/* <Tab icon={<i className="icon-credit-card"></i>} label={"Revenue Split"} /> */}
                 <Tab icon={<i className="icon-credit-card"></i>} label={"Debt Service History"} />
                 <Tab icon={<i className="icon-credit-card"></i>} label={"Trip Payment History"} />
+                <Tab icon={<i className="icon-credit-card"></i>} label={"Payout"} />
               </Tabs>
             </AppBar>
             {activeTab === 0 && (
@@ -180,6 +179,11 @@ const Driver = (props) => {
             {activeTab === 5 && (
               <TabContainer>
                 <PaymentTripComponent auth_id={match.params.id} />
+              </TabContainer>
+            )}
+            {activeTab === 6 && (
+              <TabContainer>
+                <DriverPayoutsTable driverId={match?.params?.id} isLoading={loadingStatus} />
               </TabContainer>
             )}
           </div>

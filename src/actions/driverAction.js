@@ -1,5 +1,5 @@
 import axios from "axios";
-import {DRIVERS, DRIVER, DRIVERS_COUNT, VEHICLE, DRIVERS_LOCATION, DRIVER_LOCATION} from "./types";
+import {DRIVERS, DRIVER, DRIVERS_COUNT, VEHICLE, DRIVERS_LOCATION, DRIVER_LOCATION,DRIVER_PAYOUT,DRIVER_PAYOUT_COUNT} from "./types";
 import {endLoading, endStatusLoading, startLoading, startStatusLoading} from "./loadingAction";
 import {NotificationManager} from "react-notifications";
 import api from "../environments/environment";
@@ -280,3 +280,39 @@ export const addDriver = (body) => async (dispatch) => {
     NotificationManager.error(err.response.data.message);
   }
 };
+
+
+
+export const getDriverPayout = (auth_id, page = 1, date_type = 'daily') => async (dispatch) => {
+  dispatch(startStatusLoading());
+  try {
+     const res = await axios.get(`${api.revenueSplit}/v1.1/admin/payout?user_type=driver&date_type=${date_type}&payment_type=payout&item_per_page=20&page=${page}&auth_id=${auth_id}`);
+     if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+     } else {
+        dispatch({
+           type: DRIVER_PAYOUT,
+           payload: res.data.data,
+        });
+     }
+     dispatch(endStatusLoading());
+  } catch (err) {
+     dispatch(endStatusLoading());
+  }
+};
+
+export const getDriverPayoutCount = (auth_id, page = 1, date_type = 'daily') => async (dispatch) => {
+  try {
+     const res = await axios.get(`${api.revenueSplit}/v1.1/admin/payout?user_type=driver&date_type=${date_type}&payment_type=payout&component=count&auth_id=${auth_id}`);
+     if (res.data.status === "error") {
+        NotificationManager.error(res.data.msg);
+     } else {
+        dispatch({
+           type: DRIVER_PAYOUT_COUNT,
+           payload: res.data.data.total ? res.data.data.total : 0,
+        });
+     }
+  } catch (err) { }
+};
+
+
