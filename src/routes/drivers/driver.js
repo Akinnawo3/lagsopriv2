@@ -22,40 +22,41 @@ import DriverPayoutsTable from "Routes/drivers/components/driverPayouts";
 
 // For Tab Content
 function TabContainer(props) {
-   return (
-      <Typography component="div" style={{ padding: 8 * 3 }}>
-         {props.children}
-      </Typography>
-   );
+  return (
+    <Typography component="div" style={{ padding: 8 * 3 }}>
+      {props.children}
+    </Typography>
+  );
 }
 
 const Driver = (props) => {
-   const {
-      location,
-      match,
-      getDriver,
-      getDriverTrips,
-      loading,
-      getDriverTripCount,
-      driverDetails,
-      getUserRating,
-      getDriverTripCountDisplayAll,
-      getDriverTripCountDisplayCompleted,
-      getDriverTripCountDisplayCancelled,
-      getUserRatingCount,
-      getUserRatingAverage,
-      getWallets,
-      getWalletsCount,
-      getWalletsBalance,
-      wallets,
-      wallet,
-      walletsCount,
-      getPaymentsService,
-      getPaymentsServiceCount,
-      getPaymentsServiceBalanceForIndividual,
-      getPayments,
-      getPaymentsCount,
-   } = props;
+  const {
+    location,
+    match,
+    getDriver,
+    getDriverTrips,
+    loading,
+    getDriverTripCount,
+    driverDetails,
+    getUserRating,
+    getDriverTripCountDisplayAll,
+    getDriverTripCountDisplayCompleted,
+    getDriverTripCountDisplayCancelled,
+    getUserRatingCount,
+    getUserRatingAverage,
+    getWallets,
+    getWalletsCount,
+    getWalletsBalance,
+    wallets,
+    wallet,
+    walletsCount,
+    getPaymentsService,
+    getPaymentsServiceCount,
+    getPaymentsServiceBalanceForIndividual,
+    getPayments,
+    getPaymentsCount,
+    loadingStatus
+  } = props;
 
    const [activeTab, setActiveTab] = useState(location.state ? location.state.activeTab : 0);
 
@@ -114,73 +115,80 @@ const Driver = (props) => {
          getPaymentsServiceBalanceForIndividual(match.params.id);
       }
    }, [match.params.id, activeTab]);
-   return (
-      <div className="userProfile-wrapper">
-         <Helmet>
-            <title>Driver Profile</title>
-            <meta name="description" content="Driver Profile" />
-         </Helmet>
-         <PageTitleBar title={!loading && driverDetails?.first_name ? `${driverDetails.first_name} ${driverDetails.last_name}` : ""} match={match} />
-         {!loading && (
-            <RctCard>
-               <div className="d-flex align-items-center py-5 justify-content-center mb-4 mt-2">
-                  <div className="user-profile mt-2">
-                     {!loading && driverDetails.avatar ? (
-                        <img src={driverDetails.avatar} alt="user profile" className="rounded-circle" width="200" height="200" />
-                     ) : (
-                        <div className="d-flex align-items-center justify-content-center" style={{ width: "200px", height: "200px", borderRadius: "100px", backgroundColor: "lightblue" }}>
-                           <div style={{ fontSize: "50px", color: "white" }}>{driverDetails?.first_name?.charAt(0)}</div>
-                        </div>
-                     )}
-                  </div>
-               </div>
-               <div className="rct-tabs">
-                  <AppBar position="static">
-                     <Tabs value={activeTab} onChange={handleChange} variant="scrollable" scrollButtons="off" indicatorColor="primary">
-                        <Tab icon={<i className="ti-user"></i>} label={"Profile"} />
-                        <Tab icon={<i className="icon-graph"></i>} label={"Trip History"} />
-                        <Tab icon={<i className="icon-star"></i>} label={"Ratings"} />
-                        <Tab icon={<i className="icon-credit-card"></i>} label={"Wallet History"} />
-                        {/* <Tab icon={<i className="icon-credit-card"></i>} label={"Revenue Split"} /> */}
-                        <Tab icon={<i className="icon-credit-card"></i>} label={"Debt Service History"} />
-                        <Tab icon={<i className="icon-credit-card"></i>} label={"Trip Payment History"} />
-                     </Tabs>
-                  </AppBar>
-                  {activeTab === 0 && (
-                     <TabContainer>
-                        <DriverProfile driver={driverDetails} />
-                     </TabContainer>
-                  )}
-                  {activeTab === 1 && (
-                     <TabContainer>
-                        <DriverTrips driver_id={match.params.id} />
-                     </TabContainer>
-                  )}
-                  {activeTab === 2 && (
-                     <TabContainer>
-                        <DriverRatings auth_id={match.params.id} />
-                     </TabContainer>
-                  )}
-                  {activeTab === 3 && (
-                     <TabContainer>
-                        <Wallets auth_id={match.params.id} wallets={wallets} wallet={wallet} walletsCount={walletsCount} />
-                     </TabContainer>
-                  )}
-                  {activeTab === 4 && (
-                     <TabContainer>
-                        <PaymentsServiceComponent auth_id={match.params.id} />
-                     </TabContainer>
-                  )}
-                  {activeTab === 5 && (
-                     <TabContainer>
-                        <PaymentTripComponent auth_id={match.params.id} />
-                     </TabContainer>
-                  )}
-               </div>
-            </RctCard>
-         )}
-      </div>
-   );
+
+  return (
+    <div className="userProfile-wrapper">
+      <Helmet>
+        <title>Driver Profile</title>
+        <meta name="description" content="Driver Profile" />
+      </Helmet>
+      <PageTitleBar title={!loading && driverDetails?.first_name ? `${driverDetails.first_name} ${driverDetails.last_name}` : ""} match={match} />
+      {!loading && (
+        <RctCard>
+          <div className="d-flex align-items-center py-5 justify-content-center mb-4 mt-2">
+            <div className="user-profile mt-2">
+              {!loading && driverDetails.avatar ? (
+                <img src={driverDetails.avatar} alt="user profile" className="rounded-circle" width="200" height="200" />
+              ) : (
+                <div className="d-flex align-items-center justify-content-center" style={{ width: "200px", height: "200px", borderRadius: "100px", backgroundColor: "lightblue" }}>
+                  <div style={{ fontSize: "50px", color: "white" }}>{driverDetails?.first_name?.charAt(0)}</div>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="rct-tabs">
+            <AppBar position="static">
+              <Tabs value={activeTab} onChange={handleChange} variant="scrollable" scrollButtons="off" indicatorColor="primary">
+                <Tab icon={<i className="ti-user"></i>} label={"Profile"} />
+                <Tab icon={<i className="icon-graph"></i>} label={"Trip History"} />
+                <Tab icon={<i className="icon-star"></i>} label={"Ratings"} />
+                <Tab icon={<i className="icon-credit-card"></i>} label={"Wallet History"} />
+                {/* <Tab icon={<i className="icon-credit-card"></i>} label={"Revenue Split"} /> */}
+                <Tab icon={<i className="icon-credit-card"></i>} label={"Debt Service History"} />
+                <Tab icon={<i className="icon-credit-card"></i>} label={"Trip Payment History"} />
+                <Tab icon={<i className="icon-credit-card"></i>} label={"Payout"} />
+              </Tabs>
+            </AppBar>
+            {activeTab === 0 && (
+              <TabContainer>
+                <DriverProfile driver={driverDetails} />
+              </TabContainer>
+            )}
+            {activeTab === 1 && (
+              <TabContainer>
+                <DriverTrips driver_id={match.params.id} />
+              </TabContainer>
+            )}
+            {activeTab === 2 && (
+              <TabContainer>
+                <DriverRatings auth_id={match.params.id} />
+              </TabContainer>
+            )}
+            {activeTab === 3 && (
+              <TabContainer>
+                <Wallets auth_id={match.params.id} wallets={wallets} wallet={wallet} walletsCount={walletsCount} />
+              </TabContainer>
+            )}
+            {activeTab === 4 && (
+              <TabContainer>
+                <PaymentsServiceComponent auth_id={match.params.id} />
+              </TabContainer>
+            )}
+            {activeTab === 5 && (
+              <TabContainer>
+                <PaymentTripComponent auth_id={match.params.id} />
+              </TabContainer>
+            )}
+            {activeTab === 6 && (
+              <TabContainer>
+                <DriverPayoutsTable driverId={match?.params?.id} isLoading={loadingStatus} />
+              </TabContainer>
+            )}
+          </div>
+        </RctCard>
+      )}
+    </div>
+  );
 };
 
 function mapDispatchToProps(dispatch) {
