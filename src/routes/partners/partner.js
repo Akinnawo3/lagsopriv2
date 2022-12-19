@@ -180,4 +180,5 @@ const mapStateToProps = state => ({
     partnerDetails: state.partners.partner,
 });
 
+// export default connect(mapStateToProps,mapDispatchToProps)(Partner)
 export default connect(mapStateToProps,mapDispatchToProps)(Partner)
