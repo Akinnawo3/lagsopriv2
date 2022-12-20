@@ -1,22 +1,22 @@
-import React, {Fragment, useState, useEffect, useRef} from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import Pagination from "react-js-pagination";
 import EmptyData from "Components/EmptyData/EmptyData";
-import {calculatePostDate, getStatus4, getStatus5, getStatusColor4, getStatusColor5} from "Helpers/helpers";
-import {Badge, Button, Card, CardBody, Col, Row} from "reactstrap";
-import {getPaymentsService, getPaymentsServiceCount, getPaymentsServiceBalance, getPaymentsServiceExport} from "Actions/paymentAction";
-import {Link} from "react-router-dom";
-import {CSVLink} from "react-csv";
+import { calculatePostDate, getStatus4, getStatus5, getStatusColor4, getStatusColor5 } from "Helpers/helpers";
+import { Badge, Button, Card, CardBody, Col, Row } from "reactstrap";
+import { getPaymentsService, getPaymentsServiceCount, getPaymentsServiceBalance, getPaymentsServiceExport } from "Actions/paymentAction";
+import { Link } from "react-router-dom";
+import { CSVLink } from "react-csv";
 import moment from "moment";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 const qs = require("qs");
-import {getFirstDayOfMonth, getTodayDate} from "../../../helpers/helpers";
+import { getFirstDayOfMonth, getTodayDate } from "../../../helpers/helpers";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 
 const PaymentServiceTable = ({
@@ -33,7 +33,7 @@ const PaymentServiceTable = ({
   getPaymentsServiceExport,
 }) => {
   const history = useHistory();
-  const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
+  const pageFromQuery = qs.parse(history.location.search, { ignoreQueryPrefix: true }).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
@@ -51,10 +51,10 @@ const PaymentServiceTable = ({
   };
 
   const paymentTypeOptions = [
-    {value: "", label: "- - Filter by Payment Type - -"},
-    {label: "Driver Asset", value: "driver-assets"},
+    { value: "", label: "- - Filter by Payment Type - -" },
+    { label: "Driver Asset", value: "driver-assets" },
     // {label: "Add Card", value: "add-card"},
-    {label: "Driver Verification", value: "driver-verification"},
+    { label: "Driver Verification", value: "driver-verification" },
   ];
 
   const handleChange = (e) => {
@@ -100,7 +100,7 @@ const PaymentServiceTable = ({
 
   return (
     <div>
-      <RctCollapsibleCard heading={header} fullBlock style={{minHeight: "70vh"}}>
+      <RctCollapsibleCard heading={header} fullBlock style={{ minHeight: "70vh" }}>
         <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
           <select id="filter-dropdown" name="fiter-dropdown" onChange={handleChange} className="p-1 px-4">
             {paymentTypeOptions.map((item) => (
@@ -117,14 +117,19 @@ const PaymentServiceTable = ({
           <input type="date" id="start" name="trip-start" defaultValue={endDate} min="2018-01-01" max={getTodayDate()} onChange={(e) => setEndDate(e.target.value)} />
         </li>
         <li className="list-inline-item search-icon d-inline-block ml-5 mb-2">
-          <button className="btn btn-primary" onClick={applyFilter}>
+          <button className="btn btn-primary mr-2" style={{ height: "30px" }}>
             Apply Filter
           </button>
         </li>
         <div className="float-right">
+          <a className="mr-2" target="_blank" href="https://docs.google.com/spreadsheets/d/157zYlbU_y_AciM2piJzcoZVfKX38_cTXICcBvhq9RoY/edit?usp=sharing">
+            <button className="btn btn-primary" style={{ height: "30px" }}>
+              View Breakdown
+            </button>
+          </a>
+
           {!loading && payments.length > 0 && (
-            <Button onClick={() => handleExport()} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
-              {" "}
+            <Button onClick={() => handleExport()} style={{ height: "30px" }} className="align-items-center justify-content-center mr-2" color="primary">
               <i className="zmdi zmdi-download mr-2"></i> Export to Excel
             </Button>
           )}
@@ -136,8 +141,8 @@ const PaymentServiceTable = ({
               <CardBody className="pb-0">
                 <div className="text-value text-muted fw-bold">Total Count</div>
               </CardBody>
-              <div className="chart-wrapper mx-3 d-flex align-items-center  justify-content-between" style={{height: "70px"}}>
-                <span className=" font-xl" style={{fontSize: "2.5rem"}}>
+              <div className="chart-wrapper mx-3 d-flex align-items-center  justify-content-between" style={{ height: "70px" }}>
+                <span className=" font-xl" style={{ fontSize: "2.5rem" }}>
                   {paymentsCount}
                 </span>
                 <i className="ti-arrow-up font-lg" />
@@ -149,8 +154,8 @@ const PaymentServiceTable = ({
               <CardBody className="pb-0">
                 <div className="text-value text-muted fw-bold">Total Balance</div>
               </CardBody>
-              <div className="chart-wrapper mx-3 d-flex align-items-center  justify-content-between" style={{height: "70px"}}>
-                <span className=" font-xl" style={{fontSize: "2.5rem"}}>
+              <div className="chart-wrapper mx-3 d-flex align-items-center  justify-content-between" style={{ height: "70px" }}>
+                <span className=" font-xl" style={{ fontSize: "2.5rem" }}>
                   ₦{paymentsServiceBalance?.toLocaleString()}
                 </span>
                 <i className="ti-arrow-up font-lg" />
@@ -161,7 +166,7 @@ const PaymentServiceTable = ({
 
         {!loading && payments?.length > 0 && (
           <div>
-            <div className="table-responsive" style={{minHeight: "50vh"}}>
+            <div className="table-responsive" style={{ minHeight: "50vh" }}>
               <Table>
                 <TableHead>
                   <TableRow hover>
