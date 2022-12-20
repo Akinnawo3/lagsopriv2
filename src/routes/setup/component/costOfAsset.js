@@ -30,9 +30,6 @@ const CostOfAsset = ({ getCustomerCare, customerCareNumbers, createCostOfAsset }
                <div className="px-2">
                   <div className="row">
                      <div className="cl col-sm-12 col-md-6">
-                        <p className="mt-2">
-                           <a href="https://docs.google.com/spreadsheets/d/157zYlbU_y_AciM2piJzcoZVfKX38_cTXICcBvhq9RoY/edit#gid=279137178" target="_blank">Click to see payment breakdown</a>
-                        </p>
                         <Card className="text-primary bg-light p-2 mb-4 w-75">
                            <CardBody className="pb-0">
                               <div className="text-value text-left text-muted fw-bold">Total </div>
