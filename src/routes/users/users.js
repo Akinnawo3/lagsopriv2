@@ -44,6 +44,8 @@ const Users = ({
   changeKycStatus,
   getUserExport,
   forNotification,
+  updateList,
+  authIdList,
 }) => {
   const pageFromQuery = qs.parse(history?.location?.search, { ignoreQueryPrefix: true }).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -235,6 +237,7 @@ const Users = ({
               <Table>
                 <TableHead>
                   <TableRow hover>
+                    {forNotification && <TableCell></TableCell>}
                     <TableCell>First Name</TableCell>
                     <TableCell>Last Name</TableCell>
                     <TableCell>Phone No</TableCell>
@@ -249,6 +252,12 @@ const Users = ({
                   <Fragment>
                     {users.map((user, key) => (
                       <TableRow hover key={key}>
+                        {forNotification && (
+                          <TableCell>
+                            {" "}
+                            <input type="checkbox"  value={user?.auth_id} onChange={updateList} checked={(() => authIdList.includes(user?.auth_id))()} />
+                          </TableCell>
+                        )}
                         <TableCell>{user.first_name}</TableCell>
                         <TableCell>{user.last_name}</TableCell>
                         <TableCell>{user.phone_number}</TableCell>

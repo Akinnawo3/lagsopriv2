@@ -18,10 +18,10 @@ import EmptyData from "Components/EmptyData/EmptyData";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
 import { getUserExport } from "Actions/userAction";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
-import { Button } from "reactstrap";
+import { Button, Input } from "reactstrap";
 const qs = require("qs");
 
-const Passengers = ({ history, match, getPassengers, passengers, loading, passengerCount, getPassengerCount, searchPassenger, getUserExport, forNotification }) => {
+const Passengers = ({ history, match, getPassengers, passengers, loading, passengerCount, getPassengerCount, searchPassenger, getUserExport, forNotification, updateList, authIdList }) => {
   const pageFromQuery = qs.parse(history?.location?.search, { ignoreQueryPrefix: true }).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
@@ -122,6 +122,7 @@ const Passengers = ({ history, match, getPassengers, passengers, loading, passen
               <Table>
                 <TableHead>
                   <TableRow hover>
+                    {forNotification && <TableCell></TableCell>}
                     <TableCell>First Name</TableCell>
                     <TableCell>Last Name</TableCell>
                     <TableCell>Phone No</TableCell>
@@ -133,6 +134,11 @@ const Passengers = ({ history, match, getPassengers, passengers, loading, passen
                   <Fragment>
                     {passengers.map((passenger, key) => (
                       <TableRow hover key={key}>
+                        {forNotification && (
+                          <TableCell>
+                            <input type="checkbox" value={passenger.auth_id} onChange={updateList} checked={(() => authIdList.includes(passenger.auth_id))()} />
+                          </TableCell>
+                        )}
                         <TableCell>{passenger.first_name}</TableCell>
                         <TableCell>{passenger.last_name}</TableCell>
                         <TableCell>{passenger.phone_number}</TableCell>

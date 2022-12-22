@@ -5,7 +5,7 @@ import DriverTable from "Routes/drivers/components/driverTable";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 const qs = require("qs");
 
-const ActiveDrivers = ({ history, getDrivers, drivers, match, getDriversCount, forNotification }) => {
+const ActiveDrivers = ({ history, getDrivers, drivers, match, getDriversCount, forNotification, updateList, authIdList }) => {
   const pageFromQuery = qs.parse(history?.location?.search, { ignoreQueryPrefix: true }).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
@@ -20,7 +20,7 @@ const ActiveDrivers = ({ history, getDrivers, drivers, match, getDriversCount, f
   return (
     <div className="table-wrapper">
       {!forNotification && <PageTitleBar title={"Active Drivers"} match={match} />}
-      <DriverTable status={4} header="Active Drivers" forNotification={forNotification} />
+      <DriverTable status={4} header="Active Drivers" forNotification={forNotification} updateList={updateList} authIdList={authIdList} />
     </div>
   );
 };

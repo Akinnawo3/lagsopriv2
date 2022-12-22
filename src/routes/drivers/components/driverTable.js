@@ -22,7 +22,7 @@ const qs = require("qs");
 export let closeFliterModal;
 export let closeDriverModal;
 
-const DriverTable = ({ drivers, isLoading, driversCount, getDrivers, status, searchDrivers, header, getDriversCount, getUserExport, addDriver, forNotification }) => {
+const DriverTable = ({ drivers, isLoading, driversCount, getDrivers, status, searchDrivers, header, getDriversCount, getUserExport, addDriver, forNotification, updateList, authIdList }) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history?.location?.search, { ignoreQueryPrefix: true }).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -169,6 +169,7 @@ const DriverTable = ({ drivers, isLoading, driversCount, getDrivers, status, sea
               <Table>
                 <TableHead>
                   <TableRow hover>
+                    {forNotification && <TableCell></TableCell>}
                     <TableCell>First Name</TableCell>
                     <TableCell>Last Name</TableCell>
                     <TableCell>Registered</TableCell>
@@ -185,6 +186,12 @@ const DriverTable = ({ drivers, isLoading, driversCount, getDrivers, status, sea
                   <Fragment>
                     {drivers.map((driver, key) => (
                       <TableRow hover key={key}>
+                        {forNotification && (
+                          <TableCell>
+                            {" "}
+                            <input type="checkbox" value={driver?.auth_id} onChange={updateList} checked={(() => authIdList.includes(driver?.auth_id))()} />
+                          </TableCell>
+                        )}
                         <TableCell>{driver.first_name}</TableCell>
                         <TableCell>{driver.last_name}</TableCell>
                         <TableCell>{calculatePostDate(driver.createdAt)}</TableCell>
