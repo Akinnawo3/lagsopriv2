@@ -1,28 +1,28 @@
-import React, {useState, useEffect, Fragment, useRef} from "react";
+import React, { useState, useEffect, Fragment, useRef } from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import {Badge} from "reactstrap";
+import { Badge } from "reactstrap";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import Pagination from "react-js-pagination";
-import {connect} from "react-redux";
-import {deleteUser, getUserCount, getUsers, searchUsers, ResetUserDetails, changeKycStatus, getUserExport} from "Actions/userAction";
+import { connect } from "react-redux";
+import { deleteUser, getUserCount, getUsers, searchUsers, ResetUserDetails, changeKycStatus, getUserExport } from "Actions/userAction";
 import EmptyData from "Components/EmptyData/EmptyData";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
-import {verifyUserPermssion} from "../../container/DefaultLayout";
-import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from "reactstrap";
-import {sendVerificationRequest} from "Actions/idVerificationAction";
-import {Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
-import {Form, FormGroup, Label, Input} from "reactstrap";
+import { verifyUserPermssion } from "../../container/DefaultLayout";
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
+import { sendVerificationRequest } from "Actions/idVerificationAction";
+import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { Form, FormGroup, Label, Input } from "reactstrap";
 // import Button from "@material-ui/core/Button";
 import Spinner from "Components/spinner/Spinner";
 import emailMessages from "Assets/data/email-messages/emailMessages";
-import {getStatusColorKYC, getTodayDate} from "Helpers/helpers";
-import {Button} from "reactstrap";
+import { getStatusColorKYC, getTodayDate } from "Helpers/helpers";
+import { Button } from "reactstrap";
 const qs = require("qs");
 export let onUserDetailsResetModalClose;
 
@@ -43,8 +43,9 @@ const Users = ({
   verificationResult,
   changeKycStatus,
   getUserExport,
+  forNotification,
 }) => {
-  const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
+  const pageFromQuery = qs.parse(history?.location?.search, { ignoreQueryPrefix: true }).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
@@ -81,7 +82,7 @@ const Users = ({
   const isTest = dataMode === "test" ? true : false;
 
   const paginate = (pageNumber) => {
-    history.push(`${history.location.pathname}?page=${pageNumber}`);
+    history.push(`${history?.location?.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
     getUsers(pageNumber);
     window.scrollTo(0, 0);
@@ -138,9 +139,9 @@ const Users = ({
       name: userFirstName,
       email: oldEmail,
     };
-    component === "email" && ResetUserDetails({component, old_email: oldEmail, new_email: newEmail}, emailData);
-    component === "phone_number" && ResetUserDetails({component, old_phone_number: phoneNumber, new_phone_number: newPhoneNumber}, emailData);
-    component === "password" && ResetUserDetails({component, phone_number: phoneNumber, password}, emailData);
+    component === "email" && ResetUserDetails({ component, old_email: oldEmail, new_email: newEmail }, emailData);
+    component === "phone_number" && ResetUserDetails({ component, old_phone_number: phoneNumber, new_phone_number: newPhoneNumber }, emailData);
+    component === "password" && ResetUserDetails({ component, phone_number: phoneNumber, password }, emailData);
   };
 
   const toggle = (id, name) => {
@@ -150,7 +151,7 @@ const Users = ({
     openedDropdownID === id ? setOpenedDropdownID("") : setOpenedDropdownID(id);
     setUserFirstName(name);
   };
-  const handleOptionCLick = ({editedComponent, oldEmail = "", OldPhoneNumber = ""}) => {
+  const handleOptionCLick = ({ editedComponent, oldEmail = "", OldPhoneNumber = "" }) => {
     setComponent(editedComponent);
     setOldEmail(oldEmail);
     setPhoneNumber(OldPhoneNumber);
@@ -183,7 +184,7 @@ const Users = ({
 
   return (
     <div className="table-wrapper">
-      <PageTitleBar title={"Users"} match={match} />
+      {!forNotification && <PageTitleBar title={"Users"} match={match} />}
       <RctCollapsibleCard heading="Users" fullBlock item={users} currentPage={currentPage} totalCount={userCount}>
         <div className="d-flex justify-content-between">
           <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
@@ -218,18 +219,19 @@ const Users = ({
                 }}
               />
             </li>
-            <Button onClick={() => handleFilter()} style={{height: "30px"}} className="align-items-center justify-content-center" color="success">
+            <Button onClick={() => handleFilter()} style={{ height: "30px" }} className="align-items-center justify-content-center mr-2" color="success">
               Apply filter
             </Button>
           </div>
-          <Button onClick={() => handleExport()} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
-            {" "}
-            <i className="zmdi zmdi-download mr-2"></i> Export to Excel
-          </Button>
+          {!forNotification && (
+            <Button onClick={() => handleExport()} style={{ height: "30px" }} className="align-items-center justify-content-center mr-2" color="primary">
+              <i className="zmdi zmdi-download mr-2"></i> Export to Excel
+            </Button>
+          )}
         </div>
         {!loading && users.length > 0 && (
           <>
-            <div className="table-responsive" style={{minHeight: "50vh"}}>
+            <div className="table-responsive" style={{ minHeight: "50vh" }}>
               <Table>
                 <TableHead>
                   <TableRow hover>
@@ -240,7 +242,7 @@ const Users = ({
                     <TableCell>Type</TableCell>
                     <TableCell>NIN </TableCell>
                     <TableCell>KYC status</TableCell>
-                    <TableCell>Action</TableCell>
+                    {!forNotification && <TableCell>Action</TableCell>}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -262,53 +264,59 @@ const Users = ({
                                 {user.kyc_status === 2 && "Suspended"}
                               </Badge>
                             </div>
-                            <div className="fw-bold text muted ml-1 ">
-                              {(user.kyc_status === 0 || !user.kyc_status) && (
-                                <button onClick={() => triggerIdVerifcation("nin", user, "1")} className="ml-2 btn btn-success p-0 px-2">
-                                  <small>Verify</small>
-                                </button>
-                              )}
-                              {user.kyc_status === 1 && (
-                                // <span className="fw-bold text muted ml-1 text-danger">
-                                //    <Button onClick={() => verifyId(user?.auth_id, "2")} className="align-items-center justify-content-center ml-2" color="danger">
-                                //       Suspend
-                                //    </Button>
-                                // </span>
-                                <button onClick={() => verifyId(user?.auth_id, "2")} className="ml-2 btn btn-danger p-0 px-2">
-                                  <small>Suspend</small>
-                                </button>
-                              )}
-                              {user.kyc_status === 2 && (
-                                // <span className="fw-bold text muted ml-1 text-info " onClick={() => verifyId(user?.auth_id, "1")}>
-                                //    Re-activate
-                                // </span>
-                                <button onClick={() => verifyId(user?.auth_id, "1")} className="ml-2 btn btn-success p-0 px-2">
-                                  <small>Re-activate</small>
-                                </button>
-                              )}
-                            </div>
+                            {!forNotification && (
+                              <div className="fw-bold text muted ml-1 ">
+                                {(user.kyc_status === 0 || !user.kyc_status) && (
+                                  <button onClick={() => triggerIdVerifcation("nin", user, "1")} className="ml-2 btn btn-success p-0 px-2">
+                                    <small>Verify</small>
+                                  </button>
+                                )}
+                                {user.kyc_status === 1 && (
+                                  // <span className="fw-bold text muted ml-1 text-danger">
+                                  //    <Button onClick={() => verifyId(user?.auth_id, "2")} className="align-items-center justify-content-center ml-2" color="danger">
+                                  //       Suspend
+                                  //    </Button>
+                                  // </span>
+                                  <button onClick={() => verifyId(user?.auth_id, "2")} className="ml-2 btn btn-danger p-0 px-2">
+                                    <small>Suspend</small>
+                                  </button>
+                                )}
+                                {user.kyc_status === 2 && (
+                                  // <span className="fw-bold text muted ml-1 text-info " onClick={() => verifyId(user?.auth_id, "1")}>
+                                  //    Re-activate
+                                  // </span>
+                                  <button onClick={() => verifyId(user?.auth_id, "1")} className="ml-2 btn btn-success p-0 px-2">
+                                    <small>Re-activate</small>
+                                  </button>
+                                )}
+                              </div>
+                            )}
                           </div>
                         </TableCell>
-                        <TableCell>
-                          <span className="d-flex">
-                            <Dropdown isOpen={openedDropdownID === user?.auth_id} toggle={() => toggle(user.auth_id, user.first_name)}>
-                              <DropdownToggle outline={false}>Reset Details</DropdownToggle>
-                              <DropdownMenu>
-                                <DropdownItem header>choose action</DropdownItem>
-                                <DropdownItem onClick={() => handleOptionCLick({editedComponent: "email", oldEmail: user.email})}>Change Email</DropdownItem>
-                                <DropdownItem divider />
-                                <DropdownItem onClick={() => handleOptionCLick({editedComponent: "phone_number", OldPhoneNumber: user.phone_number, oldEmail: user.email})}>
-                                  Change Phone Number
-                                </DropdownItem>
-                                <DropdownItem divider />
-                                <DropdownItem onClick={() => handleOptionCLick({editedComponent: "password", OldPhoneNumber: user.phone_number, oldEmail: user.email})}>Change Password</DropdownItem>
-                              </DropdownMenu>
-                            </Dropdown>
-                            <button type="button" className="rct-link-btn ml-lg-3 " onClick={() => verifyUserPermssion("delete_user", () => onDelete(user.auth_id))}>
-                              <i className="ti-trash text-danger"></i>
-                            </button>
-                          </span>
-                        </TableCell>
+                        {!forNotification && (
+                          <TableCell>
+                            <span className="d-flex">
+                              <Dropdown isOpen={openedDropdownID === user?.auth_id} toggle={() => toggle(user.auth_id, user.first_name)}>
+                                <DropdownToggle outline={false}>Reset Details</DropdownToggle>
+                                <DropdownMenu>
+                                  <DropdownItem header>choose action</DropdownItem>
+                                  <DropdownItem onClick={() => handleOptionCLick({ editedComponent: "email", oldEmail: user.email })}>Change Email</DropdownItem>
+                                  <DropdownItem divider />
+                                  <DropdownItem onClick={() => handleOptionCLick({ editedComponent: "phone_number", OldPhoneNumber: user.phone_number, oldEmail: user.email })}>
+                                    Change Phone Number
+                                  </DropdownItem>
+                                  <DropdownItem divider />
+                                  <DropdownItem onClick={() => handleOptionCLick({ editedComponent: "password", OldPhoneNumber: user.phone_number, oldEmail: user.email })}>
+                                    Change Password
+                                  </DropdownItem>
+                                </DropdownMenu>
+                              </Dropdown>
+                              <button type="button" className="rct-link-btn ml-lg-3 " onClick={() => verifyUserPermssion("delete_user", () => onDelete(user.auth_id))}>
+                                <i className="ti-trash text-danger"></i>
+                              </button>
+                            </span>
+                          </TableCell>
+                        )}
                       </TableRow>
                     ))}
                   </Fragment>
@@ -325,7 +333,7 @@ const Users = ({
 
       <Modal size="md" isOpen={idVerificationModalOpen} toggle={() => setIdVerificationModalOpen(!idVerificationModalOpen)}>
         <ModalHeader toggle={() => setIdVerificationModalOpen(!idVerificationModalOpen)}>Verify NIN</ModalHeader>
-        <ModalBody style={{minHeight: 100}}>
+        <ModalBody style={{ minHeight: 100 }}>
           {loadingStatus && (
             <div className="d-flex flex-column justify-content-center align-items-center">
               <Spinner />

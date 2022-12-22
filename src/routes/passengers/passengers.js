@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Fragment, useRef} from "react";
+import React, { useState, useEffect, Fragment, useRef } from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -6,23 +6,23 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
-import {connect} from "react-redux";
-import {getPassengerCount, getPassengers, searchPassengers} from "Actions/passengerActions";
-import {CSVLink} from "react-csv";
+import { connect } from "react-redux";
+import { getPassengerCount, getPassengers, searchPassengers } from "Actions/passengerActions";
+import { CSVLink } from "react-csv";
 import IconButton from "@material-ui/core/IconButton";
 import MobileSearchForm from "Components/Header/MobileSearchForm";
 import Pagination from "react-js-pagination";
-import {Link} from "react-router-dom";
-import {calculatePostDate, getTodayDate} from "Helpers/helpers";
+import { Link } from "react-router-dom";
+import { calculatePostDate, getTodayDate } from "Helpers/helpers";
 import EmptyData from "Components/EmptyData/EmptyData";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
-import {getUserExport} from "Actions/userAction";
+import { getUserExport } from "Actions/userAction";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
-import {Button} from "reactstrap";
+import { Button } from "reactstrap";
 const qs = require("qs");
 
-const Passengers = ({history, match, getPassengers, passengers, loading, passengerCount, getPassengerCount, searchPassenger, getUserExport}) => {
-  const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
+const Passengers = ({ history, match, getPassengers, passengers, loading, passengerCount, getPassengerCount, searchPassenger, getUserExport, forNotification }) => {
+  const pageFromQuery = qs.parse(history?.location?.search, { ignoreQueryPrefix: true }).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
@@ -38,7 +38,7 @@ const Passengers = ({history, match, getPassengers, passengers, loading, passeng
   }, []);
 
   const paginate = (pageNumber) => {
-    history.push(`${history.location.pathname}?page=${pageNumber}`);
+    history.push(`${history?.location?.pathname}?page=${pageNumber}`);
     setCurrentPage(pageNumber);
     getPassengers(pageNumber);
     window.scrollTo(0, 0);
@@ -60,7 +60,7 @@ const Passengers = ({history, match, getPassengers, passengers, loading, passeng
 
   return (
     <div className="table-wrapper">
-      <PageTitleBar title={"Riders"} match={match} />
+      {!forNotification && <PageTitleBar title={"Riders"} match={match} />}
       <RctCollapsibleCard heading="All Passengers" fullBlock item={passengers} currentPage={currentPage} totalCount={passengerCount}>
         <li className="list-inline-item search-icon d-inline-block ml-2 mb-2">
           <SearchComponent setCurrentPage={setCurrentPage} getSearchedData={searchPassenger} getPreviousData={getPassengers} getCount={getPassengerCount} />
@@ -101,21 +101,24 @@ const Passengers = ({history, match, getPassengers, passengers, loading, passeng
             }}
           />
         </li>
-        <Button onClick={() => handleFilter()} style={{height: "30px"}} className="align-items-center justify-content-center" color="success">
+        <Button onClick={() => handleFilter()} style={{ height: "30px" }} className="align-items-center justify-content-center" color="success">
           Apply filter
         </Button>
         {/*</div>*/}
-        <div className="float-right">
-          {!loading && passengers.length > 0 && (
-            <Button onClick={() => handleExport()} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
-              {" "}
-              <i className="zmdi zmdi-download mr-2"></i> Export to Excel
-            </Button>
-          )}
-        </div>
+        {!forNotification && (
+          <div className="float-right">
+            {!loading && passengers.length > 0 && (
+              <Button onClick={() => handleExport()} style={{ height: "30px" }} className="align-items-center justify-content-center mr-2" color="primary">
+                {" "}
+                <i className="zmdi zmdi-download mr-2"></i> Export to Excel
+              </Button>
+            )}
+          </div>
+        )}
+
         {!loading && passengers.length > 0 && (
           <>
-            <div className="table-responsive" style={{minHeight: "50vh"}}>
+            <div className="table-responsive" style={{ minHeight: "50vh" }}>
               <Table>
                 <TableHead>
                   <TableRow hover>
@@ -123,7 +126,7 @@ const Passengers = ({history, match, getPassengers, passengers, loading, passeng
                     <TableCell>Last Name</TableCell>
                     <TableCell>Phone No</TableCell>
                     <TableCell>Date / Time of Registration</TableCell>
-                    <TableCell>Action</TableCell>
+                    {!forNotification && <TableCell>Action</TableCell>}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -134,13 +137,15 @@ const Passengers = ({history, match, getPassengers, passengers, loading, passeng
                         <TableCell>{passenger.last_name}</TableCell>
                         <TableCell>{passenger.phone_number}</TableCell>
                         <TableCell>{calculatePostDate(passenger.createdAt)}</TableCell>
-                        <TableCell>
-                          <button type="button" className="rct-link-btn text-primary" title="view details">
-                            <Link to={`/admin/passengers/${passenger.auth_id}`}>
-                              <i className="ti-eye" />
-                            </Link>
-                          </button>
-                        </TableCell>
+                        {!forNotification && (
+                          <TableCell>
+                            <button type="button" className="rct-link-btn text-primary" title="view details">
+                              <Link to={`/admin/passengers/${passenger.auth_id}`}>
+                                <i className="ti-eye" />
+                              </Link>
+                            </button>
+                          </TableCell>
+                        )}
                       </TableRow>
                     ))}
                   </Fragment>
