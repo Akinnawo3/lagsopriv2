@@ -12,8 +12,21 @@ const SendNotifications = ({ match, loadingStatus, history, sendNotification }) 
   const [message, setMessage] = useState("");
   const [authIdList, setAuthIdList] = useState([]);
   const [recipients, setRecipients] = useState("");
+
   function handleSubmit(e) {
     e.preventDefault();
+
+    const data = title
+      ? authIdList.map((item) => ({
+          title,
+          message,
+          auth_id: item,
+        }))
+      : authIdList.map((item) => ({
+          message,
+          auth_id: item,
+        }));
+    sendNotification({data});
   }
 
   const updateList = (e) => {
@@ -30,8 +43,6 @@ const SendNotifications = ({ match, loadingStatus, history, sendNotification }) 
     setAuthIdList([]);
     setRecipients("");
   };
-
-  
 
   return (
     <div className="table-wrapper">
