@@ -73,11 +73,13 @@ export const getWalletBalance =
       } else {
         dispatch({
           type: WALLET,
-          payload: res.data.data.total ? res.data.data.total : 0,
+          payload: res.data.data
         });
       }
     } catch (err) {}
   };
+
+  
 export const getFundingBalance =
   (auth_id = "", status = "", transaction_type = "fund", start_date = "", end_date = "") =>
   async (dispatch) => {

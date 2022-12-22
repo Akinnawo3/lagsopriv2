@@ -35,7 +35,7 @@ const RouteIntelligence = ({ match }) => {
     <div className="table-wrapper ">
       <PageTitleBar title={"Route Intelligence"} match={match} />
       <h1>Route Intelligence</h1>
-{/* 
+      {/* 
       <form onSubmit={handleSubmit}>
         <input type="number" placeholder="Enter minutes" value={minutes} onChange={(e) => setMinutes(e.target.value)} min="0" max={30} />
         <br />
@@ -48,7 +48,7 @@ const RouteIntelligence = ({ match }) => {
         {Math.floor(total / 60)} : {total % 60}
       </div> */}
 
-      {/* <Card className="my-3">
+      <Card className="my-3">
         <CardBody>
           <SummaryCards />
           <div className="mt-3">
@@ -65,7 +65,7 @@ const RouteIntelligence = ({ match }) => {
             <RequestsTable />
           </div>
         </CardBody>
-      </Card> */}
+      </Card>
     </div>
   );
 };

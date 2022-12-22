@@ -5,6 +5,7 @@ const SendNotifications = ({match}) => {
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Send Notification"} match={match} />
+      
     </div>
   );
 };

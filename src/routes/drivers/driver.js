@@ -181,7 +181,7 @@ const Driver = (props) => {
             )}
             {activeTab === 6 && (
               <TabContainer>
-                <DriverPayoutsTable driverId={match?.params?.id} isLoading={loadingStatus} />
+                <DriverPayoutsTable  driverId={match?.params?.id} isLoading={loadingStatus} />
               </TabContainer>
             )}
           </div>

@@ -47,7 +47,7 @@ const Wallets = ({ wallets, walletsCount, auth_id, getWallets, loading, wallet }
                   </CardBody>
                   <div className="chart-wrapper mx-3 d-flex align-items-center  justify-content-between" style={{ height: "70px" }}>
                      <span className=" font-xl" style={{ fontSize: "2.5rem" }}>
-                        ₦{wallet.toLocaleString()}
+                        ₦{wallet?.balance?.toLocaleString()}
                      </span>
                      <i className="ti-arrow-up font-lg" />
                   </div>
@@ -108,3 +108,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallets);
+
+

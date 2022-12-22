@@ -11,12 +11,13 @@ import EmptyData from "Components/EmptyData/EmptyData";
 import { useHistory } from "react-router-dom";
 import { getPartnerPayout, getPartnerPayoutCount } from "Actions/partnersAction";
 import { getCashoutStatus, getCashoutStatusColor } from "Helpers/helpers";
-import { Badge } from "reactstrap";
+import { Badge, Card, CardBody, Col, Row } from "reactstrap";
 import { getDriverPayout, getDriverPayoutCount } from "../../../actions/driverAction";
+import { getWalletBalance, } from "../../../actions/walletAction";
 
 const qs = require("qs");
 
-const DriverPayoutsTable = ({ payouts, isLoading, payoutsCount, driverId, header, getDriverPayout,getDriverPayoutCount }) => {
+const DriverPayoutsTable = ({ payouts, isLoading, payoutsCount, driverId, header, getDriverPayout, getDriverPayoutCountget, getWalletBalance, wallet}) => {
   const history = useHistory();
   const pageFromQuery = qs.parse(history.location.search, { ignoreQueryPrefix: true }).page;
   const [currentPage, setCurrentPage] = useState(() => {
@@ -33,13 +34,45 @@ const DriverPayoutsTable = ({ payouts, isLoading, payoutsCount, driverId, header
   useEffect(() => {
     getDriverPayout(driverId, currentPage);
     getDriverPayoutCount(driverId);
+    getWalletBalance(driverId);
+
   }, [driverId]);
 
-  console.log(payouts, "oooooooo");
+  console.log(wallet, "oooooooo");
 
   return (
     <div>
       <RctCollapsibleCard heading={header} fullBlock style={{ minHeight: "70vh" }}>
+        <Row className="my-4">
+          {/* <Col xs="12" sm="6" lg="3">
+          <Card className="text-white bg-secondary">
+            <CardBody className="pb-0">
+              <div className="text-value">Balance</div>
+            </CardBody>
+            <div
+              className="chart-wrapper mx-3 d-flex align-items-center justify-content-center"
+              style={{ height: "70px" }}
+            >
+              <span className="pr-2 font-xl" style={{ fontSize: "1.5rem" }}>
+                ₦{wallet.toLocaleString()}
+              </span>
+            </div>
+          </Card>
+        </Col> */}
+          <Col xs="12" sm="6" lg="4">
+            <Card className="text-success bg-light p-2">
+              <CardBody className="pb-0">
+                <div className="text-value text-muted fw-bold">Balance</div>
+              </CardBody>
+              <div className="chart-wrapper mx-3 d-flex align-items-center  justify-content-between" style={{ height: "70px" }}>
+                <span className=" font-xl" style={{ fontSize: "2.5rem" }}>
+                  ₦{wallet?.earning?.toLocaleString()}
+                </span>
+                <i className="ti-arrow-up font-lg" />
+              </div>
+            </Card>
+          </Col>
+        </Row>
         {!isLoading && payouts?.length > 0 && (
           <>
             <div className="table-responsive" style={{ minHeight: "50vh" }}>
@@ -80,7 +113,6 @@ const DriverPayoutsTable = ({ payouts, isLoading, payoutsCount, driverId, header
               </Table>
             </div>
             <div className="d-flex justify-content-end align-items-center mb-0 mt-3 mr-2">
-
               <Pagination activePage={currentPage} itemClass="page-item undo-folding" linkClass="page-link" itemsCountPerPage={20} totalItemsCount={payoutsCount} onChange={paginate} />
             </div>
           </>
@@ -96,14 +128,14 @@ function mapDispatchToProps(dispatch) {
   return {
     getDriverPayout: (auth_id, page, date_type) => dispatch(getDriverPayout(auth_id, page, date_type)),
     getDriverPayoutCount: (auth_id, page, date_type) => dispatch(getDriverPayoutCount(auth_id, page, date_type)),
+    getWalletBalance: (auth_id) => dispatch(getWalletBalance(auth_id)),
   };
 }
 
 const mapStateToProps = (state) => ({
   payouts: state.driver.driverPayout,
   payoutsCount: state.driver.driverPayoutCount,
+  wallet: state.wallets.wallet,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DriverPayoutsTable);
-
-
