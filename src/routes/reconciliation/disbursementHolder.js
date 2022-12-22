@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState, useRef} from "react";
+import React, { Fragment, useEffect, useState, useRef } from "react";
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 import RctCollapsibleCard from "Components/RctCollapsibleCard/RctCollapsibleCard";
 import Table from "@material-ui/core/Table";
@@ -8,7 +8,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import EmptyData from "Components/EmptyData/EmptyData";
 import Pagination from "react-js-pagination";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import DeleteConfirmationDialog from "Components/DeleteConfirmationDialog/DeleteConfirmationDialog";
 
 import {
@@ -21,11 +21,11 @@ import {
   approvePayout,
   reviewPayout,
 } from "Actions/paymentAction";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import SearchComponent from "Components/SearchComponent/SearchComponent";
-import {Badge, Form, Input, Modal, ModalBody, ModalHeader} from "reactstrap";
-import {calculatePostDate, getTodayDate} from "Helpers/helpers";
-import {Button} from "reactstrap";
+import { Badge, Form, Input, Modal, ModalBody, ModalHeader } from "reactstrap";
+import { calculatePostDate, getTodayDate } from "Helpers/helpers";
+import { Button } from "reactstrap";
 const qs = require("qs");
 export let changeButtonShowed;
 
@@ -49,7 +49,7 @@ const DisbursementHolder = (props) => {
   } = props;
 
   const inputEl = useRef(null);
-  const pageFromQuery = qs.parse(history.location.search, {ignoreQueryPrefix: true}).page;
+  const pageFromQuery = qs.parse(history.location.search, { ignoreQueryPrefix: true }).page;
   const [currentPage, setCurrentPage] = useState(() => {
     return pageFromQuery === undefined ? 1 : parseInt(pageFromQuery, 10);
   });
@@ -72,17 +72,17 @@ const DisbursementHolder = (props) => {
   const [argument, setArgument] = useState(null);
 
   const dateTypeFilter = [
-    {value: "daily", label: "Daily"},
-    {value: "monthly", label: "Monthly"},
-    {value: "yearly", label: "Yearly"},
+    { value: "daily", label: "Daily" },
+    { value: "monthly", label: "Monthly" },
+    { value: "yearly", label: "Yearly" },
   ];
   const statusFilter = [
-    {value: "", label: "All"},
-    {value: 0, label: "Pending"},
-    {value: 1, label: "Completed"},
-    {value: 2, label: "Failed"},
-    {value: 3, label: "Processing"},
-    {value: 4, label: "Reviewed"},
+    { value: "", label: "All" },
+    { value: 0, label: "Pending" },
+    { value: 1, label: "Completed" },
+    { value: 2, label: "Failed" },
+    { value: 3, label: "Processing" },
+    { value: 4, label: "Reviewed" },
   ];
 
   useEffect(() => {
@@ -161,7 +161,7 @@ const DisbursementHolder = (props) => {
               <Input
                 type="select"
                 required
-                style={{width: "120px"}}
+                style={{ width: "120px" }}
                 value={type}
                 onChange={(e) => {
                   setDateType("daily");
@@ -238,7 +238,7 @@ const DisbursementHolder = (props) => {
               />
             </li>
             <li className="list-inline-item search-icon d-inline-block ml-2 mb-2 ">
-              <Button onClick={() => handleSearch()} style={{height: "30px"}} className="align-items-center justify-content-center" color="success">
+              <Button onClick={() => handleSearch()} style={{ height: "30px" }} className="align-items-center justify-content-center" color="success">
                 Apply filter
               </Button>
             </li>
@@ -255,7 +255,7 @@ const DisbursementHolder = (props) => {
           {receivable ? (
             <>
               {financeDriverLog?.length > 0 && (
-                <div className="table-responsive" style={{minHeight: "50vh"}}>
+                <div className="table-responsive" style={{ minHeight: "50vh" }}>
                   <Table>
                     <TableHead>
                       <TableRow hover>
@@ -277,7 +277,7 @@ const DisbursementHolder = (props) => {
                               <TableCell>
                                 <button
                                   onClick={() => {
-                                    setIbileData({...item?.ibile_data, ibile_balance: item?.ibile_balance, date: item.group_date});
+                                    setIbileData({ ...item?.ibile_data, ibile_balance: item?.ibile_balance, date: item.group_date });
                                     setIsIbileModal(true);
                                   }}
                                   type="button"
@@ -291,7 +291,7 @@ const DisbursementHolder = (props) => {
                               <TableCell>
                                 <button
                                   onClick={() => {
-                                    setZenoData({...item?.zeno_data, zeno_balance: item?.zeno_balance, date: item.group_date});
+                                    setZenoData({ ...item?.zeno_data, zeno_balance: item?.zeno_balance, date: item.group_date });
                                     setIsZenoModal(true);
                                   }}
                                   type="button"
@@ -321,18 +321,18 @@ const DisbursementHolder = (props) => {
             <>
               <div className="d-flex justify-content-end mr-2 mb-2">
                 {showButton === "review" && financeDriverPayouts?.length > 0 && (
-                  <Button onClick={makeReview} style={{height: "30px"}} className="align-items-center justify-content-center mr-2" color="primary">
+                  <Button onClick={makeReview} style={{ height: "30px" }} className="align-items-center justify-content-center mr-2" color="primary">
                     Review Payout
                   </Button>
                 )}
                 {showButton === "approve" && financeDriverPayouts?.length > 0 && (
-                  <Button onClick={makeApproval} style={{height: "30px"}} className="align-items-center justify-content-center" color="primary">
+                  <Button onClick={makeApproval} style={{ height: "30px" }} className="align-items-center justify-content-center" color="primary">
                     Approve Payout
                   </Button>
                 )}
               </div>
               {financeDriverPayouts?.length > 0 && (
-                <div className="table-responsive" style={{minHeight: "50vh"}}>
+                <div className="table-responsive" style={{ minHeight: "50vh" }}>
                   <Table>
                     <TableHead>
                       <TableRow hover>
@@ -363,8 +363,36 @@ const DisbursementHolder = (props) => {
                               <TableCell>₦{item?.payment_summary?.total_cash_collected?.toLocaleString()}</TableCell>
                               <TableCell>₦{item?.actual_amount?.toLocaleString()}</TableCell> */}
                               <TableCell>
-                                <Badge color={item?.status === 0 ? "secondary" : item?.status === 1 ? "success" : item?.status === 2 ? "danger" : item?.status === 3 ? "warning" : "info"}>
-                                  {item?.status === 0 ? "Pending" : item?.status === 1 ? "Completed" : item?.status === 2 ? "Failed" : item?.status === 3 ? "Processing" : "Reviewed"}
+                                <Badge
+                                  color={
+                                    item?.status === 0
+                                      ? "secondary"
+                                      : item?.status === 1
+                                      ? "success"
+                                      : item?.status === 2
+                                      ? "danger"
+                                      : item?.status === 3
+                                      ? "warning"
+                                      : item?.status === 4
+                                      ? "primary"
+                                      : item?.status === 5
+                                      ? "info"
+                                      : ""
+                                  }
+                                >
+                                  {item?.status === 0
+                                    ? "Pending"
+                                    : item?.status === 1
+                                    ? "Completed"
+                                    : item?.status === 2
+                                    ? "Failed"
+                                    : item?.status === 3
+                                    ? "Processing"
+                                    : item?.status === 4
+                                    ? "Reviewed"
+                                    : item?.status === 5
+                                    ? "Refund"
+                                    : ""}
                                 </Badge>
                               </TableCell>
 
@@ -393,7 +421,7 @@ const DisbursementHolder = (props) => {
       <Modal isOpen={isIbileModal} toggle={() => setIsIbileModal(!isIbileModal)}>
         <ModalHeader toggle={() => setIsIbileModal(!isIbileModal)}>Ibile Details</ModalHeader>
         <ModalBody>
-          <div className="w-100" style={{fontSize: "0.8rem"}}>
+          <div className="w-100" style={{ fontSize: "0.8rem" }}>
             <div className="tab-content px-4">
               <div className="tab-pane active" id="home">
                 <ul className="list-group">
@@ -461,7 +489,7 @@ const DisbursementHolder = (props) => {
       <Modal isOpen={isZenoModal} toggle={() => setIsZenoModal(!isZenoModal)}>
         <ModalHeader toggle={() => setIsZenoModal(!isZenoModal)}>Zeno Details</ModalHeader>
         <ModalBody>
-          <div className="w-100" style={{fontSize: "0.8rem"}}>
+          <div className="w-100" style={{ fontSize: "0.8rem" }}>
             <div className="tab-content px-4">
               <div className="tab-pane active" id="home">
                 <ul className="list-group">

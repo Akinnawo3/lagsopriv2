@@ -12,6 +12,7 @@ import { useHistory } from "react-router-dom";
 import { getPartnerPayout, getPartnerPayoutCount } from "Actions/partnersAction";
 import { getCashoutStatus, getCashoutStatusColor } from "Helpers/helpers";
 import { Badge, Card, CardBody, Col, Row } from "reactstrap";
+import { getWalletBalance } from "../../../actions/walletAction";
 
 const qs = require("qs");
 
