@@ -5,7 +5,9 @@ import Users from "Routes/users/users";
 import ActiveDrivers from "../../drivers/activeDrivers";
 import Passengers from "../../passengers/passengers";
 import { connect } from "react-redux";
-const SendNotifications = ({ match, loadingStatus, history }) => {
+import { sendNotification } from "../../../actions/messagesAction";
+export let resetNotificationData;
+const SendNotifications = ({ match, loadingStatus, history, sendNotification }) => {
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
   const [authIdList, setAuthIdList] = useState([]);
@@ -21,7 +23,16 @@ const SendNotifications = ({ match, loadingStatus, history }) => {
       setAuthIdList(authIdList.filter((item) => item !== e.target.value));
     }
   };
-  console.log(authIdList);
+
+  resetNotificationData = () => {
+    setTitle("");
+    setMessage("");
+    setAuthIdList([]);
+    setRecipients("");
+  };
+
+  
+
   return (
     <div className="table-wrapper">
       <PageTitleBar title={"Send Notification"} match={match} />
@@ -80,15 +91,10 @@ const SendNotifications = ({ match, loadingStatus, history }) => {
 };
 function mapDispatchToProps(dispatch) {
   return {
-    getPassengers: (page_no, spinner, start_date, end_date) => dispatch(getPassengers(page_no, spinner, start_date, end_date)),
-    getPassengerCount: (start_date, end_date) => dispatch(getPassengerCount(start_date, end_date)),
-    searchPassenger: (searchData) => dispatch(searchPassengers(searchData)),
-    getUserExport: (user_type, driver_category, driver_account_status, start_date, end_date) => dispatch(getUserExport(user_type, driver_category, driver_account_status, start_date, end_date)),
+    sendNotification: (page_no, spinner, start_date, end_date) => dispatch(sendNotification(page_no, spinner, start_date, end_date)),
   };
 }
 const mapStateToProps = (state) => ({
-  passengers: state.passenger.passengers,
-  passengerCount: state.passenger.passengerCount,
   loading: state.loading.loading,
   loadingStatus: state.loading.loadingStatus,
 });

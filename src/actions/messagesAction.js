@@ -1,7 +1,8 @@
 import axios from "axios";
 import api from "../environments/environment";
-import {NotificationManager} from "react-notifications";
-import {endStatusLoading, startStatusLoading} from "./loadingAction";
+import { NotificationManager } from "react-notifications";
+import { endStatusLoading, startStatusLoading } from "./loadingAction";
+import { resetNotificationData } from "../routes/notifications/sendNotifications/sendNotifications";
 
 export const sendMessage = (body) => async (dispatch) => {
   try {
@@ -25,6 +26,7 @@ export const sendNotification = (data) => async (dispatch) => {
     if (res.data.status === "error") {
       NotificationManager.error(res.data.msg);
     } else {
+      resetNotificationData();
       await NotificationManager.success(" Notification sent!");
     }
     dispatch(endStatusLoading());
