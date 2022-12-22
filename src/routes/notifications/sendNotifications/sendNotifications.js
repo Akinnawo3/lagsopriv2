@@ -26,6 +26,7 @@ const SendNotifications = ({ match, loadingStatus, history, sendNotification }) 
           message,
           auth_id: item,
         }));
+        console.log(data)
     sendNotification({data});
   }
 
@@ -66,7 +67,7 @@ const SendNotifications = ({ match, loadingStatus, history, sendNotification }) 
                 onChange={(e) => {
                   history.push(`${history?.location?.pathname}`);
                   setAuthIdList([]);
-                  if (e.target.value === "users" || e.target.value === "drivers" || e.target.value === "riders") {
+                  if (e.target.value === "user" || e.target.value === "driver" || e.target.value === "rider") {
                     setAuthIdList([e.target.value]);
                   }
                   setRecipients([e.target.value]);

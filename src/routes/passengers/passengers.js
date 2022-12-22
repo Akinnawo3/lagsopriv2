@@ -67,10 +67,10 @@ const Passengers = ({ history, match, getPassengers, passengers, loading, passen
           <IconButton mini="true" className="search-icon-btn">
             <i className="zmdi zmdi-search"></i>
           </IconButton>
-          <MobileSearchForm
+          {/* <MobileSearchForm
           // isOpen={isMobileSearchFormVisible}
           // onClose={() => this.setState({ isMobileSearchFormVisible: false })}
-          />
+          /> */}
         </li>
         {/*<div>*/}
         <li className="list-inline-item search-icon d-inline-block mb-2 ml-3">
