@@ -391,6 +391,8 @@ const DriverTable = ({ drivers, isLoading, driversCount, getDrivers, status, sea
 };
 
 
+
+
 function mapDispatchToProps(dispatch) {
   return {
     getDrivers: (status, page_no, spinner, driver_online_status, asset_payment, driver_category, start_date, end_date, partnershipStatus, loanEligibility) =>
